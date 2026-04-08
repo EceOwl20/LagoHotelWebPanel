@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "admin:hash": "node scripts/generate-admin-password-hash.mjs"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.5.2",

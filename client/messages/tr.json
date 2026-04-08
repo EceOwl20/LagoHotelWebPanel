@@ -1,18 +1,16 @@
-
 {
   "LocaleSwitcher": {
     "label": "Dili Değiştir",
     "locale": "{locale, select, en {EN} tr {TR} ru {RU} de {DE} other {Bilinmeyen}}"
   },
-
-"Header":{
-  "contact":"İletişim",
-  "booknow":"Rezervasyon Yap",
-  "accommodation":"Konaklama",
-  "restaurants":"Restoranlar",
-  "beachPools":"Plaj ve Havuzlar",
-   "experiences":"Deneyimler",
-    "kids":"Çocuklar",
+  "Header": {
+    "contact": "İletişim",
+    "booknow": "Rezervasyon Yap",
+    "accommodation": "Konaklama",
+    "restaurants": "Restoranlar",
+    "beachPools": "Plaj ve Havuzlar",
+    "experiences": "Deneyimler",
+    "kids": "Çocuklar",
     "spa": "SPA & WELLNESS",
     "special": "Özel Günler",
     "gallery": "Galeri",
@@ -24,104 +22,89 @@
     "swimup": "Swim-up Odası",
     "familyswimup": "Aile Swim-up Odası",
     "duplex": "Dubleks Aile Odası",
-    "tinyvilla":"Tiny Villa",
-    "disableroom":"Engelli Odası",
-    "letuscallyou":"Sizi Arayalım"
-
-},
-
-"Reservation":{
-  "text":"Hayalinizdeki Tatili Şimdiden Ayırtın!",
-  "checkin":"Giriş",
-  "checkout":"Çıkış",
-  "guests":"Misafirler",
-   "search":"Ara"
-
-},
-
+    "tinyvilla": "Tiny Villa",
+    "disableroom": "Engelli Odası",
+    "letuscallyou": "Sizi Arayalım"
+  },
+  "Reservation": {
+    "text": "Hayalinizdeki Tatili Şimdiden Ayırtın!",
+    "checkin": "Giriş",
+    "checkout": "Çıkış",
+    "guests": "Misafirler",
+    "search": "Ara"
+  },
   "HomePage": {
-    "subtitle": "Konfor, kalite ve eşsiz bir hizmet deneyimi sizi bekliyor.",
-    "title":"Lago Hotel'e hoş geldiniz",
+    "subtitle": "Konfor, kalite ve eşsiz bir hizmet deneyimi sizi bekliyor. asdasfasf",
+    "title": "Lago Hotel'e hoş geldiniz",
     "text": " Farklı zevk ve ihtiyaçlara uygun tasarlanan odalarımızda konfor ve şıklığı buluşturan, evinizin rahatlığını yaşatan eşsiz bir tatil deneyimi sunuyoruz. LAGO’nun masmavi dünyasında, farklı büyüklüklerdeki havuzlarımızda serinlemenin tadını çıkarın. LAGO’ya gelin, burada her şey mümkün.",
-    "discovermore":"DAHA FAZLASINI KEŞFET",
-
-    "EmblaCarousel":{
-      "accommodation":"Konaklama",
-  "restaurants":"Restoranlar",
-  "beachPools":"Plaj ve Havuzlar",
-   "experiences":"Deneyimler",
-    "kids":"Çocuklar",
+    "discovermore": "DAHA FAZLASINI KEŞFET",
+    "EmblaCarousel": {
+      "accommodation": "Konaklama",
+      "restaurants": "Restoranlar",
+      "beachPools": "Plaj ve Havuzlar",
+      "experiences": "Deneyimler",
+      "kids": "Çocuklar",
       "spa": "Spa ve Wellness",
-  "special": "Özel",
-  "bars":"Barlar ve Kafeler"
+      "special": "Özel",
+      "bars": "Barlar ve Kafeler"
     },
-
-    "TwoAnimationSection":{
-    "subtitle":"Mavinin ve Yeşilin Huzuru",
-    "title":"Kendinizi LAGO’nun Büyüsüne Bırakın",
-    "text": " Altın rengi kumsallar ve derin mavilikleriyle LAGO, doğanın ve lüksün eşsiz uyumunu sizlerle buluşturuyor.",
-    "text2":"Farklı boyutlardaki havuzlarımızda serinleyip, yeşilin huzur veren atmosferinde kendinizi yenileyin. Isıtmalı kapalı yüzme havuzu, açık yüzme havuzu ve relax havuzuyla LAGO’da her mevsim tatiliniz unutulmaz olacak.",
-    "buttonText":"Galeriye Git"
+    "TwoAnimationSection": {
+      "subtitle": "Mavinin ve Yeşilin Huzuru",
+      "title": "Kendinizi LAGO’nun Büyüsüne Bırakın",
+      "text": " Altın rengi kumsallar ve derin mavilikleriyle LAGO, doğanın ve lüksün eşsiz uyumunu sizlerle buluşturuyor.",
+      "text2": "Farklı boyutlardaki havuzlarımızda serinleyip, yeşilin huzur veren atmosferinde kendinizi yenileyin. Isıtmalı kapalı yüzme havuzu, açık yüzme havuzu ve relax havuzuyla LAGO’da her mevsim tatiliniz unutulmaz olacak.",
+      "buttonText": "Galeriye Git"
     },
-
-    "Accommodation":{
-      "subtitle":"Hayalinizdeki Konaklamayı Seçin",
-      "title":" Lüks Konaklama Deneyimi",
-      "roomname1":"Aile Swim-up Oda",
-      "roomname2":" Swim Up Oda",
-      "roomname3":"Superior Room",
-      "roomtext1":"Ana binamızda bulunan, kara veya deniz manzarasına sahip geniş Family Swim-Up odalarımız 50-55 m² büyüklüğündedir. Birbirine bağlantılı iki ayrı yatak odasına sahip olan bu odalarda; bir adet çift kişilik yatak (2 yetişkin), iki kişilik yatağa dönüşebilen lüks koltuk (2 yetişkin), bir banyo ve konforlu bir oturma alanı bulunmaktadır. Ayrıca odaların özel terasından havuza doğrudan erişim imkânıyla benzersiz bir swim-up deneyimi sunulmaktadır.",
-      "roomtext2":"Ana binada bulunan bu şık oda tipi, 40-43 m² büyüklüğünde olup kara veya deniz manzarası sunmaktadır. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir oturma alanı veya sofa mevcuttur. Hem deniz hem de kara manzaralı odalar havuza erişim imkânı ve terasa sahipken, deniz manzaralı Swim-up odalar ayrıca özel bir havuz sunmaktadır.",
-      "roomtext3":"Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır.",
-      "m1":"50-55 m²",
-      "view1":"Kara / Deniz Manzarası",
-      "buttonText1":"Keşfedin",
-      "m2":"40-43 m²",
-      "view2":"Kara / Deniz Manzarası",
-      "buttonText2":"Keşfedin",
-      "m3":"30-32 m²",
-      "view3":"Kara / Deniz Manzarası",
-      "buttonText3":"Keşfedin"
+    "Accommodation": {
+      "subtitle": "Hayalinizdeki Konaklamayı Seçin",
+      "title": " Lüks Konaklama Deneyimi",
+      "roomname1": "Aile Swim-up Oda",
+      "roomname2": " Swim Up Oda",
+      "roomname3": "Superior Room",
+      "roomtext1": "Ana binamızda bulunan, kara veya deniz manzarasına sahip geniş Family Swim-Up odalarımız 50-55 m² büyüklüğündedir. Birbirine bağlantılı iki ayrı yatak odasına sahip olan bu odalarda; bir adet çift kişilik yatak (2 yetişkin), iki kişilik yatağa dönüşebilen lüks koltuk (2 yetişkin), bir banyo ve konforlu bir oturma alanı bulunmaktadır. Ayrıca odaların özel terasından havuza doğrudan erişim imkânıyla benzersiz bir swim-up deneyimi sunulmaktadır.",
+      "roomtext2": "Ana binada bulunan bu şık oda tipi, 40-43 m² büyüklüğünde olup kara veya deniz manzarası sunmaktadır. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir oturma alanı veya sofa mevcuttur. Hem deniz hem de kara manzaralı odalar havuza erişim imkânı ve terasa sahipken, deniz manzaralı Swim-up odalar ayrıca özel bir havuz sunmaktadır.",
+      "roomtext3": "Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır.",
+      "m1": "50-55 m²",
+      "view1": "Kara / Deniz Manzarası",
+      "buttonText1": "Keşfedin",
+      "m2": "40-43 m²",
+      "view2": "Kara / Deniz Manzarası",
+      "buttonText2": "Keşfedin",
+      "m3": "30-32 m²",
+      "view3": "Kara / Deniz Manzarası",
+      "buttonText3": "Keşfedin"
     },
-
-    "Essentials":{
-      "subtitle":" Sunduğumuz Hizmetleri Keşfedin",
-      "title":"  Konforlu Bir Konaklama İçin Tüm Gerekli Malzemeler",
-
-      "title1":" Özel Plaj ve Pavilion",
-      "text1":"   350 metrelik özel plajımızda dinlenebilir veya özel localar ve konforlu şezlonglarla donatılmış iskelemizin keyfini çıkarabilirsiniz.",
-      "title2":" Her Anınıza Özel Havuzlar",
-      "text2":" Açık ve ısıtmalı kapalı havuzlarımız, 9 kaydıraklı Aqua Park ve çocuklara özel 5 kaydıraklı havuzlarımızın keyfini çıkarın.",
-      "title3":" Üstün Lezzet Deneyimleri",
-      "text3":"  Ultra her şey dahil açık büfelerimiz ile Türk ve dünya mutfaklarından lezzetler sunan A la Carte restoranlarımızın keyfini çıkarın.",
-      "title4":" Çocukların Eğlence Dünyası",
-      "text4":"  4-12 yaş için Bamboo Kids Club; oyun alanları, aktivite odaları ve Magna Kids Restoran’da çocuk büfesi sunmaktadır.",
-      "title5":" Eğlence ve Aktiviteler",
-      "text5":"   Canlı şovlardan havuz oyunlarına ve plaj eğlencelerine kadar herkes için bir şey var. Masa tenisi ve voleybolun tadını çıkarın!",
-      "title6":"Spa & Wellness",
-      "text6":"   Spa hizmetlerimiz ile hamam, sauna, buhar odası ve masajın keyfini çıkarın. Ayrıca fitness salonumuz da hizmetinizdedir.",
-      "buttonText":"DAHA FAZLASINI KEŞFET"
-      
+    "Essentials": {
+      "subtitle": " Sunduğumuz Hizmetleri Keşfedin",
+      "title": "  Konforlu Bir Konaklama İçin Tüm Gerekli Malzemeler",
+      "title1": " Özel Plaj ve Pavilion",
+      "text1": "   350 metrelik özel plajımızda dinlenebilir veya özel localar ve konforlu şezlonglarla donatılmış iskelemizin keyfini çıkarabilirsiniz.",
+      "title2": " Her Anınıza Özel Havuzlar",
+      "text2": " Açık ve ısıtmalı kapalı havuzlarımız, 9 kaydıraklı Aqua Park ve çocuklara özel 5 kaydıraklı havuzlarımızın keyfini çıkarın.",
+      "title3": " Üstün Lezzet Deneyimleri",
+      "text3": "  Ultra her şey dahil açık büfelerimiz ile Türk ve dünya mutfaklarından lezzetler sunan A la Carte restoranlarımızın keyfini çıkarın.",
+      "title4": " Çocukların Eğlence Dünyası",
+      "text4": "  4-12 yaş için Bamboo Kids Club; oyun alanları, aktivite odaları ve Magna Kids Restoran’da çocuk büfesi sunmaktadır.",
+      "title5": " Eğlence ve Aktiviteler",
+      "text5": "   Canlı şovlardan havuz oyunlarına ve plaj eğlencelerine kadar herkes için bir şey var. Masa tenisi ve voleybolun tadını çıkarın!",
+      "title6": "Spa & Wellness",
+      "text6": "   Spa hizmetlerimiz ile hamam, sauna, buhar odası ve masajın keyfini çıkarın. Ayrıca fitness salonumuz da hizmetinizdedir.",
+      "buttonText": "DAHA FAZLASINI KEŞFET"
     },
-
-    "Banner":{
-      "subtitle":" AKDENİZ’İN MAVİSİNE AÇILAN KAPI",
-      "title":"Mavi ve Yeşilin Kalbinde Unutulmaz Bir Tatil",
-      "text":" LAGO Hotels’in ayrıcalıklı dünyasında doğanın ve denizin büyüsüne kapılın. Yemyeşil doğa, uçsuz bucaksız deniz manzarası ve kusursuz hizmetimiz ile sizlere unutulmaz bir tatil sunuyoruz.",
-      "discovermore":"DAHA FAZLASINI KEŞFET"
+    "Banner": {
+      "subtitle": " AKDENİZ’İN MAVİSİNE AÇILAN KAPI",
+      "title": "Mavi ve Yeşilin Kalbinde Unutulmaz Bir Tatil",
+      "text": " LAGO Hotels’in ayrıcalıklı dünyasında doğanın ve denizin büyüsüne kapılın. Yemyeşil doğa, uçsuz bucaksız deniz manzarası ve kusursuz hizmetimiz ile sizlere unutulmaz bir tatil sunuyoruz.",
+      "discovermore": "DAHA FAZLASINI KEŞFET"
     }
   },
-
-
-  "ContactSection":{
-    "subtitle":"  Daha fazlası için bizi takip edin",
-    "title":"@LagoHotels",
-    "text":"  LAGO Hotels'te konfor ve lüks bir arada! Eşsiz manzaralar, geniş odalar, lezzetli mutfak seçenekleri ve keyifli aktivitelerle unutulmaz bir tatil deneyimi sizi bekliyor. Hemen rezervasyon yapın!",
-    "buttonText":" Şimdi Rezervasyon Yap"
+  "ContactSection": {
+    "subtitle": "  Daha fazlası için bizi takip edin",
+    "title": "@LagoHotels",
+    "text": "  LAGO Hotels'te konfor ve lüks bir arada! Eşsiz manzaralar, geniş odalar, lezzetli mutfak seçenekleri ve keyifli aktivitelerle unutulmaz bir tatil deneyimi sizi bekliyor. Hemen rezervasyon yapın!",
+    "buttonText": " Şimdi Rezervasyon Yap"
   },
-
-
-  "Footer":{
+  "Footer": {
     "category1": "Konaklama",
     "superior": "Superior Oda",
     "family": "Aile Odası",
@@ -129,7 +112,7 @@
     "familyswimup": "Aile Swim-up Odası",
     "duplex": "Dubleks Aile Odası",
     "tinyvilla": "Tiny Villa",
-    "disableroom":"Engelli Odası",
+    "disableroom": "Engelli Odası",
     "category2": "Mutfak",
     "mainrestaurant": "Ana Restoran",
     "gusto": "Gusto Restoran",
@@ -142,977 +125,924 @@
     "stageshow": "Sahne Şovu",
     "spa": "Spa",
     "special": "Özel Günler",
-    "home":" Ana Sayfa",
-    "service":"Hizmet",
-    "portfolio":"Portföy",
-    "product":"Ürün",
-    "blog":"Blog",
-    "faq":"SSS",
-    "policy":" Gizlilik Politikası",
-    "bookings":" Rezervasyonlar ve İptaller",
-    "terms":" Web Sitesi Şartları",
-    "aboutcompany":" Şirket Hakkında",
-    "phone":"Tel: +90 242 756 99 00",
-    "email":"E-posta: info@lagohotel.com",
-    "address":" Adres: Titreyengöl Mevkii Sorgun Manavgat/ Antalya / TR",
-    
-    "termsuse":"Kullanım Şartları",
-    "ourpolicies":"Politikalarımız",
-    "notice":"Privacy Notice",
-    "sustainability":"Sürdürülebilirlik",
-    "accommodation":"Konaklama",
-     "experiences":"Deneyimler"
-    
+    "home": " Ana Sayfa",
+    "service": "Hizmet",
+    "portfolio": "Portföy",
+    "product": "Ürün",
+    "blog": "Blog",
+    "faq": "SSS",
+    "policy": " Gizlilik Politikası",
+    "bookings": " Rezervasyonlar ve İptaller",
+    "terms": " Web Sitesi Şartları",
+    "aboutcompany": " Şirket Hakkında",
+    "phone": "Tel: +90 242 756 99 00",
+    "email": "E-posta: info@lagohotel.com",
+    "address": " Adres: Titreyengöl Mevkii Sorgun Manavgat/ Antalya / TR",
+    "termsuse": "Kullanım Şartları",
+    "ourpolicies": "Politikalarımız",
+    "notice": "Privacy Notice",
+    "sustainability": "Sürdürülebilirlik",
+    "accommodation": "Konaklama",
+    "experiences": "Deneyimler"
+  },
+  "Accommodation": {
+    "header": " Oda Türleri",
+    "buttonText1": "Superıor Oda",
+    "buttonText2": "Aile Odası",
+    "buttonText3": " swım-up  Oda",
+    "buttonText4": "Aile Swım-up Odası",
+    "buttonText5": "Dubleks Aile Odası",
+    "buttonText6": "Tıny Villa",
+    "buttonText7": "Engelli Odası",
+    "subtitle": "  Sizin ve Aileniz İçin Konforlu Bir Konaklama",
+    "title": "Şık konaklama seçeneklerimizi keşfedin ve size en uygun ortamı bulun.",
+    "text": " Lago Hotel’de deniz veya kara manzaralı konforlu odalar sunuyoruz. Her ihtiyaca hitap eden şık Swim-up odalar ve geniş Aile Suitleri arasından seçim yapabilirsiniz. Modern tasarımı lüks konforla buluşturan Lago Hotel, unutulmaz bir tatil için doğru adres.",
+    "checkin": "CHECK-IN: 14:00",
+    "checkout": "CHECK-OUT: 12:00",
+    "RoomSection1": {
+      "title": "Süperior Oda",
+      "subtitle": " Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır.",
+      "m": "30-32 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
     },
-
-    "Accommodation":{
-      "header":" Oda Türleri",
-      "buttonText1":"Superıor Oda",
-      "buttonText2":"Aile Odası",
-      "buttonText3":" swım-up  Oda",
-  "buttonText4": "Aile Swım-up Odası",
-  "buttonText5": "Dubleks Aile Odası",
-  "buttonText6": "Tıny Villa",
-  "buttonText7":"Engelli Odası",
-      "subtitle":"  Sizin ve Aileniz İçin Konforlu Bir Konaklama",
-      "title":"Şık konaklama seçeneklerimizi keşfedin ve size en uygun ortamı bulun.",
-      "text":" Lago Hotel’de deniz veya kara manzaralı konforlu odalar sunuyoruz. Her ihtiyaca hitap eden şık Swim-up odalar ve geniş Aile Suitleri arasından seçim yapabilirsiniz. Modern tasarımı lüks konforla buluşturan Lago Hotel, unutulmaz bir tatil için doğru adres.",
-      "checkin":"CHECK-IN: 14:00",
-      "checkout":"CHECK-OUT: 12:00",
-      
-      "RoomSection1":{
-        "title":"Süperior Oda",
-        "subtitle":" Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır.",
-        "m":"30-32 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-      "RoomSection2":{
-        "title":"Aile Odası",
-        "subtitle":"  Ana binada bulunan Aile Odası (38-41 m²), ara kapılı iki yatak odası (bir çift kişilik yatak, iki tek kişilik yatak), ortak banyo ve balkona sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
-        "m":"38-41 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-      "RoomSection3":{
-        "title":"Swim-up Oda",
-        "subtitle":"  Ana binada bulunan bu şık oda tipi, 40-43 m² büyüklüğünde olup kara veya deniz manzarası sunmaktadır. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir oturma alanı veya sofa mevcuttur. Hem deniz hem de kara manzaralı odalar havuza erişim imkânı ve terasa sahipken, deniz manzaralı Swim-up odalar ayrıca özel bir havuz sunmaktadır.",
-        "m":"40-43 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-      "RoomSection4":{
-        "title":"Aile Swim-up Odası",
-        "subtitle":" Ana binamızda bulunan, kara veya deniz manzarasına sahip geniş Family Swim-Up odalarımız 50-55 m² büyüklüğündedir. Birbirine bağlantılı iki ayrı yatak odasına sahip olan bu odalarda; bir adet çift kişilik yatak (2 yetişkin), iki kişilik yatağa dönüşebilen lüks koltuk (2 yetişkin), bir banyo ve konforlu bir oturma alanı bulunmaktadır. Ayrıca odaların özel terasından havuza doğrudan erişim imkânıyla benzersiz bir swim-up deneyimi sunulmaktadır.",
-        "m":"50-55 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-      "RoomSection5":{
-        "title":"Dubleks Aile Odası",
-        "subtitle":" 45-49 m² büyüklüğündeki Dublex Aile Odası iki katlıdır. Alt katta iki tek kişilik yatak, bir sofa, banyo ve balkon; üst katta ise bir çift kişilik yatak, ayrı banyo ve balkon bulunur. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
-        "m":"45-49 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-       "RoomSection6":{
-        "title":"Tiny Villa",
-        "subtitle":" Bahçe içerisinde bulunan Tiny Villa (100 m²), ara kapılı iki yatak odası (1 çift kişilik yatak, 2 tek kişilik yatak), iki banyo ve terasa sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
-        "m":"50 m²",
-        "view":"Kara/Deniz Manzarası",
-        "buttonText":"Keşfet"
-      },
-      "RoomSection7": {
-        "title": "Engelli Odası",
-        "subtitle": "Engelli odalarımız, geniş iç mekanları ve 112 cm genişliğindeki kapılarıyla tekerlekli sandalye kullanımına uygundur. Odalarda özel tasarımlı banyolar, merkezi klima, LED TV, ücretsiz Wi-Fi ve balkon bulunmaktadır.",
-        "m": "30–32 m²",
-        "view": "Kara Manzarası",
-        "buttonText": "Keşfet"
-      }
-
-
+    "RoomSection2": {
+      "title": "Aile Odası",
+      "subtitle": "  Ana binada bulunan Aile Odası (38-41 m²), ara kapılı iki yatak odası (bir çift kişilik yatak, iki tek kişilik yatak), ortak banyo ve balkona sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
+      "m": "38-41 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
     },
-
-
-    "RoomsParallax":{
-      "subtitle":"  Odada Sunulan Temel Olanaklar",
-      "title":" Odalarımız konforlu bir konaklama için tüm temel olanakları sunar.",
-      "text":"  İhtiyacınız olan tüm temel olanaklarla sorunsuz bir konaklamanın tadını çıkarın. Günlük yenilenen minibar, özel banyo ürünleri, güvenli oda erişimi, LED TV ve 24 saat Wi-Fi hizmetiyle her anınızda konforunuzu garanti ediyoruz.",
-      "feature1":"Mini Bar",
-      "desc1":" Günlük yenilenen minibar içeriğinde su, alkolsüz içecekler, bira, meyveli süt, çikolata ve kraker bulunmaktadır.",
-      "feature2":"Kozmetik Ürünler",
-      "desc2":" Banyo ürünleri arasında şampuan, saç kremi, duş jeli, sabun, banyo lifi ve vücut kremi bulunmaktadır.",
-      "feature3":"Çipli Bileklik Erişimi",
-      "desc3":"  Tüm oda kapılarında kolay erişim için güvenli ve kullanışlı çipli bileklik sistemi bulunmaktadır.",
-      "feature4":"Wifi & LedTV",
-      "desc4":"  Ulusal ve uluslararası uydu kanalları, radyo ve 24 saat Wi-Fi erişimi sunan LED TV."
+    "RoomSection3": {
+      "title": "Swim-up Oda",
+      "subtitle": "  Ana binada bulunan bu şık oda tipi, 40-43 m² büyüklüğünde olup kara veya deniz manzarası sunmaktadır. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir oturma alanı veya sofa mevcuttur. Hem deniz hem de kara manzaralı odalar havuza erişim imkânı ve terasa sahipken, deniz manzaralı Swim-up odalar ayrıca özel bir havuz sunmaktadır.",
+      "m": "40-43 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
     },
-
-    "ContactSection2":{
-      "subtitle":"  DAHA FAZLASI İÇİN BİZİMLE İLETİŞİME GEÇİN",
-      "title":"@LagoHotels",
-      "address":"Titreyengol, Sorgun / Manavgat/ Antalya / TR",
-      "phone":"Tel: +90 242 756 99 00",
-      "callcenter":"Call Center: +90 242 524 57 87",
-      "email":"Email: info@lagohotel.com",
-      "buttonText":"REZERVASYON YAP"
+    "RoomSection4": {
+      "title": "Aile Swim-up Odası",
+      "subtitle": " Ana binamızda bulunan, kara veya deniz manzarasına sahip geniş Family Swim-Up odalarımız 50-55 m² büyüklüğündedir. Birbirine bağlantılı iki ayrı yatak odasına sahip olan bu odalarda; bir adet çift kişilik yatak (2 yetişkin), iki kişilik yatağa dönüşebilen lüks koltuk (2 yetişkin), bir banyo ve konforlu bir oturma alanı bulunmaktadır. Ayrıca odaların özel terasından havuza doğrudan erişim imkânıyla benzersiz bir swim-up deneyimi sunulmaktadır.",
+      "m": "50-55 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
     },
-
-
-    "Restaurants":{
-      "subtitle":" Özenle Hazırlanmış Mutfak Deneyimleri",
-      "title":"Restoranlar",
-      "text":" Dünyanın dört bir yanından çeşitli mutfakları keşfedebileceğiniz zengin restoran seçeneklerimizin tadını çıkarın.",
-
-      "ClinaryInfoSection":{
-        "subtitle":" Mükemmel Fine Dining Deneyimleri",
-        "title":" LAGO'da Mutfak Sanatı",
-          "text1":"  LAGO’da tatilinizi, dünya mutfaklarından seçkin lezzetlerin sunulduğu À la Carte restoranlarımızda daha keyifli hale getirin. Türk mutfağının özgün tatlarını ve Akdeniz’in taze lezzetlerini keşfedebileceğiniz zengin açık büfemizle unutulmaz bir lezzet yolculuğuna çıkın.",
-          "text2":"Ana Restoran: Kahvaltı, Öğlen ve Akşam Yemeği",
-          "text3":"Bistro Restoran: 23:00-07:00",
-          "text4":"Snack Restoranlar: Günlük belirli saatlerde açık"
-        
-      },
-
-      "MainRestaurantSection":{
-        "subtitle":"  EŞSİZ BİR LEZZET ŞÖLENİ",
-        "title":" Magna Ana Restoran",
-        "text":"  Kahvaltı, öğle ve akşam yemeklerinde, Türk mutfağının geleneksel lezzetlerini ve mevsimsel tatları bulabileceğiniz zengin açık büfemizle sizleri bekliyoruz.",
-        "list1":" Kahvaltı: 07:00 - 10:30",
-        "list2":" Öğle Yemeği: 12:30 - 14:00",
-        "list3":"Akşam Yemeği: 18:30 - 21:00",
-        "buttonText":" DAHA FAZLASINI KEŞFEDiN"
-      },
-
-      "CuisinesCarousel":{
-        "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-        "title":"  LAGO’nun Dünya Mutfakları",
-        "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-        "cuisines1subtitle":" MUTFAK: Uluslararası",
-        "cuisines1title":"Anadolu",
-         "cuisines1text":"  Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-         "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle":" MUTFAK: İtalyan",
-        "cuisines2title":"Gusto",  
-        "cuisines2text":" İtalyan mutfağının özgün tatlarını ve enfes lezzetlerini, uzman şeflerimizin ellerinden çıkan benzersiz tariflerle Gusto À la Carte Restoranımızda keşfedin. İtalya’nın eşsiz lezzetleri ile unutulmaz bir gastronomi deneyimi sizleri bekliyor." ,
-        "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-        "cuisines3title":"Despina",   
-        "cuisines3text":" Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-      },
-
-      "ClinaryReverseSection":{
-        "subtitle":" Mükemmel Fine Dining Deneyimleri",
-        "title":"  Bistro Restoran",
-        "text1":"  LAGO’nun Bistro Restoranı’nda, günün her saati leziz yemeklerin tadını çıkarabilirsiniz. Gurme hamburgerler, taze makarnalar, sandviçler, çıtır tavuk lezzetleri ve birbirinden özel tatlılardan oluşan zengin menümüzle keyifli bir mola verin. Gece atıştırmalığı ya da sakin bir yemek için günün 24 saati sizleri bekliyoruz.",
-        "text2":"  Geleneksel Avrupa bistro konseptinden ilham alan restoranımız, rahat atmosferi ve hızlı servis edilen kaliteli yemekleriyle günün her anında sizleri ağırlıyor."
-      },
-
-      "CuisinesCarousel2":{
-        "subtitle":" Mükemmel Fine Dining Deneyimleri",
-        "title":" LAGO’nun Dünya Mutfakları",
-        "text":" À la carte restoranlarımızda, ödüllü şeflerimizin özenle hazırladığı dünya mutfağının eşsiz lezzetlerini keşfedebilirsiniz. LAGO’daki tatiliniz boyunca sizleri unutulmaz bir gastronomi macerasına davet etmekten mutluluk duyuyoruz.",
-        "cuisines1subtitle":" MUTFAK: Teppanyaki (Japon)",
-        "cuisines1title":"Wasabi",
-         "cuisines1text":" Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin.",
-         "buttonText":"  Daha Fazlasını Keşfet",
-         "cuisines2subtitle":" MUTFAK: ASYA",
-        "cuisines2title":"Fuego",   
-        "cuisines2text":" Asya À la Carte restoranımız Fuego, Asya mutfağının otantik ve leziz tatlarını sizlerle buluşturmak için tasarlandı. Her akşam 18:30 - 21:00 saatleri arasında bu eşsiz lezzetleri deneyimleyebilirsiniz.",
-        "cuisines3subtitle":" MUTFAK: İspanyol",
-        "cuisines3title":"Tapaz",   
-        "cuisines3text":"  Tapaz À la Carte Restoranımızda, İspanyol mutfağının eşsiz lezzetlerini içeren zengin tapas menümüzü şeflerimizin özenli dokunuşlarıyla keşfedebilirsiniz."     
-      },
-      "DiscoverBackground":{
-        "subtitle":"EŞSİZ BİR LEZZET ŞÖLENİ",
-        "title":" Barlarımızı ve Kafelerimizi Keşfedin",
-         "text":" Lago Hotel’in bar ve kafelerinde günün her saatinde lezzetli içeceklerin, hafif atıştırmalıkların ve keyifli anların tadını çıkarın. Canlı müzik eşliğinde favori kokteyllerinizi yudumlayın veya gününüzü güzelleştirmek için küçük bir kahve molası verin",
-         "buttonText":"DAHA FAZLASINI KEŞFET"
-      }
+    "RoomSection5": {
+      "title": "Dubleks Aile Odası",
+      "subtitle": " 45-49 m² büyüklüğündeki Dublex Aile Odası iki katlıdır. Alt katta iki tek kişilik yatak, bir sofa, banyo ve balkon; üst katta ise bir çift kişilik yatak, ayrı banyo ve balkon bulunur. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
+      "m": "45-49 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
     },
-
-    
-      "BarAndCafes": {
-        "subtitle": "GÜN BOYU KEYİFLİ ANLAR",
-        "title": "Barlar ve Kafeler",
-        "text": "LAGO’nun bar ve kafelerinde günün her anında leziz içecekler, serinletici kokteyller ve enfes atıştırmalıkların tadını çıkarın. Keyifli bir kahve molası ya da akşamları canlı müzik eşliğinde kokteyllerinizle eğlenceli anlar yaşamak için sizi bekliyoruz.",
-        "ClinaryInfoSection": {
-          "subtitle": "LAGO’DA KEYİFLİ ANLAR",
-          "title": "LAGO'da Olağanüstü Barlar ve Kafeler",
-          "text1": "LAGO’nun şık bar ve kafelerinde birbirinden lezzetli içecekler, serinletici kokteyller ve hafif atıştırmalıklarla gününüzü renklendirin. Huzurlu bir kahve molası, havuz kenarında yaratıcı kokteyller ya da akşamları canlı müzik eşliğinde keyif dolu anlar yaşayın.",
-          "text2": "",
-          "text3": "",
-          "text4": ""
-        },
-        "BarImageSection": {
-          "subtitle": "EŞSİZ BİR LEZZET ŞÖLENİ",
-          "title": "Serinleyin ve Rahatlayın",
-          "text": "LAGO’nun bar ve kafelerinde gün boyu birbirinden lezzetli içecekler, özel hazırlanmış kokteyller ve enfes atıştırmalıklarla ferahlayın. Havuz başında rahatlayabilir, sakin bir kahve molası verebilir veya akşamları güzel müzik eşliğinde keyifli vakit geçirebilirsiniz. Bar ve kafelerimizde her anınız rahat ve keyifli geçsin diye özenle tasarlandı.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "BarImageSection2": {
-          "subtitle": "EŞSİZ BİR LEZZET ŞÖLENİ",
-          "title": "Lobi Barlar ve Kafeler",
-          "text1": "LAGO’nun Lobby Bar ve Kafelerinde günün her saatinde enfes içecekler, özel kahve çeşitleri, cezbedici kokteyller ve hafif atıştırmalıklarla keyifli anlar yaşayabilirsiniz. Şık lobilerimizde huzurlu ve rahatlatıcı bir atmosfer sizleri bekliyor.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        },
-        "CuisinesCarousel2": {
-          "subtitle": "Keyifli Anlar Sizi Bekliyor",
-          "title": "LAGO'nun Lobi Barları ve Kafeleri",
-          "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
-          "cuisines1title": "Piyano Bar",
-          "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
-          "cuisines2title": "Patisserie ABELLA",
-          "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
-          "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines3title": "Cafe de Lago",
-          "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
-          "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines4title": "Cafe de House",
-          "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlar ve Kafelerimizi Keşfedin",
-          "text": "Lago Hotel’in bar ve kafelerinde, gün boyunca birbirinden lezzetli içeceklerin, hafif atıştırmalıkların ve rahatlatıcı anların tadını çıkarabilirsiniz. Canlı müzik eşliğinde favori kokteyllerinizi yudumlayın veya ferahlatıcı bir kahve molası ile gününüzü güzelleştirin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        },
-        "BarCarousel": {
-          "subtitle": "Lezzet Dolu Anlar Sizi Bekliyor",
-          "title": "Daha Fazlasına Hazır Mısınız?",
-          "text": "Türk ve dünya mutfaklarından lezzetli atıştırmalıklar ve serinletici içecekler sunan geniş ve ferah Snack restoranımız Snackspot’u keşfedin. Her gün 11:00 - 18:00 saatleri arasında hizmet veren Snackspot, tatiliniz boyunca keyifli lezzet molaları verebileceğiniz mükemmel bir mekân.",
-          "buttonText": "DAHA FAZLASINI ÖĞRENİN"
-        }
-      },
-
-      "JoieBar": {
-        "subtitle": " Taze İçecekler ve Müzik",
-        "title": "Joie Bar",
-        "text": " Joie Bar’da, rahatlatıcı müzik eşliğinde birbirinden özel içecekler, serinletici kokteyller ve lezzetli atıştırmalıkların tadını sıcak ve samimi bir ortamda çıkarabilirsiniz.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Joie Bar’da Rahatlayın ve Yenilenin",
-          "title": " Havuz Başında Taze İçecekler",
-          "text1": " Joie Bar’da havuz başında serinletici içeceklerin, özel hazırlanmış kokteyllerin ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Tatiliniz boyunca keyifli ve rahatlatıcı anlar yaşamak için ideal mekânımız sizleri bekliyor.",
-          "text2": "28.03-30.04 / 01.10-07.11 tarihleri arasında hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 10:00-23:00 saatleri arasında hizmet sunmaktayız."
-        },
-        "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-
-      "MaldivaBar": {
-        "subtitle": " Taze İçecekler ve Müzik",
-        "title": "Maldiva Bar",
-        "text": " Maldiva Bar’da huzurlu bir ortamda serinletici içeceklerin, tropikal kokteyllerin ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Gün boyunca havuz başında keyifli müzik eşliğinde rahatlayın.",
-       
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": " Havuzda Taze İçecekler",
-          "text1": " Maldiva Bar’da havuz başında serinletici içecekler, tropikal kokteyller ve enfes atıştırmalıklarla gün boyu rahatlayın ve ferahlayın. Huzurlu atmosferimizle tatilinize keyif katın.",
-          "text2": "28.03-30.04 / 01.10-07.11 tarihleri arasında hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 10:00-23:00 saatleri arasında hizmet vermekteyiz."
-        },
-        "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "MignonBar": {
-        "subtitle": " Taze İçecekler ve Müzik",
-        "title": "Mignon Bar",
-        "text": " Mignon Bar’ın rahatlatıcı atmosferinde, birbirinden özel içecekler, taze kokteyller ve lezzetli atıştırmalıkların tadını hoş müzikler eşliğinde çıkarabilirsiniz.",
-        "ClinaryInfoSection": {
-          "subtitle": " Havuz Başında Taze İçecekler",
-          "title": " Havuzda Taze İçecekler",
-          "text1": " Mignon Bar’da havuz başında serinletici içeceklerin, özel kokteyllerin ve lezzetli atıştırmalıkların keyfini çıkarın. Gün boyu rahatlatıcı ve ferahlatıcı anlar sizi bekliyor.",
-          "text2": "Hizmetlerimiz, her yıl 01.06 ile 30.09 tarihleri arasında aktif olarak sunulmaktadır."
-        },
-        "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "PianoBar": {
-        "subtitle": " Taze İçecekler ve Müzik",
-        "title": "Piano Bar",
-        "text": " Piano Bar’da özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını canlı piyano müziği eşliğinde çıkarabilirsiniz. Rahatlatıcı atmosferi ile Piano Bar, keyifli akşamlar ve unutulmaz anlar için ideal bir mekândır.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Rahatlatıcı Akşamlar & Premium İçecekler",
-          "title": " Havuzda Taze İçecekler",
-          "text1": " Piano Bar’da özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını canlı piyano müziği eşliğinde çıkarabilirsiniz. Şık ve rahatlatıcı atmosferimiz, unutulmaz akşamlar geçirmeniz için ideal.",
-          "text2": "28.03-07.11 tarihleri arasında hizmet vermekteyiz. 28.03-30.04 ve 01.10-07.11 tarihleri arasında 24 saat hizmet sunulurken, kalan aylarda hizmet saatlerimiz 10:00-00:00 arasındadır."
-        },
-        "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "VagoBar": {
-        "subtitle": " Taze İçecekler ve Müzik",
-        "title": "Vago Bar",
-        "text": " Vago Bar, günün her saatinde sizleri serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklarla karşılıyor. Keyifli müzik eşliğinde, sıcak ve samimi ortamımızda rahatlayın ve keyfinize bakın.",
-        "ClinaryInfoSection": {
-          "subtitle": " Vago Bar’da Ferahlayın ve Rahatlayın",
-          "title": " Her An Taze İçecekler",
-          "text1": " Vago Bar’da, dilediğiniz her an serinletici içeceklerin, özel hazırlanmış kokteyllerin ve lezzetli atıştırmalıkların keyfini çıkarabilirsiniz. Tatiliniz boyunca hareketli akşamların veya sakin anların tadını çıkarabileceğiniz sıcacık bir ortam sizi bekliyor.",
-          "text2": "28.03-30.04 ve 01.10-07.11 dönemlerinde hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 7/24 hizmet vermekteyiz."
-        },
-        "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
-          "title": "Barlar ve Kafeler",
-          "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
-          "cuisines1title": "Mignon Bar",
-          "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines2title": "Joie Bar",
-          "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
-          "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
-          "cuisines3title": "Maldiva Bar",
-          "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
-          "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
-          "cuisines4title": "Vago Bar",
-          "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "Abellapatisserie": {
-        "subtitle": " Tatlı Anlar Sizleri Bekliyor",
-        "title": "Abella Patisserie",
-        "text": "Abella Patisserie’de günlük taze hazırlanmış hamur işleri, birbirinden lezzetli tatlılar ve aromatik kahveler ile kendinizi şımartın. Sıcak ve samimi atmosferimizde tatlı bir mola verin.",
-       
-        "ClinaryInfoSection": {
-          "subtitle": "Abella Patisserie’de Tatlı Anlar",
-          "title": " Taze ve Leziz Tatlar",
-          "text1": " Abella Patisserie’de günlük olarak hazırlanan taze hamur işleri, birbirinden leziz tatlılar ve enfes kahve çeşitlerinin tadını çıkarın. Rahat ve samimi ortamımızda tatiliniz boyunca tatlı molalar verin ve keyifli anlar yaşayın.",
-          "text2": "28.03-07.11 tarihleri arasında hizmet vermektedir."
-        },
-       "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "Keyifli Anlar Sizi Bekliyor",
-          "title": "LAGO'nun Lobi Barları ve Kafeleri",
-          "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
-          "cuisines1title": "Piyano Bar",
-          "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
-          "cuisines2title": "Patisserie ABELLA",
-          "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
-          "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines3title": "Cafe de Lago",
-          "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
-          "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines4title": "Cafe de House",
-          "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "Cafedehouse": {
-        "subtitle": " Tatlı Anlar Sizleri Bekliyor",
-        "title": "Cafe de House",
-        "text": "Cafe de House’ta enfes kahveler, ferahlatıcı içecekler, lezzetli tatlılar ve hafif atıştırmalıkların tadını çıkarın. Rahatlatıcı atmosferimizde gün boyunca huzurlu ve keyifli molalar verin.",
-        "ClinaryInfoSection": {
-          "subtitle": " Tatlı Anlar ve Sıcak Atmosfer",
-          "title": " Cafe de House",
-          "text1": " Cafe de House’ta birbirinden leziz kahveler, serinletici içecekler, enfes tatlılar ve günlük taze atıştırmalıkların tadını çıkarabilirsiniz. Sıcak ve samimi atmosferimiz, gününüz boyunca keyifli molalar vermeniz için ideal.",
-          "text2": "28.03-07.11 tarihleri arasında hizmet vermekte olup, 200 kişi kapasitesine sahiptir."
-        },
-       "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "Keyifli Anlar Sizi Bekliyor",
-          "title": "LAGO'nun Lobi Barları ve Kafeleri",
-          "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
-          "cuisines1title": "Piyano Bar",
-          "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
-          "cuisines2title": "Patisserie ABELLA",
-          "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
-          "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines3title": "Cafe de Lago",
-          "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
-          "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines4title": "Cafe de House",
-          "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "Cafedelago": {
-        "subtitle": " Tatlı Anlar Sizleri Bekliyor",
-        "title": "Cafe de Lago",
-        "text": " Cafe de Lago’da enfes kahveler, ferahlatıcı içecekler, cazip tatlılar ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Rahat ve sıcak atmosferimizde keyifli molalar verin.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Keyifli Anlar ve Lezzetli Tatlar",
-          "title": " Cafe de Lago",
-          "text1": " Cafe de Lago’da enfes kahveler, serinletici içecekler, leziz tatlılar ve taze atıştırmalıklarla keyifli bir mola verebilirsiniz. Rahat ve samimi ortamıyla gününüze tat katacak ideal mekân.",
-          "text2": "15.05-30.09 tarihleri arasında hizmet vermektedir. 143 kişi kapasitesine sahiptir. "
-        },
-       "RoomTour": {
-          "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
-          "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
-          "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
-        },
-        "CuisinesCarousel": {
-          "subtitle": "Keyifli Anlar Sizi Bekliyor",
-          "title": "LAGO'nun Lobi Barları ve Kafeleri",
-          "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
-          "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
-          "cuisines1title": "Piyano Bar",
-          "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
-          "buttonText": "Daha Fazlasını Keşfet",
-          "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
-          "cuisines2title": "Patisserie ABELLA",
-          "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
-          "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines3title": "Cafe de Lago",
-          "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
-          "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
-          "cuisines4title": "Cafe de House",
-          "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "GustoRestaurants": {
-        "subtitle": "İTALYAN MUTFAĞININ EN ÖZEL LEZZETLERİ",
-        "title": "Gusto Restoran",
-        "text": "Gusto Restoran’da, İtalyan mutfağının özgün tatlarını şeflerimizin özenli yorumlarıyla keşfedin. Birbirinden leziz makarnalar ve İtalyan mutfağına özel enfes spesiyallerle unutulmaz bir gastronomi deneyimi sizleri bekliyor.",
-       
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "İtalyan Lezzetlerinin İnceliği",
-          "text1": "Gusto À la Carte Restoran’da, uzman şeflerimizin hazırladığı İtalyan mutfağının en özel lezzetlerini keşfedebilirsiniz.",
-          "text2": "El yapımı makarnalardan İtalyan spesiyallerine uzanan enfes tatlarla unutulmaz bir gastronomi deneyimi yaşayın."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " İtalyan Mutfağından Seçkin Tatlar",
-          "text": "Gusto À la Carte Restoran’da, uzman şeflerimizin hazırladığı İtalyan mutfağının en özel lezzetlerini keşfedebilirsiniz. El yapımı makarnalardan İtalyan spesiyallerine uzanan enfes tatlarla unutulmaz bir gastronomi deneyimi yaşayın."
-        },
-       "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":"  Türk mutfağının ayırt edici lezzetlerini ve yemek geleneklerini tabakta tutmanın keyfini yaşayalım. LAGO, hayallerinizi Akdeniz'in eşsiz tadıyla buluşturma onuruna sahiptir.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Tatiliniz sırasında Asya mutfağının lezzetli tatlarını deneyimleyebilmeniz için Asya A’la Carte restoranımızı tasarladık. 18:30 ile 21:00 arasında, yetenekli ve ödüllü şeflerimizin hazırladığı Asya mutfağının keyfini çıkarabilirsiniz.",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimiz tarafından sizin için hazırlanan balık menüleri, hem iştahınıza hem de gözünüze hitap ediyor. Balık A’la Carte restoranımızda sizi özel tarifler bekliyor. Balık a’la carte restoranımız, ..."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "AnatoliaRestaurants": {
-        "subtitle": "Türk Mutfağının En Özel Lezzetleri",
-        "title": "Anatolia Restoran",
-        "text": "Anatolia Restoran’da, Türk mutfağının geleneksel ve özgün tatlarını keşfedebilirsiniz. Şeflerimizin özenle hazırladığı seçkin lezzetlerle unutulmaz bir yemek deneyimi sizleri bekliyor.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "Uluslararası Lezzetlerinin İnceliği",
-          "text1": "Anatolia Restoran’da, uzman şeflerimizin özenle hazırladığı Türk mutfağının geleneksel ve benzersiz lezzetlerini keşfedebilirsiniz. ",
-          "text2": " Türk mutfağının enfes yemekleriyle unutulmaz bir gastronomi deneyimine davetlisiniz."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Bir Göz Atın",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "DespinaRestaurants": {
-        "subtitle": "DENİZ ÜRÜNLERİNİN EN ÖZEL LEZZETLERİ",
-        "title": "Despina Restoran",
-        "text": "Despina Restoran’da, uzman şeflerimizin özenle hazırladığı enfes deniz ürünleri ve balık spesiyallerini keşfedin. Akdeniz’den ilham alan taptaze lezzetlerle unutulmaz bir gastronomi deneyimi sizleri bekliyor.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "Deniz Lezzetlerinin İnceliği",
-          "text1": "Despina À la Carte Restoran’da, uzman şeflerimizin ellerinden çıkan enfes deniz ürünleri ve balık yemeklerini keşfedebilirsiniz.",
-          "text2": "Denizden ilham alan taze lezzetlerle unutulmaz bir gastronomi deneyimi yaşayın."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Bir Göz Atın",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "FuegoRestaurants": {
-        "subtitle": "ASYA MUTFAĞININ EN SEÇKİN LEZZETLERİ",
-        "title": "Fuego Restoran",
-        "text": "Fuego À la Carte Restoran’da, uzman şeflerimizin ustalıkla hazırladığı Asya mutfağının eşsiz tatlarını keşfedin. Asya’nın farklı mutfaklarından seçkin spesiyallerle unutulmaz bir gastronomi yolculuğu yaşayın.",
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "Asya Mutfağından Seçkin Tatlar",
-          "text1": "Fuego À la Carte Restoran’da, yetenekli şeflerimizin ellerinden çıkan özgün Asya yemekleri ile sıra dışı bir gastronomi yolculuğuna çıkın.",
-          "text2": " Asya’nın farklı bölgelerinden ilham alan eşsiz tatlarla unutulmaz bir yemek deneyimi sizleri bekliyor."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Asya Mutfağından Seçkin Tatlar",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "MainRestaurants": {
-        "subtitle": "Uluslararası Mutfağın En İyi Örnekleri",
-        "title": "Main Restoran",
-        "text": "Dünyanın dört bir yanından çeşitli yemek seçeneklerinin tadını çıkarın.",
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "LAGO’nun Dünya Mutfakları",
-          "text1": "À la carte restoranlarımızda, ödüllü şeflerimizin özenle hazırladığı dünya mutfağının eşsiz lezzetlerini keşfedebilirsiniz. LAGO’daki tatiliniz boyunca sizleri unutulmaz bir gastronomi macerasına davet etmekten mutluluk duyuyoruz.",
-          "text2": "Geleneksel Avrupa bistro konseptinden ilham alan restoranımız, rahat atmosferi ve hızlı servis edilen kaliteli yemekleriyle günün her anında sizleri ağırlıyor."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Bir Göz Atın",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "TapazRestaurants": {
-        "subtitle": "İSPANYOL TAPAS MUTFAĞININ EN İYİ HALİ",
-        "title": "Tapaz Restoran",
-        "text": "Tapaz Restoran’da, İspanyol mutfağının özgün ve lezzetli tapas çeşitlerini keşfedebilirsiniz. Yetenekli şeflerimizin özenle hazırladığı küçük tabaklarla İspanya’nın canlı gastronomi kültürünü masanıza taşıyor ve unutulmaz bir yemek deneyimi sunuyoruz.",
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "İspanyol Tapas Mutfağından Seçkin Tatlar",
-          "text1": "Tapaz À la Carte Restoran’da, İspanyol mutfağının en seçkin tapas lezzetlerini şeflerimizin özenli dokunuşlarıyla keşfedebilirsiniz. ",
-          "text2": " Her tabakta İspanya’nın canlı ve özgün tatlarını deneyimleyerek unutulmaz bir gastronomi yolculuğuna çıkın."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Bir Göz Atın",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "WasabiRestaurants": {
-        "subtitle": "TEPPANYAKI MUTFAĞININ EN ÖZEL HALİ",
-        "title": "Wasabi Restoran",
-        "text": "Wasabi Restoran’da Teppanyaki mutfağının benzersiz deneyimini yaşayın. Usta şeflerimizin gözlerinizin önünde ustalıkla hazırladığı enfes Japon lezzetleriyle unutulmaz bir gastronomi akşamına davetlisiniz.",
-        
-        "ClinaryInfoSection": {
-          "subtitle": " Mükemmel Fine Dining Deneyimleri",
-          "title": "Japon Lezzetlerinin İnceliği",
-          "text1": "Wasabi À la Carte Restoran’da, Teppanyaki mutfağının büyüleyici ve otantik dünyasını keşfedin. Geleneksel Teppanyaki ızgaralarında, yetenekli şeflerimizin gözlerinizin önünde ustalıkla hazırladığı Japon yemeklerinin benzersiz lezzetlerini deneyimleyin",
-          "text2": "En taze malzemeleri, ustalık ve gösterişli sunumla birleştiren Wasabi, yalnızca damağınıza değil, gözlerinize de hitap eden unutulmaz bir gastronomi şöleni sunuyor. Wasabi’de Japon mutfağının zengin tatları ve dinamik pişirme teknikleriyle unutulmaz bir akşam sizleri bekliyor."
-        },
-        "RoomTour": {
-          "subtitle": "Mükemmel Fine Dining Deneyimleri",
-          "title": " Teppanyaki Mutfağından Seçkin Tatlar",
-          "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
-        },
-        "CuisinesCarousel":{
-          "subtitle":" Mükemmel Gurme Yemek Deneyimleri",
-          "title":"  LAGO’nun Dünya Mutfakları",
-          "text":" A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
-          "cuisines1subtitle":" MUTFAK: Uluslararası",
-          "cuisines1title":"Anadolu",
-           "cuisines1text":" Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
-           "buttonText":" Daha Fazlasını Keşfet",
-         "cuisines2subtitle": "MUTFAK: Asya",
-          "cuisines2title": "Wasabi",
-          "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
-          "cuisines3subtitle":" MUTFAK: Deniz Ürünleri ve Balık",
-          "cuisines3title":"Despina",   
-          "cuisines3text":"  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."     
-        },
-        "DiscoverBackground": {
-          "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
-          "title": "Barlarımızı ve Kafelerimizi Keşfedin",
-          "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        }
-      },
-
-      "BeachPools": {
-        "subtitle": " LAGO OTEL'E HOŞGELDİNİZ",
-        "title": "Derin Mavi Sulara Kendinizi Bırakın",
-        "mobileTitle":"Plaj ve Havuzlar",
-        "text": "Farklı zevk ve ihtiyaçlara göre özenle tasarlanan odalarımızda, evinizin konforunu göz alıcı şıklıkla buluşturarak size keyifli bir tatil deneyimi sunuyoruz. LAGO’nun masmavi dünyasında farklı boyutlardaki havuzlarımızda serinleyin. Hayalini kurduğunuz her şeyin mümkün olduğu LAGO’ya davetlisiniz.",
-        "buttonText": "DAHA FAZLASINI KEŞFEDİN",
-
-        "ClinaryInfoSection": {
-          "subtitle": "Saf Huzuru Deneyimleyin",
-          "title": "Özel Plajımızı Keşfedin",
-          "text1": "LAGO'nun özel plajında, Akdeniz'in berrak sularını ve benzersiz doğasını huzurlu bir ortamda yaşayın. Yumuşacık kumsalımızda rahatlayın ve özenle hazırlanmış lezzetler ile ferahlatıcı içeceklerle tatilinizin her anını unutulmaz kılın.",
-          "text2": "Öne Çıkan Özellikler",
-          "text3": "Ücretsiz şezlong, şemsiye ve havlu hizmeti",
-          "text4": "Ferahlatıcı içecekler ve lezzetli atıştırmalıklar sunan plaj barları",
-          "text5": "Yüzmek ve su sporları için ideal, berrak ve sakin deniz"
-        },
-        "ImageBackground": {
-          "subtitle": "Özel Cabana ve Pavilyon Deneyimi",
-          "title": "Deniz Kenarında Lüks ve Huzur",
-          "text1": "Sahilde eşsiz mahremiyet ve konfor sunan ücretli Cabana ve Pavilyonlarımızda rahatlayın. Swim-Up oda misafirlerimiz Pavilyon kiralamalarında %15 indirimden yararlanarak tatil deneyimlerini daha da ayrıcalıklı hale getirebilirler.",
-          "text2": "Pavilyon ve Cabana için Özel Set-up",
-          "text3": "Doğum Günü",
-          "text4": "Süslemeler",
-          "buttonText": "DAHA FAZLASINI KEŞFEDİN"
-        },
-        "Carousel": {
-          "subtitle": "RAHATLAYIN VE YENİLENİN",
-          "title": "Plaj Aktiviteleri",
-          "text": "LAGO’nun güzel özel plajında sizi rahatlatıcı ve eğlence dolu bir tatil bekliyor. Su sporları ve plaj voleybolu gibi günlük aktivitelerimizin tadını çıkarabilir ya da sadece güneşin ve denizin keyfine varabilirsiniz.",
-          "activities1": "Yüzme & Dinlenme",
-          "activities1Text": "tüm gün",
-          "activities2": "Plaj Barında Serinleyin",
-          "activities2Text": "Kokteyller & Atıştırmalıklar",
-          "activities3": "Su Sporları",
-          "activities3Text": "tüm gün",
-          "activities4": "Plajda Kutlayın",
-          "activities4Text": "Özel An"
-        },
-        "PoolSection": {
-          "subtitle": "Her Anınıza Uygun Havuzlar",
-          "title": "Huzura Doğru Süzülün",
-          "text": "Günün her anını LAGO’nun farklı ruh halinize ve ihtiyaçlarınıza göre tasarlanmış havuzlarında serinleyerek ve dinlenerek geçirin. Eğlenceli anlardan huzurlu dinlenme köşelerine kadar, havuzlarımız tatilinizi unutulmaz kılacak her deneyimi sunuyor."
-        },
-        "PoolList": {
-          "subtitle": "Özel Havuzlarımızı Keşfedin",
-          "title": "Tüm Havuzlarımıza Göz Atın",
-          "text": "LAGO’nun birbirinden özel havuz seçenekleriyle tatilinize ferahlatıcı bir dokunuş katın. İster sakin köşelerde dinlenin, ister eğlenceli aktivitelerle enerjinizi tazeleyin, tüm havuzlarımız unutulmaz anlar yaşatmak için tasarlandı.",
-          "poolSubTitle1": "Ana Havuz – Herkes İçin Eğlence",
-          "poolTitle1": "Ana Havuz",
-          "poolText1": "2000 m² genişliğindeki ana havuzumuz, tüm aile için keyifli bir gün geçirmeniz amacıyla tasarlandı.",
-          "poolSubTitle2": "Rahatlatıcı ve Huzurlu Atmosfer",
-          "poolTitle2": "Rahatlama Havuzu",
-          "poolText2": "Sakin ve huzurlu atmosfere sahip 900 m²’lik Relax Havuzumuz, dinlenmek için idealdir.",
-          "poolSubTitle3": "+16 Yetişkinlere Özel Sakin Havuz",
-          "poolTitle3": "Maldiva Havuzu",
-          "poolText3": "+16 yaş yetişkinlere özel 820 m²’lik Maldiva Havuzu, sakin atmosferiyle kusursuz bir dinlenme ortamı sunar.",
-          "poolSubTitle4": "Eşsiz Manzaralar ile Huzurlu Anlar",
-          "poolTitle4": "Infinity Havuz",
-          "poolText4": "Göz alıcı manzarası ve özel tasarımıyla 280 m²’lik Infinity Havuzumuz, eşsiz bir dinlenme sunar.",
-          "poolSubTitle5": "Keyifli Yüzme İçin İdeal",
-          "poolTitle5": "Maldiva Çocuk Havuzu",
-          "poolText5": "Özel tasarımlı 85 m² Maldiva Çocuk Havuzu, güvenli ve eğlenceli yüzme imkânı sunar.",
-          "poolSubTitle6": "Huzurlu ve Rahatlatıcı Atmosfer",
-          "poolTitle6": "Kapalı Havuzlar",
-          "poolText6": "Yıl boyunca kullanıma açık olan ısıtmalı kapalı havuzlarımız huzurlu ve dinlendirici bir ortam sunar.",
-          "poolSubTitle7": "Eğlence Dolu Anlar İçin İdeal",
-          "poolTitle7": "Aquapark Havuzu",
-          "poolText7": "Eğlence dolu kaydıraklar ve hareketli aktivitelerle dolu Aquapark Havuzumuzda tatilinizin tadını çıkarın.",
-          "poolSubTitle8": "Çocuklar İçin Bitmeyen Su Eğlencesi!",
-          "poolTitle8": "Çocuk Aquapark Havuzu",
-          "poolText8": "5 kaydıraklı Çocuk Aquapark Havuzumuz, güvenli eğlence ve unutulmaz anılar sunar.",
-          "poolSubTitle9": "Herkes İçin Eğlence ve Heyecan!",
-          "poolTitle9": "Mega Aquapark Havuzu",
-          "poolText9": "Mega Aquapark Havuzumuz, her yaştan misafir için heyecan dolu kaydıraklarıyla sınırsız eğlence sunar."
-        }
-      },
-
-      "Spa": {
+    "RoomSection6": {
+      "title": "Tiny Villa",
+      "subtitle": " Bahçe içerisinde bulunan Tiny Villa (100 m²), ara kapılı iki yatak odası (1 çift kişilik yatak, 2 tek kişilik yatak), iki banyo ve terasa sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
+      "m": "50 m²",
+      "view": "Kara/Deniz Manzarası",
+      "buttonText": "Keşfet"
+    },
+    "RoomSection7": {
+      "title": "Engelli Odası",
+      "subtitle": "Engelli odalarımız, geniş iç mekanları ve 112 cm genişliğindeki kapılarıyla tekerlekli sandalye kullanımına uygundur. Odalarda özel tasarımlı banyolar, merkezi klima, LED TV, ücretsiz Wi-Fi ve balkon bulunmaktadır.",
+      "m": "30–32 m²",
+      "view": "Kara Manzarası",
+      "buttonText": "Keşfet"
+    }
+  },
+  "RoomsParallax": {
+    "subtitle": "  Odada Sunulan Temel Olanaklar",
+    "title": " Odalarımız konforlu bir konaklama için tüm temel olanakları sunar.",
+    "text": "  İhtiyacınız olan tüm temel olanaklarla sorunsuz bir konaklamanın tadını çıkarın. Günlük yenilenen minibar, özel banyo ürünleri, güvenli oda erişimi, LED TV ve 24 saat Wi-Fi hizmetiyle her anınızda konforunuzu garanti ediyoruz.",
+    "feature1": "Mini Bar",
+    "desc1": " Günlük yenilenen minibar içeriğinde su, alkolsüz içecekler, bira, meyveli süt, çikolata ve kraker bulunmaktadır.",
+    "feature2": "Kozmetik Ürünler",
+    "desc2": " Banyo ürünleri arasında şampuan, saç kremi, duş jeli, sabun, banyo lifi ve vücut kremi bulunmaktadır.",
+    "feature3": "Çipli Bileklik Erişimi",
+    "desc3": "  Tüm oda kapılarında kolay erişim için güvenli ve kullanışlı çipli bileklik sistemi bulunmaktadır.",
+    "feature4": "Wifi & LedTV",
+    "desc4": "  Ulusal ve uluslararası uydu kanalları, radyo ve 24 saat Wi-Fi erişimi sunan LED TV."
+  },
+  "ContactSection2": {
+    "subtitle": "  DAHA FAZLASI İÇİN BİZİMLE İLETİŞİME GEÇİN",
+    "title": "@LagoHotels",
+    "address": "Titreyengol, Sorgun / Manavgat/ Antalya / TR",
+    "phone": "Tel: +90 242 756 99 00",
+    "callcenter": "Call Center: +90 242 524 57 87",
+    "email": "Email: info@lagohotel.com",
+    "buttonText": "REZERVASYON YAP"
+  },
+  "Restaurants": {
+    "subtitle": " Özenle Hazırlanmış Mutfak Deneyimleri",
+    "title": "Restoranlar",
+    "text": " Dünyanın dört bir yanından çeşitli mutfakları keşfedebileceğiniz zengin restoran seçeneklerimizin tadını çıkarın.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": " LAGO'da Mutfak Sanatı",
+      "text1": "  LAGO’da tatilinizi, dünya mutfaklarından seçkin lezzetlerin sunulduğu À la Carte restoranlarımızda daha keyifli hale getirin. Türk mutfağının özgün tatlarını ve Akdeniz’in taze lezzetlerini keşfedebileceğiniz zengin açık büfemizle unutulmaz bir lezzet yolculuğuna çıkın.",
+      "text2": "Ana Restoran: Kahvaltı, Öğlen ve Akşam Yemeği",
+      "text3": "Bistro Restoran: 23:00-07:00",
+      "text4": "Snack Restoranlar: Günlük belirli saatlerde açık"
+    },
+    "MainRestaurantSection": {
+      "subtitle": "  EŞSİZ BİR LEZZET ŞÖLENİ",
+      "title": " Magna Ana Restoran",
+      "text": "  Kahvaltı, öğle ve akşam yemeklerinde, Türk mutfağının geleneksel lezzetlerini ve mevsimsel tatları bulabileceğiniz zengin açık büfemizle sizleri bekliyoruz.",
+      "list1": " Kahvaltı: 07:00 - 10:30",
+      "list2": " Öğle Yemeği: 12:30 - 14:00",
+      "list3": "Akşam Yemeği: 18:30 - 21:00",
+      "buttonText": " DAHA FAZLASINI KEŞFEDiN"
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": "  Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": " MUTFAK: İtalyan",
+      "cuisines2title": "Gusto",
+      "cuisines2text": " İtalyan mutfağının özgün tatlarını ve enfes lezzetlerini, uzman şeflerimizin ellerinden çıkan benzersiz tariflerle Gusto À la Carte Restoranımızda keşfedin. İtalya’nın eşsiz lezzetleri ile unutulmaz bir gastronomi deneyimi sizleri bekliyor.",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": " Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "ClinaryReverseSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "  Bistro Restoran",
+      "text1": "  LAGO’nun Bistro Restoranı’nda, günün her saati leziz yemeklerin tadını çıkarabilirsiniz. Gurme hamburgerler, taze makarnalar, sandviçler, çıtır tavuk lezzetleri ve birbirinden özel tatlılardan oluşan zengin menümüzle keyifli bir mola verin. Gece atıştırmalığı ya da sakin bir yemek için günün 24 saati sizleri bekliyoruz.",
+      "text2": "  Geleneksel Avrupa bistro konseptinden ilham alan restoranımız, rahat atmosferi ve hızlı servis edilen kaliteli yemekleriyle günün her anında sizleri ağırlıyor."
+    },
+    "CuisinesCarousel2": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": " LAGO’nun Dünya Mutfakları",
+      "text": " À la carte restoranlarımızda, ödüllü şeflerimizin özenle hazırladığı dünya mutfağının eşsiz lezzetlerini keşfedebilirsiniz. LAGO’daki tatiliniz boyunca sizleri unutulmaz bir gastronomi macerasına davet etmekten mutluluk duyuyoruz.",
+      "cuisines1subtitle": " MUTFAK: Teppanyaki (Japon)",
+      "cuisines1title": "Wasabi",
+      "cuisines1text": " Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin.",
+      "buttonText": "  Daha Fazlasını Keşfet",
+      "cuisines2subtitle": " MUTFAK: ASYA",
+      "cuisines2title": "Fuego",
+      "cuisines2text": " Asya À la Carte restoranımız Fuego, Asya mutfağının otantik ve leziz tatlarını sizlerle buluşturmak için tasarlandı. Her akşam 18:30 - 21:00 saatleri arasında bu eşsiz lezzetleri deneyimleyebilirsiniz.",
+      "cuisines3subtitle": " MUTFAK: İspanyol",
+      "cuisines3title": "Tapaz",
+      "cuisines3text": "  Tapaz À la Carte Restoranımızda, İspanyol mutfağının eşsiz lezzetlerini içeren zengin tapas menümüzü şeflerimizin özenli dokunuşlarıyla keşfedebilirsiniz."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR LEZZET ŞÖLENİ",
+      "title": " Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": " Lago Hotel’in bar ve kafelerinde günün her saatinde lezzetli içeceklerin, hafif atıştırmalıkların ve keyifli anların tadını çıkarın. Canlı müzik eşliğinde favori kokteyllerinizi yudumlayın veya gününüzü güzelleştirmek için küçük bir kahve molası verin",
+      "buttonText": "DAHA FAZLASINI KEŞFET"
+    }
+  },
+  "BarAndCafes": {
+    "subtitle": "GÜN BOYU KEYİFLİ ANLAR",
+    "title": "Barlar ve Kafeler",
+    "text": "LAGO’nun bar ve kafelerinde günün her anında leziz içecekler, serinletici kokteyller ve enfes atıştırmalıkların tadını çıkarın. Keyifli bir kahve molası ya da akşamları canlı müzik eşliğinde kokteyllerinizle eğlenceli anlar yaşamak için sizi bekliyoruz.",
+    "ClinaryInfoSection": {
+      "subtitle": "LAGO’DA KEYİFLİ ANLAR",
+      "title": "LAGO'da Olağanüstü Barlar ve Kafeler",
+      "text1": "LAGO’nun şık bar ve kafelerinde birbirinden lezzetli içecekler, serinletici kokteyller ve hafif atıştırmalıklarla gününüzü renklendirin. Huzurlu bir kahve molası, havuz kenarında yaratıcı kokteyller ya da akşamları canlı müzik eşliğinde keyif dolu anlar yaşayın.",
+      "text2": "",
+      "text3": "",
+      "text4": ""
+    },
+    "BarImageSection": {
+      "subtitle": "EŞSİZ BİR LEZZET ŞÖLENİ",
+      "title": "Serinleyin ve Rahatlayın",
+      "text": "LAGO’nun bar ve kafelerinde gün boyu birbirinden lezzetli içecekler, özel hazırlanmış kokteyller ve enfes atıştırmalıklarla ferahlayın. Havuz başında rahatlayabilir, sakin bir kahve molası verebilir veya akşamları güzel müzik eşliğinde keyifli vakit geçirebilirsiniz. Bar ve kafelerimizde her anınız rahat ve keyifli geçsin diye özenle tasarlandı.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "BarImageSection2": {
+      "subtitle": "EŞSİZ BİR LEZZET ŞÖLENİ",
+      "title": "Lobi Barlar ve Kafeler",
+      "text1": "LAGO’nun Lobby Bar ve Kafelerinde günün her saatinde enfes içecekler, özel kahve çeşitleri, cezbedici kokteyller ve hafif atıştırmalıklarla keyifli anlar yaşayabilirsiniz. Şık lobilerimizde huzurlu ve rahatlatıcı bir atmosfer sizleri bekliyor.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    },
+    "CuisinesCarousel2": {
+      "subtitle": "Keyifli Anlar Sizi Bekliyor",
+      "title": "LAGO'nun Lobi Barları ve Kafeleri",
+      "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
+      "cuisines1title": "Piyano Bar",
+      "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
+      "cuisines2title": "Patisserie ABELLA",
+      "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
+      "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines3title": "Cafe de Lago",
+      "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
+      "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines4title": "Cafe de House",
+      "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlar ve Kafelerimizi Keşfedin",
+      "text": "Lago Hotel’in bar ve kafelerinde, gün boyunca birbirinden lezzetli içeceklerin, hafif atıştırmalıkların ve rahatlatıcı anların tadını çıkarabilirsiniz. Canlı müzik eşliğinde favori kokteyllerinizi yudumlayın veya ferahlatıcı bir kahve molası ile gününüzü güzelleştirin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    },
+    "BarCarousel": {
+      "subtitle": "Lezzet Dolu Anlar Sizi Bekliyor",
+      "title": "Daha Fazlasına Hazır Mısınız?",
+      "text": "Türk ve dünya mutfaklarından lezzetli atıştırmalıklar ve serinletici içecekler sunan geniş ve ferah Snack restoranımız Snackspot’u keşfedin. Her gün 11:00 - 18:00 saatleri arasında hizmet veren Snackspot, tatiliniz boyunca keyifli lezzet molaları verebileceğiniz mükemmel bir mekân.",
+      "buttonText": "DAHA FAZLASINI ÖĞRENİN"
+    }
+  },
+  "JoieBar": {
+    "subtitle": " Taze İçecekler ve Müzik",
+    "title": "Joie Bar",
+    "text": " Joie Bar’da, rahatlatıcı müzik eşliğinde birbirinden özel içecekler, serinletici kokteyller ve lezzetli atıştırmalıkların tadını sıcak ve samimi bir ortamda çıkarabilirsiniz.",
+    "ClinaryInfoSection": {
+      "subtitle": " Joie Bar’da Rahatlayın ve Yenilenin",
+      "title": " Havuz Başında Taze İçecekler",
+      "text1": " Joie Bar’da havuz başında serinletici içeceklerin, özel hazırlanmış kokteyllerin ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Tatiliniz boyunca keyifli ve rahatlatıcı anlar yaşamak için ideal mekânımız sizleri bekliyor.",
+      "text2": "28.03-30.04 / 01.10-07.11 tarihleri arasında hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 10:00-23:00 saatleri arasında hizmet sunmaktayız."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "MaldivaBar": {
+    "subtitle": " Taze İçecekler ve Müzik",
+    "title": "Maldiva Bar",
+    "text": " Maldiva Bar’da huzurlu bir ortamda serinletici içeceklerin, tropikal kokteyllerin ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Gün boyunca havuz başında keyifli müzik eşliğinde rahatlayın.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": " Havuzda Taze İçecekler",
+      "text1": " Maldiva Bar’da havuz başında serinletici içecekler, tropikal kokteyller ve enfes atıştırmalıklarla gün boyu rahatlayın ve ferahlayın. Huzurlu atmosferimizle tatilinize keyif katın.",
+      "text2": "28.03-30.04 / 01.10-07.11 tarihleri arasında hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 10:00-23:00 saatleri arasında hizmet vermekteyiz."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "MignonBar": {
+    "subtitle": " Taze İçecekler ve Müzik",
+    "title": "Mignon Bar",
+    "text": " Mignon Bar’ın rahatlatıcı atmosferinde, birbirinden özel içecekler, taze kokteyller ve lezzetli atıştırmalıkların tadını hoş müzikler eşliğinde çıkarabilirsiniz.",
+    "ClinaryInfoSection": {
+      "subtitle": " Havuz Başında Taze İçecekler",
+      "title": " Havuzda Taze İçecekler",
+      "text1": " Mignon Bar’da havuz başında serinletici içeceklerin, özel kokteyllerin ve lezzetli atıştırmalıkların keyfini çıkarın. Gün boyu rahatlatıcı ve ferahlatıcı anlar sizi bekliyor.",
+      "text2": "Hizmetlerimiz, her yıl 01.06 ile 30.09 tarihleri arasında aktif olarak sunulmaktadır."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "PianoBar": {
+    "subtitle": " Taze İçecekler ve Müzik",
+    "title": "Piano Bar",
+    "text": " Piano Bar’da özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını canlı piyano müziği eşliğinde çıkarabilirsiniz. Rahatlatıcı atmosferi ile Piano Bar, keyifli akşamlar ve unutulmaz anlar için ideal bir mekândır.",
+    "ClinaryInfoSection": {
+      "subtitle": " Rahatlatıcı Akşamlar & Premium İçecekler",
+      "title": " Havuzda Taze İçecekler",
+      "text1": " Piano Bar’da özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını canlı piyano müziği eşliğinde çıkarabilirsiniz. Şık ve rahatlatıcı atmosferimiz, unutulmaz akşamlar geçirmeniz için ideal.",
+      "text2": "28.03-07.11 tarihleri arasında hizmet vermekteyiz. 28.03-30.04 ve 01.10-07.11 tarihleri arasında 24 saat hizmet sunulurken, kalan aylarda hizmet saatlerimiz 10:00-00:00 arasındadır."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "VagoBar": {
+    "subtitle": " Taze İçecekler ve Müzik",
+    "title": "Vago Bar",
+    "text": " Vago Bar, günün her saatinde sizleri serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklarla karşılıyor. Keyifli müzik eşliğinde, sıcak ve samimi ortamımızda rahatlayın ve keyfinize bakın.",
+    "ClinaryInfoSection": {
+      "subtitle": " Vago Bar’da Ferahlayın ve Rahatlayın",
+      "title": " Her An Taze İçecekler",
+      "text1": " Vago Bar’da, dilediğiniz her an serinletici içeceklerin, özel hazırlanmış kokteyllerin ve lezzetli atıştırmalıkların keyfini çıkarabilirsiniz. Tatiliniz boyunca hareketli akşamların veya sakin anların tadını çıkarabileceğiniz sıcacık bir ortam sizi bekliyor.",
+      "text2": "28.03-30.04 ve 01.10-07.11 dönemlerinde hizmet saatlerimiz 10:00-18:00 iken, diğer aylarda 7/24 hizmet vermekteyiz."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "LAGO’da Rahatlayın ve Yenilenin",
+      "title": "Barlar ve Kafeler",
+      "text": "LAGO’nun bar ve kafelerinde günün her saatinde özel kokteyller, enfes içecekler ve hafif atıştırmalıklarla rahatlayabilirsiniz. Keyifli bir kahve molası, havuz başında geçirilen sakin anlar veya canlı eğlence eşliğinde renkli akşamlar sizleri bekliyor.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 18:00",
+      "cuisines1title": "Mignon Bar",
+      "cuisines1text": "Mignon Bar’da gün boyunca lezzetli içecekler, taze hazırlanmış kokteyller ve hafif atıştırmalıklarla ferahlayabilirsiniz. Havuz kenarındaki rahatlatıcı atmosferimizde keyifli bir mola sizleri bekliyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines2title": "Joie Bar",
+      "cuisines2text": "Joie Bar, sabah saatlerinden akşama kadar birbirinden lezzetli içecekler, özel kahve çeşitleri, serinletici kokteyller ve enfes atıştırmalıklar sunuyor. Joie Bar’ın sıcak ve samimi atmosferinde gün boyu rahatlatıcı anlar ve keyifli akşamlar yaşayabilirsiniz.",
+      "cuisines3subtitle": "SAATLER: 10:00 - 18.00 / 23:00",
+      "cuisines3title": "Maldiva Bar",
+      "cuisines3text": "Maldiva Bar’da havuz başında huzurlu bir atmosferde serinletici içecekler, tropikal kokteyller ve hafif atıştırmalıklarla gününüze keyif katın. Maldiva Bar’da rahatlayarak ferahlığın tadını çıkarın.",
+      "cuisines4subtitle": "SAATLER: 10.00 - 18:00 / 7/24 ",
+      "cuisines4title": "Vago Bar",
+      "cuisines4text": "Vago Bar’da günün her anında serinletici içecekler, özel kokteyller ve lezzetli atıştırmalıklar sizleri bekliyor. İster geç saatte bir içecek, ister sabah erken bir kahve olsun, Vago Bar her zaman hizmetinizde."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "Abellapatisserie": {
+    "subtitle": " Tatlı Anlar Sizleri Bekliyor",
+    "title": "Abella Patisserie",
+    "text": "Abella Patisserie’de günlük taze hazırlanmış hamur işleri, birbirinden lezzetli tatlılar ve aromatik kahveler ile kendinizi şımartın. Sıcak ve samimi atmosferimizde tatlı bir mola verin.",
+    "ClinaryInfoSection": {
+      "subtitle": "Abella Patisserie’de Tatlı Anlar",
+      "title": " Taze ve Leziz Tatlar",
+      "text1": " Abella Patisserie’de günlük olarak hazırlanan taze hamur işleri, birbirinden leziz tatlılar ve enfes kahve çeşitlerinin tadını çıkarın. Rahat ve samimi ortamımızda tatiliniz boyunca tatlı molalar verin ve keyifli anlar yaşayın.",
+      "text2": "28.03-07.11 tarihleri arasında hizmet vermektedir."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "Keyifli Anlar Sizi Bekliyor",
+      "title": "LAGO'nun Lobi Barları ve Kafeleri",
+      "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
+      "cuisines1title": "Piyano Bar",
+      "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
+      "cuisines2title": "Patisserie ABELLA",
+      "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
+      "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines3title": "Cafe de Lago",
+      "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
+      "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines4title": "Cafe de House",
+      "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "Cafedehouse": {
+    "subtitle": " Tatlı Anlar Sizleri Bekliyor",
+    "title": "Cafe de House",
+    "text": "Cafe de House’ta enfes kahveler, ferahlatıcı içecekler, lezzetli tatlılar ve hafif atıştırmalıkların tadını çıkarın. Rahatlatıcı atmosferimizde gün boyunca huzurlu ve keyifli molalar verin.",
+    "ClinaryInfoSection": {
+      "subtitle": " Tatlı Anlar ve Sıcak Atmosfer",
+      "title": " Cafe de House",
+      "text1": " Cafe de House’ta birbirinden leziz kahveler, serinletici içecekler, enfes tatlılar ve günlük taze atıştırmalıkların tadını çıkarabilirsiniz. Sıcak ve samimi atmosferimiz, gününüz boyunca keyifli molalar vermeniz için ideal.",
+      "text2": "28.03-07.11 tarihleri arasında hizmet vermekte olup, 200 kişi kapasitesine sahiptir."
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "Keyifli Anlar Sizi Bekliyor",
+      "title": "LAGO'nun Lobi Barları ve Kafeleri",
+      "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
+      "cuisines1title": "Piyano Bar",
+      "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
+      "cuisines2title": "Patisserie ABELLA",
+      "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
+      "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines3title": "Cafe de Lago",
+      "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
+      "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines4title": "Cafe de House",
+      "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "Cafedelago": {
+    "subtitle": " Tatlı Anlar Sizleri Bekliyor",
+    "title": "Cafe de Lago",
+    "text": " Cafe de Lago’da enfes kahveler, ferahlatıcı içecekler, cazip tatlılar ve lezzetli atıştırmalıkların tadını çıkarabilirsiniz. Rahat ve sıcak atmosferimizde keyifli molalar verin.",
+    "ClinaryInfoSection": {
+      "subtitle": " Keyifli Anlar ve Lezzetli Tatlar",
+      "title": " Cafe de Lago",
+      "text1": " Cafe de Lago’da enfes kahveler, serinletici içecekler, leziz tatlılar ve taze atıştırmalıklarla keyifli bir mola verebilirsiniz. Rahat ve samimi ortamıyla gününüze tat katacak ideal mekân.",
+      "text2": "15.05-30.09 tarihleri arasında hizmet vermektedir. 143 kişi kapasitesine sahiptir. "
+    },
+    "RoomTour": {
+      "subtitle": "LAGO’yu Sanal Olarak Keşfedin",
+      "title": " Restoranlarımız ve Barlarımız Sizi Bekliyor",
+      "text": "LAGO’nun eşsiz atmosferini keşfetmeye hazır mısınız? Restoranlarımızı, barlarımızı ve öne çıkan mekânlarımızı 360 derece sanal tur ile ziyaret edin. Tatilinizin her detayını önceden görerek hayal ettiğiniz tatili planlayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": "Keyifli Anlar Sizi Bekliyor",
+      "title": "LAGO'nun Lobi Barları ve Kafeleri",
+      "text": "LAGO’nun Lobby Bar ve Kafelerinde enfes içecekler, özel kahve çeşitleri ve hafif atıştırmalıklarla rahatlayabilir, şık ve huzurlu bir ortamda keyifli anlar geçirebilirsiniz. Arkadaş buluşmaları ya da sakin bir mola için lobilerimiz her zaman mükemmel bir seçenek.",
+      "cuisines1subtitle": "SAATLER: 10:00 - 00:00 / 7/24",
+      "cuisines1title": "Piyano Bar",
+      "cuisines1text": "Piano Bar’ın şık atmosferinde, özel hazırlanmış kokteyller, premium içecekler ve lezzetli atıştırmalıkların tadını çıkarırken, canlı piyano müziğiyle keyifli anlar yaşayın. Piano Bar, LAGO’da geçirdiğiniz güzel bir günün ardından rahatlamak için ideal bir ortam sunuyor.",
+      "buttonText": "Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "SAATLER: 14:00 - 23:00",
+      "cuisines2title": "Patisserie ABELLA",
+      "cuisines2text": "Patisserie ABELLA’da günlük taze hazırlanmış hamur işleri, enfes tatlılar ve aromatik kahveler ile keyif yapın. ABELLA’nın sıcak ve rahat atmosferinde tatlı molaların tadını çıkarın.",
+      "cuisines3subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines3title": "Cafe de Lago",
+      "cuisines3text": "Cafe de Lago, birbirinden özel kahve çeşitleri, enfes içecekler, lezzetli tatlılar ve günlük taze atıştırmalıklarla keyifli anlar sunuyor. Rahat ve samimi ortamıyla gün boyu dinlenip enerji toplayabileceğiniz ideal bir buluşma noktası.",
+      "cuisines4subtitle": "SAATLER: 08:00 - 23:00",
+      "cuisines4title": "Cafe de House",
+      "cuisines4text": "Cafe de House, gün boyu taze kahve çeşitleri, serinletici içecekler, lezzetli tatlılar ve hafif atıştırmalıklarla sizi ağırlıyor. Rahat ve sıcak ortamıyla, sakin bir mola veya arkadaş buluşmaları için ideal bir noktadır. "
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Günün her saatinde özel tatlılar, atıştırmalıklar ve taze demlenmiş kahve seçenekleriyle keyifli anlar yaşayabileceğiniz kafelerimizi keşfedin. LAGO'da tat ve konforun mükemmel uyumunu deneyimleyin.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "GustoRestaurants": {
+    "subtitle": "İTALYAN MUTFAĞININ EN ÖZEL LEZZETLERİ",
+    "title": "Gusto Restoran",
+    "text": "Gusto Restoran’da, İtalyan mutfağının özgün tatlarını şeflerimizin özenli yorumlarıyla keşfedin. Birbirinden leziz makarnalar ve İtalyan mutfağına özel enfes spesiyallerle unutulmaz bir gastronomi deneyimi sizleri bekliyor.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "İtalyan Lezzetlerinin İnceliği",
+      "text1": "Gusto À la Carte Restoran’da, uzman şeflerimizin hazırladığı İtalyan mutfağının en özel lezzetlerini keşfedebilirsiniz.",
+      "text2": "El yapımı makarnalardan İtalyan spesiyallerine uzanan enfes tatlarla unutulmaz bir gastronomi deneyimi yaşayın."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " İtalyan Mutfağından Seçkin Tatlar",
+      "text": "Gusto À la Carte Restoran’da, uzman şeflerimizin hazırladığı İtalyan mutfağının en özel lezzetlerini keşfedebilirsiniz. El yapımı makarnalardan İtalyan spesiyallerine uzanan enfes tatlarla unutulmaz bir gastronomi deneyimi yaşayın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": "  Türk mutfağının ayırt edici lezzetlerini ve yemek geleneklerini tabakta tutmanın keyfini yaşayalım. LAGO, hayallerinizi Akdeniz'in eşsiz tadıyla buluşturma onuruna sahiptir.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Tatiliniz sırasında Asya mutfağının lezzetli tatlarını deneyimleyebilmeniz için Asya A’la Carte restoranımızı tasarladık. 18:30 ile 21:00 arasında, yetenekli ve ödüllü şeflerimizin hazırladığı Asya mutfağının keyfini çıkarabilirsiniz.",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimiz tarafından sizin için hazırlanan balık menüleri, hem iştahınıza hem de gözünüze hitap ediyor. Balık A’la Carte restoranımızda sizi özel tarifler bekliyor. Balık a’la carte restoranımız, ..."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "AnatoliaRestaurants": {
+    "subtitle": "Türk Mutfağının En Özel Lezzetleri",
+    "title": "Anatolia Restoran",
+    "text": "Anatolia Restoran’da, Türk mutfağının geleneksel ve özgün tatlarını keşfedebilirsiniz. Şeflerimizin özenle hazırladığı seçkin lezzetlerle unutulmaz bir yemek deneyimi sizleri bekliyor.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "Uluslararası Lezzetlerinin İnceliği",
+      "text1": "Anatolia Restoran’da, uzman şeflerimizin özenle hazırladığı Türk mutfağının geleneksel ve benzersiz lezzetlerini keşfedebilirsiniz. ",
+      "text2": " Türk mutfağının enfes yemekleriyle unutulmaz bir gastronomi deneyimine davetlisiniz."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Bir Göz Atın",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "DespinaRestaurants": {
+    "subtitle": "DENİZ ÜRÜNLERİNİN EN ÖZEL LEZZETLERİ",
+    "title": "Despina Restoran",
+    "text": "Despina Restoran’da, uzman şeflerimizin özenle hazırladığı enfes deniz ürünleri ve balık spesiyallerini keşfedin. Akdeniz’den ilham alan taptaze lezzetlerle unutulmaz bir gastronomi deneyimi sizleri bekliyor.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "Deniz Lezzetlerinin İnceliği",
+      "text1": "Despina À la Carte Restoran’da, uzman şeflerimizin ellerinden çıkan enfes deniz ürünleri ve balık yemeklerini keşfedebilirsiniz.",
+      "text2": "Denizden ilham alan taze lezzetlerle unutulmaz bir gastronomi deneyimi yaşayın."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Bir Göz Atın",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "FuegoRestaurants": {
+    "subtitle": "ASYA MUTFAĞININ EN SEÇKİN LEZZETLERİ",
+    "title": "Fuego Restoran",
+    "text": "Fuego À la Carte Restoran’da, uzman şeflerimizin ustalıkla hazırladığı Asya mutfağının eşsiz tatlarını keşfedin. Asya’nın farklı mutfaklarından seçkin spesiyallerle unutulmaz bir gastronomi yolculuğu yaşayın.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "Asya Mutfağından Seçkin Tatlar",
+      "text1": "Fuego À la Carte Restoran’da, yetenekli şeflerimizin ellerinden çıkan özgün Asya yemekleri ile sıra dışı bir gastronomi yolculuğuna çıkın.",
+      "text2": " Asya’nın farklı bölgelerinden ilham alan eşsiz tatlarla unutulmaz bir yemek deneyimi sizleri bekliyor."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Asya Mutfağından Seçkin Tatlar",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "MainRestaurants": {
+    "subtitle": "Uluslararası Mutfağın En İyi Örnekleri",
+    "title": "Main Restoran",
+    "text": "Dünyanın dört bir yanından çeşitli yemek seçeneklerinin tadını çıkarın.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "LAGO’nun Dünya Mutfakları",
+      "text1": "À la carte restoranlarımızda, ödüllü şeflerimizin özenle hazırladığı dünya mutfağının eşsiz lezzetlerini keşfedebilirsiniz. LAGO’daki tatiliniz boyunca sizleri unutulmaz bir gastronomi macerasına davet etmekten mutluluk duyuyoruz.",
+      "text2": "Geleneksel Avrupa bistro konseptinden ilham alan restoranımız, rahat atmosferi ve hızlı servis edilen kaliteli yemekleriyle günün her anında sizleri ağırlıyor."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Bir Göz Atın",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "TapazRestaurants": {
+    "subtitle": "İSPANYOL TAPAS MUTFAĞININ EN İYİ HALİ",
+    "title": "Tapaz Restoran",
+    "text": "Tapaz Restoran’da, İspanyol mutfağının özgün ve lezzetli tapas çeşitlerini keşfedebilirsiniz. Yetenekli şeflerimizin özenle hazırladığı küçük tabaklarla İspanya’nın canlı gastronomi kültürünü masanıza taşıyor ve unutulmaz bir yemek deneyimi sunuyoruz.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "İspanyol Tapas Mutfağından Seçkin Tatlar",
+      "text1": "Tapaz À la Carte Restoran’da, İspanyol mutfağının en seçkin tapas lezzetlerini şeflerimizin özenli dokunuşlarıyla keşfedebilirsiniz. ",
+      "text2": " Her tabakta İspanya’nın canlı ve özgün tatlarını deneyimleyerek unutulmaz bir gastronomi yolculuğuna çıkın."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Bir Göz Atın",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "WasabiRestaurants": {
+    "subtitle": "TEPPANYAKI MUTFAĞININ EN ÖZEL HALİ",
+    "title": "Wasabi Restoran",
+    "text": "Wasabi Restoran’da Teppanyaki mutfağının benzersiz deneyimini yaşayın. Usta şeflerimizin gözlerinizin önünde ustalıkla hazırladığı enfes Japon lezzetleriyle unutulmaz bir gastronomi akşamına davetlisiniz.",
+    "ClinaryInfoSection": {
+      "subtitle": " Mükemmel Fine Dining Deneyimleri",
+      "title": "Japon Lezzetlerinin İnceliği",
+      "text1": "Wasabi À la Carte Restoran’da, Teppanyaki mutfağının büyüleyici ve otantik dünyasını keşfedin. Geleneksel Teppanyaki ızgaralarında, yetenekli şeflerimizin gözlerinizin önünde ustalıkla hazırladığı Japon yemeklerinin benzersiz lezzetlerini deneyimleyin",
+      "text2": "En taze malzemeleri, ustalık ve gösterişli sunumla birleştiren Wasabi, yalnızca damağınıza değil, gözlerinize de hitap eden unutulmaz bir gastronomi şöleni sunuyor. Wasabi’de Japon mutfağının zengin tatları ve dinamik pişirme teknikleriyle unutulmaz bir akşam sizleri bekliyor."
+    },
+    "RoomTour": {
+      "subtitle": "Mükemmel Fine Dining Deneyimleri",
+      "title": " Teppanyaki Mutfağından Seçkin Tatlar",
+      "text": "Lago Hotel'de, özenle hazırlanmış yemekler ve zarif bir atmosfer ile unutulmaz bir yemek deneyiminin tadını çıkarın. Damak tadınıza, usta şeflerimizin özenle yarattığı ve şıklıkla sunulan lezzetleri tattırın."
+    },
+    "CuisinesCarousel": {
+      "subtitle": " Mükemmel Gurme Yemek Deneyimleri",
+      "title": "  LAGO’nun Dünya Mutfakları",
+      "text": " A’la Carte Restoranlarımızda, ödüllü şeflerimizin usta ellerinden çıkan uluslararası mutfağın enfes lezzetleri sizi bekliyor. Tatiliniz boyunca sizi, benzersiz à la carte restoranlarımızda harika bir lezzet macerasına davet ediyoruz!",
+      "cuisines1subtitle": " MUTFAK: Uluslararası",
+      "cuisines1title": "Anadolu",
+      "cuisines1text": " Anatolia’da Türk mutfağının özgün tatlarını ve geleneksel lezzetlerini keşfetmenin keyfini yaşayın. LAGO, Türk mutfağının eşsiz lezzetleriyle hayallerinizdeki gastronomi deneyimini gerçeğe dönüştürüyor.",
+      "buttonText": " Daha Fazlasını Keşfet",
+      "cuisines2subtitle": "MUTFAK: Asya",
+      "cuisines2title": "Wasabi",
+      "cuisines2text": "Teppanyaki À la Carte Restoranımızda, Japon mutfağının benzersiz lezzetlerini, ödüllü şeflerimizin geleneksel Teppanyaki ızgaralarında yaptığı özgün yorumlarıyla keşfedebilirsiniz. Uzak Doğu’nun sıra dışı tatlarını benzersiz bir atmosferde deneyimleyin",
+      "cuisines3subtitle": " MUTFAK: Deniz Ürünleri ve Balık",
+      "cuisines3title": "Despina",
+      "cuisines3text": "  Ödüllü şeflerimizin özenle hazırladığı deniz ürünleri ve balık menüleri, hem damak tadınıza hem de göz zevkinize hitap ediyor. Despina À la Carte Restoranımızda, özel tariflerle hazırlanmış unutulmaz bir lezzet deneyimi sizleri bekliyor."
+    },
+    "DiscoverBackground": {
+      "subtitle": "EŞSİZ BİR TAT ZİYAFETİ",
+      "title": "Barlarımızı ve Kafelerimizi Keşfedin",
+      "text": "Ödüllü şeflerimizin yarattığı benzersiz lezzetler ve dünya mutfağından özenle seçilmiş lezzetler, Lago Hotel'in restoran ve kafalarında sizi bekliyor. Her biri kendine has bir atmosfere sahip barlarımızda ve kafelerimizde unutulmaz deneyimler ve özel içeceklerin tadını çıkarın.",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    }
+  },
+  "BeachPools": {
+    "subtitle": " LAGO OTEL'E HOŞGELDİNİZ",
+    "title": "Derin Mavi Sulara Kendinizi Bırakın",
+    "mobileTitle": "Plaj ve Havuzlar",
+    "text": "Farklı zevk ve ihtiyaçlara göre özenle tasarlanan odalarımızda, evinizin konforunu göz alıcı şıklıkla buluşturarak size keyifli bir tatil deneyimi sunuyoruz. LAGO’nun masmavi dünyasında farklı boyutlardaki havuzlarımızda serinleyin. Hayalini kurduğunuz her şeyin mümkün olduğu LAGO’ya davetlisiniz.",
+    "buttonText": "DAHA FAZLASINI KEŞFEDİN",
+    "ClinaryInfoSection": {
+      "subtitle": "Saf Huzuru Deneyimleyin",
+      "title": "Özel Plajımızı Keşfedin",
+      "text1": "LAGO'nun özel plajında, Akdeniz'in berrak sularını ve benzersiz doğasını huzurlu bir ortamda yaşayın. Yumuşacık kumsalımızda rahatlayın ve özenle hazırlanmış lezzetler ile ferahlatıcı içeceklerle tatilinizin her anını unutulmaz kılın.",
+      "text2": "Öne Çıkan Özellikler",
+      "text3": "Ücretsiz şezlong, şemsiye ve havlu hizmeti",
+      "text4": "Ferahlatıcı içecekler ve lezzetli atıştırmalıklar sunan plaj barları",
+      "text5": "Yüzmek ve su sporları için ideal, berrak ve sakin deniz"
+    },
+    "ImageBackground": {
+      "subtitle": "Özel Cabana ve Pavilyon Deneyimi",
+      "title": "Deniz Kenarında Lüks ve Huzur",
+      "text1": "Sahilde eşsiz mahremiyet ve konfor sunan ücretli Cabana ve Pavilyonlarımızda rahatlayın. Swim-Up oda misafirlerimiz Pavilyon kiralamalarında %15 indirimden yararlanarak tatil deneyimlerini daha da ayrıcalıklı hale getirebilirler.",
+      "text2": "Pavilyon ve Cabana için Özel Set-up",
+      "text3": "Doğum Günü",
+      "text4": "Süslemeler",
+      "buttonText": "DAHA FAZLASINI KEŞFEDİN"
+    },
+    "Carousel": {
+      "subtitle": "RAHATLAYIN VE YENİLENİN",
+      "title": "Plaj Aktiviteleri",
+      "text": "LAGO’nun güzel özel plajında sizi rahatlatıcı ve eğlence dolu bir tatil bekliyor. Su sporları ve plaj voleybolu gibi günlük aktivitelerimizin tadını çıkarabilir ya da sadece güneşin ve denizin keyfine varabilirsiniz.",
+      "activities1": "Yüzme & Dinlenme",
+      "activities1Text": "tüm gün",
+      "activities2": "Plaj Barında Serinleyin",
+      "activities2Text": "Kokteyller & Atıştırmalıklar",
+      "activities3": "Su Sporları",
+      "activities3Text": "tüm gün",
+      "activities4": "Plajda Kutlayın",
+      "activities4Text": "Özel An"
+    },
+    "PoolSection": {
+      "subtitle": "Her Anınıza Uygun Havuzlar",
+      "title": "Huzura Doğru Süzülün",
+      "text": "Günün her anını LAGO’nun farklı ruh halinize ve ihtiyaçlarınıza göre tasarlanmış havuzlarında serinleyerek ve dinlenerek geçirin. Eğlenceli anlardan huzurlu dinlenme köşelerine kadar, havuzlarımız tatilinizi unutulmaz kılacak her deneyimi sunuyor."
+    },
+    "PoolList": {
+      "subtitle": "Özel Havuzlarımızı Keşfedin",
+      "title": "Tüm Havuzlarımıza Göz Atın",
+      "text": "LAGO’nun birbirinden özel havuz seçenekleriyle tatilinize ferahlatıcı bir dokunuş katın. İster sakin köşelerde dinlenin, ister eğlenceli aktivitelerle enerjinizi tazeleyin, tüm havuzlarımız unutulmaz anlar yaşatmak için tasarlandı.",
+      "poolSubTitle1": "Ana Havuz – Herkes İçin Eğlence",
+      "poolTitle1": "Ana Havuz",
+      "poolText1": "2000 m² genişliğindeki ana havuzumuz, tüm aile için keyifli bir gün geçirmeniz amacıyla tasarlandı.",
+      "poolSubTitle2": "Rahatlatıcı ve Huzurlu Atmosfer",
+      "poolTitle2": "Rahatlama Havuzu",
+      "poolText2": "Sakin ve huzurlu atmosfere sahip 900 m²’lik Relax Havuzumuz, dinlenmek için idealdir.",
+      "poolSubTitle3": "+16 Yetişkinlere Özel Sakin Havuz",
+      "poolTitle3": "Maldiva Havuzu",
+      "poolText3": "+16 yaş yetişkinlere özel 820 m²’lik Maldiva Havuzu, sakin atmosferiyle kusursuz bir dinlenme ortamı sunar.",
+      "poolSubTitle4": "Eşsiz Manzaralar ile Huzurlu Anlar",
+      "poolTitle4": "Infinity Havuz",
+      "poolText4": "Göz alıcı manzarası ve özel tasarımıyla 280 m²’lik Infinity Havuzumuz, eşsiz bir dinlenme sunar.",
+      "poolSubTitle5": "Keyifli Yüzme İçin İdeal",
+      "poolTitle5": "Maldiva Çocuk Havuzu",
+      "poolText5": "Özel tasarımlı 85 m² Maldiva Çocuk Havuzu, güvenli ve eğlenceli yüzme imkânı sunar.",
+      "poolSubTitle6": "Huzurlu ve Rahatlatıcı Atmosfer",
+      "poolTitle6": "Kapalı Havuzlar",
+      "poolText6": "Yıl boyunca kullanıma açık olan ısıtmalı kapalı havuzlarımız huzurlu ve dinlendirici bir ortam sunar.",
+      "poolSubTitle7": "Eğlence Dolu Anlar İçin İdeal",
+      "poolTitle7": "Aquapark Havuzu",
+      "poolText7": "Eğlence dolu kaydıraklar ve hareketli aktivitelerle dolu Aquapark Havuzumuzda tatilinizin tadını çıkarın.",
+      "poolSubTitle8": "Çocuklar İçin Bitmeyen Su Eğlencesi!",
+      "poolTitle8": "Çocuk Aquapark Havuzu",
+      "poolText8": "5 kaydıraklı Çocuk Aquapark Havuzumuz, güvenli eğlence ve unutulmaz anılar sunar.",
+      "poolSubTitle9": "Herkes İçin Eğlence ve Heyecan!",
+      "poolTitle9": "Mega Aquapark Havuzu",
+      "poolText9": "Mega Aquapark Havuzumuz, her yaştan misafir için heyecan dolu kaydıraklarıyla sınırsız eğlence sunar."
+    }
+  },
+  "Spa": {
     "subtitle": "LAGO WELLNESS CENTER’DA RAHATLAYIN",
     "title": "Spa & Wellness",
     "mobileTitle": "LAGO Wellness Center’da rahatlayın ve yenilenin. Lüks profesyonel masajlar ve size özel uygulamalarla bedeninizi ve zihninizi canlandırın, kendinizi tamamen tazelenmiş ve huzurlu hissedin.",
     "text": "LAGO Wellness Center’da rahatlayın ve yenilenin. Lüks profesyonel masajlar ve size özel uygulamalarla bedeninizi ve zihninizi canlandırın, kendinizi tamamen tazelenmiş ve huzurlu hissedin.",
-    
     "InfoSection": {
-        "subtitle": "Tazelenin ve Yenilenin",
-        "title": "LAGO Oteli'nde Wellness",
-        "text": "Spa ve Wellness merkezimizde benzersiz bir rahatlama ve yenilenme deneyimi yaşayın. Profesyonel masajlarımızın keyfine varın, geleneksel Türk hamamımızda gevşeyin veya Fin saunamızda tazelenin. Huzurlu bir yolculuğa burada başlayın.",
-    
-        "subtitle2": "Fiziksel ve Zihinsel Yenilenme",
-        "title2": "Sauna & Türk Hamamı",
-        "text2": "Açılış Saatleri: 08:00 - 20:00",
-     
-      
-        "subtitle3": "SPA & WELLNESS",
-        "title3": "Spa Tedavileri",
-        "text3": "Açılış Saatleri: 09:00 - 18:00",
-        "list1": "16 Masaj Odası",
-        "list2": "2 VIP Masaj Odası",
-        "list3": "Türk Hamamı ve Köpük Masaj Odaları",
-        "list4": "Buhar Odası",
-        "list5": "Sauna"
-      
+      "subtitle": "Tazelenin ve Yenilenin",
+      "title": "LAGO Oteli'nde Wellness",
+      "text": "Spa ve Wellness merkezimizde benzersiz bir rahatlama ve yenilenme deneyimi yaşayın. Profesyonel masajlarımızın keyfine varın, geleneksel Türk hamamımızda gevşeyin veya Fin saunamızda tazelenin. Huzurlu bir yolculuğa burada başlayın.",
+      "subtitle2": "Fiziksel ve Zihinsel Yenilenme",
+      "title2": "Sauna & Türk Hamamı",
+      "text2": "Açılış Saatleri: 08:00 - 20:00",
+      "subtitle3": "SPA & WELLNESS",
+      "title3": "Spa Tedavileri",
+      "text3": "Açılış Saatleri: 09:00 - 18:00",
+      "list1": "16 Masaj Odası",
+      "list2": "2 VIP Masaj Odası",
+      "list3": "Türk Hamamı ve Köpük Masaj Odaları",
+      "list4": "Buhar Odası",
+      "list5": "Sauna"
     },
-
     "SpaGallery": {
       "subtitle": "Eşsiz Bir Rahatlama Deneyimi",
       "title": "LAGO'da Duyularınızı Yenileyin",
@@ -1133,7 +1063,7 @@
     },
     "SpaType": {
       "subtitle": "Çalışma Saatleri: 9:00 - 20:00",
-       "buttonText": " DAHA FAZLA",
+      "buttonText": " DAHA FAZLA",
       "title": "Kapalı Havuz",
       "text": "Her mevsimde hizmet veren kapalı havuzumuzda yıl boyunca yüzmenin keyfini çıkarın. Rahat ve huzurlu bir ortamda kendinizi tazeleyin ve LAGO'nun şık ve modern atmosferinde unutulmaz anlar yaşayın.",
       "subtitle2": "Geleneksel Kültürü Deneyimleyin",
@@ -1141,44 +1071,42 @@
       "text2": "Geleneksel Türk Hamamımızın eşsiz atmosferinde kendinizi yenileyin ve şımartın. LAGO'nun profesyonel terapistleriyle ikonik rahatlama kültürünü deneyimleyin ve bedeninizi, ruhunuzu tazeleyin."
     }
   },
-
   "DisabledRoom": {
-  "subtitle": "Herkes İçin Tasarlanan Rahatlık",
-  "title": "Engelli Odası",
-  "text1": "Kolay Erişim",
-  "text2": "1-2 Yetişkin",
-  "text3": "Geniş İç Mekan",
-
-  "RoomInfo": {
-    "subtitle": "Engelsiz Bir Tatil İçin Her Detay Düşünüldü",
+    "subtitle": "Herkes İçin Tasarlanan Rahatlık",
     "title": "Engelli Odası",
-    "text": "Misafirlerimizin rahatlığı için özel olarak tasarlanan Engelli Odalarımız geniş ve ferah iç mekanlarıyla, 112 cm kapı genişliğiyle tekerlekli sandalye kullanımına uygundur. Odalarda özel tasarım banyo ve tuvalet, merkezi klima sistemi, LED TV, ücretsiz Wi-Fi ve balkon bulunmaktadır.",
-    "title2": "Engelli Odası Olanaklar",
-    "list1": "----",
-    "list2": "2 Yatak",
-    "list3": "Ekstra Bebek Yatağı",
-    "title3": "Oda Özellikleri",
-    "text2": "Engelli misafirlerimizin konforu için her detayın düşünüldüğü odalarımızda kolay erişim sağlayan geniş kapılar, özel tasarlanmış banyolar, günlük yenilenen minibar, LED TV ve ücretsiz Wi-Fi gibi imkanlar sunulmaktadır.",
-    "madde1": "----",
-    "madde2": "30-32 m²",
-    "madde3": "112 cm Kapı Genişliği",
-    "madde4": "Sigara İçilmez",
-    "madde5": "Mini Bar",
-    "madde6": "Kasa",
-    "madde7": "Saç Kurutma Makinesi",
-    "madde8": "Özel Banyo",
-    "madde9": "Çay & Kahve Seti",
-    "madde10": "LED TV & WiFi",
-    "madde11": "Balkon",
-    "madde12": "Duş"
-  },
-  "ReservationWidget": {
+    "text1": "Kolay Erişim",
+    "text2": "1-2 Yetişkin",
+    "text3": "Geniş İç Mekan",
+    "RoomInfo": {
+      "subtitle": "Engelsiz Bir Tatil İçin Her Detay Düşünüldü",
+      "title": "Engelli Odası",
+      "text": "Misafirlerimizin rahatlığı için özel olarak tasarlanan Engelli Odalarımız geniş ve ferah iç mekanlarıyla, 112 cm kapı genişliğiyle tekerlekli sandalye kullanımına uygundur. Odalarda özel tasarım banyo ve tuvalet, merkezi klima sistemi, LED TV, ücretsiz Wi-Fi ve balkon bulunmaktadır.",
+      "title2": "Engelli Odası Olanaklar",
+      "list1": "----",
+      "list2": "2 Yatak",
+      "list3": "Ekstra Bebek Yatağı",
+      "title3": "Oda Özellikleri",
+      "text2": "Engelli misafirlerimizin konforu için her detayın düşünüldüğü odalarımızda kolay erişim sağlayan geniş kapılar, özel tasarlanmış banyolar, günlük yenilenen minibar, LED TV ve ücretsiz Wi-Fi gibi imkanlar sunulmaktadır.",
+      "madde1": "----",
+      "madde2": "30-32 m²",
+      "madde3": "112 cm Kapı Genişliği",
+      "madde4": "Sigara İçilmez",
+      "madde5": "Mini Bar",
+      "madde6": "Kasa",
+      "madde7": "Saç Kurutma Makinesi",
+      "madde8": "Özel Banyo",
+      "madde9": "Çay & Kahve Seti",
+      "madde10": "LED TV & WiFi",
+      "madde11": "Balkon",
+      "madde12": "Duş"
+    },
+    "ReservationWidget": {
       "title": "Rezervasyon Tarihleri",
       "text": "Konaklamanız için Tarihleri Seçin",
       "checkin": "Giriş",
       "checkout": "Çıkış",
       "adult": "Yetişkinler ",
-      "kids":"Çocuklar",
+      "kids": "Çocuklar",
       "booknow": "REZERVASYON YAPIN",
       "contact": "Bizimle İletişime Geçin",
       "phone": "+90 242 524 57 87"
@@ -1208,15 +1136,13 @@
       "capacity3": "2 Yetişkin + 1 Çocuk",
       "text3": "Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır."
     }
-},
-
+  },
   "SuperiorRoom": {
     "subtitle": "Ayrıcalıklı ve Konforlu Konaklama",
     "title": "Superior Oda",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-3 Yetişkin + 1-2 Çocuk",
     "text3": "1 Yatak Odası / 2 Yatak",
-
     "RoomInfo": {
       "subtitle": "Konfor ve Şıklığın Buluştuğu Nokta",
       "title": "Superior Oda",
@@ -1246,18 +1172,18 @@
       "checkin": "Giriş",
       "checkout": "Çıkış",
       "adult": "Yetişkinler ",
-      "kids":"Çocuklar",
+      "kids": "Çocuklar",
       "booknow": "REZERVASYON YAPIN",
       "contact": "Bizimle İletişime Geçin",
       "phone": "+90 242 524 57 87"
     },
     "RoomTour": {
-     "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-    "title": "Bir Göz Atın – Kara Manzaralı",
-    "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
-    "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-    "title2": "Bir Göz Atın – Deniz Manzaralı",
-    "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
+      "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title": "Bir Göz Atın – Kara Manzaralı",
+      "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
+      "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title2": "Bir Göz Atın – Deniz Manzaralı",
+      "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
     },
     "OtherOptions": {
       "span": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
@@ -1280,14 +1206,12 @@
       "text3": "Ana binada bulunan bu zarif oda tipi 30-32 m² büyüklüğünde olup, deniz veya kara manzarası seçeneklerine sahiptir. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir sofa bulunmaktadır. Ayrıca odalarda balkon, çipli bileklikle giriş sistemi, günlük yenilenen minibar, zengin banyo ürünleri ve çay-kahve seti yer almaktadır."
     }
   },
-
   "FamilyRoom": {
     "subtitle": "Aileler İçin Ayrıcalıklı ve Konforlu Konaklama",
     "title": "Aile Odası",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-4 Yetişkin + 1-3 Çocuk",
     "text3": "2 Yatak Odası / 3 Yatak",
-    
     "RoomInfo": {
       "subtitle": "Her Yaşa Uygun Eğlence",
       "title": "Aile Odası",
@@ -1323,12 +1247,12 @@
     },
     "RoomTour": {
       "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title": "Bir Göz Atın – Kara Manzaralı",
-     "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
-     "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title2": "Bir Göz Atın – Deniz Manzaralı",
-     "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
-     },
+      "title": "Bir Göz Atın – Kara Manzaralı",
+      "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
+      "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title2": "Bir Göz Atın – Deniz Manzaralı",
+      "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
+    },
     "OtherOptions": {
       "span": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
       "title": "Diğer Seçenekler",
@@ -1350,14 +1274,12 @@
       "text3": "Geniş ve zarif tasarlanmış Superior Odalarımız, aileler veya çiftler için ideal olan 30-32 m² konfor sunar. Modern olanaklar ve şık dekor ile donatılmış bu odalar, balkonlu ve muhteşem manzaralı, dinlendirici bir sığınak sağlar."
     }
   },
-
   "SwimupRoom": {
     "subtitle": "Swim-Up Ayrıcalığıyla Rahatlatıcı Konaklama",
     "title": "Swim-up Odası",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-3 Yetişkin + 1-2 Çocuk",
     "text3": "1 Yatak Odası / 2 Yatak",
-    
     "RoomInfo": {
       "subtitle": " Havuza Açılan Konforlu Odalar",
       "title": "Swim-up Odası",
@@ -1381,7 +1303,6 @@
       "madde11": "Balkon",
       "madde12": "Duş"
     },
-
     "BackgroundSection": {
       "subtitle": " Özel Ayrıcalıklar",
       "title": "Swim-Up Odaya Özel Ayrıcalıklar",
@@ -1389,7 +1310,6 @@
       "text2": "À la Carte Restoran: 7 gece ve üzeri konaklamalarda bir kez ücretsiz kullanım hakkı.",
       "text3": "Pavilion İndirimi: Özel pavilion hizmetlerimizde %15 indirim ayrıcalığı."
     },
-    
     "ReservationWidget": {
       "title": "Rezervasyon Tarihleri",
       "text": "Konaklamanız için Tarihleri Seçin",
@@ -1402,13 +1322,12 @@
     },
     "RoomTour": {
       "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title": "Bir Göz Atın – Kara Manzaralı",
-     "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
-     "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title2": "Bir Göz Atın – Deniz Manzaralı",
-     "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
-     },
-
+      "title": "Bir Göz Atın – Kara Manzaralı",
+      "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
+      "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title2": "Bir Göz Atın – Deniz Manzaralı",
+      "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
+    },
     "OtherOptions": {
       "span": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
       "title": "Diğer Seçenekler",
@@ -1430,14 +1349,12 @@
       "text3": "Geniş ve zarif tasarlanmış Superior Odalarımız, aileler veya çiftler için ideal olan 30-32 m² konfor sunar. Modern olanaklar ve şık dekor ile donatılmış bu odalar, balkonlu ve muhteşem manzaralı, dinlendirici bir sığınak sağlar."
     }
   },
-
   "FamilySwimupRoom": {
     "subtitle": "Özel Havuzlu Ayrıcalıklı Aile Konaklaması",
     "title": "Aile Swim-up Odası",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-4 Yetişkin + 1-3 Çocuk",
     "text3": "2 Yatak Odası / 4 Yatak",
-    
     "RoomInfo": {
       "subtitle": "Her Yaşa Uygun Eğlence",
       "title": "Aile Swim-up Odası",
@@ -1461,7 +1378,6 @@
       "madde11": "Balkon",
       "madde12": "Duş"
     },
-
     "BackgroundSection": {
       "subtitle": " Özel Ayrıcalıklar",
       "title": "Aile Swim-Up Odaya Özel Ayrıcalıklar",
@@ -1469,7 +1385,6 @@
       "text2": "À la Carte Restoran: 7 gece ve üzeri konaklamalarda bir kez ücretsiz kullanım hakkı.",
       "text3": "Pavilion İndirimi: Özel pavilion hizmetlerimizde %15 indirim ayrıcalığı."
     },
-
     "ReservationWidget": {
       "title": "Rezervasyon Tarihleri",
       "text": "Konaklamanız için Tarihleri Seçin",
@@ -1480,13 +1395,13 @@
       "contact": "Bizimle iletişime geçin",
       "phone": "+90 242 524 57 87"
     },
-       "RoomTour": {
-     "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-    "title": "Bir Göz Atın – Kara Manzaralı",
-    "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
-    "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-    "title2": "Bir Göz Atın – Deniz Manzaralı",
-    "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
+    "RoomTour": {
+      "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title": "Bir Göz Atın – Kara Manzaralı",
+      "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
+      "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title2": "Bir Göz Atın – Deniz Manzaralı",
+      "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
     },
     "OtherOptions": {
       "span": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
@@ -1509,14 +1424,12 @@
       "text3": "Geniş ve zarif tasarlanmış Superior Odalarımız, aileler veya çiftler için ideal olan 30-32 m² konfor sunar. Modern olanaklar ve şık dekor ile donatılmış bu odalar, balkonlu ve muhteşem manzaralı, dinlendirici bir sığınak sağlar."
     }
   },
-
   "DuplexFamilyRoom": {
     "subtitle": "Ailelere Özel Dubleks Konfor",
     "title": "Dubleks Aile Odası",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-4 Yetişkin + 1-3 Çocuk",
     "text3": "2 Yatak Odası / 3 Yatak",
-    
     "RoomInfo": {
       "subtitle": "Ailelere Özel Dubleks Konfor",
       "title": "Dubleks Aile Odası",
@@ -1540,7 +1453,6 @@
       "madde11": "Balkon",
       "madde12": "Duş"
     },
-
     "BackgroundSection": {
       "subtitle": " Özel Ayrıcalıklar",
       "title": "Dubleks Aile Odaya Özel Ayrıcalıklar",
@@ -1548,7 +1460,6 @@
       "text2": "À la Carte Restoran: 7 gece ve üzeri konaklamalarda bir kez ücretsiz kullanım hakkı.",
       "text3": "Pavilion İndirimi: Özel pavilion hizmetlerimizde %15 indirim ayrıcalığı."
     },
-
     "ReservationWidget": {
       "title": "Rezervasyon Tarihleri",
       "text": "Konaklamanız için Tarihleri Seçin",
@@ -1561,12 +1472,12 @@
     },
     "RoomTour": {
       "subtitle": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title": "Bir Göz Atın – Kara Manzaralı",
-     "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
-     "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
-     "title2": "Bir Göz Atın – Deniz Manzaralı",
-     "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
-     },
+      "title": "Bir Göz Atın – Kara Manzaralı",
+      "text": "Muhteşem 360° sanal tur ile kara manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın.",
+      "subtitle2": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
+      "title2": "Bir Göz Atın – Deniz Manzaralı",
+      "text2": "Muhteşem 360° sanal tur ile deniz manzaralı odalarımızı keşfedin. Her detayı yakından inceleyin, mükemmel konaklamanızı bulun ve hayalinizdeki tatile hemen burada başlayın."
+    },
     "OtherOptions": {
       "span": "SİZİN İÇİN EN İYİ ODAYI SEÇİN",
       "title": "Diğer Seçenekler",
@@ -1588,14 +1499,12 @@
       "text3": "Geniş ve zarif tasarlanmış Superior Odalarımız, aileler veya çiftler için ideal olan 30-32 m² konfor sunar. Modern olanaklar ve şık dekor ile donatılmış bu odalar, balkonlu ve muhteşem manzaralı, dinlendirici bir sığınak sağlar."
     }
   },
-
   "TinyVilla": {
     "subtitle": "Özel Havuzlu Ayrıcalıklı Konaklama",
     "title": "Tiny Villa",
     "text1": "kara / Deniz Manzarası",
     "text2": "1-4 Yetişkin + 1-3 Çocuk",
     "text3": "2 Yatak Odası / 4 Yatak",
-    
     "RoomInfo": {
       "subtitle": "Özel Havuzlu Ayrıcalıklı Konaklama",
       "title": "Tiny Villa",
@@ -1619,7 +1528,6 @@
       "madde11": "Balkon",
       "madde12": "Duş"
     },
-
     "BackgroundSection": {
       "subtitle": " Özel Ayrıcalıklar",
       "title": "Tiny Villa Odaya Özel Ayrıcalıklar",
@@ -1627,7 +1535,6 @@
       "text2": "À la Carte Restoran: 7 gece ve üzeri konaklamalarda bir kez ücretsiz kullanım hakkı.",
       "text3": "Pavilion İndirimi: Özel pavilion hizmetlerimizde %15 indirim ayrıcalığı."
     },
-
     "ReservationWidget": {
       "title": "Rezervasyon Tarihleri",
       "text": "Konaklamanız için Tarihleri Seçin",
@@ -1664,13 +1571,11 @@
       "text3": "Geniş ve zarif tasarlanmış Superior Odalarımız, aileler veya çiftler için ideal olan 30-32 m² konfor sunar. Modern olanaklar ve şık dekor ile donatılmış bu odalar, balkonlu ve muhteşem manzaralı, dinlendirici bir sığınak sağlar."
     }
   },
-
   "Fitness": {
     "subtitle": "LAGO’DA AKTİF KALIN",
     "title": "Spor & Fitness",
     "mobileTitle": "LAGO’nun tam donanımlı fitness merkezinde, birbirinden eğlenceli spor aktiviteleri ve grup egzersizleriyle tatilinizi hareketlendirin. Tenis, plaj voleybolu, su sporları gibi pek çok seçenekle zinde kalın, tatiliniz boyunca sağlıklı ve enerjik olun.",
     "text": "LAGO’nun tam donanımlı fitness merkezinde, birbirinden eğlenceli spor aktiviteleri ve grup egzersizleriyle tatilinizi hareketlendirin. Tenis, plaj voleybolu, su sporları gibi pek çok seçenekle zinde kalın, tatiliniz boyunca sağlıklı ve enerjik olun.",
-    
     "InfoSection": {
       "subtitle": "LAGO Hotel’de Fit Kalın",
       "title": "Spor ve Fitness",
@@ -1714,7 +1619,6 @@
       "text2": "LAGO’nun profesyonel kişisel antrenörleri tarafından tasarlanan özelleştirilmiş antrenman programları ile fitness hedeflerinize ulaşın. Bireysel ihtiyaçlarınıza göre uyarlanmış kişisel antrenmanların keyfini çıkarın ve tatiliniz boyunca motive kalın."
     }
   },
-
   "Entertainment": {
     "subtitle": "Günlük Aktiviteler & Akşam Şovları",
     "title": "Sonsuz Eğlence Sizi Bekliyor",
@@ -1738,7 +1642,6 @@
       "description3": "LAGO’nun güzel plajında heyecan verici su sporlarını deneyimleyin. İster jet ski, ister paraşütle atlama ya da dalış, herkes için heyecan dolu bir macera sizi bekliyor.",
       "title4": "Plaj Aktiviteleri",
       "description4": "Plaj voleybolu, bocce ve eğlenceli grup oyunları gibi çeşitli plaj aktiviteleriyle güneşli günlerin tadını çıkarın, her anı neşe ve heyecanla doldurun.",
-  
       "title5": "Gün Batımı Partileri",
       "description5": "Renkli müzik ve ferahlatıcı kokteyller eşliğinde LAGO’nun unutulmaz gün batımı partilerinde dans edin ve rahatlayın, bir başka güzel günün sonunu kutlayın.",
       "title6": "Sahne Şovları",
@@ -1753,13 +1656,11 @@
       "span": "LAGO Hotel Ultra All Inclusive konsepti, aktiviteler ve hizmetler mevsime ve hava koşullarına bağlı olarak önceden bildirim yapılmaksızın değişiklik gösterebilir. Bu konuda LAGO OTEL'in tüm hakları saklıdır."
     }
   },
-
   "KidsClub": {
     "subtitle": "Küçük Misafirler İçin Eğlence ve Macera!",
     "title": "Bamboo Kids Club",
     "text": "Bamboo Kids Club, 4-12 yaş arası çocuklara özel eğlenceli aktiviteler, yaratıcı oyunlar, atölye çalışmaları, oyun parkları ve mini diskolar sunuyor. LAGO’da çocuklarınız güvenli ve eğlenceli bir ortamda unutulmaz maceralar yaşayacak!",
     "gallerytitle": "Her An Paylaşmaya Değer",
-    
     "InfoSection": {
       "subtitle": "Her Yaşa Uygun Güvenli Eğlence",
       "title": "Bamboo Kids Club’da Unutulmaz Anılar",
@@ -1820,42 +1721,32 @@
       "cuisines3text": "Her hava koşulunda sınırsız eğlence sunan kapalı çocuk havuzumuzda, minik misafirlerimiz güvenle yüzüp eğlenebilir. Profesyonel ekibimizin gözetiminde, yıl boyunca keyifli su oyunları ve unutulmaz anlar çocuklarınızı bekliyor!"
     }
   },
-
   "Special": {
     "subtitle": "Mutlu Anlar, Unutulmaz Anılar",
     "title": "Özel Günler",
     "text": "LAGO ekibi, sevdiklerinizle özel günlerinizde unutulmaz anılar yaratmanızı sağlamak için çalışmaktadır.",
     "gallerytitle": "Akdeniz'in Kalbinde Bir Cennet",
-
     "InfoSection": {
       "subtitle": "özel günler",
       "title": "Özel Hizmetlerimiz",
       "text": "LAGO Oteli'nde, özel günlerinizi gerçekten unutulmaz kılacak geniş bir seçenek yelpazesi sunuyoruz. Özenle hazırlanan hizmetlerimizle kalıcı anılar oluşturmanıza yardımcı oluyoruz.",
       "subtitle1": "Özel Günler",
-
-      "key1":"Balayı",
+      "key1": "Balayı",
       "title1": "Balayı",
       "text1": "LAGO Oteli'nde, yalnızca balayı çiftlerine özel tasarlanmış romantik deneyimlerle aşkınızı kutlayın. Rüya gibi bir atmosferde ömür boyu sürecek anılar yaratın.",
-      
-      "key2":"Evlilik",
-
+      "key2": "Evlilik",
       "title2": "Evlilik Teklifi Düzeni",
       "text2": "LAGO’nun romantik düzenlemeleri ile evlilik teklifinizi unutulmaz kılın. Sizin ve sevdikleriniz için mükemmel anı yaratmak adına her detayı biz hallediyoruz.",
-      
-      "key3":"Pavilion",
-
+      "key3": "Pavilion",
       "title3": "pavilion Deneyimi",
       "text3": "LAGO’da özel pavilion deneyiminin keyfini çıkarın. Özel gününüzü mahremiyet ve lüks içinde, kusursuz hizmet ve nefes kesici manzaralar eşliğinde geçirin.",
-      
-      "key4":"Doğum Günü",
+      "key4": "Doğum Günü",
       "title4": "Doğum Günü Paketleri",
       "text4": "Kişiselleştirilmiş doğum günü paketlerimizle doğum gününüzü şık bir şekilde kutlayın. Dekorasyondan özel menülere kadar, gününüzü gerçekten unutulmaz kılalım.",
-      
-      "key5":"Düğün",
+      "key5": "Düğün",
       "title5": "Düğün Hizmetleri",
       "text5": "LAGO Oteli, her açıdan mükemmel olmasını sağlayan kapsamlı düğün hizmetleri sunar. Deneyimli ekibimize tüm detayları teslim edin.",
-      
-      "key6":"Çiçek",
+      "key6": "Çiçek",
       "title6": "Özel Çiçek Siparişleri",
       "text6": "LAGO ile özel günlerinizi, kişiye özel çiçek aranjmanlarıyla renklendirin. Dilediğiniz gibi özgün çiçek tasarımları oluşturuyoruz."
     },
@@ -1888,7 +1779,6 @@
       "text": "Antalya Manavgat'da bulunan LAGO Hotel, modern lüks ile tarihi dokunun buluştuğu eşsiz bir deneyim sunuyor. Misafirlerimiz, konforlu odalarında dinlenirken, çevredeki antik kalıntılar ve doğal güzelliklerle bezenmiş Side'nin tarihi atmosferini keşfetme imkânı buluyor. Otelimizin sunduğu özenle hazırlanmış yerel ve uluslararası mutfak lezzetleri, Akdeniz'in taptaze ruhunu yansıtırken, her anınızın unutulmaz anılara dönüşmesini sağlıyor. LAGO Hotel, sizi geçmişin büyüleyici izleriyle gelecek için ilham veren bir yolculuğa davet ediyor."
     }
   },
-
   "About": {
     "subtitle": "Mutlu Anlar, Unutulmaz Anılar",
     "title": "Otelimiz Hakkında",
@@ -1908,10 +1798,9 @@
       "clubsubtitle2": "Hotel LAGO",
       "clubtitle2": "özel bir tatil",
       "clubtext2": "Otelimiz, gölden sadece 50 metre ve nehirden 300 metre mesafede yer almakta olup, yürüyüş, koşu, balık tutma, dünyanın dört bir yanından kuş türlerini gözlemleme ve doğayı yakından deneyimleme konusunda mükemmel imkanlar sunar. Ayrıca, Manavgat şehir merkezine sadece 4 km ve güzel Manavgat Şelalesi'ne 6 km mesafedeyiz. Antik Side şehri ise sadece 9 km uzaklıkta olup, Antik Amfi Tiyatro, Apollon Tapınağı, Side Müzesi ve dünyanın ilk güneş saatini keşfedebilirsiniz. Mesafeler: Side Şehir Merkezi: 9 km, Manavgat Şehir Merkezi: 4 km, Antalya Havalimanı: 63 km",
-       "buttonText":"DAHA FAZLASI"
+      "buttonText": "DAHA FAZLASI"
     }
   },
-
   "BlogNews": {
     "subtitle": "Mükemmel Kaçışınızı Keşfedin",
     "title": "Son Haberler",
@@ -1945,37 +1834,36 @@
       ]
     },
     "BlogList": {
-    "blogsubtitle1": "GASTRONOMİ",
-    "blogtitle1": "Akdeniz Mutfağının Lezzetli Sırları",
-    "blogtext1": "LAGO Oteli'nde uzman şefler tarafından hazırlanan eşsiz Akdeniz tatlarını keşfedin. Sağlıklı, taze ve lezzetli tariflerle dolu unutulmaz bir mutfak yolculuğuna çıkın.",
-    "blogsubtitle2": "WELLNESS",
-    "blogtitle2": "Spa ve Sağlıklı Yaşam",
-    "blogtext2": "LAGO Wellness Center'da bedeninizi ve zihninizi canlandırın. Spa tedavileri, masajlar ve fitness aktiviteleriyle tatilinize sağlıklı bir dokunuş katın.",
-    "blogsubtitle3": "AİLE TATİLİ",
-    "blogtitle3": "Çocuklarınız İçin Eğlence Dolu Bir Dünya",
-    "blogtext3": "LAGO Kids Club, çocuklarınız için yaratıcı, eğlenceli ve eğitici aktiviteler sunar. Birlikte unutulmaz aile anıları oluşturun.",
-    "blogsubtitle4": "SEYAHAT & KEŞFETME",
-    "blogtitle4": "Side'nin Tarihi Harikalarını Keşfedin",
-    "blogtext4": "Antik Side'nin büyüleyici atmosferini keşfedin. Apollon Tapınağı, Antik Tiyatro, Müzeyi ve dünyanın ilk güneş saatini ziyaret edin.",
-    "blogsubtitle5": "DOĞA & MACERA",
-    "blogtitle5": "Manavgat'ta Doğa ile Bir Gün",
-    "blogtext5": "Manavgat Şelalesi çevresinde huzuru deneyimleyin. Kuş gözlemi, balık tutma ve doğa yürüyüşleriyle doğayı yeniden keşfedin.",
-    "blogsubtitle6": "ÖZEL GÜNLER",
-    "blogtitle6": "Rüya Gibi Balayı İçin Lago Hotel",
-    "blogtext6": "Lago Hotel'de özel balayı düzenlemeleriyle hayatınızın en romantik anlarını yaşayın ve tatilinizi gerçekten unutulmaz kılın.",
-    "blogsubtitle7": "EĞLENCE & AKTİVİTELER",
-    "blogtitle7": "Lago Hotel'de Sonsuz Eğlence",
-    "blogtext7": "Gündüz aktivitelerinden plaj etkinliklerine, muhteşem gece şovlarından temalı partilere kadar, Lago Hotel tatiliniz boyunca eğlence dolu anlar vaat ediyor.",
-    "blogsubtitle8": "SÜRDÜRÜLEBİLİR TURİZM",
-    "blogtitle8": "Çevre Dostu Bir Tatil Deneyimi",
-    "blogtext8": "Lago Hotel’in çevre dostu uygulamalarıyla sürdürülebilir turizmi destekleyin. Çevre korumasına olumlu katkıda bulunurken lüks tatilin keyfini çıkarın.",
-    "blogsubtitle9": "İPUÇLARI & ÖNERİLER",
-    "blogtitle9": "Tatilinizi Mükemmel Hale Getirecek İpuçları",
-    "blogtext9": "Lago Hotel’deki konaklamanızı daha keyifli ve konforlu hale getirecek pratik ipuçları ve önerileri keşfedin, kusursuz bir tatil garantileyin.",
-     "buttonText":"DAHA FAZLASI"
-  }
+      "blogsubtitle1": "GASTRONOMİ",
+      "blogtitle1": "Akdeniz Mutfağının Lezzetli Sırları",
+      "blogtext1": "LAGO Oteli'nde uzman şefler tarafından hazırlanan eşsiz Akdeniz tatlarını keşfedin. Sağlıklı, taze ve lezzetli tariflerle dolu unutulmaz bir mutfak yolculuğuna çıkın.",
+      "blogsubtitle2": "WELLNESS",
+      "blogtitle2": "Spa ve Sağlıklı Yaşam",
+      "blogtext2": "LAGO Wellness Center'da bedeninizi ve zihninizi canlandırın. Spa tedavileri, masajlar ve fitness aktiviteleriyle tatilinize sağlıklı bir dokunuş katın.",
+      "blogsubtitle3": "AİLE TATİLİ",
+      "blogtitle3": "Çocuklarınız İçin Eğlence Dolu Bir Dünya",
+      "blogtext3": "LAGO Kids Club, çocuklarınız için yaratıcı, eğlenceli ve eğitici aktiviteler sunar. Birlikte unutulmaz aile anıları oluşturun.",
+      "blogsubtitle4": "SEYAHAT & KEŞFETME",
+      "blogtitle4": "Side'nin Tarihi Harikalarını Keşfedin",
+      "blogtext4": "Antik Side'nin büyüleyici atmosferini keşfedin. Apollon Tapınağı, Antik Tiyatro, Müzeyi ve dünyanın ilk güneş saatini ziyaret edin.",
+      "blogsubtitle5": "DOĞA & MACERA",
+      "blogtitle5": "Manavgat'ta Doğa ile Bir Gün",
+      "blogtext5": "Manavgat Şelalesi çevresinde huzuru deneyimleyin. Kuş gözlemi, balık tutma ve doğa yürüyüşleriyle doğayı yeniden keşfedin.",
+      "blogsubtitle6": "ÖZEL GÜNLER",
+      "blogtitle6": "Rüya Gibi Balayı İçin Lago Hotel",
+      "blogtext6": "Lago Hotel'de özel balayı düzenlemeleriyle hayatınızın en romantik anlarını yaşayın ve tatilinizi gerçekten unutulmaz kılın.",
+      "blogsubtitle7": "EĞLENCE & AKTİVİTELER",
+      "blogtitle7": "Lago Hotel'de Sonsuz Eğlence",
+      "blogtext7": "Gündüz aktivitelerinden plaj etkinliklerine, muhteşem gece şovlarından temalı partilere kadar, Lago Hotel tatiliniz boyunca eğlence dolu anlar vaat ediyor.",
+      "blogsubtitle8": "SÜRDÜRÜLEBİLİR TURİZM",
+      "blogtitle8": "Çevre Dostu Bir Tatil Deneyimi",
+      "blogtext8": "Lago Hotel’in çevre dostu uygulamalarıyla sürdürülebilir turizmi destekleyin. Çevre korumasına olumlu katkıda bulunurken lüks tatilin keyfini çıkarın.",
+      "blogsubtitle9": "İPUÇLARI & ÖNERİLER",
+      "blogtitle9": "Tatilinizi Mükemmel Hale Getirecek İpuçları",
+      "blogtext9": "Lago Hotel’deki konaklamanızı daha keyifli ve konforlu hale getirecek pratik ipuçları ve önerileri keşfedin, kusursuz bir tatil garantileyin.",
+      "buttonText": "DAHA FAZLASI"
+    }
   },
-
   "Contact": {
     "subtitle": "LAGO OTEL İLETİŞİM",
     "title": " Bizimle Bağlantıya Geçin",
@@ -1992,23 +1880,20 @@
       "send": "Mesajı Gönder"
     }
   },
-
   "Gallery": {
     "subtitle": "Otelimizi Keşfedin",
     "title": "Lago Galerisi",
     "general": "Genel Görünüm",
     "rooms": "Odalar",
-    "villa": "Villa",
     "pool": "Havuz & Plaj",
     "flavours": "Lezzetler",
     "spa": "Spa & Wellness",
     "kidsclub": "Kids Club",
     "entertainment": "Eğlence",
-    "bar":"Barlar",
-    "lobby":"Lobi"
+    "bar": "Barlar",
+    "lobby": "Lobi"
   },
-
-  "CookiePopup":{
+  "CookiePopup": {
     "cookie": "Çerez Kullanıyoruz: ",
     "cookieText": "İçeriği kişiselleştirmek ve web trafiğini analiz etmek için kendi ve üçüncü taraf çerezlerini kullanıyoruz.",
     "read": " Daha fazlasını oku",
@@ -2024,66 +1909,59 @@
     "dropdown3": "Fonksiyonel",
     "dropdown4": "Hedefleme"
   },
-
-  "Explore":{
-   "header":"Tatilinizi Zenginleştirecek Rotalar",
-    "title1":"Manavgat Şelalesi",
-    "text1":"Titreyengöl’e yalnızca 5 km mesafedeki Manavgat Şelalesi, serin suların ağaçlarla buluştuğu huzurlu bir doğa köşesidir. Piknik alanları ve yürüyüş yollarıyla ziyaretçilere keyifli bir kaçış sunar.",
-    "distance":"uzaklık" ,
-    "title2":"Side Antik Kenti",
-    "text2":"Yaklaşık 7 km uzaklıkta bulunan Side Antik Kenti, Apollon Tapınağı ve antik tiyatrosuyla tarih tutkunları için eşsiz bir deneyim sunar. Akdeniz’in eşsiz manzarasıyla birleşen bu antik kalıntılar büyüleyicidir.",
-    "title3":"Aspendos Antik Tiyatrosu",
-    "text3":"Titreyengöl’den yaklaşık 35 km mesafedeki Aspendos, dünyanın en iyi korunmuş Roma tiyatrolarından biridir. Mimarisi ve akustiğiyle büyüleyici bu yapı, tarih severler için mutlaka görülmelidir.",
-    "title4":"Köprülü Kanyon",
-    "text4":"Yaklaşık 50 km uzaklıktaki Köprülü Kanyon, rafting tutkunları ve doğa yürüyüşçüleri için mükemmel bir kaçış noktasıdır. Milli park sınırları içerisindeki bu alan, kamp ve piknik için de idealdir.",
-    "title5":"Oymapınar Baraj Gölü",
-    "text5":"20 km uzaklıktaki Oymapınar Baraj Gölü, etkileyici manzaralar ve tekne turlarıyla doğa severlerin uğrak noktasıdır. Göl çevresinde yürüyüş yapabilir ya da yerel kafelerde manzaranın tadını çıkarabilirsiniz.",
-    "title6":"Seleukeia Antik Kenti",
-    "text6":"Sorgun ormanları içinde, yaklaşık 15 km mesafede yer alan Seleukeia, sessizliği ve tarihi atmosferiyle dikkat çeker. Doğa ile tarihin iç içe geçtiği bu bölge, kalabalıktan uzak bir keşif imkanı sunar."
+  "Explore": {
+    "header": "Tatilinizi Zenginleştirecek Rotalar",
+    "title1": "Manavgat Şelalesi",
+    "text1": "Titreyengöl’e yalnızca 5 km mesafedeki Manavgat Şelalesi, serin suların ağaçlarla buluştuğu huzurlu bir doğa köşesidir. Piknik alanları ve yürüyüş yollarıyla ziyaretçilere keyifli bir kaçış sunar.",
+    "distance": "uzaklık",
+    "title2": "Side Antik Kenti",
+    "text2": "Yaklaşık 7 km uzaklıkta bulunan Side Antik Kenti, Apollon Tapınağı ve antik tiyatrosuyla tarih tutkunları için eşsiz bir deneyim sunar. Akdeniz’in eşsiz manzarasıyla birleşen bu antik kalıntılar büyüleyicidir.",
+    "title3": "Aspendos Antik Tiyatrosu",
+    "text3": "Titreyengöl’den yaklaşık 35 km mesafedeki Aspendos, dünyanın en iyi korunmuş Roma tiyatrolarından biridir. Mimarisi ve akustiğiyle büyüleyici bu yapı, tarih severler için mutlaka görülmelidir.",
+    "title4": "Köprülü Kanyon",
+    "text4": "Yaklaşık 50 km uzaklıktaki Köprülü Kanyon, rafting tutkunları ve doğa yürüyüşçüleri için mükemmel bir kaçış noktasıdır. Milli park sınırları içerisindeki bu alan, kamp ve piknik için de idealdir.",
+    "title5": "Oymapınar Baraj Gölü",
+    "text5": "20 km uzaklıktaki Oymapınar Baraj Gölü, etkileyici manzaralar ve tekne turlarıyla doğa severlerin uğrak noktasıdır. Göl çevresinde yürüyüş yapabilir ya da yerel kafelerde manzaranın tadını çıkarabilirsiniz.",
+    "title6": "Seleukeia Antik Kenti",
+    "text6": "Sorgun ormanları içinde, yaklaşık 15 km mesafede yer alan Seleukeia, sessizliği ve tarihi atmosferiyle dikkat çeker. Doğa ile tarihin iç içe geçtiği bu bölge, kalabalıktan uzak bir keşif imkanı sunar."
   },
-
-  "IconSection":{
+  "IconSection": {
     "Dikkat": "DİKKAT EDİLMESİ GEREKEN HUSUSLAR",
-   "Icon1":{
-     "header1":"İBADETHANELER",
-    "list1":"Ziyaretçilerin uygun bir şekilde giyinmesi önemlidir, bu genellikle omuz ve dizleri kapatan kıyafetleri içerir",
-    "list2":"Kadınlar başlarını örterek girmelidir",
-    "list3":"Ayakkabı ile girilmemelidir",
-    "list4":"Yüksek sesle konuşulmamalı ve ibadet eden insanlar rahatsız edilmemelidir.",
-    "list5":"Genellikle fotoğraf çekme konusunda bir yasak olmamakla beraber gerekli izinler alınmalıdır."
-   },
-
-     "Icon2":{
-     "header1":"MÜZELER",
-    "list1":"Diğer ziyaretçileri rahatsız etmemek için sesiz olunmalıdır.",
-    "list2":"Müzelerin fotoğraf çekme kuralları müze girişlerinde kontrol edilmelidir.Bazı eserlerin fotoğraflarının çekilmesi yasak olabilir.",
-    "list3":"Eserlere dokunulmamalıdır",
-    "list4":"Yiyecek ve içecek tüketmek yasaktır.",
-    "list5":"Çocuklarınızı kontrol altında tutun."
-   },
-
-     "Icon3":{
-     "header1":"DOĞAL ALANLAR",
-    "list1":"Bitki ve hayvan örtüsüne zarar vermemek için doğayı koruma bilinciyle hareket edilmelidir.",
-    "list2":"Çöpler toplanmalı ve doğaya zarar verecek herhangi bir eşya bırakılmamalıdır.",
-    "list3":"Ateş yakma izni yoksa kesinlikle ateş yakılmamalıdır.",
-    "list4":"Kamp yapmak için belirlenmiş kamp alanlarını kullanın."
-   },
-
-     "Icon4":{
-     "header1":"AVCILIK",
-    "list1":"Avcılık için gerekli olan lisans ve izinler alınmalıdır.",
-    "list2":"Avlanma sezonuna uyulmalıdır",
-    "list3":"Bir günde avlayabileceğiniz maksimum hayvan sayısı aşılmamalıdır.",
-    "list4":"Koruma altındaki hayvanlar kesinlikle avlanmamalıdır."
-   },
-
-     "Icon5":{
-     "header1":"GÜNEŞTEN KORUNUN",
-    "list1":"Antalya’nın yüksek sıcaklarından vücudunuzu kesinlikle korumanız gerekmektedir.",
-    "list2":"UV ışınlarından korunmak için en az 50 faktöriyel güneş kremleri kullanılmalıdır.",
-    "list3":"Güneş kremi kullanmamak ciddi rahatsızlıklara sebebiyet verebilir."
-   }
+    "Icon1": {
+      "header1": "İBADETHANELER",
+      "list1": "Ziyaretçilerin uygun bir şekilde giyinmesi önemlidir, bu genellikle omuz ve dizleri kapatan kıyafetleri içerir",
+      "list2": "Kadınlar başlarını örterek girmelidir",
+      "list3": "Ayakkabı ile girilmemelidir",
+      "list4": "Yüksek sesle konuşulmamalı ve ibadet eden insanlar rahatsız edilmemelidir.",
+      "list5": "Genellikle fotoğraf çekme konusunda bir yasak olmamakla beraber gerekli izinler alınmalıdır."
+    },
+    "Icon2": {
+      "header1": "MÜZELER",
+      "list1": "Diğer ziyaretçileri rahatsız etmemek için sesiz olunmalıdır.",
+      "list2": "Müzelerin fotoğraf çekme kuralları müze girişlerinde kontrol edilmelidir.Bazı eserlerin fotoğraflarının çekilmesi yasak olabilir.",
+      "list3": "Eserlere dokunulmamalıdır",
+      "list4": "Yiyecek ve içecek tüketmek yasaktır.",
+      "list5": "Çocuklarınızı kontrol altında tutun."
+    },
+    "Icon3": {
+      "header1": "DOĞAL ALANLAR",
+      "list1": "Bitki ve hayvan örtüsüne zarar vermemek için doğayı koruma bilinciyle hareket edilmelidir.",
+      "list2": "Çöpler toplanmalı ve doğaya zarar verecek herhangi bir eşya bırakılmamalıdır.",
+      "list3": "Ateş yakma izni yoksa kesinlikle ateş yakılmamalıdır.",
+      "list4": "Kamp yapmak için belirlenmiş kamp alanlarını kullanın."
+    },
+    "Icon4": {
+      "header1": "AVCILIK",
+      "list1": "Avcılık için gerekli olan lisans ve izinler alınmalıdır.",
+      "list2": "Avlanma sezonuna uyulmalıdır",
+      "list3": "Bir günde avlayabileceğiniz maksimum hayvan sayısı aşılmamalıdır.",
+      "list4": "Koruma altındaki hayvanlar kesinlikle avlanmamalıdır."
+    },
+    "Icon5": {
+      "header1": "GÜNEŞTEN KORUNUN",
+      "list1": "Antalya’nın yüksek sıcaklarından vücudunuzu kesinlikle korumanız gerekmektedir.",
+      "list2": "UV ışınlarından korunmak için en az 50 faktöriyel güneş kremleri kullanılmalıdır.",
+      "list3": "Güneş kremi kullanmamak ciddi rahatsızlıklara sebebiyet verebilir."
+    }
   }
-  
 }

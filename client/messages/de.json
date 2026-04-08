@@ -3,7 +3,6 @@
     "label": "Sprache ändern",
     "locale": "{locale, select, en {EN} tr {TR} ru {RU} de {DE} other {Unbekannt}}"
   },
-
   "Header": {
     "contact": "Kontakt",
     "booknow": "Jetzt Buchen",
@@ -33,8 +32,8 @@
     "checkout": "Check-out",
     "guests": "Gäste",
     "search": "Suchen",
-    "adult":"Erwachsene",
-    "kid":"Kind(er)"
+    "adult": "Erwachsene",
+    "kid": "Kind(er)"
   },
   "HomePage": {
     "subtitle": "Erleben Sie Komfort, Qualität und tadellosen Service",
@@ -47,9 +46,9 @@
       "beachPools": "Strand & Pools",
       "experiences": "Erlebnisse",
       "kids": "Kinder",
-        "spa": "Spa ve Wellness",
-  "special": "Özel", 
-"bars": "Bars und Cafés"
+      "spa": "Spa ve Wellness",
+      "special": "Özel",
+      "bars": "Bars und Cafés"
     },
     "TwoAnimationSection": {
       "subtitle": "Die Gelassenheit von Blau und Grün",
@@ -115,7 +114,7 @@
     "familyswimup": "Familien Swim-up Zimmer",
     "duplex": "Duplex Familienzimmer",
     "tinyvilla": "Kleine Villa",
-     "disableroom":"Barrierefreies Zimmer",
+    "disableroom": "Barrierefreies Zimmer",
     "category2": "Küche",
     "mainrestaurant": "Hauptrestaurant",
     "gusto": "Gusto Restaurant",
@@ -128,18 +127,17 @@
     "stageshow": "Bühnenshow",
     "spa": "Spa",
     "special": "Spezial",
-   "contact":"Kontakt",
+    "contact": "Kontakt",
     "home": "Startseite",
     "service": "Service",
     "portfolio": "Portfolio",
     "product": "Produkt",
     "blog": "Blog",
     "faq": "FAQ",
-  
     "policy": "Datenschutzerklärung",
     "bookings": "Buchungen & Stornierungen",
     "terms": "Webseitenbedingungen",
-    "ourpolicies":"Unsere Richtlinien",
+    "ourpolicies": "Unsere Richtlinien",
     "aboutcompany": "Über das Unternehmen",
     "phone": "Telefon: +90 242 756 99 00",
     "email": "E-Mail: info@lagohotel.com",
@@ -150,8 +148,6 @@
     "accommodation": "Unterkunft",
     "experiences": "Erlebnisse"
   },
-
-
   "Accommodation": {
     "header": "Zimmertypen",
     "buttonText1": "Superior Zimmer",
@@ -160,7 +156,7 @@
     "buttonText4": "Familien Swim-up Zimmer",
     "buttonText5": "Duplex Familienzimmer",
     "buttonText6": "Kleine Villa",
-    "buttonText7":"Barrierefreies Zimmer",
+    "buttonText7": "Barrierefreies Zimmer",
     "subtitle": "Ein komfortabler Aufenthalt für Sie und Ihre Familie",
     "title": "Entdecken Sie unsere eleganten Unterkünfte und finden Sie Ihren perfekten Aufenthalt.",
     "text": " Im Lago Hotel bieten wir komfortable Zimmer mit atemberaubendem Meer- oder Landschaftsblick. Wählen Sie zwischen stilvollen Swim-up Zimmern und geräumigen Familiensuiten, die all Ihren Bedürfnissen gerecht werden. Mit modernem Design und luxuriösem Komfort ist das Lago Hotel der perfekte Ort für einen unvergesslichen Urlaub.",
@@ -239,7 +235,6 @@
     "email": "E-Mail: info@lagohotel.com",
     "buttonText": "JETZT BUCHEN"
   },
-
   "Restaurants": {
     "subtitle": "Sorgfältig ausgewählte kulinarische Erlebnisse",
     "title": "Restaurants",
@@ -304,8 +299,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
-    
   "BarAndCafes": {
     "subtitle": "Entspannende Momente den ganzen Tag über",
     "title": "Bars und Cafés",
@@ -372,12 +365,12 @@
       "text": "In den Bars und Cafés von Lago Hotel erleben Sie eine Symphonie aus köstlichen Getränken, leichten Snacks und entspannten Momenten, die Ihren Aufenthalt zu einem unvergesslichen Erlebnis machen.",
       "buttonText": "Mehr entdecken"
     },
-    "BarCarousel":{
-        "subtitle":"Köstliche Momente erwarten Sie",
-        "title":"Hungrig auf mehr?",
-        "text":"Entdecken Sie Snackspot, unser geräumiges Snack-Restaurant, in dem köstliche Getränke und herrliche Aromen der türkischen und internationalen Küche serviert werden. Täglich von 11:00 bis 18:00 geöffnet, ist Snackspot der ideale Ort, um während Ihres Urlaubs genussvolle Pausen zu verbringen.",
-        "buttonText":"Mehr entdecken"
-      }
+    "BarCarousel": {
+      "subtitle": "Köstliche Momente erwarten Sie",
+      "title": "Hungrig auf mehr?",
+      "text": "Entdecken Sie Snackspot, unser geräumiges Snack-Restaurant, in dem köstliche Getränke und herrliche Aromen der türkischen und internationalen Küche serviert werden. Täglich von 11:00 bis 18:00 geöffnet, ist Snackspot der ideale Ort, um während Ihres Urlaubs genussvolle Pausen zu verbringen.",
+      "buttonText": "Mehr entdecken"
+    }
   },
   "JoieBar": {
     "subtitle": "FRISCHE GETRÄNKE UND MUSIK",
@@ -459,7 +452,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "MignonBar": {
     "subtitle": " FRISCHE GETRÄNKE UND MUSIK",
     "title": "Mignon Bar",
@@ -500,7 +492,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "PianoBar": {
     "subtitle": " FRISCHE GETRÄNKE UND MUSIK",
     "title": "Piano Bar",
@@ -541,7 +532,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "VagoBar": {
     "subtitle": " FRISCHE GETRÄNKE UND MUSIK",
     "title": "Vago Bar",
@@ -582,7 +572,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "Abellapatisserie": {
     "subtitle": "Süße Momente erwarten Sie",
     "title": "Abella Patisserie",
@@ -623,8 +612,7 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
- "Cafedehouse": {
+  "Cafedehouse": {
     "subtitle": "SÜSSE MOMENTE ERWARTEN SIE",
     "title": "Cafe de House",
     "text": "Entspannen Sie im Cafe de House bei köstlichem Kaffee, erfrischenden Getränken, leckeren Desserts und schmackhaften Snacks. Genießen Sie das gemütliche Ambiente, das sich perfekt für erfrischende Pausen und ruhige Momente über den Tag hinweg eignet.",
@@ -664,7 +652,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "Cafedelago": {
     "subtitle": " SÜSSE MOMENTE ERWARTEN SIE",
     "title": "Cafe de Lago",
@@ -705,7 +692,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "GustoRestaurants": {
     "subtitle": "ITALIENISCHE KÜCHE IN VOLLENDUNG",
     "title": "Gusto Restaurant",
@@ -743,7 +729,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "AnatoliaRestaurants": {
     "subtitle": "Traditionelle türkische Küche in ihrer besten Form",
     "title": "Anatolia Restaurant",
@@ -763,7 +748,7 @@
       "subtitle": "Perfekte Fine Dining Erlebnisse",
       "title": "LAGO’s Weltküchen",
       "text": "In unseren À-la-carte-Restaurants warten die erlesenen Aromen der internationalen Küche darauf, von Ihnen entdeckt zu werden – kreiert von den meisterhaften Händen unserer preisgekrönten Köche. Während Ihres Urlaubs laden wir Sie herzlich zu einem wunderbaren kulinarischen Abenteuer in unseren außergewöhnlichen À-la-carte-Restaurants ein!",
-    "cuisines1subtitle": "KÜCHE: International",
+      "cuisines1subtitle": "KÜCHE: International",
       "cuisines1title": "Anatolia",
       "cuisines1text": "Erleben Sie im Anatolien-Restaurant authentische türkische Aromen und kulinarische Traditionen. Im LAGO erfüllen wir stolz Ihre kulinarischen Träume mit unvergesslichen Spezialitäten aus der türkischen Küche",
       "buttonText": "Mehr entdecken",
@@ -810,7 +795,6 @@
       "cuisines3subtitle": "KÜCHE: Meeresfrüchte und Fisch",
       "cuisines3title": "Despina",
       "cuisines3text": "Meeresfrüchte- und Fischgerichte, sorgfältig zubereitet von unseren preisgekrönten Küchenchefs, bieten ein Erlebnis, das sowohl Ihren Gaumen als auch Ihre Augen erfreut. Spezielle Rezepte erwarten Sie im À-la-carte-Restaurant Despina und versprechen ein unvergessliches kulinarisches Erlebnis."
-     
     },
     "DiscoverBackground": {
       "subtitle": "EIN EINZIGARTIGES FEST DES GESCHMACKS",
@@ -819,8 +803,7 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
- "FuegoRestaurants": {
+  "FuegoRestaurants": {
     "subtitle": "ASIATISCHE KÜCHE IN VOLLENDUNG",
     "title": "Fuego Restaurant",
     "text": "Erleben Sie die lebhaften Aromen Asiens im Fuego À-la-carte-Restaurant, wo unsere Köche authentische asiatische Gerichte mit meisterhafter Fertigkeit zubereiten. Genießen Sie eine köstliche kulinarische Reise durch sorgfältig kreierte Spezialitäten aus den vielfältigen asiatischen Kochtraditionen.",
@@ -876,7 +859,7 @@
       "subtitle": "Perfekte Fine Dining Erlebnisse",
       "title": "LAGO’s Weltküchen",
       "text": "Unsere À-la-carte-Restaurants präsentieren Ihnen exquisite Aromen internationaler Küche, kreiert von unseren preisgekrönten Küchenchefs. Lassen Sie sich während Ihres Aufenthalts in LAGO in ein kulinarisches Abenteuer entführen!",
-     "cuisines1subtitle": "KÜCHE: International",
+      "cuisines1subtitle": "KÜCHE: International",
       "cuisines1title": "Anatolia",
       "cuisines1text": "Erleben Sie im Anatolien-Restaurant authentische türkische Aromen und kulinarische Traditionen. Im LAGO erfüllen wir stolz Ihre kulinarischen Träume mit unvergesslichen Spezialitäten aus der türkischen Küche",
       "buttonText": "Mehr entdecken",
@@ -894,8 +877,7 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
- "TapazRestaurants": {
+  "TapazRestaurants": {
     "subtitle": "SPANISCHE TAPAS IN VOLLENDUNG",
     "title": "Tapaz Restaurant",
     "text": "Genießen Sie im Tapaz Restaurant die authentischen Aromen spanischer Tapas, die von unseren talentierten Köchen mit viel Sorgfalt zubereitet werden. Freuen Sie sich auf eine Auswahl köstlicher Kleinigkeiten, die die lebhafte kulinarische Tradition Spaniens direkt auf Ihren Tisch bringen und für ein unvergessliches Dinner-Erlebnis sorgen.",
@@ -914,7 +896,7 @@
       "subtitle": "Perfekte Fine Dining Erlebnisse",
       "title": "LAGO’s Weltküchen",
       "text": "In unseren À-la-carte-Restaurants erwarten Sie erlesene Aromen internationaler Küche, kreiert von den meisterhaften Händen unserer preisgekrönten Köche. Während Ihres Urlaubs laden wir Sie herzlich zu einem wunderbaren kulinarischen Abenteuer in unseren unverwechselbaren À-la-carte-Restaurants ein!",
-     "cuisines1subtitle": "KÜCHE: International",
+      "cuisines1subtitle": "KÜCHE: International",
       "cuisines1title": "Anatolia",
       "cuisines1text": "Erleben Sie im Anatolien-Restaurant authentische türkische Aromen und kulinarische Traditionen. Im LAGO erfüllen wir stolz Ihre kulinarischen Träume mit unvergesslichen Spezialitäten aus der türkischen Küche",
       "buttonText": "Mehr entdecken",
@@ -932,7 +914,6 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "WasabiRestaurants": {
     "subtitle": "TEPPANYAKI-KÜCHE IN VOLLENDUNG",
     "title": "Wasabi Restaurant",
@@ -952,7 +933,7 @@
       "subtitle": " Perfekte Gourmet-Erlebnisse",
       "title": "LAGO’s Weltküchen",
       "text": " In unseren À-la-carte-Restaurants erwarten Sie erlesene Aromen internationaler Küche, kreiert von den meisterhaften Händen unserer preisgekrönten Köche. Während Ihres Urlaubs laden wir Sie herzlich zu einem wunderbaren kulinarischen Abenteuer in unseren einzigartigen À-la-carte-Restaurants ein!",
-     "cuisines1subtitle": "Küche: Teppanyaki (Japanisch)",
+      "cuisines1subtitle": "Küche: Teppanyaki (Japanisch)",
       "cuisines1title": "Wasabi",
       "cuisines1text": "In unserem Teppanyaki À-la-carte-Restaurant können Sie authentische japanische Küche genießen, die von unseren Meisterköchen auf traditionellen Teppanyaki-Grills kunstvoll zubereitet wird. Erleben Sie die markanten Aromen des Fernen Ostens durch die kreativen Interpretationen unserer Köche.",
       "buttonText": "Mehr entdecken",
@@ -970,14 +951,12 @@
       "buttonText": "Mehr entdecken"
     }
   },
-
   "BeachPools": {
     "subtitle": " WILLKOMMEN IM LAGO HOTEL",
     "title": "Tauchen Sie ein in das tiefblaue Wasser",
-    "mobileTitle":" Strand und Pools",
+    "mobileTitle": " Strand und Pools",
     "text": "Unsere Zimmer wurden sorgfältig gestaltet, um vielfältigen Geschmäckern und Bedürfnissen gerecht zu werden und verbinden Komfort harmonisch mit beeindruckendem Stil, damit Sie sich wie zu Hause fühlen. Genießen Sie erfrischende Momente in unserem Pools verschiedener Größen in der tiefblauen Welt von LAGO. Kommen Sie zu LAGO, wo alle Ihre Träume Wirklichkeit werden.",
     "buttonText": "MEHR ENTDECKEN",
-
     "ClinaryInfoSection": {
       "subtitle": "ERLEBEN SIE PURE ENTSPANNUNG",
       "title": "Entdecken Sie Ruhe an unserem Strand",
@@ -1096,7 +1075,6 @@
       "text2": "Erfrischen und verwöhnen Sie sich in der einzigartigen Atmosphäre unseres traditionellen Türkischen Hammams. Erleben Sie die ikonische Entspannungskultur mit den professionellen Therapeuten von LAGO und erneuern Sie Körper und Geist."
     }
   },
-
   "DisabledRoom": {
     "subtitle": "Komfort für Jeden Gast",
     "title": "Barrierefreies Zimmer",
@@ -1126,7 +1104,6 @@
       "madde11": "Balkon",
       "madde12": "Dusche"
     },
-
     "ReservationWidget": {
       "title": "Reservierungsdaten",
       "text": "Wählen Sie die Daten für Ihren Aufenthalt",
@@ -1164,7 +1141,6 @@
       "text3": "Im Hauptgebäude gelegen, misst dieser elegante Zimmertyp 30-32 m² und bietet Land- oder Meerblick. Jedes Zimmer verfügt über ein Doppelbett, ein Einzelbett und ein komfortables Sofa. Zudem sind die Zimmer mit einem Balkon, einem Chip-Schlüsselarmband, einer täglich aufgefüllten Minibar, hochwertiger Badezimmereinrichtung und einem Tee-Kaffee-Set ausgestattet."
     }
   },
-
   "SuperiorRoom": {
     "subtitle": "Exklusiver und komfortabler Aufenthalt",
     "title": "Superior Zimmer",
@@ -1213,7 +1189,6 @@
       "title2": "Werfen Sie einen Blick – Meerblick",
       "text2": "Entdecken Sie unsere Zimmer mit Meerblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume."
     },
-
     "OtherOptions": {
       "span": "Wählen Sie das beste Zimmer für sich",
       "title": "Weitere Optionen",
@@ -1235,7 +1210,6 @@
       "text3": "Im Hauptgebäude gelegen, misst dieser elegante Zimmertyp 30-32 m² und bietet Land- oder Meerblick. Jedes Zimmer verfügt über ein Doppelbett, ein Einzelbett und ein komfortables Sofa. Zudem sind die Zimmer mit einem Balkon, einem Chip-Schlüsselarmband, einer täglich aufgefüllten Minibar, hochwertiger Badezimmereinrichtung und einem Tee-Kaffee-Set ausgestattet."
     }
   },
-
   "FamilyRoom": {
     "subtitle": "Exklusiver und komfortabler Familienaufenthalt",
     "title": "Familienzimmer",
@@ -1276,14 +1250,14 @@
       "contact": "Kontaktieren Sie uns jetzt",
       "phone": "+90 242 524 57 87"
     },
-      "RoomTour": {
-    "subtitle": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
-    "title": "Werfen Sie einen Blick – Landblick",
-    "text": "Entdecken Sie unsere Zimmer mit Landblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume.",
-    "subtitle2": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
-    "title2": "Werfen Sie einen Blick – Meerblick",
-    "text2": "Entdecken Sie unsere Zimmer mit Meerblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume."
-  },
+    "RoomTour": {
+      "subtitle": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
+      "title": "Werfen Sie einen Blick – Landblick",
+      "text": "Entdecken Sie unsere Zimmer mit Landblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume.",
+      "subtitle2": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
+      "title2": "Werfen Sie einen Blick – Meerblick",
+      "text2": "Entdecken Sie unsere Zimmer mit Meerblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume."
+    },
     "OtherOptions": {
       "span": "Wählen Sie das beste Zimmer für sich",
       "title": "Weitere Optionen",
@@ -1305,7 +1279,6 @@
       "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und Tee-Kaffee-Set."
     }
   },
-
   "SwimupRoom": {
     "subtitle": "Exklusiver Aufenthalt mit direktem Poolzugang",
     "title": "Swim-up Zimmer",
@@ -1335,7 +1308,6 @@
       "madde11": "Balkon",
       "madde12": "Dusche"
     },
-
     "BackgroundSection": {
       "subtitle": "EXKLUSIVE Vorteile",
       "title": "Exklusive Vorteile Swim-up Zimmer",
@@ -1343,8 +1315,7 @@
       "text2": "À-la-carte-Restaurants: Genießen Sie einen kostenlosen Besuch bei einem Aufenthalt von 7 Nächten oder mehr.",
       "text3": "Pavillon-Rabatt: Erhalten Sie 15 % Rabatt auf unsere exklusiven Pavillon-Services."
     },
-
-  "ReservationWidget": {
+    "ReservationWidget": {
       "title": "Reservierungsdaten",
       "text": "Wählen Sie die Daten für Ihren Aufenthalt",
       "checkin": "Check-in",
@@ -1384,7 +1355,6 @@
       "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und Tee-Kaffee-Set."
     }
   },
-
   "FamilySwimupRoom": {
     "subtitle": "Exklusiver Familienaufenthalt mit privatem Pool",
     "title": "Familien Swim-up Zimmer",
@@ -1421,85 +1391,6 @@
       "text2": "À-la-carte-Restaurants: Genießen Sie einen kostenlosen Besuch bei einem Aufenthalt von 7 Nächten oder mehr.",
       "text3": "Pavillon-Rabatt: Erhalten Sie 15 % Rabatt auf unsere exklusiven Pavillon-Services."
     },
-
- "ReservationWidget": {
-      "title": "Reservierungsdaten",
-      "text": "Wählen Sie die Daten für Ihren Aufenthalt",
-      "checkin": "Check-in",
-      "checkout": "Check-out",
-      "adult": "Erwachsene",
-      "kids": "Kinder",
-      "booknow": "JETZT BUCHEN",
-      "contact": "Kontaktieren Sie uns jetzt",
-      "phone": "+90 242 524 57 87"
-    },
-    "RoomTour": {
-      "subtitle": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
-      "title": "Werfen Sie einen Blick – Landblick",
-      "text": "Entdecken Sie unsere Zimmer mit Landblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume.",
-      "subtitle2": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
-      "title2": "Werfen Sie einen Blick – Meerblick",
-      "text2": "Entdecken Sie unsere Zimmer mit Meerblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume."
-    },
-    "OtherOptions": {
-      "span": "Wählen Sie das beste Zimmer für sich",
-      "title": "Weitere Optionen",
-      "subtitle1": "Zimmer für die ganze Familie",
-      "title1": "Familienzimmer",
-      "m1": "38-41 m²",
-      "capacity1": "2 Erwachsene + 2 Kinder",
-      "text1": "Dieses Familienzimmer im Hauptgebäude (38-41 m²) verfügt über zwei Schlafzimmer mit Verbindungstür, ein Badezimmer und einen Balkon. Maximale Belegung: 4 Erwachsene + 1 Kind.",
-      "buttonText": "Mehr erfahren",
-      "subtitle2": "Frisch bleiben, ohne das Zimmer zu verlassen",
-      "title2": "Swim-up Zimmer",
-      "m2": "40-43 m²",
-      "capacity2": "2 Erwachsene + 1 Kind",
-      "text2": "Dieser stilvolle Zimmertyp bietet direkten Poolzugang und eine Terrasse, bei Meerblick zusätzlich mit privatem Pool.",
-      "subtitle3": "Komfort zu einem guten Preis",
-      "title3": "Superior Zimmer",
-      "m3": "30-32 m²",
-      "capacity3": "2 Erwachsene + 1 Kind",
-      "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und Tee-Kaffee-Set."
-    }
-  },
-
-  "DuplexFamilyRoom": {
-  "subtitle": "Geräumiger Duplex-Komfort für Familien",
-    "title": "Duplex Familienzimmer",
-    "text1": "Land-/Meerblick",
-    "text2": "1–4 Erwachsene + 1–3 Kinder",
-    "text3": "2 Schlafzimmer / 3 Betten",
-    "RoomInfo": {
-      "subtitle": "Geräumiger Komfort für Familien",
-      "title": "Duplex Familienzimmer",
-      "text": "Unsere Dublex Family Zimmer im Hauptgebäude messen 45-49 m² und erstrecken sich über zwei Etagen. Für den Komfort der Familie konzipiert, verfügt eine Etage über ein Doppelbett, ein eigenes Badezimmer und einen Balkon, während die andere Etage ein Einzelbett, ein luxuriöses Sofa, das in ein Doppelbett umgewandelt werden kann, ein separates Badezimmer und einen Balkon.",
-      "title2": "Familienfreundliche Ausstattung",
-      "list1": "----",
-      "list2": "2 Einzelbetten",
-      "list3": "Zusätzliches Babybett",
-      "title3": "Zimmerausstattung",
-      "text2": "Duplex Familienzimmer bieten Zugang per Chip-Armband, tägliche Minibar-Auffüllung, hochwertige Badezimmerartikel, kostenfreie Tee- und Kaffeezubereitungsmöglichkeiten, LED-TV mit Satellitenkanälen, kostenloses WLAN, zentrale Klimaanlage, Safe, Schminktisch und Spiegel.",
-      "madde1": "----",
-      "madde2": "45-49 m²",
-      "madde3": "Schminktisch",
-      "madde4": "Nichtraucher",
-      "madde5": "Minibar",
-      "madde6": "Safe",
-      "madde7": "Haartrockner",
-      "madde8": "Badeartikel",
-      "madde9": "Tee- & Kaffeeausstattung",
-      "madde10": "LED-TV & WLAN",
-      "madde11": "Balkon",
-      "madde12": "Dusche"
-    },
-    "BackgroundSection": {
-      "subtitle": "EXKLUSIVE Vorteile",
-      "title": "Exklusive Vorteile Duplex Familienzimmer",
-      "text1": "Gäste der Duplex Familienzimmer werden mit einem speziellen VIP-Arrangement begrüßt, bestehend aus einem sorgfältig zubereiteten Obstteller und köstlichen Macarons bei der Ankunft",
-      "text2": "À-la-carte-Restaurants: Genießen Sie einen kostenlosen Besuch bei einem Aufenthalt von 7 Nächten oder mehr.",
-      "text3": "Pavillon-Rabatt: Erhalten Sie 15 % Rabatt auf unsere exklusiven Pavillon-Services."
-    },
-
     "ReservationWidget": {
       "title": "Reservierungsdaten",
       "text": "Wählen Sie die Daten für Ihren Aufenthalt",
@@ -1540,7 +1431,82 @@
       "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und Tee-Kaffee-Set."
     }
   },
-
+  "DuplexFamilyRoom": {
+    "subtitle": "Geräumiger Duplex-Komfort für Familien",
+    "title": "Duplex Familienzimmer",
+    "text1": "Land-/Meerblick",
+    "text2": "1–4 Erwachsene + 1–3 Kinder",
+    "text3": "2 Schlafzimmer / 3 Betten",
+    "RoomInfo": {
+      "subtitle": "Geräumiger Komfort für Familien",
+      "title": "Duplex Familienzimmer",
+      "text": "Unsere Dublex Family Zimmer im Hauptgebäude messen 45-49 m² und erstrecken sich über zwei Etagen. Für den Komfort der Familie konzipiert, verfügt eine Etage über ein Doppelbett, ein eigenes Badezimmer und einen Balkon, während die andere Etage ein Einzelbett, ein luxuriöses Sofa, das in ein Doppelbett umgewandelt werden kann, ein separates Badezimmer und einen Balkon.",
+      "title2": "Familienfreundliche Ausstattung",
+      "list1": "----",
+      "list2": "2 Einzelbetten",
+      "list3": "Zusätzliches Babybett",
+      "title3": "Zimmerausstattung",
+      "text2": "Duplex Familienzimmer bieten Zugang per Chip-Armband, tägliche Minibar-Auffüllung, hochwertige Badezimmerartikel, kostenfreie Tee- und Kaffeezubereitungsmöglichkeiten, LED-TV mit Satellitenkanälen, kostenloses WLAN, zentrale Klimaanlage, Safe, Schminktisch und Spiegel.",
+      "madde1": "----",
+      "madde2": "45-49 m²",
+      "madde3": "Schminktisch",
+      "madde4": "Nichtraucher",
+      "madde5": "Minibar",
+      "madde6": "Safe",
+      "madde7": "Haartrockner",
+      "madde8": "Badeartikel",
+      "madde9": "Tee- & Kaffeeausstattung",
+      "madde10": "LED-TV & WLAN",
+      "madde11": "Balkon",
+      "madde12": "Dusche"
+    },
+    "BackgroundSection": {
+      "subtitle": "EXKLUSIVE Vorteile",
+      "title": "Exklusive Vorteile Duplex Familienzimmer",
+      "text1": "Gäste der Duplex Familienzimmer werden mit einem speziellen VIP-Arrangement begrüßt, bestehend aus einem sorgfältig zubereiteten Obstteller und köstlichen Macarons bei der Ankunft",
+      "text2": "À-la-carte-Restaurants: Genießen Sie einen kostenlosen Besuch bei einem Aufenthalt von 7 Nächten oder mehr.",
+      "text3": "Pavillon-Rabatt: Erhalten Sie 15 % Rabatt auf unsere exklusiven Pavillon-Services."
+    },
+    "ReservationWidget": {
+      "title": "Reservierungsdaten",
+      "text": "Wählen Sie die Daten für Ihren Aufenthalt",
+      "checkin": "Check-in",
+      "checkout": "Check-out",
+      "adult": "Erwachsene",
+      "kids": "Kinder",
+      "booknow": "JETZT BUCHEN",
+      "contact": "Kontaktieren Sie uns jetzt",
+      "phone": "+90 242 524 57 87"
+    },
+    "RoomTour": {
+      "subtitle": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
+      "title": "Werfen Sie einen Blick – Landblick",
+      "text": "Entdecken Sie unsere Zimmer mit Landblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume.",
+      "subtitle2": "WÄHLEN SIE DAS BESTE ZIMMER FÜR SIE",
+      "title2": "Werfen Sie einen Blick – Meerblick",
+      "text2": "Entdecken Sie unsere Zimmer mit Meerblick in einer beeindruckenden 360°-Virtuellen Tour. Untersuchen Sie jedes Detail aus der Nähe, finden Sie Ihren perfekten Aufenthalt und starten Sie hier den Urlaub Ihrer Träume."
+    },
+    "OtherOptions": {
+      "span": "Wählen Sie das beste Zimmer für sich",
+      "title": "Weitere Optionen",
+      "subtitle1": "Zimmer für die ganze Familie",
+      "title1": "Familienzimmer",
+      "m1": "38-41 m²",
+      "capacity1": "2 Erwachsene + 2 Kinder",
+      "text1": "Dieses Familienzimmer im Hauptgebäude (38-41 m²) verfügt über zwei Schlafzimmer mit Verbindungstür, ein Badezimmer und einen Balkon. Maximale Belegung: 4 Erwachsene + 1 Kind.",
+      "buttonText": "Mehr erfahren",
+      "subtitle2": "Frisch bleiben, ohne das Zimmer zu verlassen",
+      "title2": "Swim-up Zimmer",
+      "m2": "40-43 m²",
+      "capacity2": "2 Erwachsene + 1 Kind",
+      "text2": "Dieser stilvolle Zimmertyp bietet direkten Poolzugang und eine Terrasse, bei Meerblick zusätzlich mit privatem Pool.",
+      "subtitle3": "Komfort zu einem guten Preis",
+      "title3": "Superior Zimmer",
+      "m3": "30-32 m²",
+      "capacity3": "2 Erwachsene + 1 Kind",
+      "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und Tee-Kaffee-Set."
+    }
+  },
   "TinyVilla": {
     "subtitle": "Kompakter Luxus im Garten",
     "title": "Tiny Villa",
@@ -1577,7 +1543,6 @@
       "text2": "À-la-carte-Restaurants: Genießen Sie einen kostenlosen Besuch bei einem Aufenthalt von 7 Nächten oder mehr.",
       "text3": "Pavillon-Rabatt: Erhalten Sie 15 % Rabatt auf unsere exklusiven Pavillon-Services."
     },
-
     "ReservationWidget": {
       "title": "Reservierungsdaten",
       "text": "Wählen Sie die Daten für Ihren Aufenthalt",
@@ -1589,7 +1554,7 @@
       "contact": "Kontaktieren Sie uns jetzt",
       "phone": "+90 242 524 57 87"
     },
-  "RoomTour": {
+    "RoomTour": {
       "subtitle": "Wählen Sie das beste Zimmer für sich",
       "title": "Schauen Sie sich um",
       "text": "Entdecken Sie unsere Zimmer mit einem beeindruckenden 360°-Virtuellen Rundgang. Sehen Sie sich jedes Detail genau an, finden Sie Ihre perfekte Unterkunft und starten Sie hier Ihren Traumurlaub."
@@ -1615,7 +1580,6 @@
       "text3": "Ein eleganter Zimmertyp mit Balkon, Chip-Schlüsselarmband, täglich aufgefülltem Mini-Bar, hochwertigen Badezimmereinrichtungen und einem Tee-Kaffee-Set."
     }
   },
-
   "Fitness": {
     "subtitle": "ENTSPANNEN SIE IM LAGO WELLNESS CENTER",
     "title": "Sport & Fitness",
@@ -1664,7 +1628,6 @@
       "text2": "Erreichen Sie Ihre Fitnessziele mit maßgeschneiderten Trainingsprogrammen, die von den professionellen Personal Trainern von LAGO entwickelt wurden. Erleben Sie personalisierte Workouts, die auf Ihre individuellen Bedürfnisse zugeschnitten sind, und bleiben Sie während Ihres Urlaubs motiviert."
     }
   },
-
   "Entertainment": {
     "subtitle": "Tägliche Aktivitäten & Abendshows",
     "title": "Endlose Unterhaltung erwartet Sie",
@@ -1702,7 +1665,6 @@
       "span": "Das Ultra-All-Inclusive-Konzept sowie die Aktivitäten und Services des LAGO Hotels können sich je nach Saison und Wetterbedingungen ohne vorherige Ankündigung ändern. Alle diesbezüglichen Rechte des LAGO HOTELS sind vorbehalten. "
     }
   },
-
   "KidsClub": {
     "subtitle": "Spaß & Abenteuer für kleine Gäste!",
     "title": "Bamboo Kids Club",
@@ -1768,40 +1730,32 @@
       "cuisines3text": "Genießen Sie bei jedem Wetter unbegrenzten Spaß in unserem speziell für unsere kleinen Gäste gestalteten Innen-Kinderpool. Hier können Kinder sicher planschen, schwimmen und spielen, während sie unter der aufmerksamen Aufsicht unseres professionellen Personals stehen. Der perfekte Ort für fröhliche Unterhaltung das ganze Jahr über!"
     }
   },
-
   "Special": {
     "subtitle": "GLÜCKLICHE MOMENTE, UNVERGESSLICHE ERINNERUNGEN",
     "title": "Besondere Anlässe",
     "text": "Das LAGO-Team arbeitet daran, dass Sie unvergessliche Erinnerungen mit Ihren Lieben bei Ihren besonderen Anlässen schaffen.",
     "gallerytitle": "Ein Paradies im Herzen des Mittelmeers",
-
     "InfoSection": {
       "subtitle": "Unsere exklusiven Dienstleistungen",
       "title": "besondere Anlässe",
       "text": "Im LAGO Hotel bieten wir eine Vielzahl von Optionen, um Ihre besonderen Anlässe wirklich unvergesslich zu machen. Mit unseren sorgfältig ausgewählten Dienstleistungen helfen wir Ihnen, bleibende Erinnerungen zu schaffen.",
       "subtitle1": "Besondere Anlässe",
-      
-      "key1":"Honeymoon",
+      "key1": "Honeymoon",
       "title1": "Honeymoon",
       "text1": "Feiern Sie Ihre Liebe im LAGO Hotel mit romantischen Erlebnissen, die exklusiv für frisch verheiratete Paare entworfen wurden. Schaffen Sie unvergessliche Erinnerungen in einer traumhaften Atmosphäre.",
-      
-      "key2":"Heiratsantrag",
+      "key2": "Heiratsantrag",
       "title2": "Heiratsantrag-Arrangement",
       "text2": "Machen Sie Ihren Heiratsantrag unvergesslich mit den romantischen Arrangements von LAGO. Wir kümmern uns um jedes Detail, um den perfekten Moment für Sie und Ihre Liebste zu schaffen.",
-      
-      "key3":"Pavillon",
+      "key3": "Pavillon",
       "title3": "Pavillon-Erlebnis",
       "text3": "Genießen Sie ein exklusives Pavillon-Erlebnis im LAGO. Verbringen Sie Ihren besonderen Tag in Privatsphäre und Luxus, begleitet von makellosem Service und atemberaubender Aussicht.",
-     
-      "key4":"Geburtstag",
+      "key4": "Geburtstag",
       "title4": "Geburtstagspakete",
       "text4": "Feiern Sie Ihren Geburtstag stilvoll mit unseren personalisierten Geburtstagspaketen. Von Dekorationen bis zu speziellen Menüs – wir machen Ihren Tag wirklich unvergesslich.",
-     
-      "key5":"Hochzeit",
+      "key5": "Hochzeit",
       "title5": "Hochzeitsdienstleistungen",
       "text5": "Das LAGO Hotel bietet umfassende Hochzeitsdienstleistungen an und sorgt dafür, dass Ihr besonderer Tag in jeder Hinsicht perfekt wird. Überlassen Sie unserem erfahrenen Team alle Details.",
-      
-      "key6":"Blume",
+      "key6": "Blume",
       "title6": "Maßgeschneiderte Blumenbestellungen",
       "text6": "Erhellen Sie Ihre besonderen Anlässe mit maßgeschneiderten Blumenarrangements von LAGO. Wir kreieren einzigartige Blumendesigns, die ganz auf Ihre Wünsche zugeschnitten sind."
     },
@@ -1834,7 +1788,6 @@
       "text": "Das LAGO Hotel in Antalya Manavgat bietet ein einzigartiges Erlebnis, bei dem moderner Luxus auf den zeitlosen Charme der Geschichte trifft. Während die Gäste in unseren komfortablen Unterkünften entspannen, sind sie eingeladen, die antiken Ruinen und die natürliche Schönheit zu erkunden, die die historische Atmosphäre von Side bereichern. Unser Hotel präsentiert eine sorgfältig zusammengestellte Auswahl an lokalen und internationalen kulinarischen Köstlichkeiten, die den lebendigen Geist des Mittelmeers widerspiegeln und jeden Moment zu einer unvergesslichen Erinnerung machen. Das LAGO Hotel lädt Sie ein zu einer inspirierenden Reise, in der sich die faszinierenden Echos der Vergangenheit mit einem zukunftsorientierten Blick verbinden."
     }
   },
-
   "About": {
     "subtitle": "GLÜCKLICHE MOMENTE, UNVERGESSLICHE ERINNERUNGEN",
     "title": "Über Unser Hotel",
@@ -1854,10 +1807,9 @@
       "clubsubtitle2": "Hotel LAGO",
       "clubtitle2": "Ein besonderer Urlaub",
       "clubtext2": "Unser Hotel liegt nur 50 Meter vom See und 300 Meter vom Fluss entfernt und bietet ausgezeichnete Möglichkeiten für Spaziergänge, Joggen, Angeln, Vogelbeobachtungen von Arten aus der ganzen Welt und ein intensives Naturerlebnis. Darüber hinaus befinden wir uns nur 4 km vom Stadtzentrum von Manavgat und 6 km vom schönen Manavgat-Wasserfall entfernt. Die antike Stadt Side ist nur 9 km entfernt, wo Sie historische Sehenswürdigkeiten wie das Antike Amphitheater, den Apollotempel, das Side-Museum und den weltweit ersten Sonnenuhr entdecken können. Entfernungen: Side Stadtzentrum: 9 km, Manavgat Stadtzentrum: 4 km, Flughafen Antalya: 63 km.",
-      "buttonText":"Mehr entdecken"
+      "buttonText": "Mehr entdecken"
     }
   },
-
   "BlogNews": {
     "subtitle": "Entdecken Sie Ihren perfekten Kurzurlaub",
     "title": "Neueste Nachrichten",
@@ -1918,10 +1870,9 @@
       "blogsubtitle9": "TIPPS & EMPFEHLUNGEN",
       "blogtitle9": "Tipps für den perfekten Urlaub",
       "blogtext9": "Entdecken Sie praktische Tipps und Empfehlungen, die Ihren Aufenthalt im Lago Hotel angenehmer und komfortabler machen und für einen makellosen Urlaub sorgen.",
-      "buttonText":"Mehr entdecken"
+      "buttonText": "Mehr entdecken"
     }
   },
-
   "Contact": {
     "subtitle": "LAGO HOTEL KONTAKT",
     "title": "Kontaktieren Sie uns",
@@ -1938,22 +1889,19 @@
       "send": "Nachricht senden"
     }
   },
-
   "Gallery": {
     "subtitle": "Erkunden Sie das Hotel",
     "title": "Lago Galerie",
     "general": "Gesamtansicht",
     "rooms": "Zimmer",
-    "villa": "Villa",
     "pool": "Pool & Strand",
     "flavours": "Aromen",
     "spa": "Spa & Wellness",
     "kidsclub": "Kinderclub",
     "entertainment": "Entertainment",
-    "bar":"Bar",
-    "lobby":"Lobby"
+    "bar": "Bar",
+    "lobby": "Lobby"
   },
-
   "CookiePopup": {
     "cookie": "Wir verwenden Cookies: ",
     "cookieText": "Wir nutzen eigene und Drittanbieter-Cookies, um Inhalte zu personalisieren und den Webverkehr zu analysieren.",
@@ -1970,63 +1918,59 @@
     "dropdown3": "Funktional",
     "dropdown4": "Targeting"
   },
-
-  "Explore":{
-    "header":"Routen, die Ihren Urlaub bereichern",
-    "title1":"Manavgat-Wasserfall",
-    "text1":"Nur 5 km von Titreyengöl entfernt liegt der Manavgat-Wasserfall, ein ruhiger Ort, an dem kühles Wasser auf üppiges Grün trifft. Ideal für Picknicks und entspannte Spaziergänge.",
-    "distance":"Entfernung" ,
-    "title2":"Antike Stadt Side",
-    "text2":"Etwa 7 km entfernt bietet die antike Stadt Side mit dem Apollon-Tempel und dem antiken Theater ein einzigartiges Erlebnis. Die Ruinen in Kombination mit dem Mittelmeerblick sind wirklich faszinierend.",
-    "title3":"Antikes Theater von Aspendos ",
-    "text3":"Rund 35 km von Titreyengöl entfernt befindet sich Aspendos mit einem der am besten erhaltenen römischen Theater der Welt. Die beeindruckende Architektur und Akustik machen es zu einem Muss für Geschichtsliebhaber.",
-    "title4":"Köprülü-Schlucht",
-    "text4":"Ungefähr 50 km entfernt ist die Köprülü-Schlucht perfekt für Rafting und Naturwanderungen. Dieser Nationalpark bietet Möglichkeiten zum Campen und Picknicken inmitten atemberaubender Natur.",
-    "title5":"Oymapınar-Stausee",
-    "text5":"Der 20 km entfernte Oymapınar-Stausee ist bekannt für seine atemberaubenden Ausblicke und Bootstouren. Besucher können Spaziergänge rund um den See genießen oder in lokalen Cafés entspannen.",
-    "title6":"Antike Stadt Seleukeia  ",
-    "text6":"Eingebettet in die Sorgun-Wälder, etwa 15 km von Titreyengöl entfernt, bietet Seleukeia eine ruhige historische Atmosphäre. Ideal für diejenigen, die eine friedliche Erkundung abseits der Massen suchen."
+  "Explore": {
+    "header": "Routen, die Ihren Urlaub bereichern",
+    "title1": "Manavgat-Wasserfall",
+    "text1": "Nur 5 km von Titreyengöl entfernt liegt der Manavgat-Wasserfall, ein ruhiger Ort, an dem kühles Wasser auf üppiges Grün trifft. Ideal für Picknicks und entspannte Spaziergänge.",
+    "distance": "Entfernung",
+    "title2": "Antike Stadt Side",
+    "text2": "Etwa 7 km entfernt bietet die antike Stadt Side mit dem Apollon-Tempel und dem antiken Theater ein einzigartiges Erlebnis. Die Ruinen in Kombination mit dem Mittelmeerblick sind wirklich faszinierend.",
+    "title3": "Antikes Theater von Aspendos ",
+    "text3": "Rund 35 km von Titreyengöl entfernt befindet sich Aspendos mit einem der am besten erhaltenen römischen Theater der Welt. Die beeindruckende Architektur und Akustik machen es zu einem Muss für Geschichtsliebhaber.",
+    "title4": "Köprülü-Schlucht",
+    "text4": "Ungefähr 50 km entfernt ist die Köprülü-Schlucht perfekt für Rafting und Naturwanderungen. Dieser Nationalpark bietet Möglichkeiten zum Campen und Picknicken inmitten atemberaubender Natur.",
+    "title5": "Oymapınar-Stausee",
+    "text5": "Der 20 km entfernte Oymapınar-Stausee ist bekannt für seine atemberaubenden Ausblicke und Bootstouren. Besucher können Spaziergänge rund um den See genießen oder in lokalen Cafés entspannen.",
+    "title6": "Antike Stadt Seleukeia  ",
+    "text6": "Eingebettet in die Sorgun-Wälder, etwa 15 km von Titreyengöl entfernt, bietet Seleukeia eine ruhige historische Atmosphäre. Ideal für diejenigen, die eine friedliche Erkundung abseits der Massen suchen."
   },
-
   "IconSection": {
     "Dikkat": "WICHTIGE HINWEISE ZU BEACHTEN",
-  "Icon1": {
-    "header1": "GOTTESHÄUSER",
-    "list1": "Es ist wichtig, dass Besucher angemessen gekleidet sind, in der Regel sollten Schultern und Knie bedeckt sein.",
-    "list2": "Frauen sollten beim Betreten ihr Haupt bedecken.",
-    "list3": "Das Betreten mit Schuhen ist nicht erlaubt.",
-    "list4": "Lautes Sprechen sollte vermieden werden und betende Menschen dürfen nicht gestört werden.",
-    "list5": "Obwohl Fotografieren in der Regel nicht verboten ist, sollten die erforderlichen Genehmigungen eingeholt werden."
-  },
-  "Icon2": {
-    "header1": "MUSEEN",
-    "list1": "Seien Sie leise, um andere Besucher nicht zu stören.",
-    "list2": "Überprüfen Sie die Fotoregeln des Museums am Eingang. Manche Exponate dürfen nicht fotografiert werden.",
-    "list3": "Artefakte dürfen nicht berührt werden.",
-    "list4": "Essen und Trinken ist verboten.",
-    "list5": "Behalten Sie Ihre Kinder unter Kontrolle."
-  },
-  "Icon3": {
-    "header1": "NATURGEBIETE",
-    "list1": "Handeln Sie mit Umweltbewusstsein, um Pflanzen und Tiere nicht zu schädigen.",
-    "list2": "Müll sollte eingesammelt und nichts Schädliches in der Natur zurückgelassen werden.",
-    "list3": "Feuer darf nur entzündet werden, wenn es ausdrücklich erlaubt ist.",
-    "list4": "Nutzen Sie ausgewiesene Campingplätze."
-  },
-  "Icon4": {
-    "header1": "JAGD",
-    "list1": "Erforderliche Lizenzen und Genehmigungen für die Jagd müssen eingeholt werden.",
-    "list2": "Die Jagdsaison muss eingehalten werden.",
-    "list3": "Die maximal erlaubte Anzahl von Tieren pro Tag darf nicht überschritten werden.",
-    "list4": "Geschützte Tiere dürfen keinesfalls gejagt werden."
-  },
-  "Icon5": {
-    "header1": "SCHUTZ VOR DER SONNE",
-    "list1": "Sie müssen Ihren Körper vor den hohen Temperaturen Antalyas schützen.",
-    "list2": "Verwenden Sie Sonnencreme mit mindestens LSF 50 zum Schutz vor UV-Strahlen.",
-    "list3": "Die Nichtverwendung von Sonnencreme kann ernsthafte Gesundheitsprobleme verursachen."
+    "Icon1": {
+      "header1": "GOTTESHÄUSER",
+      "list1": "Es ist wichtig, dass Besucher angemessen gekleidet sind, in der Regel sollten Schultern und Knie bedeckt sein.",
+      "list2": "Frauen sollten beim Betreten ihr Haupt bedecken.",
+      "list3": "Das Betreten mit Schuhen ist nicht erlaubt.",
+      "list4": "Lautes Sprechen sollte vermieden werden und betende Menschen dürfen nicht gestört werden.",
+      "list5": "Obwohl Fotografieren in der Regel nicht verboten ist, sollten die erforderlichen Genehmigungen eingeholt werden."
+    },
+    "Icon2": {
+      "header1": "MUSEEN",
+      "list1": "Seien Sie leise, um andere Besucher nicht zu stören.",
+      "list2": "Überprüfen Sie die Fotoregeln des Museums am Eingang. Manche Exponate dürfen nicht fotografiert werden.",
+      "list3": "Artefakte dürfen nicht berührt werden.",
+      "list4": "Essen und Trinken ist verboten.",
+      "list5": "Behalten Sie Ihre Kinder unter Kontrolle."
+    },
+    "Icon3": {
+      "header1": "NATURGEBIETE",
+      "list1": "Handeln Sie mit Umweltbewusstsein, um Pflanzen und Tiere nicht zu schädigen.",
+      "list2": "Müll sollte eingesammelt und nichts Schädliches in der Natur zurückgelassen werden.",
+      "list3": "Feuer darf nur entzündet werden, wenn es ausdrücklich erlaubt ist.",
+      "list4": "Nutzen Sie ausgewiesene Campingplätze."
+    },
+    "Icon4": {
+      "header1": "JAGD",
+      "list1": "Erforderliche Lizenzen und Genehmigungen für die Jagd müssen eingeholt werden.",
+      "list2": "Die Jagdsaison muss eingehalten werden.",
+      "list3": "Die maximal erlaubte Anzahl von Tieren pro Tag darf nicht überschritten werden.",
+      "list4": "Geschützte Tiere dürfen keinesfalls gejagt werden."
+    },
+    "Icon5": {
+      "header1": "SCHUTZ VOR DER SONNE",
+      "list1": "Sie müssen Ihren Körper vor den hohen Temperaturen Antalyas schützen.",
+      "list2": "Verwenden Sie Sonnencreme mit mindestens LSF 50 zum Schutz vor UV-Strahlen.",
+      "list3": "Die Nichtverwendung von Sonnencreme kann ernsthafte Gesundheitsprobleme verursachen."
+    }
   }
 }
-  
-
-  }

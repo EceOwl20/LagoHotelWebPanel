@@ -1,57 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Link } from '@/i18n/navigation';
+import { useParams, useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 
-export default function SideBar() {
-  const [user, setUser] = useState(null);
+const navigationItems = [
+  { href: "/panel/dashboard", label: "Dashboard" },
+  { href: "/panel/icerikler", label: "Sayfa Icerikleri" },
+  { href: "/panel/galeri", label: "Galeri" },
+  { href: "/panel/blog", label: "Blog" },
+];
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+export default function SideBar({ username }) {
+  const router = useRouter();
+  const params = useParams();
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.replace(`/${params.locale}/panel/login`);
+    router.refresh();
+  };
 
   return (
-    <aside className="w-64 bg-gray-100 min-h-screen p-6 border-r flex flex-col justify-between">
-      <div>
-        {user && (
-          <div className="text-center mb-6">
-            <img
-              src={
-                user.profileImage
-                  ? `http://localhost:5001${user.profileImage}`
-                  : "/default-avatar.png" // varsayılan görsel
-              }
-              alt="Profil"
-              className="w-20 h-20 rounded-full object-cover mx-auto"
-            />
-            <p className="mt-2 font-semibold">{user.name}</p>
-            <Link href="/panel/profil" className="text-sm text-blue-600 hover:underline">
-              Profili Görüntüle
-            </Link>
+    <aside className="flex min-h-screen w-full flex-col justify-between border-r border-stone-200 bg-stone-950 px-6 py-8 text-stone-100 md:w-72">
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <div className="text-xs uppercase tracking-[0.3em] text-stone-400">
+            Lago Panel
           </div>
-        )}
+          <div className="text-2xl font-semibold">Icerik Yonetimi</div>
+          <div className="text-sm text-stone-400">
+            Giris yapan kullanici: {username || "admin"}
+          </div>
+        </div>
 
-        <ul className="space-y-3">
-          <li><Link href="/panel/dashboard">📊 Dashboard</Link></li>
-          <li><Link href="/panel/kullanicilar">👥 Kullanıcılar</Link></li>
-          {user?.role === "admin" && (
-            <li><Link href="/panel/kullanicilar/yeni">➕ Yeni Kullanıcı</Link></li>
-          )}
-        </ul>
+        <nav className="space-y-2">
+          {navigationItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block rounded-xl border border-stone-800 px-4 py-3 text-sm transition hover:border-stone-600 hover:bg-stone-900"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
       </div>
 
       <button
-        onClick={() => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
-          window.location.href = "/panel/login";
-        }}
-        className="bg-red-500 text-white px-4 py-2 mt-10 rounded hover:bg-red-600"
+        type="button"
+        onClick={handleLogout}
+        className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20"
       >
-        🔓 Çıkış Yap
+        Cikis Yap
       </button>
     </aside>
   );

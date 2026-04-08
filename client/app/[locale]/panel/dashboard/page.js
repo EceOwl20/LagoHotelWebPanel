@@ -3,103 +3,115 @@
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState(null);
-  const [latestUser, setLatestUser] = useState(null);
-  const [user, setUser] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    setUser(currentUser);
+    const loadSummary = async () => {
+      try {
+        const [namespacesResponse, galleryResponse, postsResponse] = await Promise.all([
+          fetch("/api/admin/messages/namespaces", { cache: "no-store" }),
+          fetch("/api/admin/gallery", { cache: "no-store" }),
+          fetch("/api/admin/blog/posts", { cache: "no-store" }),
+        ]);
 
-    const fetchStats = async () => {
-        const token = localStorage.getItem("token");
-        try {
-          const res = await fetch("http://localhost:5001/api/users/stats", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-      
-          const contentType = res.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            const text = await res.text();
-            console.error("🔴 HTML döndü:", text.slice(0, 100));
-            throw new Error("Sunucudan geçersiz cevap geldi (JSON değil)");
-          }
-      
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || "İstatistik hatası");
-          setStats(data);
-        } catch (err) {
-          setError(err.message);
+        const namespacesPayload = await namespacesResponse.json();
+        const galleryPayload = await galleryResponse.json();
+        const postsPayload = await postsResponse.json();
+
+        if (!namespacesResponse.ok) {
+          throw new Error(namespacesPayload.error || "Icerik sayisi alinamadi.");
         }
-      };
 
-      const fetchLatestUser = async () => {
-        const token = localStorage.getItem("token");
-        try {
-          const res = await fetch("http://localhost:5001/api/users/latest", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-      
-          const contentType = res.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            const text = await res.text();
-            console.error("🔴 HTML döndü:", text.slice(0, 100));
-            throw new Error("Sunucudan geçersiz cevap geldi (JSON değil)");
-          }
-      
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || "Son kullanıcı hatası");
-          setLatestUser(data);
-        } catch (err) {
-          setError(err.message);
+        if (!galleryResponse.ok) {
+          throw new Error(galleryPayload.error || "Galeri bilgisi alinamadi.");
         }
-      };
 
-    fetchStats();
-    fetchLatestUser();
+        if (!postsResponse.ok) {
+          throw new Error(postsPayload.error || "Blog listesi alinamadi.");
+        }
+
+        const imageCount = galleryPayload.gallery.categories.reduce(
+          (total, category) => total + category.images.length,
+          0
+        );
+
+        setSummary({
+          namespaceCount: namespacesPayload.namespaces.length,
+          categoryCount: galleryPayload.gallery.categories.length,
+          imageCount,
+          postCount: postsPayload.posts.length,
+          latestPostTitle:
+            postsPayload.posts[0]?.translations?.tr?.title ||
+            postsPayload.posts[0]?.translations?.en?.title ||
+            "Henuz blog yazisi yok",
+        });
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    loadSummary();
   }, []);
 
   if (error) return <p className="text-red-500 p-6">{error}</p>;
 
-return (
-  <div className="p-6 space-y-6">
-    <h1 className="text-2xl font-bold">👋 Hoş geldin, {user?.name || "Kullanıcı"}!</h1>
-
-    {!stats ? (
-      <p className="text-gray-600">İstatistikler yükleniyor...</p>
-    ) : (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatCard title="👥 Toplam Kullanıcı" value={stats.total} />
-        <StatCard title="🧑‍💼 Admin Sayısı" value={stats.admins} />
-        <StatCard title="👷‍♂️ Personel Sayısı" value={stats.personnel || 0} />
+  return (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <p className="text-sm uppercase tracking-[0.3em] text-stone-500">
+          Dashboard
+        </p>
+        <h1 className="text-3xl font-semibold text-stone-900">
+          Dosya Tabanli Icerik Merkezi
+        </h1>
+        <p className="max-w-2xl text-sm text-stone-600">
+          Bu panel artik Mongo yerine proje icindeki JSON icerikleri ve
+          yuklenen dosyalari yonetiyor. Sayfa metinleri, galeri sekmeleri ve blog
+          yazilari ayni yerden kontrol edilebilir.
+        </p>
       </div>
-    )}
 
-    {latestUser ? (
-      <div className="bg-white border rounded-lg shadow p-6 mt-6">
-        <h2 className="text-xl font-semibold mb-2">🆕 Son Eklenen Kullanıcı</h2>
-        <p><strong>Ad:</strong> {latestUser.name}</p>
-        <p><strong>Email:</strong> {latestUser.email}</p>
-        <p><strong>Rol:</strong> {latestUser.role}</p>
-      </div>
-    ) : (
-      <p className="text-gray-600">Son kullanıcı bilgisi yükleniyor...</p>
-    )}
-  </div>
-);
+      {!summary ? (
+        <div className="rounded-2xl border border-stone-200 bg-white p-6 text-sm text-stone-600 shadow-sm">
+          Ozet bilgileri yukleniyor...
+        </div>
+      ) : (
+        <>
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <StatCard title="Mesaj Namespace" value={summary.namespaceCount} />
+            <StatCard title="Galeri Kategori" value={summary.categoryCount} />
+            <StatCard title="Galeri Gorsel" value={summary.imageCount} />
+            <StatCard title="Blog Yazisi" value={summary.postCount} />
+          </div>
+
+          <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-semibold text-stone-900">
+              Son Durum
+            </h2>
+            <p className="mt-3 text-sm text-stone-600">
+              En guncel blog basligi:{" "}
+              <span className="font-medium text-stone-900">
+                {summary.latestPostTitle}
+              </span>
+            </p>
+            <p className="mt-2 text-sm text-stone-600">
+              Siradaki mantikli adim; once `Sayfa Icerikleri` ekranindan ceviri
+              namespace’lerini yonetmek, sonra `Galeri` ve `Blog` modullerini
+              aktif kullanmaya baslamak.
+            </p>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 function StatCard({ title, value }) {
   return (
-    <div className="bg-white border rounded-lg shadow p-6">
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="text-3xl font-bold text-blue-700 mt-2">{value}</p>
+    <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+      <p className="text-sm text-stone-500">{title}</p>
+      <p className="mt-2 text-3xl font-bold text-stone-900">{value}</p>
     </div>
   );
 }

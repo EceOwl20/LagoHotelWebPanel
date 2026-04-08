@@ -1,0 +1,37 @@
+{
+  "slug": "lago-hotel-panel-baslangici",
+  "status": "published",
+  "coverImage": "/uploads/blog/panel-baslangic.webp",
+  "publishedAt": "2026-04-08T09:00:00.000Z",
+  "updatedAt": "2026-04-08T12:47:00.204Z",
+  "translations": {
+    "tr": {
+      "title": "Lago Hotel Icerik Paneli Baslangici",
+      "excerpt": "Yeni panel altyapisi ile sayfa icerikleri, galeri sekmeleri ve blog yazilari artik dosya tabanli olarak yonetilebiliyor.",
+      "content": "Lago Hotel web projesi icin yeni bir icerik yonetim adimi baslattik.\n\nBu yeni yapi sayesinde sayfa metinleri mevcut ceviri JSON dosyalari uzerinden panelden guncellenebiliyor. Ayni zamanda galeri sekmelerine gorsel ekleme ve blog yazisi olusturma gibi ihtiyaclar tek merkezde toplanmis oluyor.\n\nBir sonraki adimlarda daha fazla sayfa, daha zengin blog kartlari ve medya yonetimi detaylarini birlikte genisletecegiz.",
+      "seoTitle": "Lago Hotel Icerik Paneli Baslangici",
+      "seoDescription": "Lago Hotel panelinde sayfa icerikleri, galeri ve blog yonetimi icin dosya tabanli yeni altyapi."
+    },
+    "en": {
+      "title": "Getting Started with the Lago Hotel Content Panel",
+      "excerpt": "The new panel foundation now manages page copy, gallery tabs and blog entries through a file-based workflow.",
+      "content": "We have started a new content management phase for the Lago Hotel web project.\n\nWith this new setup, page copy can be updated directly from the panel through the existing translation JSON files. Gallery tab uploads and blog post creation are also gathered under the same roof.\n\nIn the next steps, we will expand this foundation with richer page coverage, improved blog cards and stronger media management.",
+      "seoTitle": "Getting Started with the Lago Hotel Content Panel",
+      "seoDescription": "A new file-based admin foundation for page copy, gallery assets and blog content at Lago Hotel."
+    },
+    "de": {
+      "title": "Start des Lago Hotel Content Panels",
+      "excerpt": "Das neue Panel verwaltet Seiteninhalte, Galerie-Tabs und Blogbeitraege jetzt dateibasiert.",
+      "content": "Fuer das Lago Hotel Webprojekt haben wir eine neue Phase des Content-Managements gestartet.\n\nMit dieser Struktur koennen Seitentexte direkt ueber das Panel und die vorhandenen Uebersetzungsdateien aktualisiert werden. Auch Galerie-Uploads und neue Blogbeitraege laufen nun ueber dieselbe Zentrale.\n\nIn den naechsten Schritten erweitern wir dieses Fundament um mehr Seiten, bessere Blogkarten und staerkere Medienverwaltung.",
+      "seoTitle": "Start des Lago Hotel Content Panels",
+      "seoDescription": "Neue dateibasierte Admin-Struktur fuer Seiteninhalte, Galerie und Blog beim Lago Hotel."
+    },
+    "ru": {
+      "title": "Запуск панели контента Lago Hotel",
+      "excerpt": "Новая панель теперь управляет текстами страниц, вкладками галереи и блогом на файловой основе.",
+      "content": "Для веб-проекта Lago Hotel мы запустили новый этап управления контентом.\n\nТеперь тексты страниц можно обновлять через панель, используя существующие JSON-файлы переводов. Загрузка изображений в галерею и создание новых записей блога также собраны в одном месте.\n\nНа следующих этапах мы расширим эту основу, добавив больше страниц, улучшенные карточки блога и более сильное управление медиа.",
+      "seoTitle": "Запуск панели контента Lago Hotel",
+      "seoDescription": "Новая файловая админ-структура для текстов страниц, галереи и блога Lago Hotel."
+    }
+  }
+}

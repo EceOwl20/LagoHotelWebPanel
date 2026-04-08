@@ -193,6 +193,13 @@ export const routing = defineRouting({
       de: "/nachrichten",
       ru: "/novosti",
     },
+
+    "/news/[slug]": {
+      en: "/news/[slug]",
+      tr: "/haberler/[slug]",
+      de: "/nachrichten/[slug]",
+      ru: "/novosti/[slug]",
+    },
   
     "/ourpolicies": {
       en: "/our-policies",

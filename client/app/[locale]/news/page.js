@@ -1,99 +1,102 @@
-import React from 'react'
-import MainBanner2 from '../GeneralComponents/MainBanner2'
-import mainImg from "./images/mainfoto.webp"
-import MissionVisionSection from '../about/components/MissionVisionSection'
-import rightImg from "../about/images/sag.webp"
-import leftImg from "./images/sol1.webp"
-import new1 from "../restaurants/despinarestaurant/images/SRF_2325.jpg"
-import new2 from "./images/news2.webp"
-import new3 from "./images/news3.webp"
-import new4 from "../special/images/ikili1.webp"
-import new5 from "./images/waterfall.jpeg"
-import new6 from "./images/news6.webp"
-import new7 from "../entertainment/images/beachvoley.webp"
-import new8 from "../gallery/images/genel/SRF_5774.webp"
-import new9 from "./images/news9.webp"
-import Beach5 from '../beachpools/Components/Beach5'
-import ContactSection2 from '../GeneralComponents/Contact/ContactSection2'
-import {useTranslations} from 'next-intl';
+import Image from "next/image";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";
+import MainBanner2 from "../GeneralComponents/MainBanner2";
+import mainImg from "./images/mainfoto.webp";
+import { listBlogPosts } from "@/lib/admin/blog";
 
-const newsLinks=["/barcafes", "/spawellness","/kidsclub", "/special","/sport", "/special","/restaurants", "/restaurants","/restaurants"]
-
-const Page = () => {
-  const t = useTranslations('BlogNews');
-  const t2 = useTranslations('BlogNews.InfoSection');
-  const t3 = useTranslations('BlogNews.BlogList');
-
-const texts=[t2("subtitle"),t2("title"),t2("text")]
-const texts2=[t2("secsubtitle1"),t2("sectitle1"),t2("sectext1")]
-const texts3=[t2("secsubtitle2"),t2("sectitle2"),t2("sectext2")]
-const documentSections = t2.raw("documentSections");
-
-const newsItems = [
-  {
-    src: new1,
-    subtitle:t3("blogsubtitle1"),
-    title: t3("blogtitle1"),
-    description: t3("blogtext1"),
-  },
-  {
-    src: new2,
-    subtitle:t3("blogsubtitle2"),
-    title: t3("blogtitle2"),
-    description: t3("blogtext2"),
-  },
-  {
-    src: new3,
-    subtitle:t3("blogsubtitle3"),
-    title: t3("blogtitle3"),
-    description: t3("blogtext3"),
-  },
-  {
-    src: new4,
-    subtitle:t3("blogsubtitle4"),
-    title: t3("blogtitle4"),
-    description: t3("blogtext4"),
-  },
-  {
-    src: new5,
-    subtitle:t3("blogsubtitle5"),
-    title: t3("blogtitle5"),
-    description: t3("blogtext5"),
-  },
-  {
-    src: new6,
-    subtitle:t3("blogsubtitle6"),
-    title: t3("blogtitle6"),
-    description: t3("blogtext6"),
-  },
-  {
-    src: new7,
-    subtitle:t3("blogsubtitle7"),
-    title: t3("blogtitle7"),
-    description: t3("blogtext7"),
-  },
-  {
-    src: new8,
-    subtitle:t3("blogsubtitle8"),
-    title: t3("blogtitle8"),
-    description: t3("blogtext8"),
-  },
-  {
-    src: new9,
-    subtitle:t3("blogsubtitle9"),
-    title: t3("blogtitle9"),
-    description: t3("blogtext9"),
-  },
-]
-
+function pickTranslation(post, locale) {
   return (
-    <div className='flex flex-col items-center justify-center gap-[50px] lg:gap-[100px] bg-[#fbfbfb]'>
-     <MainBanner2 img={mainImg} span={t("subtitle")} header={t ("title")}/> 
-     <MissionVisionSection leftImg={leftImg} rightImg={rightImg} texts={texts} texts2={texts2} texts3={texts3} showLink={true} link1="/" link2="/" buttonText={t3("buttonText")} documentSections={documentSections}/>
-     <Beach5 span="" header="" text="" poolItems={newsItems} showLink={true} links={newsLinks} buttonText={t3("buttonText")}/>
-     <ContactSection2/>
-    </div>
-  )
+    post.translations?.[locale] ||
+    post.translations?.tr ||
+    post.translations?.en ||
+    post.translations?.de ||
+    post.translations?.ru
+  );
 }
 
-export default Page
+export default async function NewsPage({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations("BlogNews");
+  const posts = (await listBlogPosts()).filter((post) => post.status === "published");
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] lg:gap-[100px]">
+      <MainBanner2 img={mainImg} span={t("subtitle")} header={t("title")} />
+
+      <section className="w-full max-w-[1240px] px-4 md:px-8">
+        <div className="mb-10 max-w-2xl">
+          <p className="text-sm uppercase tracking-[0.3em] text-stone-500">
+            Lago Journal
+          </p>
+          <h1 className="mt-3 text-4xl font-medium text-stone-900">
+            {t("title")}
+          </h1>
+          <p className="mt-4 text-sm leading-7 text-stone-600">
+            Panelden eklenen blog yazilari burada listelenir. Her yazi 4 dil icin
+            ayri icerik alanlariyla yonetilir.
+          </p>
+        </div>
+
+        {posts.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {posts.map((post) => {
+              const translation = pickTranslation(post, locale);
+
+              return (
+                <article
+                  key={post.slug}
+                  className="overflow-hidden rounded-[28px] border border-stone-200 bg-white shadow-sm"
+                >
+                  <Link
+                    href={{ pathname: "/news/[slug]", params: { slug: post.slug } }}
+                    className="block"
+                  >
+                    <div className="relative h-64 w-full overflow-hidden">
+                      <Image
+                        src={post.coverImage || mainImg}
+                        alt={translation.title}
+                        fill
+                        className="object-cover transition duration-500 hover:scale-105"
+                        unoptimized={typeof post.coverImage === "string"}
+                      />
+                    </div>
+                  </Link>
+
+                  <div className="space-y-4 p-6">
+                    <div className="text-xs uppercase tracking-[0.25em] text-stone-500">
+                      {new Date(post.publishedAt).toLocaleDateString(locale)}
+                    </div>
+                    <h2 className="text-2xl font-medium text-stone-900">
+                      <Link
+                        href={{ pathname: "/news/[slug]", params: { slug: post.slug } }}
+                      >
+                        {translation.title}
+                      </Link>
+                    </h2>
+                    <p className="line-clamp-4 text-sm leading-7 text-stone-600">
+                      {translation.excerpt}
+                    </p>
+                    <Link
+                      href={{ pathname: "/news/[slug]", params: { slug: post.slug } }}
+                      className="inline-flex rounded-full border border-stone-300 px-4 py-2 text-sm font-medium text-stone-800 transition hover:bg-stone-900 hover:text-white"
+                    >
+                      Yaziyi Ac
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-stone-200 bg-white px-6 py-10 text-sm text-stone-500">
+            Henuz yayinlanmis blog yazisi bulunmuyor.
+          </div>
+        )}
+      </section>
+
+      <ContactSection2 />
+    </div>
+  );
+}

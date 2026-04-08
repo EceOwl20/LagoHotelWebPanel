@@ -1,12 +1,6 @@
-import React from 'react'
-import Register from "./Register.jsx"
+import { redirect } from "next/navigation";
 
-const page = () => {
-  return (
-    <div>
-        <Register />
-    </div>
-  )
+export default async function PanelRegisterRedirect({ params }) {
+  const { locale } = await params;
+  redirect(`/${locale}/panel/dashboard`);
 }
-
-export default page

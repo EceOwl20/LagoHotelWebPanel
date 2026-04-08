@@ -1,5 +1,7 @@
 // app/api/contact/route.js
 import nodemailer from 'nodemailer';
+import { NextResponse } from 'next/server';
+import { consumeRateLimit, getClientIp } from '@/lib/admin/security';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -13,10 +15,28 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req) {
   try {
+    const rateLimit = consumeRateLimit({
+      key: `contact:${getClientIp(req)}`,
+      limit: 10,
+      windowMs: 60 * 60 * 1000,
+    });
+
+    if (!rateLimit.ok) {
+      return NextResponse.json(
+        { error: 'Cok fazla mesaj gonderildi. Lutfen daha sonra tekrar deneyin.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimit.retryAfterSeconds),
+          },
+        }
+      );
+    }
+
     const { name, email, message } = await req.json();
     
     // Validation
-    if (!name  || !message) {
+    if (!name  || !message || name.length > 120 || message.length > 5000) {
       return new Response(JSON.stringify({ error: 'Zorunlu alanları doldurunuz' }), { 
         status: 400 
       });

@@ -6,6 +6,8 @@ import { routing } from "@/i18n/routing";
 import { getMessages, setRequestLocale } from 'next-intl/server'   // ← setRequestLocale ekledik
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
 
+export const dynamic = "force-dynamic";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
