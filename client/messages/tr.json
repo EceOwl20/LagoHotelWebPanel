@@ -1963,5 +1963,19 @@
       "list2": "UV ışınlarından korunmak için en az 50 faktöriyel güneş kremleri kullanılmalıdır.",
       "list3": "Güneş kremi kullanmamak ciddi rahatsızlıklara sebebiyet verebilir."
     }
+  },
+  "Certificates": {
+    "hero": {
+      "eyebrow": "Lago Hotel",
+      "title": "Sertifikalar"
+    },
+    "feature": {
+      "eyebrow": "Lago Hotel sertifikası",
+      "title": "Sürdürülebilir Turizm Doğrulaması",
+      "text": ""
+    },
+    "gallery": {
+      "title": "Sertifikalar"
+    }
   }
 }

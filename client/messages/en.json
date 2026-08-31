@@ -1964,5 +1964,19 @@
       "list2": "Use sunscreen with at least SPF 50 to protect against UV rays.",
       "list3": "Not using sunscreen may cause serious health issues."
     }
+  },
+  "Certificates": {
+    "hero": {
+      "eyebrow": "Lago Hotel",
+      "title": "Certificates"
+    },
+    "feature": {
+      "eyebrow": "Lago Hotel certificate",
+      "title": "Sustainable Tourism Verification",
+      "text": ""
+    },
+    "gallery": {
+      "title": "Certificates"
+    }
   }
 }

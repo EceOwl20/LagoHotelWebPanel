@@ -19,7 +19,14 @@ function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
 }
 
-export default function PageImagePicker({ label, value, onChange, hint }) {
+export default function PageImagePicker({
+  label,
+  value,
+  onChange,
+  hint,
+  allowClear = true,
+  uploadFolder = "pages",
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [gallery, setGallery] = useState(null);
   const [activeCategory, setActiveCategory] = useState("general");
@@ -86,7 +93,7 @@ export default function PageImagePicker({ label, value, onChange, hint }) {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", "pages");
+      formData.append("folder", uploadFolder);
 
       const response = await fetch("/api/admin/upload", {
         method: "POST",
@@ -133,7 +140,7 @@ export default function PageImagePicker({ label, value, onChange, hint }) {
             {value || "Görsel yolu oluşmadı"}
           </div>
           <div className="flex flex-wrap gap-2">
-            {value ? (
+            {value && allowClear ? (
               <button
                 type="button"
                 onClick={() => onChange("")}

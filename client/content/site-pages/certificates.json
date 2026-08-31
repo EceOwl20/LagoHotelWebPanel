@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "certificates",
+  "hero": {
+    "image": "/uploads/pages/certificates/certificateBanner.jpg"
+  },
+  "feature": {
+    "image": "/uploads/pages/certificates/certificate1en.png"
+  },
+  "gallery": {
+    "images": [
+      {
+        "id": "certificate-tr",
+        "src": "/uploads/pages/certificates/certificate1tr.png",
+        "order": 0
+      },
+      {
+        "id": "certificate-en",
+        "src": "/uploads/pages/certificates/certificate1en.png",
+        "order": 1
+      },
+      {
+        "id": "environmental-en",
+        "src": "/uploads/pages/certificates/certificate1enEnvironmental.png",
+        "order": 2
+      },
+      {
+        "id": "environmental-tr",
+        "src": "/uploads/pages/certificates/certificate1trEnvironmental.png",
+        "order": 3
+      },
+      {
+        "id": "certificate-2",
+        "src": "/uploads/pages/certificates/certificate2.png",
+        "order": 4
+      },
+      {
+        "id": "certificate-3",
+        "src": "/uploads/pages/certificates/certificate3.png",
+        "order": 5
+      },
+      {
+        "id": "certificate-4",
+        "src": "/uploads/pages/certificates/certificate4.jpeg",
+        "order": 6
+      },
+      {
+        "id": "certificate-5",
+        "src": "/uploads/pages/certificates/certificate5.jpeg",
+        "order": 7
+      },
+      {
+        "id": "certificate-6",
+        "src": "/uploads/pages/certificates/certificate6.jpeg",
+        "order": 8
+      },
+      {
+        "id": "certificate-7",
+        "src": "/uploads/pages/certificates/certificate7.jpeg",
+        "order": 9
+      }
+    ]
+  },
+  "updatedAt": null
+}

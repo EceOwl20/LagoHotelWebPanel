@@ -1,8 +1,10 @@
 import React from 'react'
 
 const MainBanner2 = ({img, span, header, opacity}) => {
+  const imageSrc = typeof img === "string" ? img : img?.src;
+
   return (
-    <div className='flex w-screen items-center justify-center min-h-[calc(70vh)] bg-center bg-cover relative'  style={{ backgroundImage: `url(${img.src})` }} >
+    <div className='flex w-screen items-center justify-center min-h-[calc(70vh)] bg-center bg-cover relative'  style={{ backgroundImage: `url(${imageSrc})` }} >
       {opacity && (
         <div className='absolute bg-lagoBlack/30 inset-0 z-[1]'></div>
       )}

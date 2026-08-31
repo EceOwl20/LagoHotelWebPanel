@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
+import CertificateMediaEditor from "./CertificateMediaEditor";
 
 export default function PanelContentPage() {
   const [namespaces, setNamespaces] = useState([]);
@@ -188,6 +189,8 @@ export default function PanelContentPage() {
           {bundle ? (
             <div className="space-y-5">
               <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
+
+              {selectedNamespace === "Certificates" ? <CertificateMediaEditor /> : null}
 
               <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
                 <button
