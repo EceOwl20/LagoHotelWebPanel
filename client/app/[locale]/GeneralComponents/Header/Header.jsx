@@ -18,8 +18,9 @@ import { RxCross2 } from "react-icons/rx";
 import panda from "./Icons/panda.png"
 import LangSwitcher from "@/LangSwitcher";
 import {useTranslations} from 'next-intl';
+import DynamicPageLinks from "./DynamicPageLinks";
 
-export default function Header() {
+export default function Header({ dynamicNavigation = [] }) {
   const t = useTranslations('Header');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -355,6 +356,10 @@ export default function Header() {
             >
                {t('ourhotel')}
             </Link>
+            <DynamicPageLinks
+              items={dynamicNavigation}
+              className="block w-[70%] border-b border-b-[#A6A6A6] py-[11px] font-normal leading-normal text-white md:w-[90%] lg:max-w-[360.114px] lg:border-none"
+            />
             <Link
               href="/connect"
               className="block text-white font-normal leading-normal w-[70%]  md:w-[90%] lg:max-w-[360.114px] py-[11px] border-b border-b-[#A6A6A6] lg:border-none"

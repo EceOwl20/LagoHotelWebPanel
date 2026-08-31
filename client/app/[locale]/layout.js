@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { getMessages, setRequestLocale } from 'next-intl/server'   // ← setRequestLocale ekledik
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
+import { listPublishedPageNavigation } from "@/lib/admin/pages";
 
 export const dynamic = "force-dynamic";
 
@@ -43,13 +44,14 @@ export default async function RootLayout({ children, params }) {
   
     // 2) Ardından mesajları yükleyip client’a iletebiliriz
     const messages = await getMessages()
+    const dynamicNavigation = await listPublishedPageNavigation(locale)
 
 
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ClientLayoutWrapper>
+          <ClientLayoutWrapper dynamicNavigation={dynamicNavigation}>
             {children}
           </ClientLayoutWrapper>
         </NextIntlClientProvider>

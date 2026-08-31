@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 
 const navigationItems = [
   { href: "/panel/dashboard", label: "Dashboard" },
+  { href: "/panel/sayfalar", label: "Sayfalar" },
   { href: "/panel/icerikler", label: "Sayfa Icerikleri" },
   { href: "/panel/galeri", label: "Galeri" },
   { href: "/panel/blog", label: "Blog" },

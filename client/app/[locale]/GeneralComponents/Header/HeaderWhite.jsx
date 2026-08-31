@@ -18,8 +18,9 @@ import Form from "../Form";
 import { RxCross2 } from "react-icons/rx";
 import LangSwitcher from '@/LangSwitcher';
 import {useTranslations} from 'next-intl';
+import DynamicPageLinks from "./DynamicPageLinks";
 
-export default function HeaderWhite() {
+export default function HeaderWhite({ dynamicNavigation = [] }) {
   const t = useTranslations('Header');
     // 1 ekran scrolldan sonra headerin gözükmesi için
     const [showHeader, setShowHeader] = useState(false);
@@ -343,6 +344,10 @@ export default function HeaderWhite() {
           <Link href="/about" className="block text-lagoBlack font-normal leading-normal w-[70%] md:w-[90%] lg:max-w-[360.114px] py-[11px] border-b border-b-[#000000] lg:border-none">
           {t('ourhotel')}
           </Link>
+          <DynamicPageLinks
+            items={dynamicNavigation}
+            className="block w-[70%] border-b border-b-[#000000] py-[11px] font-normal leading-normal text-lagoBlack md:w-[90%] lg:max-w-[360.114px] lg:border-none"
+          />
           <Link href="/connect" className="block text-lagoBlack font-normal leading-normal w-[70%] md:w-[90%] lg:max-w-[360.114px] py-[11px] border-b border-b-[#000000] lg:border-none">
           {t('contact')}
           </Link>
