@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import {
+  deletePageDraft,
   readPageDraft,
   setPagePublicationStatus,
   updatePageDraft,
@@ -113,6 +115,53 @@ export async function PATCH(request, { params }) {
   } catch (error) {
     return NextResponse.json(
       { error: error.message || "Sayfanın yayın durumu değiştirilemedi." },
+      { status: error.status || 500 }
+    );
+  }
+}
+
+export async function DELETE(request, { params }) {
+  const session = await getAdminSession();
+
+  if (!session) {
+    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
+  }
+
+  try {
+    assertSameOrigin(request);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+  }
+
+  const rateLimit = consumeRateLimit({
+    key: `admin-write:page-delete:${getClientIp(request)}`,
+    limit: 20,
+    windowMs: 60 * 1000,
+  });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Çok hızlı istek gönderildi. Lütfen tekrar deneyin." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } }
+    );
+  }
+
+  try {
+    const { id } = await params;
+    const deletedPage = await deletePageDraft(id);
+
+    Object.entries(deletedPage.slugs || {}).forEach(([locale, slug]) => {
+      if (slug) {
+        revalidatePath(`/${locale}/${slug}`);
+      }
+
+      revalidatePath(`/${locale}`, "layout");
+    });
+
+    return NextResponse.json({ deletedPage });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Dinamik sayfa silinemedi." },
       { status: error.status || 500 }
     );
   }

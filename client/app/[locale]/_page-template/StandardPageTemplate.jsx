@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";
+import DynamicPageCarousel from "./DynamicPageCarousel";
 
 function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
@@ -140,9 +141,142 @@ function ImageTextSection({ section, locale }) {
   );
 }
 
+function GallerySection({ section, locale }) {
+  const content = getLocalizedContent(section.translations, locale);
+  const images = [...(section.images || [])].sort(
+    (left, right) => (left.order ?? 0) - (right.order ?? 0)
+  );
+
+  return (
+    <section className="flex w-[90%] max-w-[1400px] flex-col gap-8 text-lagoBlack">
+      <div className="flex max-w-4xl flex-col gap-4">
+        <Eyebrow>{content.eyebrow}</Eyebrow>
+        {content.title ? (
+          <h2 className="font-marcellus text-[32px] leading-[120%] md:text-[42px] lg:text-[52px]">
+            {content.title}
+          </h2>
+        ) : null}
+        {content.text ? (
+          <p className="whitespace-pre-line font-jost text-[15px] leading-7 text-stone-600 md:text-[17px]">
+            {content.text}
+          </p>
+        ) : null}
+      </div>
+
+      {images.length > 0 ? (
+        <div className="flex snap-x gap-4 overflow-x-auto pb-4">
+          {images.map((image) => {
+            const imageContent = getLocalizedContent(image.translations, locale);
+
+            return (
+              <div
+                key={image.id}
+                className="relative aspect-[4/3] min-w-[82%] snap-start overflow-hidden bg-stone-200 sm:min-w-[55%] lg:min-w-[31%]"
+              >
+                <Image
+                  src={image.src}
+                  alt={imageContent.imageAlt || ""}
+                  fill
+                  unoptimized={isGif(image.src)}
+                  sizes="(min-width: 1024px) 31vw, (min-width: 640px) 55vw, 82vw"
+                  className="object-cover"
+                />
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="rounded-xl border border-dashed border-stone-300 bg-stone-100 p-8 text-center font-jost text-sm text-stone-500">
+          Galeri görselleri henüz eklenmedi.
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CarouselSection({ section, locale }) {
+  const content = getLocalizedContent(section.translations, locale);
+  const images = [...(section.images || [])].sort(
+    (left, right) => (left.order ?? 0) - (right.order ?? 0)
+  );
+
+  return (
+    <section className="flex w-[90%] max-w-[1400px] flex-col gap-8 text-lagoBlack">
+      <div className="flex max-w-4xl flex-col gap-4">
+        <Eyebrow>{content.eyebrow}</Eyebrow>
+        {content.title ? (
+          <h2 className="font-marcellus text-[32px] leading-[120%] md:text-[42px] lg:text-[52px]">
+            {content.title}
+          </h2>
+        ) : null}
+        {content.text ? (
+          <p className="whitespace-pre-line font-jost text-[15px] leading-7 text-stone-600 md:text-[17px]">
+            {content.text}
+          </p>
+        ) : null}
+      </div>
+
+      {images.length > 0 ? (
+        <DynamicPageCarousel images={images} locale={locale} />
+      ) : (
+        <div className="rounded-xl border border-dashed border-stone-300 bg-stone-100 p-8 text-center font-jost text-sm text-stone-500">
+          Carousel görselleri henüz eklenmedi.
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CallToActionSection({ section, locale }) {
+  const content = getLocalizedContent(section.translations, locale);
+
+  return (
+    <section className="relative flex min-h-[460px] w-[90%] max-w-[1400px] items-center justify-center overflow-hidden bg-stone-800 px-6 py-20 text-center text-white">
+      {section.image ? (
+        <Image
+          src={section.image}
+          alt={content.imageAlt || ""}
+          fill
+          unoptimized={isGif(section.image)}
+          sizes="90vw"
+          className="object-cover"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-stone-700 to-stone-950" />
+      )}
+      {section.overlay !== false ? <div className="absolute inset-0 bg-lagoBlack/45" /> : null}
+
+      <div className="relative z-10 flex w-full max-w-3xl flex-col items-center gap-5">
+        <Eyebrow>{content.eyebrow}</Eyebrow>
+        {content.title ? (
+          <h2 className="font-marcellus text-[34px] leading-[120%] md:text-[46px] lg:text-[58px]">
+            {content.title}
+          </h2>
+        ) : null}
+        {content.text ? (
+          <p className="whitespace-pre-line font-jost text-[15px] leading-7 text-white/85 md:text-[17px]">
+            {content.text}
+          </p>
+        ) : null}
+        {content.buttonText && content.buttonHref ? (
+          <Link
+            href={content.buttonHref}
+            className="mt-2 border border-white px-7 py-3 font-jost text-sm font-medium uppercase tracking-wide text-white transition hover:bg-white hover:text-lagoBlack"
+          >
+            {content.buttonText}
+          </Link>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 const SECTION_COMPONENTS = {
   intro: IntroSection,
   imageText: ImageTextSection,
+  gallery: GallerySection,
+  carousel: CarouselSection,
+  callToAction: CallToActionSection,
 };
 
 export default function StandardPageTemplate({ page, locale, preview = false }) {

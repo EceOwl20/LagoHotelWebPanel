@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
 
 export default function PagesAdminPage() {
+  const router = useRouter();
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pageToDelete, setPageToDelete] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     const loadPages = async () => {
@@ -30,6 +33,36 @@ export default function PagesAdminPage() {
     loadPages();
   }, []);
 
+  const handleDelete = async () => {
+    if (!pageToDelete) {
+      return;
+    }
+
+    setDeletingId(pageToDelete.id);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/admin/pages/${pageToDelete.id}`, {
+        method: "DELETE",
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Dinamik sayfa silinemedi.");
+      }
+
+      setPages((currentPages) =>
+        currentPages.filter((page) => page.id !== pageToDelete.id)
+      );
+      setPageToDelete(null);
+      router.refresh();
+    } catch (deleteError) {
+      setError(deleteError.message);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -37,8 +70,8 @@ export default function PagesAdminPage() {
           <p className="text-sm uppercase tracking-[0.3em] text-stone-500">Sayfalar</p>
           <h1 className="text-3xl font-semibold text-stone-900">Dinamik sayfa taslakları</h1>
           <p className="max-w-3xl text-sm leading-6 text-stone-600">
-            Standart şablonla hazırlanan kayıtlar burada listelenir. Bu taslaklar henüz
-            public sitede yayınlanmaz ve header menüsüne eklenmez.
+            Standart şablonla panelden oluşturulan dinamik sayfalar burada listelenir;
+            düzenlenebilir, yayınlanabilir veya onay alınarak silinebilir.
           </p>
         </div>
 
@@ -131,13 +164,20 @@ export default function PagesAdminPage() {
                 Son güncelleme: {new Date(page.updatedAt).toLocaleString("tr-TR")}
               </p>
 
-              <div className="mt-5 border-t border-stone-200 pt-4">
+              <div className="mt-5 flex flex-wrap gap-3 border-t border-stone-200 pt-4">
                 <Link
                   href={`/panel/sayfalar/${page.id}`}
                   className="inline-flex rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-stone-50"
                 >
                   Taslağı Düzenle
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => setPageToDelete(page)}
+                  className="inline-flex rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-100"
+                >
+                  Sayfayı Sil
+                </button>
               </div>
             </article>
           ))}
@@ -146,8 +186,52 @@ export default function PagesAdminPage() {
 
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
         Yayınlanan ve menü görünürlüğü açık olan sayfalar header menüsüne otomatik eklenir.
-        Sayfa silme işlemi henüz aktif değildir.
+        Buradaki silme işlemi yalnızca panelden oluşturulan dinamik sayfaları kapsar.
       </div>
+
+      {pageToDelete ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-page-title"
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 p-4"
+        >
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="text-xs font-medium uppercase tracking-[0.25em] text-rose-600">
+              Dinamik sayfayı sil
+            </div>
+            <h2 id="delete-page-title" className="mt-2 text-2xl font-semibold text-stone-900">
+              Emin misiniz?
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-stone-600">
+              <span className="font-semibold text-stone-900">{pageToDelete.title}</span>{" "}
+              sayfasının kaydı kalıcı olarak silinecek. Sayfa yayındaysa public adresleri
+              kapanacak ve header bağlantısı otomatik kaldırılacak.
+            </p>
+            <p className="mt-3 rounded-xl bg-stone-100 p-3 text-xs leading-5 text-stone-600">
+              Sayfanın kullandığı yüklenmiş görsel dosyaları silinmeyecektir.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setPageToDelete(null)}
+                disabled={Boolean(deletingId)}
+                className="rounded-xl border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-50"
+              >
+                Vazgeç
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={Boolean(deletingId)}
+                className="rounded-xl bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {deletingId ? "Siliniyor..." : "Evet, Sayfayı Sil"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

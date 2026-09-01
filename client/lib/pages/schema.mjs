@@ -2,7 +2,13 @@ export const PAGE_SCHEMA_VERSION = 1;
 export const PAGE_TEMPLATE = "standard";
 export const PAGE_LOCALES = ["tr", "en", "de", "ru"];
 export const PAGE_STATUSES = ["draft", "published"];
-export const PAGE_SECTION_TYPES = ["intro", "imageText"];
+export const PAGE_SECTION_TYPES = [
+  "intro",
+  "imageText",
+  "gallery",
+  "carousel",
+  "callToAction",
+];
 
 const SLUG_PATTERN = /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u;
 
@@ -60,6 +66,88 @@ function createImageTextSection(idFactory, imagePosition) {
   };
 }
 
+function createGallerySection(idFactory) {
+  return {
+    id: idFactory("gallery"),
+    type: "gallery",
+    enabled: true,
+    images: [],
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+    })),
+  };
+}
+
+function createCarouselSection(idFactory) {
+  return {
+    id: idFactory("carousel"),
+    type: "carousel",
+    enabled: true,
+    images: [],
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+    })),
+  };
+}
+
+function createCallToActionSection(idFactory) {
+  return {
+    id: idFactory("call-to-action"),
+    type: "callToAction",
+    enabled: true,
+    image: "",
+    overlay: true,
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+      imageAlt: "",
+      buttonText: "",
+      buttonHref: "",
+    })),
+  };
+}
+
+export function createPageGalleryImage(src = "", { idFactory = createId } = {}) {
+  return {
+    id: idFactory("gallery-image"),
+    src,
+    order: 0,
+    translations: createLocalizedValue(() => ({ imageAlt: "" })),
+  };
+}
+
+export function createPageSection(
+  type,
+  { idFactory = createId, imagePosition = "left" } = {}
+) {
+  if (type === "intro") {
+    return createIntroSection(idFactory);
+  }
+
+  if (type === "imageText") {
+    return createImageTextSection(idFactory, imagePosition);
+  }
+
+  if (type === "gallery") {
+    return createGallerySection(idFactory);
+  }
+
+  if (type === "carousel") {
+    return createCarouselSection(idFactory);
+  }
+
+  if (type === "callToAction") {
+    return createCallToActionSection(idFactory);
+  }
+
+  throw new Error(`Desteklenmeyen component tipi: ${type}.`);
+}
+
 export function createStandardPageDraft({ slugs = {}, idFactory = createId } = {}) {
   return {
     schemaVersion: PAGE_SCHEMA_VERSION,
@@ -82,9 +170,9 @@ export function createStandardPageDraft({ slugs = {}, idFactory = createId } = {
       description: "",
     })),
     sections: [
-      createIntroSection(idFactory),
-      createImageTextSection(idFactory, "left"),
-      createImageTextSection(idFactory, "right"),
+      createPageSection("intro", { idFactory }),
+      createPageSection("imageText", { idFactory, imagePosition: "left" }),
+      createPageSection("imageText", { idFactory, imagePosition: "right" }),
     ],
     createdAt: null,
     updatedAt: null,
@@ -167,6 +255,30 @@ export function validatePageDocument(page, { allowEmptySlugs = false } = {}) {
 
     if (section.type === "imageText" && !["left", "right"].includes(section.imagePosition)) {
       errors.push(`${label} için görsel konumu left veya right olmalıdır.`);
+    }
+
+    if (["gallery", "carousel"].includes(section.type)) {
+      const collectionLabel = section.type === "carousel" ? "carousel" : "galeri";
+
+      if (!Array.isArray(section.images)) {
+        errors.push(`${label} için ${collectionLabel} görselleri bir dizi olmalıdır.`);
+      } else {
+        const imageIds = new Set();
+
+        section.images.forEach((image, imageIndex) => {
+          if (!image?.id || typeof image.id !== "string" || imageIds.has(image.id)) {
+            errors.push(
+              `${label} içindeki görsel ${imageIndex + 1} benzersiz bir id değerine sahip olmalıdır.`
+            );
+          } else {
+            imageIds.add(image.id);
+          }
+
+          if (!image?.src || typeof image.src !== "string") {
+            errors.push(`${label} içindeki görsel ${imageIndex + 1} için kaynak zorunludur.`);
+          }
+        });
+      }
     }
   });
 

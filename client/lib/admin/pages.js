@@ -8,7 +8,13 @@ import {
   getLocalizedContent,
   validatePageDocument,
 } from "@/lib/pages/schema.mjs";
-import { contentRoot, listJsonFiles, readJson, writeJson } from "./storage";
+import {
+  contentRoot,
+  listJsonFiles,
+  readJson,
+  removeFileIfExists,
+  writeJson,
+} from "./storage";
 
 const pagesDirectory = path.join(contentRoot, "pages");
 
@@ -171,6 +177,18 @@ export async function updatePageDraft(id, input) {
   await assertValidDraft(candidate, id);
   await writeJson(getPageFilePath(id), candidate);
   return candidate;
+}
+
+export async function deletePageDraft(id) {
+  const filePath = getPageFilePath(id);
+  const existingPage = await readJson(filePath, null);
+
+  if (!existingPage) {
+    throw new PageDraftError("Dinamik sayfa bulunamadı.", 404);
+  }
+
+  await removeFileIfExists(filePath);
+  return existingPage;
 }
 
 export async function setPagePublicationStatus(id, status) {

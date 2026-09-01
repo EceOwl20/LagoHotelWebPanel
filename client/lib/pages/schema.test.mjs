@@ -2,11 +2,110 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   PAGE_LOCALES,
+  createPageGalleryImage,
+  createPageSection,
   createStandardPageDraft,
   findLocalizedSlugConflicts,
   getLocalizedContent,
   validatePageDocument,
 } from "./schema.mjs";
+
+test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", () => {
+  let id = 0;
+  const idFactory = (prefix) => `${prefix}-${++id}`;
+  const page = createStandardPageDraft({
+    slugs: {
+      tr: "component-sayfasi",
+      en: "component-page",
+      de: "component-seite",
+      ru: "страница-компонентов",
+    },
+    idFactory,
+  });
+  const intro = createPageSection("intro", { idFactory });
+  const imageText = createPageSection("imageText", {
+    idFactory,
+    imagePosition: "right",
+  });
+  const gallery = createPageSection("gallery", { idFactory });
+  const carousel = createPageSection("carousel", { idFactory });
+  const callToAction = createPageSection("callToAction", { idFactory });
+
+  gallery.images.push(
+    createPageGalleryImage("/uploads/pages/example.webp", { idFactory })
+  );
+  carousel.images.push(
+    createPageGalleryImage("/uploads/pages/carousel.webp", { idFactory })
+  );
+  page.sections = [intro, imageText, gallery, carousel, callToAction];
+
+  assert.deepEqual(
+    page.sections.map((section) => section.type),
+    ["intro", "imageText", "gallery", "carousel", "callToAction"]
+  );
+  assert.equal(imageText.imagePosition, "right");
+  assert.deepEqual(Object.keys(gallery.translations), PAGE_LOCALES);
+  assert.deepEqual(Object.keys(gallery.images[0].translations), PAGE_LOCALES);
+  assert.deepEqual(Object.keys(carousel.images[0].translations), PAGE_LOCALES);
+  assert.equal(callToAction.overlay, true);
+  assert.deepEqual(validatePageDocument(page), []);
+});
+
+test("desteklenmeyen component tipini oluşturmayı reddeder", () => {
+  assert.throws(
+    () => createPageSection("unknown"),
+    /Desteklenmeyen component tipi/
+  );
+});
+
+test("galeride kaynaksız veya tekrarlanan kimlikli görselleri reddeder", () => {
+  const page = createStandardPageDraft({
+    slugs: {
+      tr: "galeri-testi",
+      en: "gallery-test",
+      de: "galerie-test",
+      ru: "тест-галереи",
+    },
+  });
+  const gallery = createPageSection("gallery");
+  const firstImage = createPageGalleryImage("/uploads/pages/first.webp");
+
+  gallery.images = [
+    firstImage,
+    {
+      ...createPageGalleryImage(""),
+      id: firstImage.id,
+    },
+  ];
+  page.sections.push(gallery);
+
+  const errors = validatePageDocument(page);
+
+  assert.equal(errors.some((error) => error.includes("benzersiz bir id")), true);
+  assert.equal(errors.some((error) => error.includes("kaynak zorunludur")), true);
+});
+
+test("carousel görsellerinin dizi olmasını zorunlu tutar", () => {
+  const page = createStandardPageDraft({
+    slugs: {
+      tr: "carousel-testi",
+      en: "carousel-test",
+      de: "carousel-testseite",
+      ru: "тест-карусели",
+    },
+  });
+  const carousel = createPageSection("carousel");
+
+  carousel.images = null;
+  page.sections.push(carousel);
+
+  assert.equal(
+    validatePageDocument(page).some((error) =>
+      error.includes("carousel görselleri bir dizi olmalıdır")
+    ),
+    true
+  );
+});
 
 test("standart taslak dört dili ve sıralanabilir başlangıç bölümlerini oluşturur", () => {
   let id = 0;
