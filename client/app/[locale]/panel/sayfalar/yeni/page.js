@@ -4,14 +4,23 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import StandardPageTemplate from "../../../_page-template/StandardPageTemplate";
+import BlockDefinitionFields from "../components/BlockDefinitionFields";
+import Field from "../components/EditorField";
 import PageImagePicker from "../components/PageImagePicker";
 import {
   PAGE_LOCALES,
-  createPageGalleryImage,
   createPageSection,
-  createStandardPageDraft,
   validatePageDocument,
 } from "@/lib/pages/schema.mjs";
+import {
+  PAGE_PRESETS,
+  applyPagePresetSections,
+  createPageDraftFromPreset,
+} from "@/lib/pages/page-presets.mjs";
+import {
+  getBlockDefinition,
+  getBlockDefinitionsForTemplate,
+} from "@/lib/pages/block-definitions.mjs";
 
 const localeLabels = {
   tr: "Türkçe",
@@ -20,41 +29,7 @@ const localeLabels = {
   ru: "Русский",
 };
 
-const sectionTypeLabels = {
-  intro: "Giriş metni",
-  imageText: "Görsel ve metin",
-  gallery: "Görsel galerisi",
-  carousel: "Görsel carousel",
-  callToAction: "Arka plan görselli CTA",
-};
-
-const componentLibrary = [
-  {
-    type: "intro",
-    title: "Giriş Metni",
-    description: "Ortalanmış üst başlık, başlık ve açıklama metni.",
-  },
-  {
-    type: "imageText",
-    title: "Görsel + Metin",
-    description: "Görseli sağda veya solda kullanılabilen iki kolonlu içerik.",
-  },
-  {
-    type: "gallery",
-    title: "Görsel Galerisi",
-    description: "Görsel eklenip çıkarılabilen ve serbestçe kaydırılabilen yatay galeri.",
-  },
-  {
-    type: "carousel",
-    title: "Görsel Carousel",
-    description: "Döngülü geçiş, yön butonları ve slayt göstergeleri olan görsel alanı.",
-  },
-  {
-    type: "callToAction",
-    title: "Arka Plan CTA",
-    description: "Arka plan görseli, metin ve aksiyon butonu içeren vurgu alanı.",
-  },
-];
+const componentLibrary = getBlockDefinitionsForTemplate("standard");
 
 function updateTranslationCollection(collection, locale, field, value) {
   return {
@@ -76,85 +51,6 @@ function normalizeSlugInput(value, locale) {
     .replace(/(^-|-$)/g, "");
 }
 
-function createEditorDraft() {
-  const draft = createStandardPageDraft();
-  const starterContent = {
-    tr: {
-      eyebrow: "Lago Hotel",
-      heroTitle: "Yeni Sayfa",
-      navigationLabel: "Yeni Sayfa",
-      introTitle: "İçerik başlığınızı buraya girin",
-      introText: "Yeni sayfanızın giriş metnini bu alanda düzenleyebilirsiniz.",
-    },
-    en: {
-      eyebrow: "Lago Hotel",
-      heroTitle: "New Page",
-      navigationLabel: "New Page",
-      introTitle: "Enter your content title here",
-      introText: "You can edit the introductory text of your new page in this area.",
-    },
-    de: {
-      eyebrow: "Lago Hotel",
-      heroTitle: "Neue Seite",
-      navigationLabel: "Neue Seite",
-      introTitle: "Geben Sie hier Ihren Inhaltstitel ein",
-      introText: "Hier können Sie den Einführungstext Ihrer neuen Seite bearbeiten.",
-    },
-    ru: {
-      eyebrow: "Lago Hotel",
-      heroTitle: "Новая страница",
-      navigationLabel: "Новая страница",
-      introTitle: "Введите заголовок содержимого",
-      introText: "Здесь можно изменить вводный текст новой страницы.",
-    },
-  };
-
-  PAGE_LOCALES.forEach((locale) => {
-    const content = starterContent[locale];
-    draft.hero.translations[locale] = {
-      ...draft.hero.translations[locale],
-      eyebrow: content.eyebrow,
-      title: content.heroTitle,
-    };
-    draft.navigation.translations[locale].label = content.navigationLabel;
-    draft.sections[0].translations[locale] = {
-      ...draft.sections[0].translations[locale],
-      eyebrow: content.eyebrow,
-      title: content.introTitle,
-      text: content.introText,
-    };
-  });
-
-  return draft;
-}
-
-function Field({ label, value, onChange, textarea = false, hint }) {
-  const className =
-    "rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-stone-600";
-
-  return (
-    <label className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-stone-700">{label}</span>
-      {textarea ? (
-        <textarea
-          value={value ?? ""}
-          onChange={(event) => onChange(event.target.value)}
-          rows={5}
-          className={`${className} min-h-[120px] resize-y`}
-        />
-      ) : (
-        <input
-          type="text"
-          value={value ?? ""}
-          onChange={(event) => onChange(event.target.value)}
-          className={className}
-        />
-      )}
-      {hint ? <span className="text-xs leading-5 text-stone-500">{hint}</span> : null}
-    </label>
-  );
-}
-
 function SectionEditor({
   section,
   locale,
@@ -167,61 +63,7 @@ function SectionEditor({
   totalSections,
 }) {
   const [isOpen, setIsOpen] = useState(index === 0 || initiallyOpen);
-  const content = section.translations?.[locale] || {};
-  const isImageCollection = ["gallery", "carousel"].includes(section.type);
-  const imageCollectionLabel = section.type === "carousel" ? "carousel" : "galeri";
-
-  const updateCollectionImages = (updater) => {
-    const images = updater(section.images || []).map((image, order) => ({
-      ...image,
-      order,
-    }));
-    onFieldChange("images", images);
-  };
-
-  const addCollectionImage = (src) => {
-    if (!src) {
-      return;
-    }
-
-    updateCollectionImages((images) => [
-      ...images,
-      createPageGalleryImage(src),
-    ]);
-  };
-
-  const updateCollectionImage = (imageId, updater) => {
-    updateCollectionImages((images) =>
-      images.map((image) => (image.id === imageId ? updater(image) : image))
-    );
-  };
-
-  const moveCollectionImage = (imageIndex, direction) => {
-    updateCollectionImages((images) => {
-      const targetIndex = imageIndex + direction;
-
-      if (targetIndex < 0 || targetIndex >= images.length) {
-        return images;
-      }
-
-      const nextImages = [...images];
-      const [image] = nextImages.splice(imageIndex, 1);
-      nextImages.splice(targetIndex, 0, image);
-      return nextImages;
-    });
-  };
-
-  const removeCollectionImage = (imageId) => {
-    if (
-      !window.confirm(
-        `Bu görseli component ${imageCollectionLabel} alanından çıkarmak istediğinize emin misiniz?`
-      )
-    ) {
-      return;
-    }
-
-    updateCollectionImages((images) => images.filter((image) => image.id !== imageId));
-  };
+  const definition = getBlockDefinition(section.type);
 
   return (
     <details
@@ -230,7 +72,7 @@ function SectionEditor({
       className="rounded-2xl border border-stone-200 bg-stone-50"
     >
       <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-stone-900">
-        Bölüm {index + 1}: {sectionTypeLabels[section.type] || section.type}
+        Bölüm {index + 1}: {getBlockDefinition(section.type)?.label || section.type}
       </summary>
       <div className="grid gap-4 border-t border-stone-200 p-5">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3">
@@ -269,165 +111,14 @@ function SectionEditor({
             </button>
           </div>
         </div>
-        {section.type === "imageText" ? (
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
-            <PageImagePicker
-              label="Bölüm görseli"
-              value={section.image}
-              onChange={(value) => onFieldChange("image", value)}
-              hint="Galeriden bir görsel seçebilir veya JPG, PNG, WEBP ya da GIF yükleyebilirsin."
-            />
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Görsel konumu</span>
-              <select
-                value={section.imagePosition || "left"}
-                onChange={(event) => onFieldChange("imagePosition", event.target.value)}
-                className="rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none focus:border-stone-600"
-              >
-                <option value="left">Solda</option>
-                <option value="right">Sağda</option>
-              </select>
-            </label>
-          </div>
-        ) : null}
-        {section.type === "callToAction" ? (
-          <div className="space-y-3">
-            <PageImagePicker
-              label="CTA arka plan görseli"
-              value={section.image}
-              onChange={(value) => onFieldChange("image", value)}
-            />
-            <label className="inline-flex items-center gap-2 text-sm font-medium text-stone-700">
-              <input
-                type="checkbox"
-                checked={section.overlay !== false}
-                onChange={(event) => onFieldChange("overlay", event.target.checked)}
-                className="h-4 w-4 rounded border-stone-300"
-              />
-              Görselin üzerinde karartma kullan
-            </label>
-          </div>
-        ) : null}
-        <Field
-          label="Üst başlık"
-          value={content.eyebrow}
-          onChange={(value) => onTranslationChange("eyebrow", value)}
-        />
-        <Field
-          label="Başlık"
-          value={content.title}
-          onChange={(value) => onTranslationChange("title", value)}
-        />
-        <Field
-          label="Metin"
-          value={content.text}
-          onChange={(value) => onTranslationChange("text", value)}
-          textarea
-        />
-        {["imageText", "callToAction"].includes(section.type) ? (
-          <>
-            <Field
-              label="Görsel açıklaması (alt)"
-              value={content.imageAlt}
-              onChange={(value) => onTranslationChange("imageAlt", value)}
-            />
-            <div className="grid gap-4 md:grid-cols-2">
-              <Field
-                label="Buton metni"
-                value={content.buttonText}
-                onChange={(value) => onTranslationChange("buttonText", value)}
-              />
-              <Field
-                label="Buton bağlantısı"
-                value={content.buttonHref}
-                onChange={(value) => onTranslationChange("buttonHref", value)}
-              />
-            </div>
-          </>
-        ) : null}
-        {isImageCollection ? (
-          <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-4">
-            <div>
-              <h3 className="text-sm font-semibold text-stone-900">
-                {section.type === "carousel" ? "Carousel görselleri" : "Galeri görselleri"}
-              </h3>
-              <p className="mt-1 text-xs text-stone-500">
-                Toplam {(section.images || []).length} görsel
-              </p>
-            </div>
-
-            {(section.images || []).length > 0 ? (
-              <div className="grid gap-4 lg:grid-cols-2">
-                {section.images.map((image, imageIndex) => {
-                  const imageContent = image.translations?.[locale] || {};
-
-                  return (
-                    <div key={image.id} className="space-y-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
-                      <PageImagePicker
-                        label={`${section.type === "carousel" ? "Carousel" : "Galeri"} görseli ${imageIndex + 1}`}
-                        value={image.src}
-                        onChange={(src) =>
-                          updateCollectionImage(image.id, (currentImage) => ({
-                            ...currentImage,
-                            src,
-                          }))
-                        }
-                        allowClear={false}
-                      />
-                      <Field
-                        label={`${localeLabels[locale]} görsel açıklaması (alt)`}
-                        value={imageContent.imageAlt}
-                        onChange={(imageAlt) =>
-                          updateCollectionImage(image.id, (currentImage) => ({
-                            ...currentImage,
-                            translations: updateTranslationCollection(
-                              currentImage.translations,
-                              locale,
-                              "imageAlt",
-                              imageAlt
-                            ),
-                          }))
-                        }
-                      />
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => moveCollectionImage(imageIndex, -1)}
-                          disabled={imageIndex === 0}
-                          className="rounded-lg border border-stone-300 px-3 py-2 text-xs text-stone-700 disabled:opacity-40"
-                        >
-                          Yukarı Taşı
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => moveCollectionImage(imageIndex, 1)}
-                          disabled={imageIndex === section.images.length - 1}
-                          className="rounded-lg border border-stone-300 px-3 py-2 text-xs text-stone-700 disabled:opacity-40"
-                        >
-                          Aşağı Taşı
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removeCollectionImage(image.id)}
-                          className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700"
-                        >
-                          Görseli Çıkar
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
-
-            <PageImagePicker
-              label={`${section.type === "carousel" ? "Carousel'e" : "Galeriye"} yeni görsel ekle`}
-              value=""
-              onChange={addCollectionImage}
-              allowClear={false}
-              hint="Seçilen görsel listenin sonuna eklenir ve daha sonra sıralanabilir."
-            />
-          </div>
+        {definition ? (
+          <BlockDefinitionFields
+            definition={definition}
+            section={section}
+            locale={locale}
+            onTranslationChange={onTranslationChange}
+            onFieldChange={onFieldChange}
+          />
         ) : null}
       </div>
     </details>
@@ -439,7 +130,7 @@ export default function NewPageAdminPage() {
   const router = useRouter();
   const pageId = typeof params.id === "string" ? params.id : null;
   const isEditing = Boolean(pageId);
-  const [draft, setDraft] = useState(createEditorDraft);
+  const [draft, setDraft] = useState(() => createPageDraftFromPreset("editorial"));
   const [activeLocale, setActiveLocale] = useState("tr");
   const [loadingPage, setLoadingPage] = useState(isEditing);
   const [saving, setSaving] = useState(false);
@@ -489,6 +180,20 @@ export default function NewPageAdminPage() {
       cancelled = true;
     };
   }, [pageId]);
+
+  const applyPreset = (preset) => {
+    if (
+      !window.confirm(
+        `${preset.title} preseti uygulansın mı? Mevcut component düzeni değişecek; slug, hero, header ve SEO alanları korunacak.`
+      )
+    ) {
+      return;
+    }
+
+    setDraft((current) => applyPagePresetSections(current, preset.id));
+    setLastAddedSectionId(null);
+    setShowComponentLibrary(false);
+  };
 
   const updateHeroTranslation = (field, value) => {
     setDraft((current) => ({
@@ -559,7 +264,7 @@ export default function NewPageAdminPage() {
   };
 
   const removeSection = (section) => {
-    const label = sectionTypeLabels[section.type] || section.type;
+    const label = getBlockDefinition(section.type)?.label || section.type;
 
     if (!window.confirm(`${label} componentini sayfadan kaldırmak istediğinize emin misiniz?`)) {
       return;
@@ -666,6 +371,42 @@ export default function NewPageAdminPage() {
         yayınlanmış bir sayfadaki değişiklikler taslak olarak kaydedilir ve yeniden yayın
         onayı gerektirir.
       </div>
+
+      {!isEditing ? (
+        <section className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-stone-500">
+              Başlangıç düzeni
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-stone-900">Sayfa preseti seç</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-600">
+              Preset yalnızca component düzenini değiştirir. Girdiğin sayfa adresleri,
+              header bilgileri, hero ve SEO alanları korunur.
+            </p>
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-3">
+            {PAGE_PRESETS.map((preset) => (
+              <div
+                key={preset.id}
+                className="flex flex-col items-start rounded-xl border border-stone-200 bg-stone-50 p-4"
+              >
+                <h3 className="text-sm font-semibold text-stone-900">{preset.title}</h3>
+                <p className="mt-2 flex-1 text-xs leading-5 text-stone-500">
+                  {preset.description}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => applyPreset(preset)}
+                  className="mt-4 rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs font-medium text-stone-700 hover:border-stone-500"
+                >
+                  Bu düzeni uygula
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
         <div className="grid gap-4">
@@ -862,7 +603,7 @@ export default function NewPageAdminPage() {
                       className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-stone-500 hover:shadow-sm"
                     >
                       <span className="block text-sm font-semibold text-stone-900">
-                        {component.title}
+                        {component.libraryTitle}
                       </span>
                       <span className="mt-2 block text-xs leading-5 text-stone-500">
                         {component.description}

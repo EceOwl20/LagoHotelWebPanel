@@ -2,7 +2,12 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";
+import DynamicCardCollection from "./DynamicCardCollection";
 import DynamicPageCarousel from "./DynamicPageCarousel";
+import {
+  createSectionRendererRegistry,
+  resolveSectionRenderer,
+} from "@/lib/pages/section-renderer-registry.mjs";
 
 function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
@@ -271,13 +276,69 @@ function CallToActionSection({ section, locale }) {
   );
 }
 
-const SECTION_COMPONENTS = {
-  intro: IntroSection,
-  imageText: ImageTextSection,
-  gallery: GallerySection,
-  carousel: CarouselSection,
-  callToAction: CallToActionSection,
-};
+function CardCollectionSection({ section, locale, displayMode }) {
+  const content = getLocalizedContent(section.translations, locale);
+  const cards = [...(section.cards || [])].sort(
+    (left, right) => (left.order ?? 0) - (right.order ?? 0)
+  );
+
+  return (
+    <section className="flex w-[90%] max-w-[1400px] flex-col gap-8 text-lagoBlack">
+      <div className="flex max-w-4xl flex-col gap-4">
+        <Eyebrow>{content.eyebrow}</Eyebrow>
+        {content.title ? (
+          <h2 className="font-marcellus text-[32px] leading-[120%] md:text-[42px] lg:text-[52px]">
+            {content.title}
+          </h2>
+        ) : null}
+        {content.text ? (
+          <p className="whitespace-pre-line font-jost text-[15px] leading-7 text-stone-600 md:text-[17px]">
+            {content.text}
+          </p>
+        ) : null}
+      </div>
+
+      {cards.length > 0 ? (
+        <DynamicCardCollection cards={cards} locale={locale} displayMode={displayMode} />
+      ) : (
+        <div className="rounded-xl border border-dashed border-stone-300 bg-stone-100 p-8 text-center font-jost text-sm text-stone-500">
+          Kartlar henüz eklenmedi.
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CardCollectionGridSection(props) {
+  return <CardCollectionSection {...props} displayMode="grid" />;
+}
+
+function CardCollectionCarouselSection(props) {
+  return <CardCollectionSection {...props} displayMode="carousel" />;
+}
+
+const SECTION_RENDERERS = createSectionRendererRegistry({
+  intro: {
+    centered: IntroSection,
+  },
+  imageText: {
+    imageLeft: ImageTextSection,
+    imageRight: ImageTextSection,
+  },
+  gallery: {
+    horizontal: GallerySection,
+  },
+  carousel: {
+    centered: CarouselSection,
+  },
+  callToAction: {
+    image: CallToActionSection,
+  },
+  cardCollection: {
+    grid: CardCollectionGridSection,
+    carousel: CardCollectionCarouselSection,
+  },
+});
 
 export default function StandardPageTemplate({ page, locale, preview = false }) {
   const enabledSections = (page.sections || []).filter((section) => section.enabled !== false);
@@ -293,11 +354,13 @@ export default function StandardPageTemplate({ page, locale, preview = false }) 
       <HeroSection hero={page.hero} locale={locale} preview={preview} />
 
       {enabledSections.map((section) => {
-        const SectionComponent = SECTION_COMPONENTS[section.type];
+        const resolvedRenderer = resolveSectionRenderer(SECTION_RENDERERS, section);
 
-        if (!SectionComponent) {
+        if (!resolvedRenderer) {
           return null;
         }
+
+        const { Component: SectionComponent } = resolvedRenderer;
 
         return <SectionComponent key={section.id} section={section} locale={locale} />;
       })}

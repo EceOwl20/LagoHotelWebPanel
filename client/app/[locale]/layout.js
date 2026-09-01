@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import "react-datepicker/dist/react-datepicker.css";
 import "../globals.css";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";

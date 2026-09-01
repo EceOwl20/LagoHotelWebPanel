@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import CertificateMediaEditor from "./CertificateMediaEditor";
+import SpaWellnessMediaEditor from "./SpaWellnessMediaEditor";
 
 export default function PanelContentPage() {
   const [namespaces, setNamespaces] = useState([]);
@@ -191,6 +192,9 @@ export default function PanelContentPage() {
               <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
 
               {selectedNamespace === "Certificates" ? <CertificateMediaEditor /> : null}
+              {selectedNamespace === "Spa" ? (
+                <SpaWellnessMediaEditor activeLocale={activeLocale} />
+              ) : null}
 
               <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
                 <button

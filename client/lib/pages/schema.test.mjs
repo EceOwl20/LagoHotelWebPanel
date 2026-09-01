@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   PAGE_LOCALES,
+  createPageCard,
   createPageGalleryImage,
   createPageSection,
   createStandardPageDraft,
@@ -30,6 +31,7 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
   const gallery = createPageSection("gallery", { idFactory });
   const carousel = createPageSection("carousel", { idFactory });
   const callToAction = createPageSection("callToAction", { idFactory });
+  const cardCollection = createPageSection("cardCollection", { idFactory });
 
   gallery.images.push(
     createPageGalleryImage("/uploads/pages/example.webp", { idFactory })
@@ -37,18 +39,45 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
   carousel.images.push(
     createPageGalleryImage("/uploads/pages/carousel.webp", { idFactory })
   );
-  page.sections = [intro, imageText, gallery, carousel, callToAction];
+  cardCollection.cards.push(
+    createPageCard("/uploads/pages/card.webp", { idFactory })
+  );
+  page.sections = [
+    intro,
+    imageText,
+    gallery,
+    carousel,
+    callToAction,
+    cardCollection,
+  ];
 
   assert.deepEqual(
     page.sections.map((section) => section.type),
-    ["intro", "imageText", "gallery", "carousel", "callToAction"]
+    ["intro", "imageText", "gallery", "carousel", "callToAction", "cardCollection"]
   );
   assert.equal(imageText.imagePosition, "right");
   assert.deepEqual(Object.keys(gallery.translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(gallery.images[0].translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(carousel.images[0].translations), PAGE_LOCALES);
   assert.equal(callToAction.overlay, true);
+  assert.equal(cardCollection.displayMode, "grid");
+  assert.deepEqual(Object.keys(cardCollection.cards[0].translations), PAGE_LOCALES);
   assert.deepEqual(validatePageDocument(page), []);
+});
+
+test("cardCollection fabrikası sıralanabilir ve dört dilli kart oluşturur", () => {
+  let id = 0;
+  const idFactory = (prefix) => `${prefix}-${++id}`;
+  const section = createPageSection("cardCollection", { idFactory });
+  const card = createPageCard("/uploads/pages/card.webp", { idFactory });
+
+  section.cards.push(card);
+
+  assert.equal(section.type, "cardCollection");
+  assert.equal(section.displayMode, "grid");
+  assert.equal(card.order, 0);
+  assert.equal(card.image, "/uploads/pages/card.webp");
+  assert.deepEqual(Object.keys(card.translations), PAGE_LOCALES);
 });
 
 test("desteklenmeyen component tipini oluşturmayı reddeder", () => {

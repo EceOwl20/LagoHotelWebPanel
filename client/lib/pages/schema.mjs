@@ -1,14 +1,13 @@
+import {
+  BLOCK_TYPES,
+  validateBlock,
+} from "./block-definitions.mjs";
+
 export const PAGE_SCHEMA_VERSION = 1;
 export const PAGE_TEMPLATE = "standard";
 export const PAGE_LOCALES = ["tr", "en", "de", "ru"];
 export const PAGE_STATUSES = ["draft", "published"];
-export const PAGE_SECTION_TYPES = [
-  "intro",
-  "imageText",
-  "gallery",
-  "carousel",
-  "callToAction",
-];
+export const PAGE_SECTION_TYPES = BLOCK_TYPES;
 
 const SLUG_PATTERN = /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u;
 
@@ -112,12 +111,42 @@ function createCallToActionSection(idFactory) {
   };
 }
 
+function createCardCollectionSection(idFactory) {
+  return {
+    id: idFactory("card-collection"),
+    type: "cardCollection",
+    enabled: true,
+    displayMode: "grid",
+    cards: [],
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+    })),
+  };
+}
+
 export function createPageGalleryImage(src = "", { idFactory = createId } = {}) {
   return {
     id: idFactory("gallery-image"),
     src,
     order: 0,
     translations: createLocalizedValue(() => ({ imageAlt: "" })),
+  };
+}
+
+export function createPageCard(image = "", { idFactory = createId } = {}) {
+  return {
+    id: idFactory("card"),
+    image,
+    order: 0,
+    translations: createLocalizedValue(() => ({
+      title: "",
+      text: "",
+      imageAlt: "",
+      buttonText: "",
+      buttonHref: "",
+    })),
   };
 }
 
@@ -143,6 +172,10 @@ export function createPageSection(
 
   if (type === "callToAction") {
     return createCallToActionSection(idFactory);
+  }
+
+  if (type === "cardCollection") {
+    return createCardCollectionSection(idFactory);
   }
 
   throw new Error(`Desteklenmeyen component tipi: ${type}.`);
@@ -249,37 +282,9 @@ export function validatePageDocument(page, { allowEmptySlugs = false } = {}) {
       sectionIds.add(section.id);
     }
 
-    if (!PAGE_SECTION_TYPES.includes(section.type)) {
-      errors.push(`${label} için desteklenmeyen component tipi: ${section.type ?? "boş"}.`);
-    }
-
-    if (section.type === "imageText" && !["left", "right"].includes(section.imagePosition)) {
-      errors.push(`${label} için görsel konumu left veya right olmalıdır.`);
-    }
-
-    if (["gallery", "carousel"].includes(section.type)) {
-      const collectionLabel = section.type === "carousel" ? "carousel" : "galeri";
-
-      if (!Array.isArray(section.images)) {
-        errors.push(`${label} için ${collectionLabel} görselleri bir dizi olmalıdır.`);
-      } else {
-        const imageIds = new Set();
-
-        section.images.forEach((image, imageIndex) => {
-          if (!image?.id || typeof image.id !== "string" || imageIds.has(image.id)) {
-            errors.push(
-              `${label} içindeki görsel ${imageIndex + 1} benzersiz bir id değerine sahip olmalıdır.`
-            );
-          } else {
-            imageIds.add(image.id);
-          }
-
-          if (!image?.src || typeof image.src !== "string") {
-            errors.push(`${label} içindeki görsel ${imageIndex + 1} için kaynak zorunludur.`);
-          }
-        });
-      }
-    }
+    validateBlock(section, page.template).forEach((error) => {
+      errors.push(`${label} ${error}`);
+    });
   });
 
   return errors;
