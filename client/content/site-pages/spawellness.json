@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "spawellness",
+  "hero": {
+    "image": "/uploads/pages/spawellness/mainSpa.webp",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "info": {
+    "wellness": {
+      "image": "/uploads/pages/spawellness/Spa.webp",
+      "translations": {
+        "tr": { "alt": "" },
+        "en": { "alt": "" },
+        "de": { "alt": "" },
+        "ru": { "alt": "" }
+      }
+    },
+    "sauna": {
+      "image": "/uploads/pages/spawellness/Sauna-and-hamam.webp",
+      "translations": {
+        "tr": { "alt": "" },
+        "en": { "alt": "" },
+        "de": { "alt": "" },
+        "ru": { "alt": "" }
+      }
+    }
+  },
+  "gallery": {
+    "images": [
+      { "id": "spa-gallery-12", "src": "/uploads/pages/spawellness/img-12.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-3", "src": "/uploads/pages/spawellness/img-3.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-1", "src": "/uploads/pages/spawellness/img-1.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-4", "src": "/uploads/pages/spawellness/img-4.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-5", "src": "/uploads/pages/spawellness/img-5.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-6", "src": "/uploads/pages/spawellness/img-6.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-7", "src": "/uploads/pages/spawellness/img-7.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-8", "src": "/uploads/pages/spawellness/img-08.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-9", "src": "/uploads/pages/spawellness/img-09.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-10-a", "src": "/uploads/pages/spawellness/img-10.jpg", "order": 9, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-10-b", "src": "/uploads/pages/spawellness/img-10.jpg", "order": 10, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-11", "src": "/uploads/pages/spawellness/img-11.jpg", "order": 11, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-13", "src": "/uploads/pages/spawellness/img-13.jpg", "order": 12, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-gallery-2", "src": "/uploads/pages/spawellness/img-2.jpg", "order": 13, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "massage": {
+    "images": [
+      { "id": "spa-massage-aromatic", "src": "/uploads/pages/spawellness/aromatic.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-massage-oriental", "src": "/uploads/pages/spawellness/oriental.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-massage-classic", "src": "/uploads/pages/spawellness/clasmassage.webp", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "spa-massage-facial", "src": "/uploads/pages/spawellness/masagefaci.webp", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "types": {
+    "indoor": {
+      "image": "/uploads/pages/spawellness/indoor.webp",
+      "translations": {
+        "tr": { "alt": "" },
+        "en": { "alt": "" },
+        "de": { "alt": "" },
+        "ru": { "alt": "" }
+      }
+    },
+    "turkishBath": {
+      "image": "/uploads/pages/spawellness/turkish.webp",
+      "translations": {
+        "tr": { "alt": "" },
+        "en": { "alt": "" },
+        "de": { "alt": "" },
+        "ru": { "alt": "" }
+      }
+    }
+  },
+  "updatedAt": null
+}

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useTransition } from "react";
 // ⭐️ next/navigation yerine navigation.ts’den alıyoruz:
 import { redirect, usePathname } from "@/i18n/navigation";
+import { useRouter } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 export default function LocaleSwitcherSelect({ children, defaultValue, label }) {
@@ -10,6 +11,7 @@ export default function LocaleSwitcherSelect({ children, defaultValue, label }) 
   const [isPending, startTransition] = useTransition();
   // 🔑 burada internal rota anahtarını (ör: "/aboutus") alır
   const routeKey = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const saved = sessionStorage.getItem("scrollPosition");
@@ -19,10 +21,32 @@ export default function LocaleSwitcherSelect({ children, defaultValue, label }) 
     }
   }, [routeKey]);
 
-  function handleLangChange(lang) {
+  async function handleLangChange(lang) {
     // scroll pozisyonunu sakla
     sessionStorage.setItem("scrollPosition", window.scrollY);
     setIsOpen(false);
+
+    const pathSegments = routeKey.split("/").filter(Boolean);
+
+    if (pathSegments.length === 1) {
+      try {
+        const response = await fetch(
+          `/api/pages/localized-route?locale=${encodeURIComponent(defaultValue)}&slug=${encodeURIComponent(pathSegments[0])}`,
+          { cache: "no-store" }
+        );
+        const payload = await response.json();
+        const localizedRoute = response.ok ? payload.routes?.[lang] : null;
+
+        if (localizedRoute) {
+          startTransition(() => {
+            router.replace(localizedRoute);
+          });
+          return;
+        }
+      } catch {
+        // Dinamik bir sayfa bulunamazsa mevcut statik rota davranışı kullanılır.
+      }
+    }
 
     startTransition(() => {
       // Next-Intl’in redirect’i ile doğru URL’e (ör: "/de/uber-uns") yönlendirir

@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "template": "standard",
+  "slugs": {
+    "tr": "deneme",
+    "en": "denemeen",
+    "de": "denemede",
+    "ru": "denemeru"
+  },
+  "status": "published",
+  "showContactSection": true,
+  "hero": {
+    "image": "/uploads/gallery/genel/img-07.jpg",
+    "overlay": true,
+    "translations": {
+      "tr": {
+        "eyebrow": "Lago Hotel",
+        "title": "Yeni Sayfa deneme12",
+        "imageAlt": ""
+      },
+      "en": {
+        "eyebrow": "Lago Hotel",
+        "title": "New Page",
+        "imageAlt": ""
+      },
+      "de": {
+        "eyebrow": "Lago Hotel",
+        "title": "Neue Seite",
+        "imageAlt": ""
+      },
+      "ru": {
+        "eyebrow": "Lago Hotel",
+        "title": "Новая страница",
+        "imageAlt": ""
+      }
+    }
+  },
+  "navigation": {
+    "visible": true,
+    "order": 100,
+    "translations": {
+      "tr": {
+        "label": "Yeni Sayfa deneme12"
+      },
+      "en": {
+        "label": "New Page"
+      },
+      "de": {
+        "label": "Neue Seite"
+      },
+      "ru": {
+        "label": "Новая страница"
+      }
+    }
+  },
+  "seo": {
+    "tr": {
+      "title": "",
+      "description": ""
+    },
+    "en": {
+      "title": "",
+      "description": ""
+    },
+    "de": {
+      "title": "",
+      "description": ""
+    },
+    "ru": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "sections": [
+    {
+      "id": "intro-f209e1d9-d7e0-45a6-a5b3-a0e0f488a5b8",
+      "type": "intro",
+      "enabled": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "İçerik başlığınızı buraya girin",
+          "text": "Yeni sayfanızın giriş metnini bu alanda düzenleyebilirsiniz."
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "Enter your content title here",
+          "text": "You can edit the introductory text of your new page in this area."
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Geben Sie hier Ihren Inhaltstitel ein",
+          "text": "Hier können Sie den Einführungstext Ihrer neuen Seite bearbeiten."
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Введите заголовок содержимого",
+          "text": "Здесь можно изменить вводный текст новой страницы."
+        }
+      }
+    },
+    {
+      "id": "image-text-70be07e2-a740-48f6-9729-863d809839bc",
+      "type": "imageText",
+      "enabled": true,
+      "image": "",
+      "imagePosition": "left",
+      "translations": {
+        "tr": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "en": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "de": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "ru": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        }
+      }
+    },
+    {
+      "id": "image-text-105b110c-3cf6-4158-99b5-5f34a235a664",
+      "type": "imageText",
+      "enabled": true,
+      "image": "",
+      "imagePosition": "right",
+      "translations": {
+        "tr": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "en": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "de": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "ru": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        }
+      }
+    }
+  ],
+  "createdAt": "2026-08-31T13:07:59.463Z",
+  "updatedAt": "2026-08-31T13:08:38.008Z",
+  "id": "304777b9-d2b3-4d46-8fcb-b32a6e69233e"
+}

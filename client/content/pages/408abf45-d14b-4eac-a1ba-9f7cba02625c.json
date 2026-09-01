@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "template": "standard",
+  "slugs": {
+    "tr": "pageexample",
+    "en": "pageexampleen",
+    "de": "pageexamplede",
+    "ru": "pageexampleru"
+  },
+  "status": "published",
+  "showContactSection": true,
+  "hero": {
+    "image": "/uploads/gallery/genel/img-03.jpg",
+    "overlay": true,
+    "translations": {
+      "tr": {
+        "eyebrow": "page example",
+        "title": "Lago Hotel page example",
+        "imageAlt": "Lago Hotel page exampleLago Hotel page exampleLago Hotel page exampleLago Hotel page example"
+      },
+      "en": {
+        "eyebrow": "Lago Hotel",
+        "title": "New Page",
+        "imageAlt": "fwergrw"
+      },
+      "de": {
+        "eyebrow": "Lago Hotel",
+        "title": "Neue Seite",
+        "imageAlt": ""
+      },
+      "ru": {
+        "eyebrow": "Lago Hotel",
+        "title": "Новая страница",
+        "imageAlt": ""
+      }
+    }
+  },
+  "navigation": {
+    "visible": true,
+    "order": 100,
+    "translations": {
+      "tr": {
+        "label": "page example"
+      },
+      "en": {
+        "label": "New Page"
+      },
+      "de": {
+        "label": "Neue Seite"
+      },
+      "ru": {
+        "label": "Новая страница"
+      }
+    }
+  },
+  "seo": {
+    "tr": {
+      "title": "",
+      "description": ""
+    },
+    "en": {
+      "title": "",
+      "description": ""
+    },
+    "de": {
+      "title": "",
+      "description": ""
+    },
+    "ru": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "sections": [
+    {
+      "id": "intro-72b88c59-4daa-4bd8-bf12-ba541cc34c23",
+      "type": "intro",
+      "enabled": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "İçerik başlığınızı buraya girin",
+          "text": "Yeni sayfanızın giriş metnini bu alanda düzenleyebilirsiniz."
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "Enter your content title here",
+          "text": "You can edit the introductory text of your new page in this area."
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Geben Sie hier Ihren Inhaltstitel ein",
+          "text": "Hier können Sie den Einführungstext Ihrer neuen Seite bearbeiten."
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Введите заголовок содержимого",
+          "text": "Здесь можно изменить вводный текст новой страницы."
+        }
+      }
+    },
+    {
+      "id": "image-text-1e00feee-2b09-4c8b-8244-404b4712a54c",
+      "type": "imageText",
+      "enabled": true,
+      "image": "",
+      "imagePosition": "left",
+      "translations": {
+        "tr": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "en": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "de": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "ru": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        }
+      }
+    },
+    {
+      "id": "image-text-27a34b8c-a562-4747-ba97-d49df47a0e9c",
+      "type": "imageText",
+      "enabled": true,
+      "image": "",
+      "imagePosition": "right",
+      "translations": {
+        "tr": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "en": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "de": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        },
+        "ru": {
+          "eyebrow": "",
+          "title": "",
+          "text": "",
+          "imageAlt": "",
+          "buttonText": "",
+          "buttonHref": ""
+        }
+      }
+    },
+    {
+      "id": "card-collection-a5e197f4-ef20-4830-a235-7080d3ba1c8d",
+      "type": "cardCollection",
+      "enabled": true,
+      "displayMode": "carousel",
+      "cards": [
+        {
+          "id": "card-452667b7-03bc-436d-88a2-7fb5928b7c6a",
+          "image": "/uploads/gallery/genel/img-19.jpg",
+          "order": 0,
+          "translations": {
+            "tr": {
+              "title": "deneme card 1",
+              "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
+              "imageAlt": "ewfewf",
+              "buttonText": "fewfew",
+              "buttonHref": "/"
+            },
+            "en": {
+              "title": "pageexample en",
+              "text": "pageexample en pageexample en pageexample en",
+              "imageAlt": "pageexample en",
+              "buttonText": "card en",
+              "buttonHref": "/"
+            },
+            "de": {
+              "title": "pageexample de",
+              "text": "pageexample de pageexample de pageexample de",
+              "imageAlt": "pageexample de",
+              "buttonText": "card de",
+              "buttonHref": "/"
+            },
+            "ru": {
+              "title": "card carousl baslık ru",
+              "text": "card carousl baslık rucard carousl baslık rucard carousl baslık ru",
+              "imageAlt": "card carousl baslık ru",
+              "buttonText": "card ru",
+              "buttonHref": "/"
+            }
+          }
+        },
+        {
+          "id": "card-02a6577c-36ee-4314-aa78-5943b4538a22",
+          "image": "/uploads/gallery/genel/img-12.jpg",
+          "order": 1,
+          "translations": {
+            "tr": {
+              "title": "deneme card 2",
+              "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, ",
+              "imageAlt": "gerth",
+              "buttonText": "gedrh",
+              "buttonHref": "/"
+            },
+            "en": {
+              "title": "pageexample en ",
+              "text": "pageexample en pageexample en pageexample en",
+              "imageAlt": "pageexample en",
+              "buttonText": "card en",
+              "buttonHref": "/"
+            },
+            "de": {
+              "title": "pageexample de",
+              "text": " pageexample de pageexample de pageexample de",
+              "imageAlt": "pageexample de",
+              "buttonText": "",
+              "buttonHref": "/"
+            },
+            "ru": {
+              "title": "card carousl baslık ru",
+              "text": "card carousl baslık rucard carousl baslık rucard carousl baslık ru",
+              "imageAlt": "card carousl baslık ru",
+              "buttonText": "card ru",
+              "buttonHref": "/"
+            }
+          }
+        },
+        {
+          "id": "card-35a2ec95-24c9-48dc-bf30-7ca04041b6c7",
+          "image": "/uploads/gallery/genel/img-15.jpg",
+          "order": 2,
+          "translations": {
+            "tr": {
+              "title": "deneme card 3",
+              "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, ",
+              "imageAlt": "gerg",
+              "buttonText": "wefwe",
+              "buttonHref": "/"
+            },
+            "en": {
+              "title": "pageexample en",
+              "text": "pageexample en pageexample en pageexample en",
+              "imageAlt": "card encard en",
+              "buttonText": "card en",
+              "buttonHref": "/"
+            },
+            "de": {
+              "title": "pageexample de",
+              "text": "pageexample de pageexample de pageexample de",
+              "imageAlt": "pageexample de",
+              "buttonText": "card de",
+              "buttonHref": "/"
+            },
+            "ru": {
+              "title": "card carousl baslık ru",
+              "text": "card carousl baslık rucard carousl baslık rucard carousl baslık ru",
+              "imageAlt": "card ru",
+              "buttonText": "card ru",
+              "buttonHref": "/"
+            }
+          }
+        },
+        {
+          "id": "card-f84d5227-262a-45a0-9134-38dd79c8af50",
+          "image": "/uploads/gallery/genel/img-20.jpg",
+          "order": 3,
+          "translations": {
+            "tr": {
+              "title": "deneme card 4",
+              "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, ",
+              "imageAlt": "feqfew",
+              "buttonText": "fwef",
+              "buttonHref": "/"
+            },
+            "en": {
+              "title": "pageexample en",
+              "text": "pageexample en pageexample en pageexample en",
+              "imageAlt": "card encard en",
+              "buttonText": "card en",
+              "buttonHref": "/"
+            },
+            "de": {
+              "title": " pageexample de",
+              "text": "pageexample de pageexample de pageexample de",
+              "imageAlt": "pageexample de",
+              "buttonText": "card de",
+              "buttonHref": "/"
+            },
+            "ru": {
+              "title": "card carousl baslık ru",
+              "text": "card carousl baslık rucard carousl baslık ru",
+              "imageAlt": "card rucard ru",
+              "buttonText": "card ru",
+              "buttonHref": "/"
+            }
+          }
+        }
+      ],
+      "translations": {
+        "tr": {
+          "eyebrow": "grid asset",
+          "title": "yeni grid deneme",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London,"
+        },
+        "en": {
+          "eyebrow": "",
+          "title": "",
+          "text": ""
+        },
+        "de": {
+          "eyebrow": "",
+          "title": "",
+          "text": ""
+        },
+        "ru": {
+          "eyebrow": "card carousl baslık ru",
+          "title": "card carousl baslık rucard carousl baslık ru",
+          "text": "card carousl baslık rucard carousl baslık rucard carousl baslık rucard carousl baslık rucard carousl baslık ru"
+        }
+      }
+    }
+  ],
+  "createdAt": "2026-09-01T13:03:42.187Z",
+  "updatedAt": "2026-09-01T13:08:59.436Z",
+  "id": "408abf45-d14b-4eac-a1ba-9f7cba02625c"
+}

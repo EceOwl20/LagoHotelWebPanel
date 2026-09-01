@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import ArrawDown from "@/app/[locale]/HomePage/Components/Icons/ArrawDown"
 import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
 import PoolSvg from "./PoolSvg";
 import BabycribSvg from "./BabycribSvg";
 import SinglebedSvg from "./SinglebedSvg";

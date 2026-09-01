@@ -56,11 +56,12 @@ const SpaHeaderSection = ({span, header,text,images=[]}) => {
                 key={index}
               >
                 <Image
-                  src={image.src}
+                  src={image.src || image}
                   layout="cover"
-                  width={image.width}
-                  height={image.height}
-                  alt={`Slide ${index + 1}`}
+                  width={image.width || 1200}
+                  height={image.height || 900}
+                  alt={image.alt || ""}
+                  unoptimized={String(image.src || image).toLowerCase().endsWith(".gif")}
                   objectPosition="center"
                  className="flex h-[25vh] sm:h-[30vh] lg:h-full md:min-h-[420px] md:h-[38vh] w-auto"
                 />

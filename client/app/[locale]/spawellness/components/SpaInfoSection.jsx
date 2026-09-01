@@ -19,11 +19,12 @@ const SpaInfoSection = ({img1,img2, texts=[],texts2=[],texts3=[]}) => {
           </div>
           <div className="w-full flex relative">
             <Image
-              src={img2}
+              src={img2.src || img2}
               layout="cover"
-              width={img2.width}
-              height={img2.height}
-              alt="spa"
+              width={img2.width || 1200}
+              height={img2.height || 900}
+              alt={img2.alt || ""}
+              unoptimized={String(img2.src || img2).toLowerCase().endsWith(".gif")}
               className="w-full"
             />
             <div className="absolute bottom-[35px] left-[35px] text-white font-jost gap-[24px]">
@@ -41,11 +42,12 @@ const SpaInfoSection = ({img1,img2, texts=[],texts2=[],texts3=[]}) => {
         </div>
         <div className="w-full md:w-[45%] relative">
         <Image
-          src={img1}
+          src={img1.src || img1}
           layout="cover"
-          width={img1.width}
-          height={img1.height}
-          alt="spa"
+          width={img1.width || 1200}
+          height={img1.height || 900}
+          alt={img1.alt || ""}
+          unoptimized={String(img1.src || img1).toLowerCase().endsWith(".gif")}
           className="flex w-full "
         />
          <div className="absolute top-[35px] left-[35px] text-white font-jost gap-[24px]">

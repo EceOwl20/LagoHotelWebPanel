@@ -1972,5 +1972,19 @@
       "list2": "Verwenden Sie Sonnencreme mit mindestens LSF 50 zum Schutz vor UV-Strahlen.",
       "list3": "Die Nichtverwendung von Sonnencreme kann ernsthafte Gesundheitsprobleme verursachen."
     }
+  },
+  "Certificates": {
+    "hero": {
+      "eyebrow": "Lago Hotel",
+      "title": "Zertifikate"
+    },
+    "feature": {
+      "eyebrow": "Lago Hotel Zertifikat",
+      "title": "Verifizierung für nachhaltigen Tourismus",
+      "text": ""
+    },
+    "gallery": {
+      "title": "Zertifikate"
+    }
   }
 }

@@ -7,7 +7,7 @@ import Footer from "./GeneralComponents/Footer/Footer";
 import BookNow from "./GeneralComponents/BookNow";
 import CookiePopup from "./GeneralComponents/CookiePopup";
 
-export default function ClientLayoutWrapper({ children }) {
+export default function ClientLayoutWrapper({ children, dynamicNavigation = [] }) {
   const pathname = usePathname();
 
   const isPanelRoute =
@@ -15,8 +15,8 @@ export default function ClientLayoutWrapper({ children }) {
 
   return (
     <>
-      {!isPanelRoute && <Header />}
-      {!isPanelRoute && <HeaderWhite />}
+      {!isPanelRoute && <Header dynamicNavigation={dynamicNavigation} />}
+      {!isPanelRoute && <HeaderWhite dynamicNavigation={dynamicNavigation} />}
       {children}
       {!isPanelRoute && <BookNow />}
       {!isPanelRoute && <CookiePopup />}

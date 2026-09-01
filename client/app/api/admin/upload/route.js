@@ -19,7 +19,8 @@ const ALLOWED_EXTENSIONS = new Set([
   ".svg",
   ".pdf",
 ]);
-const ALLOWED_ROOT_FOLDERS = new Set(["gallery", "blog", "misc"]);
+const PAGE_IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
+const ALLOWED_ROOT_FOLDERS = new Set(["gallery", "blog", "misc", "pages"]);
 const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request) {
@@ -77,6 +78,13 @@ export async function POST(request) {
   if (!ALLOWED_ROOT_FOLDERS.has(rootFolder)) {
     return NextResponse.json(
       { error: "Bu yukleme klasoru izinli degil." },
+      { status: 400 }
+    );
+  }
+
+  if (rootFolder === "pages" && !PAGE_IMAGE_EXTENSIONS.has(extension)) {
+    return NextResponse.json(
+      { error: "Sayfalarda yalnızca JPG, PNG, WEBP veya GIF görselleri kullanılabilir." },
       { status: 400 }
     );
   }

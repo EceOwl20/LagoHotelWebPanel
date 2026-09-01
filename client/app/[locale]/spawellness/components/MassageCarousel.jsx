@@ -74,10 +74,11 @@ const MassageCarousel = ({ span, header, text, headers = [], images = [] }) => {
          h-[266px] w-[177.3px]"
               >
                 <Image
-                  src={image.src}
+                  src={image.src || image}
                   width={360}
                   height={540}
-                  alt={`Slide ${index + 1}`}
+                  alt={image.alt || ""}
+                  unoptimized={String(image.src || image).toLowerCase().endsWith(".gif")}
                   className="lg:w-full lg:h-full md:w-[270px] md:h-[405px] h-[266px] w-[177.3px] object-cover"
                 />
                 <div className="absolute inset-0 text-center top-[9%] w-full items-center justify-center">

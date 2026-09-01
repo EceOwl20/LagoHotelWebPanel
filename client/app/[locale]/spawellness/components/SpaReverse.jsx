@@ -25,10 +25,11 @@ const SpaTypesInfoSection = ({
           </h3>
         </div>
         <Image 
-          src={img} 
-          alt="indoor" 
-          width={img.width} 
-          height={img.height} 
+          src={img.src || img}
+          alt={img.alt || ""}
+          width={img.width || 1200}
+          height={img.height || 900}
+          unoptimized={String(img.src || img).toLowerCase().endsWith(".gif")}
           className="w-[100%] md:w-[49.5%]" 
         />
         <div className="flex flex-col items-start justify-center w-full md:w-[47%] text-black font-jost gap-[10px] md:gap-[25px] lg:gap-[35px] text-start">

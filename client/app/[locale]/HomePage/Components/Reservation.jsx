@@ -3,7 +3,6 @@
 import ArrawDown from "@/app/[locale]/HomePage/Components/Icons/ArrawDown"
 import React, { useState, useEffect } from "react"
 import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
 import { useTranslations } from "next-intl";
 import Link from "next/link"
 
