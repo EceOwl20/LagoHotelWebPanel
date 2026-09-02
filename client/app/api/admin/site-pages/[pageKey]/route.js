@@ -21,6 +21,7 @@ const CERTIFICATE_PATHS = [
 const SPA_WELLNESS_PATHS = ["tr", "en", "de", "ru"].map(
   (locale) => `/${locale}/spawellness`
 );
+const ROOMS_PATHS = ["tr", "en", "de", "ru"].map((locale) => `/${locale}/rooms`);
 
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
@@ -83,6 +84,10 @@ export async function PUT(request, { params }) {
 
     if (pageKey === "spawellness") {
       SPA_WELLNESS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "rooms") {
+      ROOMS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
     }
 
     return NextResponse.json({ content: saved });

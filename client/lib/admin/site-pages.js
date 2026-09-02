@@ -3,9 +3,17 @@ import "server-only";
 import path from "path";
 import { contentRoot, readJson, writeJson } from "./storage";
 
-const SITE_PAGE_KEYS = new Set(["certificates", "spawellness"]);
+const SITE_PAGE_KEYS = new Set(["certificates", "spawellness", "rooms"]);
 const SITE_PAGE_LOCALES = ["tr", "en", "de", "ru"];
 const MAX_GALLERY_IMAGES = 100;
+const ROOM_CARD_KEYS = [
+  "superior",
+  "family",
+  "swimup",
+  "familySwimup",
+  "duplexFamily",
+  "disabled",
+];
 
 export class SitePageContentError extends Error {
   constructor(message, status = 400) {
@@ -136,6 +144,31 @@ function normalizeSpaWellnessContent(input) {
   };
 }
 
+function normalizeRoomsContent(input) {
+  const cards = ROOM_CARD_KEYS.reduce((result, cardKey) => {
+    result[cardKey] = {
+      primary: normalizeLocalizedImage(
+        input?.cards?.[cardKey]?.primary,
+        `${cardKey} oda birinci görseli`
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.cards?.[cardKey]?.secondary,
+        `${cardKey} oda ikinci görseli`
+      ),
+    };
+    return result;
+  }, {});
+
+  return {
+    schemaVersion: 1,
+    pageKey: "rooms",
+    hero: normalizeLocalizedImage(input?.hero, "Odalar hero görseli"),
+    cards,
+    parallax: normalizeLocalizedImage(input?.parallax, "Odalar parallax görseli"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
 export async function readSitePageContent(pageKey) {
   const content = await readJson(getSitePageFilePath(pageKey), null);
 
@@ -151,6 +184,10 @@ export async function readSitePageContent(pageKey) {
     return normalizeSpaWellnessContent(content);
   }
 
+  if (pageKey === "rooms") {
+    return normalizeRoomsContent(content);
+  }
+
   return content;
 }
 
@@ -161,6 +198,8 @@ export async function writeSitePageContent(pageKey, input) {
     content = normalizeCertificatesContent(input);
   } else if (pageKey === "spawellness") {
     content = normalizeSpaWellnessContent(input);
+  } else if (pageKey === "rooms") {
+    content = normalizeRoomsContent(input);
   } else {
     throw new SitePageContentError("Desteklenmeyen sayfa içeriği.", 404);
   }

@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "rooms",
+  "hero": {
+    "image": "/uploads/pages/rooms/roomsBanner.png",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "cards": {
+    "superior": {
+      "primary": {
+        "image": "/uploads/pages/rooms/superiorRooms.png",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/oda1-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    },
+    "family": {
+      "primary": {
+        "image": "/uploads/pages/rooms/odalar2-1.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/oda2-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    },
+    "swimup": {
+      "primary": {
+        "image": "/uploads/pages/rooms/oda3-1.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/oda3-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    },
+    "familySwimup": {
+      "primary": {
+        "image": "/uploads/pages/rooms/oda4-1.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/oda4-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    },
+    "duplexFamily": {
+      "primary": {
+        "image": "/uploads/pages/rooms/oda6-1.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/odalar6-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    },
+    "disabled": {
+      "primary": {
+        "image": "/uploads/pages/rooms/disabled-1.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      "secondary": {
+        "image": "/uploads/pages/rooms/disabled-2.webp",
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    }
+  },
+  "parallax": {
+    "image": "/uploads/pages/rooms/oda.png",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "updatedAt": null
+}

@@ -6,13 +6,16 @@ import WatchSvg from "./svg/WatchSvg";
 import TvSvg from "./svg/TvSvg";
 import {useTranslations} from 'next-intl';
 
-const RoomsParallaxSection = () => {
+const RoomsParallaxSection = ({ image }) => {
   const t = useTranslations('RoomsParallax');
+  const backgroundImage = image?.src || oda.src;
   
   return (
     <div
       className="relative flex flex-col xl:flex-row items-center justify-center min-h-[700px] xl:min-h-[610px] w-full bg-cover bg-center parallax "
-      style={{ backgroundImage: `url(${oda.src})` }}
+      role="img"
+      aria-label={image?.alt || undefined}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       {/* Overlay yarı saydam siyah katman */}
       <div className="absolute inset-0 bg-lagoBlack/60 z-[1]"></div>

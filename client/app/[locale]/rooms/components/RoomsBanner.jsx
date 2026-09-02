@@ -3,11 +3,17 @@ import roomsBanner from "../images/roomsBanner.png"
 import Link from 'next/link'
 import {useTranslations} from 'next-intl';
 
-const RoomsBanner = () => {
+const RoomsBanner = ({ image }) => {
   const t = useTranslations('Accommodation');
+  const backgroundImage = image?.src || roomsBanner.src;
 
   return (
-    <div className='flex w-screen h-screen lg:items-end md:items-center md:justify-center lg:justify-end bg-center bg-cover ' style={{ backgroundImage: `url(${roomsBanner.src})` }}>
+    <div
+      className='flex w-screen h-screen lg:items-end md:items-center md:justify-center lg:justify-end bg-center bg-cover'
+      role="img"
+      aria-label={image?.alt || undefined}
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <div className='flex h-full w-full lg:w-[42%] bg-[#1D1D1B]/40 justify-center items-end md:items-center'>
       <div className="flex flex-col gap-[34px] 2xl:gap-[45px] md:gap-10 w-[80%] h-auto text-white text-center justify-center items-center mt-[16%] mb-[20px] lg:mb-0">
         <h2 className='font-marcellus text-[36px] lg:text-[44px] leading-[20px] -tracking-[0.88px] font-normal 2xl:mb-4'>{t('header')}</h2>
