@@ -9,6 +9,14 @@ import {
   validatePageDocument,
 } from "@/lib/pages/schema.mjs";
 import {
+  createAdminPageView,
+  createPageRecord,
+  normalizePageRecord,
+  publishPageRecord,
+  sanitizeAdminPageInput,
+  unpublishPageRecord,
+} from "@/lib/pages/page-versions.mjs";
+import {
   contentRoot,
   listJsonFiles,
   readJson,
@@ -34,10 +42,24 @@ function getPageFilePath(id) {
   return path.join(pagesDirectory, `${id}.json`);
 }
 
-async function readAllPageDrafts() {
+async function readAllPageRecords() {
   const files = await listJsonFiles(pagesDirectory);
-  const pages = await Promise.all(files.map((filePath) => readJson(filePath, null)));
-  return pages.filter(Boolean);
+  const storedPages = await Promise.all(
+    files.map((filePath) => readJson(filePath, null))
+  );
+
+  return storedPages.map(normalizePageRecord).filter(Boolean);
+}
+
+async function readPageRecord(id) {
+  const storedPage = await readJson(getPageFilePath(id), null);
+  return normalizePageRecord(storedPage);
+}
+
+function getConflictCandidates(records) {
+  return records.flatMap((record) =>
+    [record.draft, record.published].filter(Boolean)
+  );
 }
 
 function getPrimaryTitle(page) {
@@ -52,28 +74,34 @@ function getPrimaryTitle(page) {
   return "Başlıksız sayfa";
 }
 
-function toPageSummary(page) {
+function toPageSummary(record) {
+  const page = createAdminPageView(record);
+
   return {
     id: page.id,
     title: getPrimaryTitle(page),
     status: page.status,
+    hasUnpublishedChanges: page.hasUnpublishedChanges,
     slugs: page.slugs,
+    publishedSlugs: page.publishedSlugs,
     navigation: page.navigation,
-    createdAt: page.createdAt,
-    updatedAt: page.updatedAt,
+    createdAt: record.createdAt,
+    updatedAt: record.updatedAt,
+    publishedAt: record.publishedAt,
   };
 }
 
 export async function listPageDrafts() {
-  const pages = await readAllPageDrafts();
+  const records = await readAllPageRecords();
 
-  return pages
+  return records
     .map(toPageSummary)
     .sort((left, right) => (right.updatedAt || "").localeCompare(left.updatedAt || ""));
 }
 
 export async function readPageDraft(id) {
-  return readJson(getPageFilePath(id), null);
+  const record = await readPageRecord(id);
+  return createAdminPageView(record);
 }
 
 export async function readPublishedPageBySlug(locale, slug) {
@@ -81,12 +109,9 @@ export async function readPublishedPageBySlug(locale, slug) {
     return null;
   }
 
-  const pages = await readAllPageDrafts();
-  return (
-    pages.find(
-      (page) => page.status === "published" && page?.slugs?.[locale] === slug
-    ) || null
-  );
+  const records = await readAllPageRecords();
+  return records.find((record) => record.published?.slugs?.[locale] === slug)
+    ?.published || null;
 }
 
 export async function listPublishedPageNavigation(locale) {
@@ -94,12 +119,13 @@ export async function listPublishedPageNavigation(locale) {
     return [];
   }
 
-  const pages = await readAllPageDrafts();
+  const records = await readAllPageRecords();
 
-  return pages
+  return records
+    .map((record) => record.published)
+    .filter(Boolean)
     .filter(
       (page) =>
-        page.status === "published" &&
         page.navigation?.visible !== false &&
         page.slugs?.[locale]
     )
@@ -128,8 +154,12 @@ async function assertValidDraft(candidate, ignorePageId = null) {
     throw new PageDraftError(validationErrors.join(" "));
   }
 
-  const existingPages = await readAllPageDrafts();
-  const conflicts = findLocalizedSlugConflicts(existingPages, candidate, ignorePageId);
+  const existingRecords = await readAllPageRecords();
+  const conflicts = findLocalizedSlugConflicts(
+    getConflictCandidates(existingRecords),
+    candidate,
+    ignorePageId
+  );
 
   if (conflicts.length > 0) {
     const conflict = conflicts[0];
@@ -141,8 +171,9 @@ async function assertValidDraft(candidate, ignorePageId = null) {
 }
 
 export async function createPageDraft(input) {
+  const sanitizedInput = sanitizeAdminPageInput(input);
   const candidate = {
-    ...input,
+    ...sanitizedInput,
     status: "draft",
   };
   await assertValidDraft(candidate);
@@ -155,40 +186,49 @@ export async function createPageDraft(input) {
     updatedAt: timestamp,
   };
 
-  await writeJson(getPageFilePath(page.id), page);
-  return page;
+  const record = createPageRecord(page);
+  await writeJson(getPageFilePath(page.id), record);
+  return createAdminPageView(record);
 }
 
 export async function updatePageDraft(id, input) {
-  const existingPage = await readPageDraft(id);
+  const existingRecord = await readPageRecord(id);
 
-  if (!existingPage) {
+  if (!existingRecord) {
     throw new PageDraftError("Sayfa taslağı bulunamadı.", 404);
   }
 
+  const sanitizedInput = sanitizeAdminPageInput(input);
+  const timestamp = new Date().toISOString();
   const candidate = {
-    ...input,
+    ...sanitizedInput,
     id,
     status: "draft",
-    createdAt: existingPage.createdAt,
-    updatedAt: new Date().toISOString(),
+    createdAt: existingRecord.createdAt,
+    updatedAt: timestamp,
   };
 
   await assertValidDraft(candidate, id);
-  await writeJson(getPageFilePath(id), candidate);
-  return candidate;
+  const record = {
+    ...existingRecord,
+    updatedAt: timestamp,
+    draft: candidate,
+  };
+
+  await writeJson(getPageFilePath(id), record);
+  return createAdminPageView(record);
 }
 
 export async function deletePageDraft(id) {
   const filePath = getPageFilePath(id);
-  const existingPage = await readJson(filePath, null);
+  const existingRecord = normalizePageRecord(await readJson(filePath, null));
 
-  if (!existingPage) {
+  if (!existingRecord) {
     throw new PageDraftError("Dinamik sayfa bulunamadı.", 404);
   }
 
   await removeFileIfExists(filePath);
-  return existingPage;
+  return createAdminPageView(existingRecord);
 }
 
 export async function setPagePublicationStatus(id, status) {
@@ -196,14 +236,14 @@ export async function setPagePublicationStatus(id, status) {
     throw new PageDraftError("Geçersiz yayın durumu.");
   }
 
-  const existingPage = await readPageDraft(id);
+  const existingRecord = await readPageRecord(id);
 
-  if (!existingPage) {
+  if (!existingRecord) {
     throw new PageDraftError("Sayfa taslağı bulunamadı.", 404);
   }
 
   if (status === "published") {
-    const validationErrors = validatePageDocument(existingPage);
+    const validationErrors = validatePageDocument(existingRecord.draft);
 
     if (validationErrors.length > 0) {
       throw new PageDraftError(
@@ -211,8 +251,12 @@ export async function setPagePublicationStatus(id, status) {
       );
     }
 
-    const existingPages = await readAllPageDrafts();
-    const conflicts = findLocalizedSlugConflicts(existingPages, existingPage, id);
+    const existingRecords = await readAllPageRecords();
+    const conflicts = findLocalizedSlugConflicts(
+      getConflictCandidates(existingRecords),
+      existingRecord.draft,
+      id
+    );
 
     if (conflicts.length > 0) {
       const conflict = conflicts[0];
@@ -223,12 +267,12 @@ export async function setPagePublicationStatus(id, status) {
     }
   }
 
-  const page = {
-    ...existingPage,
-    status,
-    updatedAt: new Date().toISOString(),
-  };
+  const timestamp = new Date().toISOString();
+  const record =
+    status === "published"
+      ? publishPageRecord(existingRecord, timestamp)
+      : unpublishPageRecord(existingRecord, timestamp);
 
-  await writeJson(getPageFilePath(id), page);
-  return page;
+  await writeJson(getPageFilePath(id), record);
+  return createAdminPageView(record);
 }

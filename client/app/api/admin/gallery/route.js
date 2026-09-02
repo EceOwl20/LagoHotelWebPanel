@@ -97,7 +97,19 @@ export async function DELETE(request) {
     );
   }
 
-  const gallery = await deleteGalleryImage(categoryId, imageId);
+  let gallery;
+
+  try {
+    gallery = await deleteGalleryImage(categoryId, imageId);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: error.message || "Görsel silinemedi.",
+        usages: error.usages || [],
+      },
+      { status: error.status || 500 }
+    );
+  }
 
   for (const locale of CMS_LOCALES) {
     revalidatePath(`/${locale}/gallery`);

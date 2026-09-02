@@ -92,12 +92,12 @@ export async function DELETE(request, { params }) {
   }
 
   const { slug } = await params;
-  await deleteBlogPost(slug);
+  const deletionResult = await deleteBlogPost(slug);
 
   for (const locale of CMS_LOCALES) {
     revalidatePath(`/${locale}/news`);
     revalidatePath(`/${locale}/news/${slug}`);
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, ...deletionResult });
 }

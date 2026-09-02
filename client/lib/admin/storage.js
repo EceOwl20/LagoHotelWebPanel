@@ -2,6 +2,7 @@ import "server-only";
 
 import { mkdir, readFile, readdir, rm, writeFile } from "fs/promises";
 import path from "path";
+import { isSafeUploadUrl } from "./media-references.mjs";
 
 const appRoot = process.cwd();
 
@@ -64,6 +65,19 @@ export async function removeFileIfExists(filePath) {
 }
 
 export function getUploadFilePath(relativeUrl) {
-  const normalized = relativeUrl.replace(/^\/+/, "");
-  return path.join(publicRoot, normalized);
+  if (!isSafeUploadUrl(relativeUrl)) {
+    throw new Error("Geçersiz upload dosya yolu.");
+  }
+
+  const resolvedPath = path.resolve(publicRoot, relativeUrl.slice(1));
+  const resolvedUploadsRoot = path.resolve(uploadsRoot);
+
+  if (
+    resolvedPath !== resolvedUploadsRoot &&
+    !resolvedPath.startsWith(`${resolvedUploadsRoot}${path.sep}`)
+  ) {
+    throw new Error("Upload klasörü dışındaki dosyalara erişilemez.");
+  }
+
+  return resolvedPath;
 }

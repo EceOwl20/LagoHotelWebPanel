@@ -11,6 +11,7 @@ import {
   slugify,
   writeJson,
 } from "./storage";
+import { findManagedMediaUsage } from "./media-usage";
 
 const postsDirectory = path.join(contentRoot, "blog", "posts");
 
@@ -78,10 +79,22 @@ export async function saveBlogPost(post) {
 
 export async function deleteBlogPost(slug) {
   const existingPost = await readBlogPost(slug);
+  let mediaUsages = [];
 
   if (existingPost?.coverImage?.startsWith("/uploads/")) {
-    await removeFileIfExists(getUploadFilePath(existingPost.coverImage));
+    mediaUsages = await findManagedMediaUsage(existingPost.coverImage, {
+      excludeSourceIds: [`blog:${slug}`],
+    });
   }
 
   await removeFileIfExists(getPostFilePath(slug));
+
+  if (existingPost?.coverImage?.startsWith("/uploads/") && mediaUsages.length === 0) {
+    await removeFileIfExists(getUploadFilePath(existingPost.coverImage));
+  }
+
+  return {
+    retainedCoverImage: mediaUsages.length > 0 ? existingPost?.coverImage : null,
+    usages: mediaUsages,
+  };
 }

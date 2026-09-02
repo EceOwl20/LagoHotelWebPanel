@@ -20,6 +20,8 @@ Bu belge, mevcut sayfaları panelden yönetilebilir hale getirirken kullanılaca
 Kaynaklar:
 
 - [Payload Blocks Field](https://payloadcms.com/docs/fields/blocks)
+- [Payload Drafts](https://payloadcms.com/docs/versions/drafts)
+- [Payload Versions](https://payloadcms.com/docs/versions/overview)
 - [Sanity structured content page builder](https://www.sanity.io/docs/developer-guides/how-to-use-structured-content-for-page-building)
 - [Storyblok Blocks](https://www.storyblok.com/docs/concepts/blocks)
 - [Storyblok content modeling](https://www.storyblok.com/docs/concepts/content-modeling)
@@ -142,6 +144,30 @@ Bu yaklaşım, Payload'ın koşullu block seçimi ve Storyblok'un izin verilen b
 - Bir block veya karttan görsel çıkarmak fiziksel dosyayı silmez.
 - Yerelleştirilmiş metin ve `alt` alanları block veya item seviyesinde tutulur.
 - Paylaşılması gerekmeyen içerik block içine gömülür. Birden fazla sayfada gerçekten ortak yönetilecek içerik için ayrı referans kullanılır.
+
+## Taslak ve yayın sürümü
+
+Dinamik sayfa kaydı tek bir durum etiketi yerine iki ayrı içerik kopyası saklar:
+
+```json
+{
+  "storageVersion": 2,
+  "draft": {},
+  "published": {},
+  "publishedAt": "2026-09-02T10:00:00.000Z"
+}
+```
+
+- `draft`, panelde düzenlenen çalışma kopyasıdır.
+- `published`, ziyaretçilerin ve header menüsünün kullandığı son onaylı kopyadır.
+- Taslak kaydetmek `published` içeriğini değiştirmez.
+- Yayınlamak, doğrulanmış `draft` içeriğinin anlık kopyasını `published` alanına aktarır.
+- Yayından kaldırmak yalnızca `published` kopyasını temizler; çalışma taslağı korunur.
+- Panel `Taslak`, `Yayında` ve `Yayında · Değişiklik var` durumlarını ayrı gösterir.
+
+Eski düz JSON sayfaları okuma sırasında bu modele dönüştürülür. Dosya ancak bir sonraki
+kayıt veya yayın işleminde yeni formatta yazıldığı için toplu ve riskli bir veri
+migrasyonu gerekmez.
 
 ## Geçiş planı
 

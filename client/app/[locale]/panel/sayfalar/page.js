@@ -4,6 +4,27 @@ import { useEffect, useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
 
+function getPageStatus(page) {
+  if (page.status !== "published") {
+    return {
+      label: "Taslak",
+      className: "bg-amber-100 text-amber-800",
+    };
+  }
+
+  if (page.hasUnpublishedChanges) {
+    return {
+      label: "Yayında · Değişiklik var",
+      className: "bg-sky-100 text-sky-800",
+    };
+  }
+
+  return {
+    label: "Yayında",
+    className: "bg-emerald-100 text-emerald-800",
+  };
+}
+
 export default function PagesAdminPage() {
   const router = useRouter();
   const [pages, setPages] = useState([]);
@@ -108,11 +129,14 @@ export default function PagesAdminPage() {
         </section>
       ) : (
         <div className="grid gap-4 xl:grid-cols-2">
-          {pages.map((page) => (
-            <article
-              key={page.id}
-              className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
-            >
+          {pages.map((page) => {
+            const pageStatus = getPageStatus(page);
+
+            return (
+              <article
+                key={page.id}
+                className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+              >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500">
@@ -121,13 +145,9 @@ export default function PagesAdminPage() {
                   <h2 className="mt-2 text-xl font-semibold text-stone-900">{page.title}</h2>
                 </div>
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium uppercase ${
-                    page.status === "published"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-amber-100 text-amber-800"
-                  }`}
+                  className={`rounded-full px-3 py-1 text-xs font-medium uppercase ${pageStatus.className}`}
                 >
-                  {page.status === "published" ? "Yayında" : "Taslak"}
+                  {pageStatus.label}
                 </span>
               </div>
 
@@ -140,15 +160,22 @@ export default function PagesAdminPage() {
                     <span className="w-7 shrink-0 font-semibold uppercase text-stone-500">
                       {locale}
                     </span>
-                    {page.status === "published" && page.slugs?.[locale] ? (
-                      <a
-                        href={`/${locale}/${page.slugs[locale]}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="truncate text-stone-700 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-700"
-                      >
-                        /{locale}/{page.slugs[locale]}
-                      </a>
+                    {page.publishedSlugs?.[locale] ? (
+                      <div className="min-w-0 flex-1">
+                        <a
+                          href={`/${locale}/${page.publishedSlugs[locale]}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block truncate text-stone-700 underline decoration-stone-300 underline-offset-4 hover:decoration-stone-700"
+                        >
+                          /{locale}/{page.publishedSlugs[locale]}
+                        </a>
+                        {page.slugs?.[locale] !== page.publishedSlugs[locale] ? (
+                          <span className="mt-1 block truncate text-xs text-sky-700">
+                            Taslak adresi: /{locale}/{page.slugs?.[locale] || "slug-girilmedi"}
+                          </span>
+                        ) : null}
+                      </div>
                     ) : (
                       <span className="truncate text-stone-700">
                         {page.slugs?.[locale]
@@ -179,8 +206,9 @@ export default function PagesAdminPage() {
                   Sayfayı Sil
                 </button>
               </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       )}
 

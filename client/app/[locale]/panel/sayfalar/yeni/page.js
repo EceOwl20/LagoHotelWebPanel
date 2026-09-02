@@ -367,9 +367,9 @@ export default function NewPageAdminPage() {
       </div>
 
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-        Taslağı Kaydet butonu içeriği güvenli JSON depolamasına kaydeder. Mevcut
-        yayınlanmış bir sayfadaki değişiklikler taslak olarak kaydedilir ve yeniden yayın
-        onayı gerektirir.
+        Taslağı Kaydet butonu yalnızca çalışma kopyasını günceller. Sayfa zaten
+        yayındaysa ziyaretçiler son yayınlanan sürümü görmeye devam eder; yeni
+        değişiklikler ancak yeniden yayınlandığında canlıya aktarılır.
       </div>
 
       {!isEditing ? (
@@ -670,7 +670,11 @@ export default function NewPageAdminPage() {
           <p className="text-sm text-stone-600">
             Kayıt durumu:{" "}
             <span className="font-medium text-stone-900">
-              {draft.status === "published" ? "Yayında" : "Taslak"}
+              {draft.status === "published"
+                ? draft.hasUnpublishedChanges
+                  ? "Yayında · Yayınlanmamış değişiklik var"
+                  : "Yayında"
+                : "Taslak"}
             </span>
           </p>
           {saveError ? <p className="mt-2 text-sm text-rose-600">{saveError}</p> : null}
@@ -698,7 +702,7 @@ export default function NewPageAdminPage() {
                 ? "Değişiklikleri Taslak Olarak Kaydet"
                 : "Taslağı Kaydet"}
           </button>
-          {isEditing && draft.status !== "published" ? (
+          {isEditing ? (
             <button
               type="button"
               onClick={() => handlePublicationChange("published")}
@@ -712,7 +716,11 @@ export default function NewPageAdminPage() {
               }
               className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-600"
             >
-              {changingStatus ? "Yayınlanıyor..." : "Kaydet ve Yayınla"}
+              {changingStatus
+                ? "Yayınlanıyor..."
+                : draft.status === "published"
+                  ? "Kaydet ve Yeniden Yayınla"
+                  : "Kaydet ve Yayınla"}
             </button>
           ) : null}
         </div>

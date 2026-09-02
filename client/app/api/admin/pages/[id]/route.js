@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
 import {
   deletePageDraft,
   readPageDraft,
@@ -110,7 +111,24 @@ export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     const { status } = await request.json();
+    const previousPage = await readPageDraft(id);
     const page = await setPagePublicationStatus(id, status);
+
+    PAGE_LOCALES.forEach((locale) => {
+      const affectedSlugs = new Set([
+        previousPage?.publishedSlugs?.[locale],
+        page?.publishedSlugs?.[locale],
+      ]);
+
+      affectedSlugs.forEach((slug) => {
+        if (slug) {
+          revalidatePath(`/${locale}/${slug}`);
+        }
+      });
+
+      revalidatePath(`/${locale}`, "layout");
+    });
+
     return NextResponse.json({ page });
   } catch (error) {
     return NextResponse.json(
@@ -150,10 +168,17 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
     const deletedPage = await deletePageDraft(id);
 
-    Object.entries(deletedPage.slugs || {}).forEach(([locale, slug]) => {
-      if (slug) {
-        revalidatePath(`/${locale}/${slug}`);
-      }
+    PAGE_LOCALES.forEach((locale) => {
+      const affectedSlugs = new Set([
+        deletedPage.slugs?.[locale],
+        deletedPage.publishedSlugs?.[locale],
+      ]);
+
+      affectedSlugs.forEach((slug) => {
+        if (slug) {
+          revalidatePath(`/${locale}/${slug}`);
+        }
+      });
 
       revalidatePath(`/${locale}`, "layout");
     });

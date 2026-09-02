@@ -180,7 +180,12 @@ export default function BlogAdminPage() {
   };
 
   const handleDelete = async () => {
-    if (!selectedSlug) {
+    if (
+      !selectedSlug ||
+      !window.confirm(
+        "Bu blog yazısı kalıcı olarak silinecek. Kullanılmayan kapak dosyası da uploads klasöründen kaldırılacak. Devam etmek istediğinize emin misiniz?"
+      )
+    ) {
       return;
     }
 
@@ -200,7 +205,11 @@ export default function BlogAdminPage() {
       await loadPosts();
       setSelectedSlug(null);
       setDraft(createEmptyPost());
-      setMessage("Blog yazisi silindi.");
+      setMessage(
+        payload.retainedCoverImage
+          ? `Blog yazısı silindi. Kapak görseli ${payload.usages.length} başka kullanım bulunduğu için korundu.`
+          : "Blog yazısı ve kullanılmayan kapak görseli silindi."
+      );
     } catch (err) {
       setError(err.message);
     }

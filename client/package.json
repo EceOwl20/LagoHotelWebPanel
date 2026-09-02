@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test:pages": "node --test lib/pages/*.test.mjs",
+    "test:admin": "node --test lib/admin/*.test.mjs",
+    "test": "npm run test:pages && npm run test:admin",
     "admin:hash": "node scripts/generate-admin-password-hash.mjs"
   },
   "dependencies": {
