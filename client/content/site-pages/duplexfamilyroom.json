@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "duplexfamilyroom",
+  "hero": {
+    "image": "/uploads/pages/duplexfamilyroom/SRF_3196.jpg",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "gallery": {
+    "images": [
+      {
+        "id": "duplex-family-room-3196",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3196.jpg",
+        "order": 0,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "duplex-family-room-3204",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3204.jpg",
+        "order": 1,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "duplex-family-room-3211",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3211.jpg",
+        "order": 2,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "duplex-family-room-3219",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3219.jpg",
+        "order": 3,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "duplex-family-room-3230",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3230.jpg",
+        "order": 4,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "duplex-family-room-3254",
+        "src": "/uploads/pages/duplexfamilyroom/SRF_3254.jpg",
+        "order": 5,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    ]
+  },
+  "background": {
+    "image": "/uploads/pages/duplexfamilyroom/odafull.webp",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "updatedAt": null
+}

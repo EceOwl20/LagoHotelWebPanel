@@ -231,7 +231,7 @@ export default function SitePageMediaEditor({
   }
 
   return (
-    <section className="space-y-6 border-t border-stone-200 pt-6">
+    <section className="space-y-6 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
       <div>
         <div className="text-xs font-medium uppercase tracking-[0.25em] text-stone-500">
           Sayfa görselleri

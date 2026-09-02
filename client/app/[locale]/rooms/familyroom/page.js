@@ -1,4 +1,3 @@
-import React from 'react'
 import SubRoomBanner from '../familyswimup/components/SubRoomBanner'
 import SubroomCarousel from '../familyswimup/components/SubroomCarousel'
 import RoomFeatures from '../familyswimup/components/RoomFeatures'
@@ -6,18 +5,36 @@ import RoomTour from '../familyswimup/components/RoomTour'
 import OtherOptions from '../familyswimup/components/OtherOptions'
 import ContactSection2 from '@/app/[locale]/GeneralComponents/Contact/ContactSection2'
 
-import img1 from "./images/SRF_3936.jpg";
-import img2 from "./images/SRF_3946.jpg";
-import img3 from "./images/SRF_3953.jpg";
-import img4 from "./images/SRF_3974.jpg";
 import RoomsParallaxSection from '../components/RoomsParallaxSection'
-import {useTranslations} from 'next-intl';
+import { getTranslations } from "next-intl/server";
+import { readSitePageContent } from "@/lib/admin/site-pages";
 
-const Page = () => {
-  const carouselImages = [img1,img2,img3,img4,img1,img2,img3,img4];
-  const t = useTranslations('FamilyRoom');
-  const t2 = useTranslations('FamilyRoom.RoomInfo');
-  const t3 = useTranslations('FamilyRoom.RoomTour');
+function getLocalizedImage(item, locale) {
+  return {
+    src: item.image,
+    alt: item.translations?.[locale]?.alt || "",
+  };
+}
+
+function getLocalizedCollection(collection, locale) {
+  return [...(collection?.images || [])]
+    .sort((left, right) => (left.order ?? 0) - (right.order ?? 0))
+    .map((image) => ({
+      id: image.id,
+      src: image.src,
+      alt: image.translations?.[locale]?.alt || "",
+    }));
+}
+
+const Page = async ({ params }) => {
+  const { locale } = await params;
+  const [t, t2, t3, media] = await Promise.all([
+    getTranslations("FamilyRoom"),
+    getTranslations("FamilyRoom.RoomInfo"),
+    getTranslations("FamilyRoom.RoomTour"),
+    readSitePageContent("familyroom"),
+  ]);
+  const carouselImages = getLocalizedCollection(media.gallery, locale);
 
   const subroomBannerText=[t("text1"),t("text2"),t("text3")]
   const iconTexts=[t2("list1"),t2("list2"),t2("list3")];
@@ -25,7 +42,7 @@ const Page = () => {
   return (
     <div className=' overflow-hidden flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb]'>
      <div className='flex flex-col'>
-     <SubRoomBanner img={img1} span={t("subtitle")} header={t("title")} texts={subroomBannerText} baby={true}/>
+     <SubRoomBanner img={getLocalizedImage(media.hero, locale)} span={t("subtitle")} header={t("title")} texts={subroomBannerText} baby={true}/>
      <SubroomCarousel images={carouselImages}/>
      </div>
       <RoomFeatures span={t2("subtitle")} header={t2("title")} text={t2("text")} header2={t2("title2")} header3={t2("title3")}  text2={t2("text2")} iconsTexts={iconTexts} roomName="FamilyRoom" pool={false}/>

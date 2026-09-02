@@ -3,7 +3,17 @@ import "server-only";
 import path from "path";
 import { contentRoot, readJson, writeJson } from "./storage";
 
-const SITE_PAGE_KEYS = new Set(["certificates", "spawellness", "rooms"]);
+const SITE_PAGE_KEYS = new Set([
+  "certificates",
+  "spawellness",
+  "rooms",
+  "superiorroom",
+  "familyroom",
+  "swimuproom",
+  "familyswimup",
+  "duplexfamilyroom",
+  "disableroom",
+]);
 const SITE_PAGE_LOCALES = ["tr", "en", "de", "ru"];
 const MAX_GALLERY_IMAGES = 100;
 const ROOM_CARD_KEYS = [
@@ -169,6 +179,29 @@ function normalizeRoomsContent(input) {
   };
 }
 
+function normalizeRoomDetailContent(
+  input,
+  pageKey,
+  pageLabel,
+  { hasBackground = false } = {}
+) {
+  return {
+    schemaVersion: 1,
+    pageKey,
+    hero: normalizeLocalizedImage(input?.hero, `${pageLabel} hero görseli`),
+    gallery: normalizeImageCollection(input?.gallery, `${pageLabel} carousel alanı`),
+    ...(hasBackground
+      ? {
+          background: normalizeLocalizedImage(
+            input?.background,
+            `${pageLabel} tanıtım arka planı`
+          ),
+        }
+      : {}),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
 export async function readSitePageContent(pageKey) {
   const content = await readJson(getSitePageFilePath(pageKey), null);
 
@@ -188,6 +221,36 @@ export async function readSitePageContent(pageKey) {
     return normalizeRoomsContent(content);
   }
 
+  if (pageKey === "superiorroom") {
+    return normalizeRoomDetailContent(content, pageKey, "Superior oda");
+  }
+
+  if (pageKey === "familyroom") {
+    return normalizeRoomDetailContent(content, pageKey, "Aile odası");
+  }
+
+  if (pageKey === "swimuproom") {
+    return normalizeRoomDetailContent(content, pageKey, "Swim Up oda", {
+      hasBackground: true,
+    });
+  }
+
+  if (pageKey === "familyswimup") {
+    return normalizeRoomDetailContent(content, pageKey, "Aile Swim Up oda", {
+      hasBackground: true,
+    });
+  }
+
+  if (pageKey === "duplexfamilyroom") {
+    return normalizeRoomDetailContent(content, pageKey, "Dubleks aile odası", {
+      hasBackground: true,
+    });
+  }
+
+  if (pageKey === "disableroom") {
+    return normalizeRoomDetailContent(content, pageKey, "Engelli odası");
+  }
+
   return content;
 }
 
@@ -200,6 +263,24 @@ export async function writeSitePageContent(pageKey, input) {
     content = normalizeSpaWellnessContent(input);
   } else if (pageKey === "rooms") {
     content = normalizeRoomsContent(input);
+  } else if (pageKey === "superiorroom") {
+    content = normalizeRoomDetailContent(input, pageKey, "Superior oda");
+  } else if (pageKey === "familyroom") {
+    content = normalizeRoomDetailContent(input, pageKey, "Aile odası");
+  } else if (pageKey === "swimuproom") {
+    content = normalizeRoomDetailContent(input, pageKey, "Swim Up oda", {
+      hasBackground: true,
+    });
+  } else if (pageKey === "familyswimup") {
+    content = normalizeRoomDetailContent(input, pageKey, "Aile Swim Up oda", {
+      hasBackground: true,
+    });
+  } else if (pageKey === "duplexfamilyroom") {
+    content = normalizeRoomDetailContent(input, pageKey, "Dubleks aile odası", {
+      hasBackground: true,
+    });
+  } else if (pageKey === "disableroom") {
+    content = normalizeRoomDetailContent(input, pageKey, "Engelli odası");
   } else {
     throw new SitePageContentError("Desteklenmeyen sayfa içeriği.", 404);
   }

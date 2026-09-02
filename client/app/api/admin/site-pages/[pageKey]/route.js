@@ -22,6 +22,24 @@ const SPA_WELLNESS_PATHS = ["tr", "en", "de", "ru"].map(
   (locale) => `/${locale}/spawellness`
 );
 const ROOMS_PATHS = ["tr", "en", "de", "ru"].map((locale) => `/${locale}/rooms`);
+const SUPERIOR_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/superiorroom`
+);
+const FAMILY_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/familyroom`
+);
+const SWIMUP_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/swimuproom`
+);
+const FAMILY_SWIMUP_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/familyswimup`
+);
+const DUPLEX_FAMILY_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/duplexfamilyroom`
+);
+const DISABLED_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/disableroom`
+);
 
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
@@ -88,6 +106,30 @@ export async function PUT(request, { params }) {
 
     if (pageKey === "rooms") {
       ROOMS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "superiorroom") {
+      SUPERIOR_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "familyroom") {
+      FAMILY_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "swimuproom") {
+      SWIMUP_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "familyswimup") {
+      FAMILY_SWIMUP_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "duplexfamilyroom") {
+      DUPLEX_FAMILY_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "disableroom") {
+      DISABLED_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
     }
 
     return NextResponse.json({ content: saved });

@@ -2,11 +2,20 @@
 import React, { useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import img1 from "../images/ImagePlaceholder1.webp";
-import img2 from "../images/ImagePlaceholder2.webp";
-import img3 from "../images/ImagePlaceholder3.webp";
-import img4 from "../images/ImagePlaceholder4.webp";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+
+function getImageProps(image, fallbackAlt = "") {
+  if (typeof image === "string") {
+    return { src: image, width: 1600, height: 1067, alt: fallbackAlt };
+  }
+
+  return {
+    src: image.src,
+    width: image.width || 1600,
+    height: image.height || 1067,
+    alt: image.alt || fallbackAlt,
+  };
+}
 
 const SubroomCarousel = ({images}) => {
   const [emblaRef] = useEmblaCarousel({ align: "start",  loop: true, });
@@ -45,21 +54,25 @@ const SubroomCarousel = ({images}) => {
       {/* Carousel */}
       <div className="overflow-hidden w-screen mt-[5px]" ref={emblaRef}>
         <div className="flex gap-[5px] ">
-          {images.map((img, index) => (
+          {images.map((img, index) => {
+            const image = getImageProps(img, `Oda görseli ${index + 1}`);
+
+            return (
             <div
-              key={index}
+              key={img.id || `${image.src}-${index}`}
               className="flex-[0_0_auto] lg:flex-[0_0_calc(100vw/3.9)] 2xl:flex-[0_0_auto] 2xl:h-[28vh] lg::min-w-[372px] h-[24vh] sm:h-[30vh] md:h-[26vh] lg:h-[32vh]  bg-gray-300 overflow-hidden cursor-pointer "
               onClick={() => openImage(index)}
             >
               <Image
-                src={img}
-                alt={`Slide ${index}`}
+                src={image.src}
+                alt={image.alt}
                 className="w-auto h-full object-cover"
-                width={img.width}
-                height={img.height}
+                width={image.width}
+                height={image.height}
               />
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -80,11 +93,11 @@ const SubroomCarousel = ({images}) => {
           {/* Seçili Resim */}
           <div className="relative flex items-center justify-center mt-1">
             <Image
-              src={selectedImage}
-              alt="Selected Image"
+              src={getImageProps(selectedImage, "Seçili oda görseli").src}
+              alt={getImageProps(selectedImage, "Seçili oda görseli").alt}
               className=" w-[90vw] h-[80vh] object-contain shadow-lg transition-transform duration-300 ease-in-out scale-100 hover:scale-105"
-              width={selectedImage.width}
-              height={selectedImage.height}
+              width={getImageProps(selectedImage).width}
+              height={getImageProps(selectedImage).height}
             />
           </div>
 

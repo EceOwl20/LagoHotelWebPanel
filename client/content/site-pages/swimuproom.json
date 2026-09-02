@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "swimuproom",
+  "hero": {
+    "image": "/uploads/pages/swimuproom/SRF_2163.jpg",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "gallery": {
+    "images": [
+      {
+        "id": "swimup-room-2131",
+        "src": "/uploads/pages/swimuproom/SRF_2131.jpg",
+        "order": 0,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "swimup-room-2136",
+        "src": "/uploads/pages/swimuproom/SRF_2136.jpg",
+        "order": 1,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "swimup-room-2163",
+        "src": "/uploads/pages/swimuproom/SRF_2163.jpg",
+        "order": 2,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "swimup-room-2167",
+        "src": "/uploads/pages/swimuproom/SRF_2167.jpg",
+        "order": 3,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    ]
+  },
+  "background": {
+    "image": "/uploads/pages/swimuproom/odafull.webp",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "updatedAt": null
+}

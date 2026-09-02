@@ -15,6 +15,8 @@ const BackgroundSection = ({
   return (
     <div
       className="flex w-screen h-[45vh] min-h-[453px] items-end justify-end bg-cover bg-center"
+      role="img"
+      aria-label={img?.alt || undefined}
       style={{ backgroundImage }}
     >
       <div className="flex h-full w-[100%] md:w-[43%] lg:w-[46%] max-w-[840px] items-center justify-start bg-[#2D2D26]/50">

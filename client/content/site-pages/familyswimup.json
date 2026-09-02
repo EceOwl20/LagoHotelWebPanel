@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "familyswimup",
+  "hero": {
+    "image": "/uploads/pages/familyswimup/SRF_2053.jpg",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "gallery": {
+    "images": [
+      {
+        "id": "family-swimup-room-2053",
+        "src": "/uploads/pages/familyswimup/SRF_2053.jpg",
+        "order": 0,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2064",
+        "src": "/uploads/pages/familyswimup/SRF_2064.jpg",
+        "order": 1,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2069",
+        "src": "/uploads/pages/familyswimup/SRF_2069.jpg",
+        "order": 2,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2073",
+        "src": "/uploads/pages/familyswimup/SRF_2073.jpg",
+        "order": 3,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2086",
+        "src": "/uploads/pages/familyswimup/SRF_2086.jpg",
+        "order": 4,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2092",
+        "src": "/uploads/pages/familyswimup/SRF_2092.jpg",
+        "order": 5,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-2119",
+        "src": "/uploads/pages/familyswimup/SRF_2119.jpg",
+        "order": 6,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-3168",
+        "src": "/uploads/pages/familyswimup/SRF_3168.jpg",
+        "order": 7,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "family-swimup-room-3176",
+        "src": "/uploads/pages/familyswimup/SRF_3176.jpg",
+        "order": 8,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    ]
+  },
+  "background": {
+    "image": "/uploads/pages/familyswimup/odafull.webp",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "updatedAt": null
+}

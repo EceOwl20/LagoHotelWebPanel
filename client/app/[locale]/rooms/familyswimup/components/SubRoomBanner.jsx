@@ -10,7 +10,12 @@ const SubRoomBanner = ({img,span,header,texts=[], baby}) => {
 
 
   return (
-    <div className='flex w-screen h-screen  lg:h-[80vh] items-center justify-center bg-cover bg-center relative' style={{ backgroundImage: `url(${img.src})` }}>
+    <div
+      className='flex w-screen h-screen lg:h-[80vh] items-center justify-center bg-cover bg-center relative'
+      role="img"
+      aria-label={img.alt || undefined}
+      style={{ backgroundImage: `url(${img.src})` }}
+    >
       <div className='absolute inset-0 bg-lagoBlack/40 z-[1]'></div>
       <div className='flex flex-col w-[80%] h-full items-center justify-center text-white font-jost gap-[35px] md:gap-[39px] lg:mb-0 z-[20]'>
         <span className='text-[12px] lg:text-[16px] font-medium leading-[14px] tracking-[0.6px] uppercase text-center whitespace-nowrap'>{span}</span>

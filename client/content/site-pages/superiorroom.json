@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "superiorroom",
+  "hero": {
+    "image": "/uploads/pages/superiorroom/SRF_3999.jpg",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "gallery": {
+    "images": [
+      {
+        "id": "superior-room-3999",
+        "src": "/uploads/pages/superiorroom/SRF_3999.jpg",
+        "order": 0,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "superior-room-4001",
+        "src": "/uploads/pages/superiorroom/SRF_4001.jpg",
+        "order": 1,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "superior-room-4008",
+        "src": "/uploads/pages/superiorroom/SRF_4008.jpg",
+        "order": 2,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      },
+      {
+        "id": "superior-room-4016",
+        "src": "/uploads/pages/superiorroom/SRF_4016.jpg",
+        "order": 3,
+        "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+      }
+    ]
+  },
+  "updatedAt": null
+}
