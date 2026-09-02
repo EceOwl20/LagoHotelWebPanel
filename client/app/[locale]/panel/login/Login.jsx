@@ -11,6 +11,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [retryAfter, setRetryAfter] = useState(0);
 
   useEffect(() => {
     let isCancelled = false;
@@ -30,6 +31,18 @@ export default function LoginForm() {
     };
   }, [params.locale, router]);
 
+  useEffect(() => {
+    if (retryAfter <= 0) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setRetryAfter((current) => Math.max(0, current - 1));
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [retryAfter]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -47,6 +60,15 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (res.status === 429) {
+          const retryAfterHeader = Number(res.headers.get("Retry-After"));
+          setRetryAfter(
+            Number.isFinite(retryAfterHeader) && retryAfterHeader > 0
+              ? retryAfterHeader
+              : 60
+          );
+        }
+
         throw new Error(data.error || "Giriş başarısız");
       }
 
@@ -80,6 +102,7 @@ export default function LoginForm() {
           <input
             type="text"
             placeholder="Kullanici adiniz"
+            autoComplete="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             className="rounded-xl border border-stone-300 px-4 py-3 outline-none transition focus:border-stone-500"
@@ -92,6 +115,7 @@ export default function LoginForm() {
           <input
             type="password"
             placeholder="Sifreniz"
+            autoComplete="current-password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             className="rounded-xl border border-stone-300 px-4 py-3 outline-none transition focus:border-stone-500"
@@ -101,10 +125,14 @@ export default function LoginForm() {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || retryAfter > 0}
           className="w-full rounded-xl bg-stone-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {loading ? "Giris yapiliyor..." : "Panele Gir"}
+          {loading
+            ? "Giris yapiliyor..."
+            : retryAfter > 0
+              ? `${retryAfter} sn sonra tekrar deneyin`
+              : "Panele Gir"}
         </button>
 
         {!isProduction ? (
@@ -120,7 +148,11 @@ export default function LoginForm() {
           </div>
         )}
 
-        {error && <p className="text-sm text-rose-600">{error}</p>}
+        {error && (
+          <p role="alert" className="text-sm text-rose-600">
+            {error}
+          </p>
+        )}
       </form>
     </div>
   );

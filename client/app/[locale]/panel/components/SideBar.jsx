@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 
@@ -14,11 +15,31 @@ const navigationItems = [
 export default function SideBar({ username }) {
   const router = useRouter();
   const params = useParams();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
 
   const handleLogout = async () => {
-    await fetch("/api/admin/logout", { method: "POST" });
-    router.replace(`/${params.locale}/panel/login`);
-    router.refresh();
+    if (loggingOut) {
+      return;
+    }
+
+    setLoggingOut(true);
+    setLogoutError("");
+
+    try {
+      const response = await fetch("/api/admin/logout", { method: "POST" });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Çıkış işlemi tamamlanamadı.");
+      }
+
+      router.replace(`/${params.locale}/panel/login`);
+      router.refresh();
+    } catch (error) {
+      setLogoutError(error.message);
+      setLoggingOut(false);
+    }
   };
 
   return (
@@ -47,13 +68,21 @@ export default function SideBar({ username }) {
         </nav>
       </div>
 
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20"
-      >
-        Cikis Yap
-      </button>
+      <div className="space-y-3">
+        {logoutError ? (
+          <p role="alert" className="text-xs leading-5 text-rose-200">
+            {logoutError}
+          </p>
+        ) : null}
+        <button
+          type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="w-full rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loggingOut ? "Çıkış yapılıyor..." : "Çıkış Yap"}
+        </button>
+      </div>
     </aside>
   );
 }

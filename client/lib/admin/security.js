@@ -1,21 +1,33 @@
 import "server-only";
 
+import { createMemoryRateLimiter } from "./rate-limit.mjs";
+
 const globalStore = globalThis;
 
-if (!globalStore.__lagoRateLimitStore) {
-  globalStore.__lagoRateLimitStore = new Map();
+if (typeof globalStore.__lagoRateLimitStore?.consume !== "function") {
+  globalStore.__lagoRateLimitStore = createMemoryRateLimiter();
 }
 
-const rateLimitStore = globalStore.__lagoRateLimitStore;
+const rateLimiter = globalStore.__lagoRateLimitStore;
+
+function normalizeClientIp(value) {
+  const candidate = String(value || "").trim();
+
+  if (!candidate || candidate.length > 64 || !/^[0-9a-f.:\[\]-]+$/i.test(candidate)) {
+    return "unknown";
+  }
+
+  return candidate;
+}
 
 export function getClientIp(request) {
   const forwardedFor = request.headers.get("x-forwarded-for");
 
   if (forwardedFor) {
-    return forwardedFor.split(",")[0].trim();
+    return normalizeClientIp(forwardedFor.split(",")[0]);
   }
 
-  return request.headers.get("x-real-ip") || "unknown";
+  return normalizeClientIp(request.headers.get("x-real-ip"));
 }
 
 export function assertSameOrigin(request) {
@@ -44,20 +56,13 @@ export function consumeRateLimit({
   limit,
   windowMs,
 }) {
-  const now = Date.now();
-  const bucket = rateLimitStore.get(key) || [];
-  const activeEntries = bucket.filter((timestamp) => now - timestamp < windowMs);
+  return rateLimiter.consume({ key, limit, windowMs });
+}
 
-  if (activeEntries.length >= limit) {
-    const oldestAllowed = activeEntries[0] + windowMs;
-    return {
-      ok: false,
-      retryAfterSeconds: Math.max(1, Math.ceil((oldestAllowed - now) / 1000)),
-    };
-  }
+export function checkRateLimit({ key, limit, windowMs }) {
+  return rateLimiter.check({ key, limit, windowMs });
+}
 
-  activeEntries.push(now);
-  rateLimitStore.set(key, activeEntries);
-
-  return { ok: true, retryAfterSeconds: 0 };
+export function resetRateLimit(key) {
+  rateLimiter.reset(key);
 }
