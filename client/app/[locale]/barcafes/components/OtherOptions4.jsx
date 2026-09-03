@@ -24,10 +24,10 @@ const OtherOptionSlide = ({ room }) => (
   <div className="flex-[0_0_80%] md:flex-[0_0_50%] lg:flex-[0_0_25%] xl:flex-[0_0_23.5%] min-w-0 mr-[3%] md:mr-[1.5%]">
     <div className="flex flex-col w-full items-start justify-center gap-[15px] md:gap-[25px] font-jost text-black">
       <Image 
-        src={room.img} 
-        alt={room.title} 
-        width={room.img.width} 
-        height={room.img.height}
+        src={room.img.src || room.img}
+        alt={room.img.alt || room.title}
+        width={room.img.width || 1200}
+        height={room.img.height || 800}
         className="object-cover"
       />
       <span className="text-[12px] font-medium leading-normal tracking-[0.48px] uppercase">
@@ -63,6 +63,13 @@ const OtherOptions4 = ({ span, header, text, images }) => {
   const scrollNext = useCallback(() => {
     if (emblaApi && emblaApi.scrollNext) emblaApi.scrollNext();
   }, [emblaApi]);
+
+  const handleJump = useCallback(
+    (index) => {
+      emblaApi?.scrollTo(index);
+    },
+    [emblaApi]
+  );
 
   useEffect(() => {
     if (emblaApi) {

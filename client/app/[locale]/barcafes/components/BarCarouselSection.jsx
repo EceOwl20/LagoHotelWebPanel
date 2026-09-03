@@ -5,43 +5,21 @@ import { Link } from '@/i18n/navigation';
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-// Import images
-import hungry from "../images/hungry1.webp";
-import hungry2 from "../images/hungry2.webp";
-import hungry3 from "../images/hungry3.webp";
-import hungry4 from "../images/hungry4.webp";
-import hungry5 from "../images/hungry5.webp";
-import hungry6 from "../images/hungry6.webp";
-import hungry7 from "../images/hungry7.webp";
-import hungry8 from "../images/hungry8.webp";
-
-// Array of images
-const images = [
-  hungry,
-  hungry2,
-  hungry3,
-  hungry4,
-  hungry5,
-  hungry6,
-  hungry7,
-  hungry8,
-];
-
 // Single slide component
 const Slide = ({ slide, index }) => (
   <div className="flex-[0_0_90%] md:flex-[0_0_79%] lg:flex-[0_0_85%] xl:flex-[0_0_auto] min-w-0 mr-[1.8%]">
     <Image
       src={slide.src}
-      alt={`Slide ${index + 1}`}
-      width={slide.width}
-      height={slide.height}
+      alt={slide.alt || `Slide ${index + 1}`}
+      width={slide.width || 1200}
+      height={slide.height || 800}
       style={{ objectPosition: "center" }}
       className="flex h-full w-full object-cover"
     />
   </div>
 );
 
-const BarCarouselSection = () => {
+const BarCarouselSection = ({ images = [] }) => {
   const t = useTranslations("BarAndCafes.BarCarousel");
 
   const [emblaRef, emblaApi] = useCarousel({
@@ -105,7 +83,7 @@ const BarCarouselSection = () => {
         >
           <div className="flex grid-flow-col  h-full md:w-[50vw] ">
             {images.map((img, index) => (
-              <Slide key={index} slide={img} index={index} />
+              <Slide key={img.id || `${img.src}-${index}`} slide={img} index={index} />
             ))}
           </div>
         </div>

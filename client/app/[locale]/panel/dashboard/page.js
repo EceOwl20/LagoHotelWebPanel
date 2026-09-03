@@ -17,7 +17,7 @@ import { FiBookOpen, FiFileText, FiGrid, FiImage } from "react-icons/fi";
 
 const donutColors = {
   published: "#292524",
-  changed: "#d97706",
+  changed: "#63978f",
   draft: "#d6d3d1",
 };
 
@@ -179,8 +179,8 @@ function StatCard({ title, value, detail, icon: Icon, featured = false }) {
     <article
       className={`rounded-2xl border p-5 shadow-sm ${
         featured
-          ? "border-stone-900 bg-stone-900 text-white"
-          : "border-stone-200 bg-white text-stone-900"
+          ? "border-stone-900 bg-stone-900 text-[#63978f]"
+          : "border-stone-200 bg-white text-[#63978f]"
       }`}
     >
       <div className="flex items-start justify-between gap-4">

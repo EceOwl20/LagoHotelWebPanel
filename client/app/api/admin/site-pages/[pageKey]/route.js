@@ -11,6 +11,7 @@ import {
   getClientIp,
 } from "@/lib/admin/security";
 import { getRestaurantDetailConfigByPageKey } from "@/lib/admin/restaurant-detail-config.mjs";
+import { getBarCafeDetailConfigByPageKey } from "@/lib/admin/bar-cafe-detail-config.mjs";
 
 const CERTIFICATE_PATHS = [
   "/tr/sertifikalar",
@@ -62,6 +63,17 @@ const RESTAURANTS_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
   `/${locale}/restaurants/wasabi`,
   `/${locale}/restaurants/fuego`,
   `/${locale}/restaurants/tapazrestaurant`,
+]);
+const BAR_CAFES_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
+  `/${locale}/barcafes`,
+  `/${locale}/barcafes/mignonbar`,
+  `/${locale}/barcafes/joiebar`,
+  `/${locale}/barcafes/maldivabar`,
+  `/${locale}/barcafes/vagobar`,
+  `/${locale}/barcafes/pianobar`,
+  `/${locale}/barcafes/abellapatisserie`,
+  `/${locale}/barcafes/cafedelago`,
+  `/${locale}/barcafes/cafedehouse`,
 ]);
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
@@ -162,12 +174,23 @@ export async function PUT(request, { params }) {
       RESTAURANTS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
     }
 
+    if (pageKey === "barcafes") {
+      BAR_CAFES_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
     const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
     if (restaurantDetailConfig) {
       ["tr", "en", "de", "ru"].forEach((locale) => {
         revalidatePath(
           `/${locale}/restaurants/${restaurantDetailConfig.routeSegment}`
         );
+      });
+    }
+
+    const barCafeDetailConfig = getBarCafeDetailConfigByPageKey(pageKey);
+    if (barCafeDetailConfig) {
+      ["tr", "en", "de", "ru"].forEach((locale) => {
+        revalidatePath(`/${locale}/barcafes/${barCafeDetailConfig.routeSegment}`);
       });
     }
 

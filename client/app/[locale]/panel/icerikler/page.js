@@ -6,6 +6,8 @@ import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.mjs";
 import CertificateMediaEditor from "./CertificateMediaEditor";
+import BarCafesMediaEditor from "./BarCafesMediaEditor";
+import BarCafeDetailMediaEditor from "./BarCafeDetailMediaEditor";
 import DisabledRoomMediaEditor from "./DisabledRoomMediaEditor";
 import DuplexFamilyRoomMediaEditor from "./DuplexFamilyRoomMediaEditor";
 import FamilyRoomMediaEditor from "./FamilyRoomMediaEditor";
@@ -397,7 +399,7 @@ export default function PanelContentPage() {
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-stone-400">
                   Seçili sayfa / bölüm
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold text-stone-900">
+                <h2 className="mt-2 text-2xl font-semibold text-[#63978f]">
                   {selectedNamespace
                     ? getNamespaceLabel(selectedNamespace)
                     : "Sayfa seçin"}
@@ -433,7 +435,7 @@ export default function PanelContentPage() {
                   type="button"
                   onClick={handleSave}
                   disabled={saving || !bundle}
-                  className="rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-[#63978f] px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {saving ? "Kaydediliyor..." : "Tüm Dilleri Kaydet"}
                 </button>
@@ -476,7 +478,14 @@ export default function PanelContentPage() {
               {selectedNamespace === "Restaurants" ? (
                 <RestaurantsMediaEditor activeLocale={activeLocale} />
               ) : null}
+              {selectedNamespace === "BarAndCafes" ? (
+                <BarCafesMediaEditor activeLocale={activeLocale} />
+              ) : null}
               <RestaurantDetailMediaEditor
+                namespace={selectedNamespace}
+                activeLocale={activeLocale}
+              />
+              <BarCafeDetailMediaEditor
                 namespace={selectedNamespace}
                 activeLocale={activeLocale}
               />

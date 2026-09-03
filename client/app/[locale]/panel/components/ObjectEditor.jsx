@@ -154,9 +154,9 @@ function EditorNode({ label, value, path, onChange }) {
 
 function SectionHeading({ label, detail }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-stone-200 bg-stone-50 px-5 py-4">
+    <div className="flex items-center justify-between gap-4 border-b border-stone-200 bg-[#2f423f] px-5 py-4">
       <div>
-        <h3 className="font-semibold text-stone-900">{humanizeLabel(label)}</h3>
+        <h3 className="font-semibold text-stone-100">{humanizeLabel(label)}</h3>
         <p className="mt-0.5 font-mono text-[10px] text-stone-400">{label}</p>
       </div>
       <span className="shrink-0 rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">

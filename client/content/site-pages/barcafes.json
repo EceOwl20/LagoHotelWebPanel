@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "barcafes",
+  "hero": { "image": "/uploads/pages/barcafes/mainbar.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "culinaryInfo": {
+    "primary": { "image": "/uploads/pages/barcafes/cafebar1.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/barcafes/cafebars2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "featureBackgrounds": {
+    "bars": { "image": "/uploads/pages/barcafes/fullphoto.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "cafes": { "image": "/uploads/pages/barcafes/fullphoto2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "bars": {
+    "mignon": { "image": "/uploads/pages/barcafes/mignon.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "joie": { "image": "/uploads/pages/barcafes/joie.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "maldiva": { "image": "/uploads/pages/barcafes/maldiva.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "vago": { "image": "/uploads/pages/barcafes/vagobar.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "cafes": {
+    "piano": { "image": "/uploads/pages/barcafes/piano.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "abella": { "image": "/uploads/pages/barcafes/abella.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "lago": { "image": "/uploads/pages/barcafes/lago.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "house": { "image": "/uploads/pages/barcafes/house.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "carousel": {
+    "images": [
+      { "id": "barcafes-carousel-1", "src": "/uploads/pages/barcafes/hungry1.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-2", "src": "/uploads/pages/barcafes/hungry2.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-3", "src": "/uploads/pages/barcafes/hungry3.webp", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-4", "src": "/uploads/pages/barcafes/hungry4.webp", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-5", "src": "/uploads/pages/barcafes/hungry5.webp", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-6", "src": "/uploads/pages/barcafes/hungry6.webp", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-7", "src": "/uploads/pages/barcafes/hungry7.webp", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "barcafes-carousel-8", "src": "/uploads/pages/barcafes/hungry8.webp", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "discover": { "image": "/uploads/pages/barcafes/BackgroundCafes.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "updatedAt": null
+}

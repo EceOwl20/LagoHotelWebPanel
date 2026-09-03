@@ -6,6 +6,10 @@ import {
   getRestaurantDetailConfigByPageKey,
   RESTAURANT_DETAIL_CONFIGS,
 } from "./restaurant-detail-config.mjs";
+import {
+  BAR_CAFE_DETAIL_CONFIGS,
+  getBarCafeDetailConfigByPageKey,
+} from "./bar-cafe-detail-config.mjs";
 
 const SITE_PAGE_KEYS = new Set([
   "certificates",
@@ -19,7 +23,9 @@ const SITE_PAGE_KEYS = new Set([
   "disableroom",
   "tinyvilla",
   "restaurants",
+  "barcafes",
   ...RESTAURANT_DETAIL_CONFIGS.map((config) => config.pageKey),
+  ...BAR_CAFE_DETAIL_CONFIGS.map((config) => config.pageKey),
 ]);
 const SITE_PAGE_LOCALES = ["tr", "en", "de", "ru"];
 const MAX_GALLERY_IMAGES = 100;
@@ -255,6 +261,52 @@ function normalizeRestaurantsContent(input) {
   };
 }
 
+function normalizeBarCafesContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "barcafes",
+    hero: normalizeLocalizedImage(input?.hero, "Bar ve kafeler hero görseli"),
+    culinaryInfo: {
+      primary: normalizeLocalizedImage(
+        input?.culinaryInfo?.primary,
+        "Bar ve kafeler tanıtımı birinci görseli"
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.culinaryInfo?.secondary,
+        "Bar ve kafeler tanıtımı ikinci görseli"
+      ),
+    },
+    featureBackgrounds: {
+      bars: normalizeLocalizedImage(
+        input?.featureBackgrounds?.bars,
+        "Barlar tanıtım arka planı"
+      ),
+      cafes: normalizeLocalizedImage(
+        input?.featureBackgrounds?.cafes,
+        "Kafeler tanıtım arka planı"
+      ),
+    },
+    bars: {
+      mignon: normalizeLocalizedImage(input?.bars?.mignon, "Mignon Bar kart görseli"),
+      joie: normalizeLocalizedImage(input?.bars?.joie, "Joie Bar kart görseli"),
+      maldiva: normalizeLocalizedImage(input?.bars?.maldiva, "Maldiva Bar kart görseli"),
+      vago: normalizeLocalizedImage(input?.bars?.vago, "Vago Bar kart görseli"),
+    },
+    cafes: {
+      piano: normalizeLocalizedImage(input?.cafes?.piano, "Piano Bar kart görseli"),
+      abella: normalizeLocalizedImage(
+        input?.cafes?.abella,
+        "Abella Patisserie kart görseli"
+      ),
+      lago: normalizeLocalizedImage(input?.cafes?.lago, "Cafe de Lago kart görseli"),
+      house: normalizeLocalizedImage(input?.cafes?.house, "Cafe de House kart görseli"),
+    },
+    carousel: normalizeImageCollection(input?.carousel, "Bar ve kafeler carousel alanı"),
+    discover: normalizeLocalizedImage(input?.discover, "Keşfet arka plan görseli"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
 function normalizeRestaurantDetailContent(input, pageKey, pageLabel) {
   return {
     schemaVersion: 1,
@@ -357,6 +409,10 @@ export async function readSitePageContent(pageKey) {
     return normalizeRestaurantsContent(content);
   }
 
+  if (pageKey === "barcafes") {
+    return normalizeBarCafesContent(content);
+  }
+
   const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
   if (restaurantDetailConfig) {
     return normalizeRestaurantDetailContent(
@@ -366,12 +422,22 @@ export async function readSitePageContent(pageKey) {
     );
   }
 
+  const barCafeDetailConfig = getBarCafeDetailConfigByPageKey(pageKey);
+  if (barCafeDetailConfig) {
+    return normalizeRestaurantDetailContent(
+      content,
+      pageKey,
+      barCafeDetailConfig.fieldLabel
+    );
+  }
+
   return content;
 }
 
 export async function writeSitePageContent(pageKey, input) {
   let content;
   const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
+  const barCafeDetailConfig = getBarCafeDetailConfigByPageKey(pageKey);
 
   if (pageKey === "certificates") {
     content = normalizeCertificatesContent(input);
@@ -403,11 +469,19 @@ export async function writeSitePageContent(pageKey, input) {
     });
   } else if (pageKey === "restaurants") {
     content = normalizeRestaurantsContent(input);
+  } else if (pageKey === "barcafes") {
+    content = normalizeBarCafesContent(input);
   } else if (restaurantDetailConfig) {
     content = normalizeRestaurantDetailContent(
       input,
       pageKey,
       restaurantDetailConfig.fieldLabel
+    );
+  } else if (barCafeDetailConfig) {
+    content = normalizeRestaurantDetailContent(
+      input,
+      pageKey,
+      barCafeDetailConfig.fieldLabel
     );
   } else {
     throw new SitePageContentError("Desteklenmeyen sayfa içeriği.", 404);
