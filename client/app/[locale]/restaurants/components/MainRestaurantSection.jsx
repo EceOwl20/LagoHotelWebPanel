@@ -1,13 +1,12 @@
 import React from 'react'
-import img from "../images/magnafull.webp"
 import Link from 'next/link'
 import { useTranslations } from "next-intl";
 
-const MainRestaurantSection = () => {
+const MainRestaurantSection = ({ image }) => {
   const t = useTranslations('Restaurants.MainRestaurantSection');
 
   return (
-    <div className='flex w-screen h-[45vh] min-h-[460px] items-center justify-center bg-center bg-cover  relative' style={{ backgroundImage: `url(${img.src})` }}>
+    <div className='flex w-screen h-[45vh] min-h-[460px] items-center justify-center bg-center bg-cover  relative' role="img" aria-label={image.alt || undefined} style={{ backgroundImage: `url(${image.src})` }}>
         <div className='absolute inset-0 z-[1] bg-lagoBlack/40'></div>
       <div className='flex w-[1106px] items-center md:items-start justify-center md:justify-start'>
       <div className='flex flex-col ml-0 md:ml-8 lg:ml-0 w-[87.79%] md:w-[91.4%] lg::w-[48.19%] items-center text-center md:text-start md:items-start justify-center gap-[20px] lg:gap-[30px] font-jost text-white z-10'>

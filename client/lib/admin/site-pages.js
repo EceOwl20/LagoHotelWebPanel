@@ -2,6 +2,10 @@ import "server-only";
 
 import path from "path";
 import { contentRoot, readJson, writeJson } from "./storage";
+import {
+  getRestaurantDetailConfigByPageKey,
+  RESTAURANT_DETAIL_CONFIGS,
+} from "./restaurant-detail-config.mjs";
 
 const SITE_PAGE_KEYS = new Set([
   "certificates",
@@ -13,6 +17,9 @@ const SITE_PAGE_KEYS = new Set([
   "familyswimup",
   "duplexfamilyroom",
   "disableroom",
+  "tinyvilla",
+  "restaurants",
+  ...RESTAURANT_DETAIL_CONFIGS.map((config) => config.pageKey),
 ]);
 const SITE_PAGE_LOCALES = ["tr", "en", "de", "ru"];
 const MAX_GALLERY_IMAGES = 100;
@@ -24,6 +31,7 @@ const ROOM_CARD_KEYS = [
   "duplexFamily",
   "disabled",
 ];
+const ROOM_OPTION_KEYS = ["family", "swimup", "superior"];
 
 export class SitePageContentError extends Error {
   constructor(message, status = 400) {
@@ -168,6 +176,13 @@ function normalizeRoomsContent(input) {
     };
     return result;
   }, {});
+  const otherOptions = ROOM_OPTION_KEYS.reduce((result, optionKey) => {
+    result[optionKey] = normalizeLocalizedImage(
+      input?.otherOptions?.[optionKey],
+      `${optionKey} diğer oda seçeneği görseli`
+    );
+    return result;
+  }, {});
 
   return {
     schemaVersion: 1,
@@ -175,6 +190,87 @@ function normalizeRoomsContent(input) {
     hero: normalizeLocalizedImage(input?.hero, "Odalar hero görseli"),
     cards,
     parallax: normalizeLocalizedImage(input?.parallax, "Odalar parallax görseli"),
+    otherOptions,
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeRestaurantsContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "restaurants",
+    hero: normalizeLocalizedImage(input?.hero, "Restoranlar hero görseli"),
+    culinaryInfo: {
+      primary: normalizeLocalizedImage(
+        input?.culinaryInfo?.primary,
+        "Mutfak tanıtımı birinci görseli"
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.culinaryInfo?.secondary,
+        "Mutfak tanıtımı ikinci görseli"
+      ),
+    },
+    mainFeature: normalizeLocalizedImage(
+      input?.mainFeature,
+      "Ana restoran tanıtım görseli"
+    ),
+    cuisines: {
+      anatolia: normalizeLocalizedImage(input?.cuisines?.anatolia, "Anatolia kart görseli"),
+      gusto: normalizeLocalizedImage(input?.cuisines?.gusto, "Gusto kart görseli"),
+      despina: normalizeLocalizedImage(input?.cuisines?.despina, "Despina kart görseli"),
+    },
+    reverseInfo: {
+      primary: normalizeLocalizedImage(
+        input?.reverseInfo?.primary,
+        "Bistro tanıtımı birinci görseli"
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.reverseInfo?.secondary,
+        "Bistro tanıtımı ikinci görseli"
+      ),
+    },
+    decoration: normalizeLocalizedImage(input?.decoration, "Bistro dekoratif görseli"),
+    cuisinesSecondary: {
+      wasabi: normalizeLocalizedImage(
+        input?.cuisinesSecondary?.wasabi,
+        "Wasabi kart görseli"
+      ),
+      fuego: normalizeLocalizedImage(
+        input?.cuisinesSecondary?.fuego,
+        "Fuego kart görseli"
+      ),
+      tapaz: normalizeLocalizedImage(
+        input?.cuisinesSecondary?.tapaz,
+        "Tapaz kart görseli"
+      ),
+    },
+    detailOptions: {
+      wasabi: normalizeLocalizedImage(
+        input?.detailOptions?.wasabi,
+        "Detay sayfaları Wasabi kart görseli"
+      ),
+    },
+    discover: normalizeLocalizedImage(input?.discover, "Keşfet arka plan görseli"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeRestaurantDetailContent(input, pageKey, pageLabel) {
+  return {
+    schemaVersion: 1,
+    pageKey,
+    hero: normalizeLocalizedImage(input?.hero, `${pageLabel} hero görseli`),
+    info: {
+      primary: normalizeLocalizedImage(
+        input?.info?.primary,
+        `${pageLabel} tanıtım birinci görseli`
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.info?.secondary,
+        `${pageLabel} tanıtım ikinci görseli`
+      ),
+    },
+    gallery: normalizeImageCollection(input?.gallery, `${pageLabel} galerisi`),
     updatedAt: input?.updatedAt || null,
   };
 }
@@ -251,11 +347,31 @@ export async function readSitePageContent(pageKey) {
     return normalizeRoomDetailContent(content, pageKey, "Engelli odası");
   }
 
+  if (pageKey === "tinyvilla") {
+    return normalizeRoomDetailContent(content, pageKey, "Tiny Villa", {
+      hasBackground: true,
+    });
+  }
+
+  if (pageKey === "restaurants") {
+    return normalizeRestaurantsContent(content);
+  }
+
+  const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
+  if (restaurantDetailConfig) {
+    return normalizeRestaurantDetailContent(
+      content,
+      pageKey,
+      restaurantDetailConfig.fieldLabel
+    );
+  }
+
   return content;
 }
 
 export async function writeSitePageContent(pageKey, input) {
   let content;
+  const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
 
   if (pageKey === "certificates") {
     content = normalizeCertificatesContent(input);
@@ -281,6 +397,18 @@ export async function writeSitePageContent(pageKey, input) {
     });
   } else if (pageKey === "disableroom") {
     content = normalizeRoomDetailContent(input, pageKey, "Engelli odası");
+  } else if (pageKey === "tinyvilla") {
+    content = normalizeRoomDetailContent(input, pageKey, "Tiny Villa", {
+      hasBackground: true,
+    });
+  } else if (pageKey === "restaurants") {
+    content = normalizeRestaurantsContent(input);
+  } else if (restaurantDetailConfig) {
+    content = normalizeRestaurantDetailContent(
+      input,
+      pageKey,
+      restaurantDetailConfig.fieldLabel
+    );
   } else {
     throw new SitePageContentError("Desteklenmeyen sayfa içeriği.", 404);
   }

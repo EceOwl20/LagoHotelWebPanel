@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "tapazrestaurant",
+  "hero": { "image": "/uploads/pages/tapazrestaurant/SRF_5067.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/tapazrestaurant/SRF_3573.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/tapazrestaurant/SRF_3590.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "tapaz-3573", "src": "/uploads/pages/tapazrestaurant/SRF_3573.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-3590", "src": "/uploads/pages/tapazrestaurant/SRF_3590.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5052", "src": "/uploads/pages/tapazrestaurant/SRF_5052.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5062", "src": "/uploads/pages/tapazrestaurant/SRF_5062.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5067", "src": "/uploads/pages/tapazrestaurant/SRF_5067.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5069", "src": "/uploads/pages/tapazrestaurant/SRF_5069.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5081", "src": "/uploads/pages/tapazrestaurant/SRF_5081.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tapaz-5087", "src": "/uploads/pages/tapazrestaurant/SRF_5087.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

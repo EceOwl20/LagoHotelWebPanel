@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "tinyvilla",
+  "hero": {
+    "image": "/uploads/pages/tinyvilla/SRF_2169.jpg",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "gallery": {
+    "images": [
+      { "id": "tiny-villa-2169", "src": "/uploads/pages/tinyvilla/SRF_2169.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2184", "src": "/uploads/pages/tinyvilla/SRF_2184.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2192", "src": "/uploads/pages/tinyvilla/SRF_2192.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2205", "src": "/uploads/pages/tinyvilla/SRF_2205.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2216", "src": "/uploads/pages/tinyvilla/SRF_2216.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2220", "src": "/uploads/pages/tinyvilla/SRF_2220.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2231", "src": "/uploads/pages/tinyvilla/SRF_2231.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2237", "src": "/uploads/pages/tinyvilla/SRF_2237.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2246", "src": "/uploads/pages/tinyvilla/SRF_2246.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2251", "src": "/uploads/pages/tinyvilla/SRF_2251.jpg", "order": 9, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2253", "src": "/uploads/pages/tinyvilla/SRF_2253.jpg", "order": 10, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2266", "src": "/uploads/pages/tinyvilla/SRF_2266.jpg", "order": 11, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-2276", "src": "/uploads/pages/tinyvilla/SRF_2276.jpg", "order": 12, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-6783", "src": "/uploads/pages/tinyvilla/SRF_6783.jpg", "order": 13, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-6830", "src": "/uploads/pages/tinyvilla/SRF_6830.jpg", "order": 14, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-7175", "src": "/uploads/pages/tinyvilla/SRF_7175.jpg", "order": 15, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "tiny-villa-7207", "src": "/uploads/pages/tinyvilla/SRF_7207.jpg", "order": 16, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "background": {
+    "image": "/uploads/pages/tinyvilla/odafull.webp",
+    "translations": {
+      "tr": { "alt": "" },
+      "en": { "alt": "" },
+      "de": { "alt": "" },
+      "ru": { "alt": "" }
+    }
+  },
+  "updatedAt": null
+}

@@ -28,13 +28,19 @@ function getLocalizedCollection(collection, locale) {
 
 const Page = async ({ params }) => {
   const { locale } = await params;
-  const [t, t2, t3, media] = await Promise.all([
+  const [t, t2, t3, media, sharedMedia] = await Promise.all([
     getTranslations("FamilyRoom"),
     getTranslations("FamilyRoom.RoomInfo"),
     getTranslations("FamilyRoom.RoomTour"),
     readSitePageContent("familyroom"),
+    readSitePageContent("rooms"),
   ]);
   const carouselImages = getLocalizedCollection(media.gallery, locale);
+  const otherOptionImages = {
+    family: getLocalizedImage(sharedMedia.otherOptions.family, locale),
+    swimup: getLocalizedImage(sharedMedia.otherOptions.swimup, locale),
+    superior: getLocalizedImage(sharedMedia.otherOptions.superior, locale),
+  };
 
   const subroomBannerText=[t("text1"),t("text2"),t("text3")]
   const iconTexts=[t2("list1"),t2("list2"),t2("list3")];
@@ -46,10 +52,10 @@ const Page = async ({ params }) => {
      <SubroomCarousel images={carouselImages}/>
      </div>
       <RoomFeatures span={t2("subtitle")} header={t2("title")} text={t2("text")} header2={t2("title2")} header3={t2("title3")}  text2={t2("text2")} iconsTexts={iconTexts} roomName="FamilyRoom" pool={false}/>
-      <RoomsParallaxSection/>
+      <RoomsParallaxSection image={getLocalizedImage(sharedMedia.parallax, locale)}/>
       <RoomTour span={t3("subtitle")} header={t3("title")} text={t3("text")} link="https://kuula.co/share/collection/7byM9?logo=1&info=0&fs=1&vr=1&autorotate=0.22&autop=10&autopalt=1&thumbs=4&margin=2&alpha=0.72"/>
       <RoomTour span={t3("subtitle2")} header={t3("title2")} text={t3("text2")} link="https://kuula.co/share/collection/7bWS8?logo=1&info=0&fs=1&vr=1&autorotate=0.22&autop=10&autopalt=1&thumbs=4&margin=2&alpha=0.72"/>
-      <OtherOptions/>
+      <OtherOptions images={otherOptionImages} translationNamespace="FamilyRoom.OtherOptions"/>
       <ContactSection2/>
     </div>
   )

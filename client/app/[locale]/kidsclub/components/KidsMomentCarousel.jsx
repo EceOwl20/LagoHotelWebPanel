@@ -3,6 +3,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import useCarousel from "embla-carousel-react";
 import Image from "next/image";
 
+function getImageProps(image, fallbackAlt) {
+  return {
+    src: image.src,
+    alt: image.alt || fallbackAlt,
+    width: image.width || 1600,
+    height: image.height || 1067,
+  };
+}
+
 const KidsMomentCarousel = ({ images, header,showheader }) => {
   const [emblaRef, emblaApi] = useCarousel({
     loop: true,
@@ -48,22 +57,25 @@ const KidsMomentCarousel = ({ images, header,showheader }) => {
           ref={emblaRef}
         >
           <div className="flex grid-flow-col">
-            {images.map((img, index) => (
+            {images.map((img, index) => {
+              const image = getImageProps(img, `Slide ${index + 1}`);
+
+              return (
               <div
-                key={index}
+                key={img.id || `${image.src}-${index}`}
                 className="flex-[0_0_85%] sm:flex-[0_0_auto] min-w-0 ml-[2%] md:ml-[10px] lg:h-[600px]"
               >
                 <Image
-                  src={img.src}
-                  style={{ objectFit: "cover" }}
-                  width={img.width}
-                  height={img.height}
-                   alt={`Slide ${index + 1}`}
-                  objectPosition="center"
+                  src={image.src}
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                  width={image.width}
+                  height={image.height}
+                  alt={image.alt}
                   className="flex h-[35vh] lg:h-full md:min-h-[420px] md:h-[38vh] w-auto"
                 />
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

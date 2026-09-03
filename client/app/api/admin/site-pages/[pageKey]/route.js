@@ -10,6 +10,7 @@ import {
   consumeRateLimit,
   getClientIp,
 } from "@/lib/admin/security";
+import { getRestaurantDetailConfigByPageKey } from "@/lib/admin/restaurant-detail-config.mjs";
 
 const CERTIFICATE_PATHS = [
   "/tr/sertifikalar",
@@ -21,7 +22,16 @@ const CERTIFICATE_PATHS = [
 const SPA_WELLNESS_PATHS = ["tr", "en", "de", "ru"].map(
   (locale) => `/${locale}/spawellness`
 );
-const ROOMS_PATHS = ["tr", "en", "de", "ru"].map((locale) => `/${locale}/rooms`);
+const ROOMS_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
+  `/${locale}/rooms`,
+  `/${locale}/rooms/superiorroom`,
+  `/${locale}/rooms/familyroom`,
+  `/${locale}/rooms/swimuproom`,
+  `/${locale}/rooms/familyswimup`,
+  `/${locale}/rooms/duplexfamilyroom`,
+  `/${locale}/rooms/disableroom`,
+  `/${locale}/rooms/tinyvillaaaaaa`,
+]);
 const SUPERIOR_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
   (locale) => `/${locale}/rooms/superiorroom`
 );
@@ -40,7 +50,19 @@ const DUPLEX_FAMILY_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
 const DISABLED_ROOM_PATHS = ["tr", "en", "de", "ru"].map(
   (locale) => `/${locale}/rooms/disableroom`
 );
-
+const TINY_VILLA_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/rooms/tinyvillaaaaaa`
+);
+const RESTAURANTS_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
+  `/${locale}/restaurants`,
+  `/${locale}/restaurants/mainrestaurant`,
+  `/${locale}/restaurants/anatoliarestaurant`,
+  `/${locale}/restaurants/gustorestaurant`,
+  `/${locale}/restaurants/despinarestaurant`,
+  `/${locale}/restaurants/wasabi`,
+  `/${locale}/restaurants/fuego`,
+  `/${locale}/restaurants/tapazrestaurant`,
+]);
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
 
@@ -130,6 +152,23 @@ export async function PUT(request, { params }) {
 
     if (pageKey === "disableroom") {
       DISABLED_ROOM_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "tinyvilla") {
+      TINY_VILLA_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "restaurants") {
+      RESTAURANTS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
+    if (restaurantDetailConfig) {
+      ["tr", "en", "de", "ru"].forEach((locale) => {
+        revalidatePath(
+          `/${locale}/restaurants/${restaurantDetailConfig.routeSegment}`
+        );
+      });
     }
 
     return NextResponse.json({ content: saved });

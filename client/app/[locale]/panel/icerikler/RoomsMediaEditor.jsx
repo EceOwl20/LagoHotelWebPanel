@@ -34,7 +34,6 @@ const singleImages = [
     path: ["cards", "disabled", "secondary"],
     label: "Engelli odası ikinci görseli",
   },
-  { path: ["parallax"], label: "Odalar özellik alanı arka plan görseli" },
 ];
 
 export default function RoomsMediaEditor({ activeLocale }) {

@@ -71,5 +71,19 @@
     "image": "/uploads/pages/rooms/oda.png",
     "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
   },
+  "otherOptions": {
+    "family": {
+      "image": "/uploads/pages/rooms/option1.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "swimup": {
+      "image": "/uploads/pages/rooms/option2.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "superior": {
+      "image": "/uploads/pages/rooms/option3.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    }
+  },
   "updatedAt": null
 }

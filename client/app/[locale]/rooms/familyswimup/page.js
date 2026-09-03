@@ -28,12 +28,13 @@ function getLocalizedCollection(collection, locale) {
 
 const Page = async ({ params }) => {
   const { locale } = await params;
-  const [t, t2, t3, t4, media] = await Promise.all([
+  const [t, t2, t3, t4, media, sharedMedia] = await Promise.all([
     getTranslations("FamilySwimupRoom"),
     getTranslations("FamilySwimupRoom.RoomInfo"),
     getTranslations("FamilySwimupRoom.RoomTour"),
     getTranslations("FamilySwimupRoom.BackgroundSection"),
     readSitePageContent("familyswimup"),
+    readSitePageContent("rooms"),
   ]);
 
   const backgroundTexts=[t4("text1"),t4("text2"),t4("text3")]
@@ -41,6 +42,11 @@ const Page = async ({ params }) => {
   const iconTexts=[t2("list1"),t2("list2"),t2("list3")];
 
   const carouselImages = getLocalizedCollection(media.gallery, locale);
+  const otherOptionImages = {
+    family: getLocalizedImage(sharedMedia.otherOptions.family, locale),
+    swimup: getLocalizedImage(sharedMedia.otherOptions.swimup, locale),
+    superior: getLocalizedImage(sharedMedia.otherOptions.superior, locale),
+  };
 
   return (
     <div className=' overflow-hidden flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb]'>
@@ -52,7 +58,7 @@ const Page = async ({ params }) => {
       <BackgroundSection span={t4("subtitle")} header={t4("title")} texts={backgroundTexts} link="/" img={getLocalizedImage(media.background, locale)}/>
       <RoomTour span={t3("subtitle")} header={t3("title")} text={t3("text")} link="https://kuula.co/share/collection/71pLl?logo=1&info=0&fs=1&vr=1&autorotate=0.22&autop=10&autopalt=1&thumbs=4&margin=2&alpha=0.72"/>
       <RoomTour span={t3("subtitle2")} header={t3("title2")} text={t3("text2")} link="https://kuula.co/share/collection/7bwhq?logo=1&info=0&fs=1&vr=1&autorotate=0.22&autop=10&autopalt=1&thumbs=4&margin=2&alpha=0.72"/>
-      <OtherOptions/>
+      <OtherOptions images={otherOptionImages} translationNamespace="FamilySwimupRoom.OtherOptions"/>
       <ContactSection2/>
     </div>
   )

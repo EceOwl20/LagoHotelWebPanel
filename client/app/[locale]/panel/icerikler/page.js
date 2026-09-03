@@ -4,15 +4,20 @@ import { useEffect, useMemo, useState } from "react";
 import { FiCheck, FiChevronRight, FiFileText, FiSearch } from "react-icons/fi";
 import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
+import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.mjs";
 import CertificateMediaEditor from "./CertificateMediaEditor";
 import DisabledRoomMediaEditor from "./DisabledRoomMediaEditor";
 import DuplexFamilyRoomMediaEditor from "./DuplexFamilyRoomMediaEditor";
 import FamilyRoomMediaEditor from "./FamilyRoomMediaEditor";
 import FamilySwimupRoomMediaEditor from "./FamilySwimupRoomMediaEditor";
+import RestaurantDetailMediaEditor from "./RestaurantDetailMediaEditor";
 import RoomsMediaEditor from "./RoomsMediaEditor";
+import RestaurantsMediaEditor from "./RestaurantsMediaEditor";
+import SharedRoomMediaEditor from "./SharedRoomMediaEditor";
 import SpaWellnessMediaEditor from "./SpaWellnessMediaEditor";
 import SuperiorRoomMediaEditor from "./SuperiorRoomMediaEditor";
 import SwimupRoomMediaEditor from "./SwimupRoomMediaEditor";
+import TinyVillaMediaEditor from "./TinyVillaMediaEditor";
 
 const namespaceLabels = {
   LocaleSwitcher: "Dil seçici",
@@ -25,6 +30,9 @@ const namespaceLabels = {
   Accommodation: "Odalar ana sayfası",
   RoomsParallax: "Odalar özellik alanı",
   Restaurants: "Restoranlar ana sayfası",
+  ...Object.fromEntries(
+    RESTAURANT_DETAIL_CONFIGS.map((config) => [config.namespace, config.fieldLabel])
+  ),
   BarAndCafes: "Bar ve kafeler ana sayfası",
   BeachPools: "Plaj ve havuzlar",
   Spa: "Spa & Wellness",
@@ -465,6 +473,16 @@ export default function PanelContentPage() {
               {selectedNamespace === "Accommodation" ? (
                 <RoomsMediaEditor activeLocale={activeLocale} />
               ) : null}
+              {selectedNamespace === "Restaurants" ? (
+                <RestaurantsMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              <RestaurantDetailMediaEditor
+                namespace={selectedNamespace}
+                activeLocale={activeLocale}
+              />
+              {selectedNamespace === "RoomsParallax" ? (
+                <SharedRoomMediaEditor activeLocale={activeLocale} />
+              ) : null}
               {selectedNamespace === "SuperiorRoom" ? (
                 <SuperiorRoomMediaEditor activeLocale={activeLocale} />
               ) : null}
@@ -482,6 +500,9 @@ export default function PanelContentPage() {
               ) : null}
               {selectedNamespace === "DisabledRoom" ? (
                 <DisabledRoomMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "TinyVilla" ? (
+                <TinyVillaMediaEditor activeLocale={activeLocale} />
               ) : null}
 
             </div>

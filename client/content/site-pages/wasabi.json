@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "wasabi",
+  "hero": { "image": "/uploads/pages/wasabi/SRF_2482.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/wasabi/img-12.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/wasabi/img-10.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "wasabi-img-10", "src": "/uploads/pages/wasabi/img-10.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-img-12", "src": "/uploads/pages/wasabi/img-12.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-img-11", "src": "/uploads/pages/wasabi/img-11.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-img-13", "src": "/uploads/pages/wasabi/img-13.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-img-14", "src": "/uploads/pages/wasabi/img-14.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-img-15", "src": "/uploads/pages/wasabi/img-15.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-2482", "src": "/uploads/pages/wasabi/SRF_2482.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-2511", "src": "/uploads/pages/wasabi/SRF_2511.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "wasabi-2404-2", "src": "/uploads/pages/wasabi/SRF_2404_2.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "despinarestaurant",
+  "hero": { "image": "/uploads/pages/despinarestaurant/SRF_2383.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/despinarestaurant/SRF_2312.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/despinarestaurant/SRF_2320.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "despina-2312", "src": "/uploads/pages/despinarestaurant/SRF_2312.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2320", "src": "/uploads/pages/despinarestaurant/SRF_2320.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2325", "src": "/uploads/pages/despinarestaurant/SRF_2325.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2332", "src": "/uploads/pages/despinarestaurant/SRF_2332.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2347", "src": "/uploads/pages/despinarestaurant/SRF_2347.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2352", "src": "/uploads/pages/despinarestaurant/SRF_2352.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2383", "src": "/uploads/pages/despinarestaurant/SRF_2383.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2387", "src": "/uploads/pages/despinarestaurant/SRF_2387.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-2392", "src": "/uploads/pages/despinarestaurant/SRF_2392.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "despina-3471", "src": "/uploads/pages/despinarestaurant/SRF_3471.jpg", "order": 9, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

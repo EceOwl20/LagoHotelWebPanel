@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "mainrestaurant",
+  "hero": { "image": "/uploads/pages/mainrestaurant/SRF_3314.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/mainrestaurant/SRF_3275.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/mainrestaurant/SRF_3279.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "main-restaurant-3275", "src": "/uploads/pages/mainrestaurant/SRF_3275.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3279", "src": "/uploads/pages/mainrestaurant/SRF_3279.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3289", "src": "/uploads/pages/mainrestaurant/SRF_3289.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3294", "src": "/uploads/pages/mainrestaurant/SRF_3294.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3299", "src": "/uploads/pages/mainrestaurant/SRF_3299.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3309", "src": "/uploads/pages/mainrestaurant/SRF_3309.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3314", "src": "/uploads/pages/mainrestaurant/SRF_3314.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3319", "src": "/uploads/pages/mainrestaurant/SRF_3319.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3324", "src": "/uploads/pages/mainrestaurant/SRF_3324.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3334", "src": "/uploads/pages/mainrestaurant/SRF_3334.jpg", "order": 9, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3349", "src": "/uploads/pages/mainrestaurant/SRF_3349.jpg", "order": 10, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3358", "src": "/uploads/pages/mainrestaurant/SRF_3358.jpg", "order": 11, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3364", "src": "/uploads/pages/mainrestaurant/SRF_3364.jpg", "order": 12, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3366", "src": "/uploads/pages/mainrestaurant/SRF_3366.jpg", "order": 13, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3371", "src": "/uploads/pages/mainrestaurant/SRF_3371.jpg", "order": 14, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3384", "src": "/uploads/pages/mainrestaurant/SRF_3384.jpg", "order": 15, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3391", "src": "/uploads/pages/mainrestaurant/SRF_3391.jpg", "order": 16, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3401", "src": "/uploads/pages/mainrestaurant/SRF_3401.jpg", "order": 17, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3426", "src": "/uploads/pages/mainrestaurant/SRF_3426.jpg", "order": 18, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3441", "src": "/uploads/pages/mainrestaurant/SRF_3441.jpg", "order": 19, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3456", "src": "/uploads/pages/mainrestaurant/SRF_3456.jpg", "order": 20, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "main-restaurant-3469", "src": "/uploads/pages/mainrestaurant/SRF_3469.jpg", "order": 21, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

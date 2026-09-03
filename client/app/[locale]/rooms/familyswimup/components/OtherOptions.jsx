@@ -1,21 +1,27 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import options1 from "../images/option1.webp";
-import options2 from "../images/option2.webp";
-import options3 from "../images/option3.webp";
 import Image from "next/image";
 import { Link } from '@/i18n/navigation';
 import { BiArea, BiGroup } from "react-icons/bi";
 import {useTranslations} from 'next-intl';
 
-const OtherOptions = () => {
-  const t = useTranslations('SuperiorRoom.OtherOptions');
+function getImageProps(image, fallbackAlt) {
+  return {
+    src: image.src,
+    alt: image.alt || fallbackAlt,
+    width: image.width || 800,
+    height: image.height || 600,
+  };
+}
+
+const OtherOptions = ({ images, translationNamespace }) => {
+  const t = useTranslations(translationNamespace);
 
   const rooms = [
     {
       id: 1,
-      img: options1,
+      img: images.family,
       title: t("title1"),
       description: t("subtitle1"),
       size: t("m1"),
@@ -25,7 +31,7 @@ const OtherOptions = () => {
     },
     {
       id: 2,
-      img: options2,
+      img: images.swimup,
       title: t("title2"),
       description: t("subtitle2"),
       size: t("m2"),
@@ -35,7 +41,7 @@ const OtherOptions = () => {
     },
     {
       id: 3,
-      img: options3,
+      img: images.superior,
       title: t("title3"),
       description: t("subtitle3"),
       size: t("m3"),
@@ -57,6 +63,10 @@ const OtherOptions = () => {
 
   const scrollNext = useCallback(() => {
     if (emblaApi && emblaApi.scrollNext) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const handleJump = useCallback((index) => {
+    if (emblaApi && emblaApi.scrollTo) emblaApi.scrollTo(index);
   }, [emblaApi]);
 
   useEffect(() => {
@@ -83,17 +93,20 @@ const OtherOptions = () => {
         {/* embla carousel */}
         <div className="overflow-hidden w-full" ref={emblaRef}>
           <div className="flex items-start justify-start w-full">
-            {rooms.map((room) => (
+            {rooms.map((room) => {
+              const image = getImageProps(room.img, room.title);
+
+              return (
               <div
                 key={room.id}
                 className="flex-[0_0_85%] sm:flex-[0_0_75%] md:max-h-auto md:flex-[0_0_50%] lg:flex-[0_0_31%] xl:flex-[0_0_31.5%] min-w-0 mr-[2.5%]"
               >
                 <div className="flex flex-col w-full items-start text-start justify-center gap-[15px] lg:gap-[20px] font-jost text-black ">
                   <Image
-                    src={room.img}
-                    alt={room.title}
-                    width={room.img.width}
-                    height={room.img.height}
+                    src={image.src}
+                    alt={image.alt}
+                    width={image.width}
+                    height={image.height}
                   />
                   <span className="text-[12px] font-medium leading-[14px] tracking-[0.48px] uppercase">
                     {room.description}
@@ -128,7 +141,8 @@ const OtherOptions = () => {
                   </Link>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

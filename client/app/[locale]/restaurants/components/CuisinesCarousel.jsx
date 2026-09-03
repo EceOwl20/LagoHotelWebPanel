@@ -5,6 +5,15 @@ import Image from 'next/image'
 import { Link } from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
 
+function getImageProps(image, fallbackAlt) {
+  return {
+    src: image.src,
+    alt: image.alt || fallbackAlt,
+    width: image.width || 800,
+    height: image.height || 600,
+  };
+}
+
 const CuisinesCarousel = ({span,header,text, cuisines}) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({  loop: true,
     align: "start",
@@ -18,6 +27,10 @@ const CuisinesCarousel = ({span,header,text, cuisines}) => {
 
   const scrollNext = useCallback(() => {
     if (emblaApi && emblaApi.scrollNext) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const handleJump = useCallback((index) => {
+    if (emblaApi && emblaApi.scrollTo) emblaApi.scrollTo(index);
   }, [emblaApi]);
 
   useEffect(() => {
@@ -41,14 +54,17 @@ const CuisinesCarousel = ({span,header,text, cuisines}) => {
 {/* embla carousel */}
 <div className="overflow-hidden w-full" ref={emblaRef}>
       <div className="flex ">
-        {cuisines.map((room) => (
+        {cuisines.map((room) => {
+          const image = getImageProps(room.img, room.title);
+
+          return (
           <div
           // mobile iphone kayma var
             key={room.id}
             className="flex-[0_0_80%] md:flex-[0_0_50%] lg:flex-[0_0_32%] xl:flex-[0_0_31.5%] min-w-0 mr-[1.8%]" 
           >
             <div className="flex flex-col w-full items-start text-start justify-center gap-[15px] md:gap-[25px] font-jost text-black ">
-              <Image src={room.img} alt={room.title} width={room.img.width} height={room.img.height}  />
+              <Image src={image.src} alt={image.alt} width={image.width} height={image.height} />
               <span className="text-[12px] font-medium leading-[14px] tracking-[0.48px] uppercase">
                 {room.description}
               </span>
@@ -62,7 +78,8 @@ const CuisinesCarousel = ({span,header,text, cuisines}) => {
               </Link>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
 

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "anatoliarestaurant",
+  "hero": { "image": "/uploads/pages/anatoliarestaurant/mainphoto.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/anatoliarestaurant/SRF_3491.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/anatoliarestaurant/SRF_3506.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "anatolia-3491", "src": "/uploads/pages/anatoliarestaurant/SRF_3491.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "anatolia-3506", "src": "/uploads/pages/anatoliarestaurant/SRF_3506.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "anatolia-3511", "src": "/uploads/pages/anatoliarestaurant/SRF_3511.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "anatolia-3521", "src": "/uploads/pages/anatoliarestaurant/SRF_3521.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "anatolia-3543", "src": "/uploads/pages/anatoliarestaurant/SRF_3543.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

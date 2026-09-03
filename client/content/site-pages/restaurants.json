@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "restaurants",
+  "hero": { "image": "/uploads/pages/restaurants/restaurantMain.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "culinaryInfo": {
+    "primary": { "image": "/uploads/pages/restaurants/art1.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/restaurants/art2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "mainFeature": { "image": "/uploads/pages/restaurants/magnafull.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "cuisines": {
+    "anatolia": { "image": "/uploads/pages/restaurants/anatolia.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "gusto": { "image": "/uploads/pages/restaurants/gusto.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "despina": { "image": "/uploads/pages/restaurants/despina.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "reverseInfo": {
+    "primary": { "image": "/uploads/pages/restaurants/bistres1.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/restaurants/bist2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "decoration": { "image": "/uploads/pages/restaurants/bistrogorsel.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "cuisinesSecondary": {
+    "wasabi": { "image": "/uploads/pages/restaurants/wasabi.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "fuego": { "image": "/uploads/pages/restaurants/fuego.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "tapaz": { "image": "/uploads/pages/restaurants/tapaz.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "detailOptions": {
+    "wasabi": { "image": "/uploads/pages/restaurants/wasabi2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "discover": { "image": "/uploads/pages/restaurants/Background.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "updatedAt": null
+}

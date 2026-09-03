@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "fuego",
+  "hero": { "image": "/uploads/pages/fuego/SRF_2404_2.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "primary": { "image": "/uploads/pages/fuego/SRF_2403.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/fuego/SRF_2404.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "fuego-2403", "src": "/uploads/pages/fuego/SRF_2403.jpg", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2404", "src": "/uploads/pages/fuego/SRF_2404.jpg", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2414", "src": "/uploads/pages/fuego/SRF_2414.jpg", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2419", "src": "/uploads/pages/fuego/SRF_2419.jpg", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2429", "src": "/uploads/pages/fuego/SRF_2429.jpg", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2434", "src": "/uploads/pages/fuego/SRF_2434.jpg", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2439", "src": "/uploads/pages/fuego/SRF_2439.jpg", "order": 6, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2454", "src": "/uploads/pages/fuego/SRF_2454.jpg", "order": 7, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2459", "src": "/uploads/pages/fuego/SRF_2459.jpg", "order": 8, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2467", "src": "/uploads/pages/fuego/SRF_2467.jpg", "order": 9, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2472", "src": "/uploads/pages/fuego/SRF_2472.jpg", "order": 10, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2477", "src": "/uploads/pages/fuego/SRF_2477.jpg", "order": 11, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2482", "src": "/uploads/pages/fuego/SRF_2482.jpg", "order": 12, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2511", "src": "/uploads/pages/fuego/SRF_2511.jpg", "order": 13, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2521", "src": "/uploads/pages/fuego/SRF_2521.jpg", "order": 14, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "fuego-2404-2", "src": "/uploads/pages/fuego/SRF_2404_2.jpg", "order": 15, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}
