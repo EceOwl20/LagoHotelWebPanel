@@ -1,13 +1,12 @@
 import React from "react";
-import foto from "../Images/beachfull.webp";
 import BirthDay from "../Images/Icons/BirthDay";
 import Baloon from "../Images/Icons/Baloon";
 import {useTranslations} from 'next-intl';
 
-const Beach2 = () => {
+const Beach2 = ({ image }) => {
   const t = useTranslations('BeachPools.ImageBackground');
   // Arka plan resmi yoksa en azından "none" vererek olası hataların önüne geçebiliriz.
-  const backgroundImage = foto?.src ? `url(${foto.src})` : "none";
+  const backgroundImage = image?.src ? `url(${image.src})` : "none";
 
   return (
     <div

@@ -1,22 +1,14 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import useCarousel from "embla-carousel-react";
-import img1 from "../images/Rectangle.webp"
 import Image from 'next/image'
-import img2 from "../images/SRF_3683 1.webp"
-import img3 from "../images/Rectangle-1.png"
-import img4 from "../images/SRF_2586.png"
-import img5 from "../images/SRF_2593.png"
-import img6 from "../images/SRF_3683 1.png"
 import L2Svg from './L2Svg'
 import A2Svg from './A2Svg'
 import G2Svg from './G2Svg'
 import O2Svg from './O2Svg'
 import {useTranslations} from 'next-intl';
 
-const images=[img1,img2,img3,img4,img5,img6]
-
-const ActivityBackgroundSection = () => {
+const ActivityBackgroundSection = ({ images }) => {
   const t = useTranslations('Entertainment.Gallery');
 
   const [emblaRef, emblaApi] = useCarousel({
@@ -66,11 +58,10 @@ const ActivityBackgroundSection = () => {
               >
                 <Image
                   src={image.src}
-                  layout="cover"
-                  width={image.width}
-                  height={image.height}
-                  alt={`Slide ${index + 1}`}
-                  objectPosition="center"
+                  width={image.width || 1600}
+                  height={image.height || 1067}
+                  alt={image.alt || `Slide ${index + 1}`}
+                  style={{ objectFit: "cover", objectPosition: "center" }}
                   className="flex h-full w-auto"
                 />
                  

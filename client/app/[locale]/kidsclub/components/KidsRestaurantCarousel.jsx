@@ -1,15 +1,11 @@
 "use client";
 import React, { useState, useEffect, useCallback } from "react";
 import useCarousel from "embla-carousel-react";
-import img from "../images/SRF_3469.webp"
-import img2 from "../images/SRF_3456.webp"
 import Image from "next/image";
 import PlateSvg from "./PlateSvg";
 import {useTranslations} from 'next-intl';
 
-const images =[img,img2]
-
-const KidsRestaurantCarousel = () => {
+const KidsRestaurantCarousel = ({ images }) => {
   const t = useTranslations('KidsClub.KidsRestaurant');
 
     const [emblaRef, emblaApi] = useCarousel({
@@ -61,11 +57,10 @@ const KidsRestaurantCarousel = () => {
            <div className="flex-[0_0_90%] lg:flex-[0_0_74%] xl:flex-[0_0_auto] min-w-0 ml-[1.8%]" key={index}>
               <Image
                 src={image.src}
-                layout="cover"
-                width={image.width}
-                height={image.height}
-                alt={`Slide ${index + 1}`}
-                objectPosition="center"
+                width={image.width || 1600}
+                height={image.height || 1067}
+                alt={image.alt || `Slide ${index + 1}`}
+                style={{ objectFit: "cover", objectPosition: "center" }}
                 className="flex h-full md:h-auto lg:h-full w-full"
               />
             

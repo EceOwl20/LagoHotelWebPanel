@@ -2,17 +2,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from 'next/image'
-import fitness from "../images/sportfitness.webp"
-import kids from "../images/kids.webp"
-import water from "../images/yellow-ball.webp"
-import beachvoley from "../images/beachvoley.webp"
-import sunset from "../images/summer-music.webp"
-import stage from "../images/stageshow.webp"
-import themed from "../images/themed.webp"
 import Link from 'next/link'
 import {useTranslations} from 'next-intl';
 
-const EntertainmentTypesSection = () => {
+const EntertainmentTypesSection = ({ images }) => {
   const t = useTranslations('Entertainment.CarouselSection');
 
   const activities = [
@@ -20,28 +13,28 @@ const EntertainmentTypesSection = () => {
       title:t("title1"),
       category: t("daytime"),
       description: t("description1"),
-      image: fitness,
+      image: images.fitness,
       link:"/sport"
     },
     {
       title:t("title2"),
       category: t("daytime"),
       description: t("description2"),
-      image: kids,
+      image: images.kids,
       link:"/kidsclub"
     },
     {
       title:t("title3"),
       category: t("daytime"),
       description: t("description3"),
-      image: water,
+      image: images.water,
       link:"/sport"
     },
     {
       title:t("title4"),
       category: t("daytime"),
       description: t("description4"),
-      image: beachvoley,
+      image: images.beachVolley,
       link:"/sport"
     },
 
@@ -49,21 +42,21 @@ const EntertainmentTypesSection = () => {
       title:t("title5"),
       category: t("nighttime"),
       description: t("description5"),
-      image: sunset,
+      image: images.sunset,
       link:"/sport"
     },
     {
       title:t("title6"),
       category: t("nighttime"),
       description: t("description6"),
-      image: stage,
+      image: images.stage,
       link:"/entertainment"
     },
     {
       title:t("title7"),
       category: t("nighttime"),
       description: t("description7"),
-      image: themed,
+      image: images.themed,
       link:"/sport"
     }
   ];
@@ -114,7 +107,7 @@ const EntertainmentTypesSection = () => {
           {activities.map((activity, index) => (
             <div key={index} className="flex flex-col items-center justify-center relative mb-[180px]">
               <div className="w-full flex flex-col items-center justify-end cursor-pointer">
-                <Image src={activity.image} width={activity.image.width} height={activity.image.height} className="flex w-full" alt='activity'/>
+                <Image src={activity.image.src} width={activity.image.width || 800} height={activity.image.height || 1200} className="flex w-full" alt={activity.image.alt || activity.title}/>
                 <div className="absolute flex flex-col items-start justify-center bg-white gap-[25px] font-jost text-black w-[90%] p-[20px] -bottom-44">
                   <span className="text-[12px] font-medium leading-[14px] tracking-[0.48px] uppercase">
                     {activity.category}
@@ -143,10 +136,10 @@ const EntertainmentTypesSection = () => {
               >
                 <div className="flex flex-col relative w-full items-center text-start justify-center gap-[15px] lg:gap-[20px] font-jost text-black ">
                   <Image
-                    src={activity.image}
-                    alt={activity.title}
-                    width={activity.image.width}
-                    height={activity.image.height}
+                    src={activity.image.src}
+                    alt={activity.image.alt || activity.title}
+                    width={activity.image.width || 800}
+                    height={activity.image.height || 1200}
                      className="flex h-[300px] md:h-[400px] w-auto md:w-full"
                   />
                   <div className="absolute flex flex-col items-start justify-center bg-white gap-[25px] font-jost text-black w-[90%] p-[20px] -bottom-32">

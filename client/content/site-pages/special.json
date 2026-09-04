@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "special",
+  "hero": { "image": "/uploads/pages/special/hero.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "concepts": {
+    "honeymoon": { "image": "/uploads/pages/special/concept-honeymoon.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "proposal": { "image": "/uploads/pages/special/concept-proposal.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "birthday": { "image": "/uploads/pages/special/concept-birthday.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "pavilion": { "image": "/uploads/pages/special/concept-pavilion.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "flowers": { "image": "/uploads/pages/special/concept-flowers.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "cards": {
+    "honeymoon": { "image": "/uploads/pages/special/card-honeymoon.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "pavilion": { "image": "/uploads/pages/special/card-pavilion.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "proposal": { "image": "/uploads/pages/special/card-proposal.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "birthday": { "image": "/uploads/pages/special/card-birthday.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "flowers": { "image": "/uploads/pages/special/card-flowers.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "info": {
+    "primary": { "image": "/uploads/pages/special/info-primary.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/special/info-secondary.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "layerOne": { "image": "/uploads/pages/special/layer-one.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "layerTwo": { "image": "/uploads/pages/special/layer-two.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "special-gallery-1", "src": "/uploads/pages/special/gallery-1.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "special-gallery-2", "src": "/uploads/pages/special/gallery-2.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "special-gallery-3", "src": "/uploads/pages/special/gallery-3.webp", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

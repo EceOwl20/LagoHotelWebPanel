@@ -1,13 +1,9 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import img1 from "../images/ikili1.webp"
-import img2 from "../images/ikili2.webp"
-import katman1 from "../images/Katman1.png"
-import katman2 from "../images/Katman2.png"
 import Image from "next/image";
 import {useTranslations} from 'next-intl';
 
-const SpecialInfoSection = () => {
+const SpecialInfoSection = ({ images }) => {
   const t = useTranslations('Special.TwoImageSection');
   const [visible, setVisible] = useState(false);
   const sectionRef = useRef(null); 
@@ -48,17 +44,17 @@ const SpecialInfoSection = () => {
         </div>
 
         <div className="flex min-w-[310px] w-[89%] sm:w-[50%] lg:w-[49%] md:w-[49%] items-end justify-end relative h-full">
-            <Image src={img1} alt="art" width={300} height={450} className={`z-[40] w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out ${
+            <Image src={images.primary.src} alt={images.primary.alt} width={530} height={789} className={`z-[40] w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out ${
               visible ? "-translate-y-4 opacity-100" : "translate-y-4 opacity-0"
             }`}/>
-            <Image src={img2} alt="art" width={300} height={450} className={`absolute lg:bottom-[105px] lg:right-[215px] z-[20] bottom-[100px] right-[130px] w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out ${
+            <Image src={images.secondary.src} alt={images.secondary.alt} width={300} height={450} className={`absolute lg:bottom-[105px] lg:right-[215px] z-[20] bottom-[100px] right-[130px] w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out ${
               visible ? "-translate-y-3 opacity-100" : "-translate-y-8 opacity-0"
             }`}/>
         </div>
 
       </div>
-      <Image src={katman1} width={katman1.width} height={katman1.height} className="hidden lg:flex absolute left-0 bottom-0" alt="sutun"/>
-      <Image src={katman2} width={katman2.width} height={katman2.height} className="hidden lg:flex absolute left-28 -bottom-8" alt="sutun2"/>
+      <Image src={images.layerOne.src} width={154} height={642} className="hidden lg:flex absolute left-0 bottom-0" alt={images.layerOne.alt}/>
+      <Image src={images.layerTwo.src} width={229} height={475} className="hidden lg:flex absolute left-28 -bottom-8" alt={images.layerTwo.alt}/>
     </div>
   );
 };

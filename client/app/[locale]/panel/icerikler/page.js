@@ -8,6 +8,11 @@ import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.
 import CertificateMediaEditor from "./CertificateMediaEditor";
 import BarCafesMediaEditor from "./BarCafesMediaEditor";
 import BarCafeDetailMediaEditor from "./BarCafeDetailMediaEditor";
+import BeachPoolsMediaEditor from "./BeachPoolsMediaEditor";
+import KidsClubMediaEditor from "./KidsClubMediaEditor";
+import EntertainmentMediaEditor from "./EntertainmentMediaEditor";
+import SpecialMediaEditor from "./SpecialMediaEditor";
+import FitnessMediaEditor from "./FitnessMediaEditor";
 import DisabledRoomMediaEditor from "./DisabledRoomMediaEditor";
 import DuplexFamilyRoomMediaEditor from "./DuplexFamilyRoomMediaEditor";
 import FamilyRoomMediaEditor from "./FamilyRoomMediaEditor";
@@ -480,6 +485,21 @@ export default function PanelContentPage() {
               ) : null}
               {selectedNamespace === "BarAndCafes" ? (
                 <BarCafesMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "BeachPools" ? (
+                <BeachPoolsMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "KidsClub" ? (
+                <KidsClubMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "Entertainment" ? (
+                <EntertainmentMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "Special" ? (
+                <SpecialMediaEditor activeLocale={activeLocale} />
+              ) : null}
+              {selectedNamespace === "Fitness" ? (
+                <FitnessMediaEditor activeLocale={activeLocale} />
               ) : null}
               <RestaurantDetailMediaEditor
                 namespace={selectedNamespace}

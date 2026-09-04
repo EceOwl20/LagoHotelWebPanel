@@ -57,7 +57,7 @@ function Slide({ slide, marginClass }) {
     >
       <Image
         src={slide.src}
-        alt={slide.title}
+        alt={slide.alt || slide.title}
         width={360}
         height={540}
         className="w-full h-full object-cover"
@@ -163,6 +163,5 @@ export default function Slider2({ slides }) {
     </section>
   );
 }
-
 
 

@@ -5,6 +5,14 @@ import Image from "next/image"
 import Link from 'next/link'
 // Resim importları: 9 farklı resim dosyanızın doğru yollarını eklediğinizden emin olun.
 
+function getImageSource(image) {
+  return image?.src || image;
+}
+
+function getImageAlt(image, fallback) {
+  return image?.alt || fallback;
+}
+
 const Beach5 = ({span,header,text,poolItems, showLink,links=[], buttonText}) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({  loop: true,
     align: "start",
@@ -51,15 +59,15 @@ const Beach5 = ({span,header,text,poolItems, showLink,links=[], buttonText}) => 
               <div key={index} className="flex flex-col gap-[20px] lg:gap-[25px] w-[100%] mb-[20px]">
                 <div className='relative group'>
                 <Image 
-                  src={pool.src} 
-                  alt={pool.title}
+                  src={getImageSource(pool.src)}
+                  alt={getImageAlt(pool.src, pool.title)}
                   width={349} 
                   height={233}
                   className="object-cover w-full transition-opacity duration-300 group-hover:opacity-0 max-h-[233px]"
                 />
                   <Image
-                  src={pool.hoverSrc ? pool.hoverSrc : pool.src}
-                  alt={`${pool.title} hover`}
+                  src={getImageSource(pool.hoverSrc || pool.src)}
+                  alt={getImageAlt(pool.hoverSrc, `${pool.title} hover`)}
                   width={349}
                   height={233}
                   className="object-cover w-full absolute top-0 left-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100  max-h-[233px]"
@@ -93,8 +101,8 @@ const Beach5 = ({span,header,text,poolItems, showLink,links=[], buttonText}) => 
               >
                 <div className="flex flex-col w-full items-start text-start justify-center gap-[15px] lg:gap-[20px] font-jost text-black ">
                   <Image
-                    src={pool.src}
-                    alt={pool.title}
+                    src={getImageSource(pool.src)}
+                    alt={getImageAlt(pool.src, pool.title)}
                     width={349}
                     height={233}
                   />

@@ -1,11 +1,10 @@
 import React from 'react'
-import mainImg from "../Images/beachandpoolmobile.png"
 import {useTranslations} from 'next-intl';
 
-const BeachMobile = () => {
+const BeachMobile = ({ image }) => {
   const t = useTranslations('BeachPools');
   return (
-    <div className='flex w-screen h-screen lg:hidden items-center justify-center bg-center bg-cover relative' style={{ backgroundImage: `url(${mainImg.src})` }}>
+    <div className='flex w-screen h-screen lg:hidden items-center justify-center bg-center bg-cover relative' style={{ backgroundImage: `url(${image.src})` }}>
       <div className='absolute bg-lagoBlack/30 inset-0 z-[1]'></div>
       <div className='flex flex-col w-[90%] lg:w-[50%] items-center justify-center text-center gap-[30px] lg:gap-[50px] text-white font-jost z-50'>
         <span className='text-[12px] md:text-[14px] font-medium leading-[14px] tracking-[0.6px] uppercase'>{t("subtitle")}</span>

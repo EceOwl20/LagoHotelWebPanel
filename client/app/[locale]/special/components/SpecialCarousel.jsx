@@ -2,14 +2,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useCarousel from "embla-carousel-react";
 import Image from "next/image";
-import img1 from "../images/pool.webp";
-import img2 from "../images/kadeh.webp";
-import img3 from "../images/horse.webp";
 import {useTranslations} from 'next-intl';
 
-const images = [img1, img2, img3];
-
-const SpecialCarousel = () => {
+const SpecialCarousel = ({ images }) => {
   const t = useTranslations('Special');
 
   const [emblaRef, emblaApi] = useCarousel({
@@ -46,16 +41,14 @@ const SpecialCarousel = () => {
           <div className="flex">
             {images.map((image, index) => (
               <div
-                key={index}
+                key={image.id}
                 className="flex-[0_0_auto] ml-[10px] lg:h-[788px]">
                 <Image
                   src={image.src}
-                  layout="cover"
-                  width={image.width}
-                  height={788}
-                  alt={`Slide ${index + 1}`}
-                  objectPosition="center"
-                  className="flex h-[45vh]  md:h-[60vh] lg:h-full w-auto"
+                  width={975}
+                  height={789}
+                  alt={image.alt || `Slide ${index + 1}`}
+                  className="flex h-[45vh] w-auto object-cover object-center md:h-[60vh] lg:h-full"
                 />
               </div>
             ))}  

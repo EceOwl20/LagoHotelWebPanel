@@ -2,15 +2,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import honeymoon from "../images/honeymoon1.webp";
-import pavilion from "../images/pavilion1.webp"
-import marriage from "../images/marriage1.webp"
-import wedding from "../images/wedding1.webp"
-import flower from "../images/flower1.webp"
-import birthday from "../images/birthday1.webp"
 import {useTranslations} from 'next-intl';
 
-const SpecialGridSection = () => {
+const SpecialGridSection = ({ images }) => {
   const t = useTranslations('Special.HoverSection');
 
   // Kartları tutan dinamik veri dizisi
@@ -20,42 +14,42 @@ const gridData = [
     span: t("subtitle1"),
     description:
     t("text1"),
-    image: honeymoon,
+    image: images.honeymoon,
   },
   {
     title: t("title2"),
     span: t("subtitle2"),
     description:
     t("text2"),
-    image: pavilion,
+    image: images.pavilion,
   },
   {
     title: t("title3"),
     span: t("subtitle3"),
     description:
     t("text3"),
-    image: marriage,
+    image: images.proposal,
   },
   {
     title: t("title4"),
     span: t("subtitle4"),
     description:
     t("text4"),
-    image: wedding,
+    image: images.birthday,
   },
   // {
   //   title: t("title5"),
   //   span: t("subtitle5"),
   //   description:
   //   t("text5"),
-  //   image: flower,
+  //   image: images.wedding,
   // },
   {
     title: t("title6"),
     span: t("subtitle6"),
     description:
     t("text6"),
-    image: birthday,
+    image: images.flowers,
   },
 ];
 
@@ -103,6 +97,8 @@ const gridData = [
           {gridData.map((item, index) => (
             <div
               key={index}
+              role="img"
+              aria-label={item.image.alt || item.title}
               className="flex flex-col w-[100%] items-start justify-end pb-[35px] h-[360px] lg:h-[44vh] xl:h-[500px] bg-center bg-cover relative group"
               style={{ backgroundImage: `url(${item.image.src})` }}
             >
@@ -154,10 +150,10 @@ const gridData = [
               >
                 <div className="flex flex-col relative w-full items-start text-start justify-center gap-[15px] lg:gap-[20px] font-jost text-black ">
                   <Image
-                    src={data.image}
-                    alt={data.title}
-                    width={data.image.width}
-                    height={data.image.height}
+                    src={data.image.src}
+                    alt={data.image.alt || data.title}
+                    width={700}
+                    height={1000}
                      className="flex h-[383px] md:h-[400px] w-auto md:w-full"
                   />
                   <div className="absolute inset-0 bg-black/40 z-[1]"></div>

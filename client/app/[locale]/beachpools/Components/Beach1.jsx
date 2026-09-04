@@ -1,17 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Girl from "../Images/beach8.webp";
-import Yazı from "../Images/BeachPoolsyazısı.webp";
-import Dalga from "../Images/waves2sonson.webp";
-import ClinaryInfoSection from "@/app/[locale]/restaurants/components/ClinaryInfoSection";
-import img1 from "../Images/beach1.webp";
-import img2 from "../Images/beach2.webp";
 import {useTranslations} from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import BeachClinary from "./BeachClinary";
 
-export default function Beach1() {
+export default function Beach1({ media }) {
   const t = useTranslations('BeachPools');
   const t2 = useTranslations('BeachPools.ClinaryInfoSection');
   const [scrollAttempt, setScrollAttempt] = useState(0);
@@ -72,8 +66,8 @@ export default function Beach1() {
       >
         {/* Arka Plan Resmi */}
         <img
-          src={Girl.src}
-          alt="Girl"
+          src={media.desktopBackground.src}
+          alt={media.desktopBackground.alt || "Girl"}
           className="absolute w-full h-full object-cover -top-[10%] left-0 -z-10 transform scale-[1.7] lg:scale-100 transition-transform duration-700"
         />
 
@@ -85,15 +79,19 @@ export default function Beach1() {
           `}
         >
           <img
-            src={Yazı.src}
-            alt="Beach & Pools Yazı"
+            src={media.titleGraphic.src}
+            alt={media.titleGraphic.alt || "Beach & Pools Yazı"}
             className="object-contain max-w-[50%] lg:max-w-[40%]"
           />
         </div>
 
         {/* Dalga Animasyonu – z-[50] ile diğer içeriklerin üstünde */}
         <div className={`absolute left-0 w-full max-h-[200vh] z-[50] ${dalgaStyle}`}>
-          <img src={Dalga.src} alt="Sea wave" className="w-full object-cover" />
+          <img
+            src={media.wave.src}
+            alt={media.wave.alt || "Sea wave"}
+            className="w-full object-cover"
+          />
         </div>
       </div>
 
@@ -124,8 +122,8 @@ export default function Beach1() {
         {/* ClinaryInfoSection – negatif margin-top ile dalga resminin üst kısmının görünmesine izin veriyoruz */}
         <div className="flex relative mt-10 lg:-mt-20 2xl:-mt-32 lg:pt-[220px] 2xl:pt-[320px] justify-center z-[20]">
           <BeachClinary
-            img1={img1}
-            img2={img2}
+            img1={media.info.primary}
+            img2={media.info.secondary}
             span={t2("subtitle")}
             header={t2("title")}
             texts={texts}

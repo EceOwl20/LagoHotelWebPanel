@@ -1,52 +1,46 @@
 "use client"; // Next.js App Router'da useState için gerekli
 import { Link } from '@/i18n/navigation';
 import React, { useState } from "react";
-import honeymoon from "../images/honeymoon.webp";
-import proposal from "../images/proposal.webp";
-import wedding from "../images/wedding.webp";
-import birthday from "../images/birthdayuzun.webp";
-import pavilion from "../images/pavilion.webp";
-import flowers from "../images/flowers.webp";
 import {useTranslations} from 'next-intl';
 
-const SpecialTypesSection = () => {
+const SpecialTypesSection = ({ images }) => {
   const t = useTranslations('Special.InfoSection');
   const concepts = {
     [t("key1")]: {
       title: t("title1"),
       description:
       t("text1"),
-      image: honeymoon,
+      image: images.honeymoon,
     },
     [t("key2")]: {
       title: t("title2"),
       description:
       t("text2"),
-      image: proposal,
+      image: images.proposal,
     },
     // [t("key5")]: {
     //   title: t("title5"),
     //   description:
     //   t("text5"),
-    //   image: wedding,
+    //   image: images.wedding,
     // },
     [t("key4")]: {
       title: t("title4"),
       description:
       t("text4"),
-      image: birthday,
+      image: images.birthday,
     },
     [t("key3")]: {
       title: t("title3"),
       description:
       t("text3"),
-      image: pavilion,
+      image: images.pavilion,
     },
     [t("key6")]: {
       title: t("title6"),
       description:
       t("text6"),
-      image: flowers,
+      image: images.flowers,
     },
   };
 
@@ -89,6 +83,8 @@ const SpecialTypesSection = () => {
 
         {/* Dinamik İçerik */}
         <div
+          role="img"
+          aria-label={selectedConcept.image.alt || selectedConcept.title}
           className="flex w-screen h-[51vh] 2xl:h-[53vh] items-end justify-end bg-cover bg-center transition-all duration-500"
           style={{ backgroundImage: `url(${selectedConcept.image.src})` }}
         >

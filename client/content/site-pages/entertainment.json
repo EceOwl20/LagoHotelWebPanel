@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "entertainment",
+  "hero": { "image": "/uploads/pages/entertainment/hero.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "daytime": { "image": "/uploads/pages/entertainment/daytime.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "nighttime": { "image": "/uploads/pages/entertainment/nighttime.jpg", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "activities": {
+    "fitness": { "image": "/uploads/pages/entertainment/activity-fitness.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "kids": { "image": "/uploads/pages/entertainment/activity-kids.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "water": { "image": "/uploads/pages/entertainment/activity-water.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "beachVolley": { "image": "/uploads/pages/entertainment/activity-beach-volley.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "sunset": { "image": "/uploads/pages/entertainment/activity-sunset.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "stage": { "image": "/uploads/pages/entertainment/activity-stage.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "themed": { "image": "/uploads/pages/entertainment/activity-themed.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "gallery": {
+    "images": [
+      { "id": "entertainment-gallery-1", "src": "/uploads/pages/entertainment/gallery-1.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "entertainment-gallery-2", "src": "/uploads/pages/entertainment/gallery-2.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "entertainment-gallery-3", "src": "/uploads/pages/entertainment/gallery-3.png", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "entertainment-gallery-4", "src": "/uploads/pages/entertainment/gallery-4.png", "order": 3, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "entertainment-gallery-5", "src": "/uploads/pages/entertainment/gallery-5.png", "order": 4, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "entertainment-gallery-6", "src": "/uploads/pages/entertainment/gallery-6.png", "order": 5, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

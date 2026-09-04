@@ -2,22 +2,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useCarousel from "embla-carousel-react";
 import PandaSvg from './PandaSvg'
-import img1 from "../images/Flavours.webp"
-import img2 from "../images/childactivite.webp"
-import img3 from "../images/babyroom.webp"
-import img5 from "../images/amphitheater.webp"
-import img7 from "../images/childactivite-1.webp"
-import img4 from "../images/ballpool.webp"
-import img6 from "../images/Trambolin.webp"
-import img8 from "../images/kids3.webp"
-import img9 from "../images/gamerooms.webp"
-import panda from "../images/Panda.png"
 import Image from "next/image";
 import {useTranslations} from 'next-intl';
 
-const images=[img1,img2,img3,img4,img5,img6,img7,img8,img9] 
-
-const KidsclubCarousel = () => {
+const KidsclubCarousel = ({ images, indicator }) => {
   const t = useTranslations('KidsClub.Carousel');
   const headers=[t("activity1"),t("activity2"),t("activity3"),t("activity4"),t("activity5"),t("activity6"),t("activity7"),t("activity8"),t("activity9")]
 
@@ -68,11 +56,10 @@ const KidsclubCarousel = () => {
             <div className="relative flex w-auto lg:h-[540px] flex-[0_0_auto] mx-[7px] shadow-lg  " key={index}>
               <Image
                 src={image.src}
-                layout="contain"
                 width={360}
                 height={540}
-                alt={`Slide ${index + 1}`}
-                objectPosition="center"
+                alt={image.alt || `Slide ${index + 1}`}
+                style={{ objectFit: "contain", objectPosition: "center" }}
                 className="flex h-[383px] md:h-[420px] lg:h-[540px] xl:h-auto w-auto md:w-full"
               />
               <div className="absolute inset-0 text-center top-[9%] w-full items-center justify-center">
@@ -99,8 +86,8 @@ const KidsclubCarousel = () => {
 
   {/* Panda'nın index değiştikçe hareket etmesi */}
   <Image
-    src={panda}
-    alt="bamboo"
+    src={indicator.src}
+    alt={indicator.alt || "Panda"}
     width={81}
     height={110}
     className="absolute -bottom-4 transition-all duration-900"

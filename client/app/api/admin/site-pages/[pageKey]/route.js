@@ -75,6 +75,24 @@ const BAR_CAFES_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
   `/${locale}/barcafes/cafedelago`,
   `/${locale}/barcafes/cafedehouse`,
 ]);
+const BEACH_POOLS_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/beachpools`
+);
+const KIDS_CLUB_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/kidsclub`
+);
+const ENTERTAINMENT_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/entertainment`
+);
+const SPECIAL_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/special`
+);
+const FITNESS_PATHS = [
+  "/tr/spor",
+  "/en/sport",
+  "/de/sport",
+  "/ru/sport",
+];
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
 
@@ -176,6 +194,26 @@ export async function PUT(request, { params }) {
 
     if (pageKey === "barcafes") {
       BAR_CAFES_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "beachpools") {
+      BEACH_POOLS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "kidsclub") {
+      KIDS_CLUB_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "entertainment") {
+      ENTERTAINMENT_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "special") {
+      SPECIAL_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "fitness") {
+      FITNESS_PATHS.forEach((pagePath) => revalidatePath(pagePath));
     }
 
     const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);

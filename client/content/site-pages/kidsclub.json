@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "kidsclub",
+  "hero": { "image": "/uploads/pages/kidsclub/hero.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "info": {
+    "decoration": { "image": "/uploads/pages/kidsclub/bamboo-decoration.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "clubs": {
+      "mini": { "image": "/uploads/pages/kidsclub/club-mini.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "junior": { "image": "/uploads/pages/kidsclub/club-junior.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "teenage": { "image": "/uploads/pages/kidsclub/club-teenage.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    }
+  },
+  "activities": {
+    "items": {
+      "activity1": { "image": "/uploads/pages/kidsclub/activity-1.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity2": { "image": "/uploads/pages/kidsclub/activity-2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity3": { "image": "/uploads/pages/kidsclub/activity-3.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity4": { "image": "/uploads/pages/kidsclub/activity-4.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity5": { "image": "/uploads/pages/kidsclub/activity-5.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity6": { "image": "/uploads/pages/kidsclub/activity-6.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity7": { "image": "/uploads/pages/kidsclub/activity-7.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity8": { "image": "/uploads/pages/kidsclub/activity-8.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      "activity9": { "image": "/uploads/pages/kidsclub/activity-9.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    },
+    "indicator": { "image": "/uploads/pages/kidsclub/carousel-panda.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "restaurant": {
+    "images": [
+      { "id": "kidsclub-restaurant-1", "src": "/uploads/pages/kidsclub/restaurant-1.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "kidsclub-restaurant-2", "src": "/uploads/pages/kidsclub/restaurant-2.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "pools": {
+    "maldiva": { "image": "/uploads/pages/kidsclub/pool-maldiva.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "aqua": { "image": "/uploads/pages/kidsclub/pool-aqua.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "indoor": { "image": "/uploads/pages/kidsclub/pool-indoor.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "moments": {
+    "images": [
+      { "id": "kidsclub-moment-1", "src": "/uploads/pages/kidsclub/moment-1.webp", "order": 0, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "kidsclub-moment-2", "src": "/uploads/pages/kidsclub/moment-2.webp", "order": 1, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+      { "id": "kidsclub-moment-3", "src": "/uploads/pages/kidsclub/moment-3.webp", "order": 2, "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+    ]
+  },
+  "updatedAt": null
+}

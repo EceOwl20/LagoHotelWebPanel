@@ -2,6 +2,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
+function getImageProps(image, fallbackAlt) {
+  return {
+    src: image.src,
+    alt: image.alt || fallbackAlt,
+    width: image.width || 800,
+    height: image.height || 1200,
+  };
+}
+
 const BeachClinary = ({
   // Dışarıdan farklı görseller gelmezse varsayılan olarak import edilenler kullanılacak
   img1 ,
@@ -13,6 +22,8 @@ const BeachClinary = ({
 
   const [animate, setAnimate] = useState(false);
   const sectionRef = useRef(null); // Bölümü takip etmek için referans
+  const firstImage = getImageProps(img1, "Plaj tanıtım görseli");
+  const secondImage = getImageProps(img2, "Plaj tanıtım görseli");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -80,19 +91,19 @@ const BeachClinary = ({
         {/* Görsel Alanı */}
         <div className="flex w-[65%] sm:w-[50%] min-w-[310px] md:w-[48.8%] items-center md:items-center lg:items-start  lg:mt-[67px] md:mt-0 justify-start relative md:h-[555px] h-auto mb-[60px]">
           <Image
-            src={img2}
-            alt="art"
-            width={img2.width}
-            height={img2.height}
+            src={secondImage.src}
+            alt={secondImage.alt}
+            width={secondImage.width}
+            height={secondImage.height}
             className={`w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out mb-[20px] lg:mb-0 ${
               animate ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0"
             }`}
           />
           <Image
-            src={img1}
-            alt="art"
-            width={img1.width}
-            height={img1.height}
+            src={firstImage.src}
+            alt={firstImage.alt}
+            width={firstImage.width}
+            height={firstImage.height}
             className={`absolute top-[80px] left-[126px] md:top-[208px] md:left-[135px] lg:top-[105px] lg:left-[215px] w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] transition-all duration-1000 ease-in-out ${
               animate ? "-translate-y-0 opacity-100" : "translate-y-5 opacity-0"
             }`}

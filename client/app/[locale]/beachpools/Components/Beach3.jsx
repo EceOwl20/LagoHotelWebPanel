@@ -1,19 +1,15 @@
 import React from 'react'
 import Slider from "../../HomePage/Components/Slider/Slider2"
-import Slide1 from '../Images/Slide/swim.png'
-import Slide2 from '../Images/Slide/beachbar.png'
-import Slide3 from '../Images/Slide/watersport.png'
-import Slide4 from '../Images/Slide/celebration.png'
 import {useTranslations} from 'next-intl';
 
-const Beach3 = () => {
+const Beach3 = ({ images }) => {
   const t = useTranslations('BeachPools.Carousel');
 
     const slides = [
-        { src: Slide1, title: t("activities1"), span:t("activities1Text") },
-        { src: Slide2, title: t("activities2"), span:t("activities2Text") },
-        { src: Slide3, title: t("activities3"), span:t("activities3Text") },
-        { src: Slide4, title: t("activities4"), span:t("activities4Text") },
+        { src: images.activity1.src, alt: images.activity1.alt, title: t("activities1"), span:t("activities1Text") },
+        { src: images.activity2.src, alt: images.activity2.alt, title: t("activities2"), span:t("activities2Text") },
+        { src: images.activity3.src, alt: images.activity3.alt, title: t("activities3"), span:t("activities3Text") },
+        { src: images.activity4.src, alt: images.activity4.alt, title: t("activities4"), span:t("activities4Text") },
       ]
   return (
     <div className='flex flex-col w-full gap-[30px] lg:gap-[50px] items-center justify-center'>

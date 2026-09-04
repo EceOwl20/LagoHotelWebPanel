@@ -24,6 +24,11 @@ const SITE_PAGE_KEYS = new Set([
   "tinyvilla",
   "restaurants",
   "barcafes",
+  "beachpools",
+  "kidsclub",
+  "entertainment",
+  "special",
+  "fitness",
   ...RESTAURANT_DETAIL_CONFIGS.map((config) => config.pageKey),
   ...BAR_CAFE_DETAIL_CONFIGS.map((config) => config.pageKey),
 ]);
@@ -307,6 +312,232 @@ function normalizeBarCafesContent(input) {
   };
 }
 
+const BEACH_POOL_KEYS = [
+  "main",
+  "relax",
+  "maldiva",
+  "infinity",
+  "maldivaKids",
+  "indoor",
+  "aqua",
+  "kidsAqua",
+  "megaAqua",
+];
+
+function normalizeBeachPoolsContent(input) {
+  const pools = BEACH_POOL_KEYS.reduce((result, poolKey) => {
+    result[poolKey] = {
+      image: normalizeLocalizedImage(
+        input?.pools?.[poolKey]?.image,
+        `${poolKey} havuz kart görseli`
+      ),
+      hover: normalizeLocalizedImage(
+        input?.pools?.[poolKey]?.hover,
+        `${poolKey} havuz hover görseli`
+      ),
+    };
+    return result;
+  }, {});
+
+  return {
+    schemaVersion: 1,
+    pageKey: "beachpools",
+    hero: {
+      desktopBackground: normalizeLocalizedImage(
+        input?.hero?.desktopBackground,
+        "Masaüstü hero arka planı"
+      ),
+      titleGraphic: normalizeLocalizedImage(
+        input?.hero?.titleGraphic,
+        "Hero başlık grafiği"
+      ),
+      wave: normalizeLocalizedImage(input?.hero?.wave, "Hero dalga görseli"),
+      mobileBackground: normalizeLocalizedImage(
+        input?.hero?.mobileBackground,
+        "Mobil hero arka planı"
+      ),
+    },
+    info: {
+      primary: normalizeLocalizedImage(input?.info?.primary, "Plaj tanıtımı birinci görseli"),
+      secondary: normalizeLocalizedImage(
+        input?.info?.secondary,
+        "Plaj tanıtımı ikinci görseli"
+      ),
+    },
+    cabanaBackground: normalizeLocalizedImage(
+      input?.cabanaBackground,
+      "Cabana tanıtım arka planı"
+    ),
+    activities: {
+      activity1: normalizeLocalizedImage(input?.activities?.activity1, "Birinci aktivite"),
+      activity2: normalizeLocalizedImage(input?.activities?.activity2, "İkinci aktivite"),
+      activity3: normalizeLocalizedImage(input?.activities?.activity3, "Üçüncü aktivite"),
+      activity4: normalizeLocalizedImage(input?.activities?.activity4, "Dördüncü aktivite"),
+    },
+    pools,
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+const KIDS_ACTIVITY_KEYS = [
+  "activity1",
+  "activity2",
+  "activity3",
+  "activity4",
+  "activity5",
+  "activity6",
+  "activity7",
+  "activity8",
+  "activity9",
+];
+
+function normalizeKidsClubContent(input) {
+  const activityItems = KIDS_ACTIVITY_KEYS.reduce((result, activityKey) => {
+    result[activityKey] = normalizeLocalizedImage(
+      input?.activities?.items?.[activityKey],
+      `${activityKey} çocuk aktivitesi görseli`
+    );
+    return result;
+  }, {});
+
+  return {
+    schemaVersion: 1,
+    pageKey: "kidsclub",
+    hero: normalizeLocalizedImage(input?.hero, "Çocuk Kulübü hero görseli"),
+    info: {
+      decoration: normalizeLocalizedImage(input?.info?.decoration, "Bambu dekor görseli"),
+      clubs: {
+        mini: normalizeLocalizedImage(input?.info?.clubs?.mini, "Mini Kulüp kart görseli"),
+        junior: normalizeLocalizedImage(
+          input?.info?.clubs?.junior,
+          "Junior Kulüp kart görseli"
+        ),
+        teenage: normalizeLocalizedImage(
+          input?.info?.clubs?.teenage,
+          "Genç Kulüp kart görseli"
+        ),
+      },
+    },
+    activities: {
+      items: activityItems,
+      indicator: normalizeLocalizedImage(
+        input?.activities?.indicator,
+        "Aktivite carousel panda göstergesi"
+      ),
+    },
+    restaurant: normalizeImageCollection(
+      input?.restaurant,
+      "Çocuk restoranı carousel alanı"
+    ),
+    pools: {
+      maldiva: normalizeLocalizedImage(
+        input?.pools?.maldiva,
+        "Maldiva Çocuk Havuzu kart görseli"
+      ),
+      aqua: normalizeLocalizedImage(
+        input?.pools?.aqua,
+        "Çocuk Aqua Havuzu kart görseli"
+      ),
+      indoor: normalizeLocalizedImage(
+        input?.pools?.indoor,
+        "Kapalı Çocuk Havuzu kart görseli"
+      ),
+    },
+    moments: normalizeImageCollection(input?.moments, "Çocuk Kulübü anlar galerisi"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeEntertainmentContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "entertainment",
+    hero: normalizeLocalizedImage(input?.hero, "Eğlence hero görseli"),
+    info: {
+      daytime: normalizeLocalizedImage(input?.info?.daytime, "Gündüz aktiviteleri görseli"),
+      nighttime: normalizeLocalizedImage(input?.info?.nighttime, "Gece aktiviteleri görseli"),
+    },
+    activities: {
+      fitness: normalizeLocalizedImage(input?.activities?.fitness, "Spor ve fitness kartı"),
+      kids: normalizeLocalizedImage(input?.activities?.kids, "Çocuk ve genç kulübü kartı"),
+      water: normalizeLocalizedImage(input?.activities?.water, "Su sporları kartı"),
+      beachVolley: normalizeLocalizedImage(
+        input?.activities?.beachVolley,
+        "Plaj aktiviteleri kartı"
+      ),
+      sunset: normalizeLocalizedImage(input?.activities?.sunset, "Gün batımı partileri kartı"),
+      stage: normalizeLocalizedImage(input?.activities?.stage, "Sahne şovları kartı"),
+      themed: normalizeLocalizedImage(input?.activities?.themed, "Tema partileri kartı"),
+    },
+    gallery: normalizeImageCollection(input?.gallery, "Eğlence galerisi"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeSpecialContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "special",
+    hero: normalizeLocalizedImage(input?.hero, "Özel konsept hero görseli"),
+    concepts: {
+      honeymoon: normalizeLocalizedImage(input?.concepts?.honeymoon, "Balayı konsepti görseli"),
+      proposal: normalizeLocalizedImage(input?.concepts?.proposal, "Evlilik teklifi konsepti görseli"),
+      birthday: normalizeLocalizedImage(input?.concepts?.birthday, "Doğum günü konsepti görseli"),
+      pavilion: normalizeLocalizedImage(input?.concepts?.pavilion, "Pavilyon konsepti görseli"),
+      flowers: normalizeLocalizedImage(input?.concepts?.flowers, "Çiçek konsepti görseli"),
+    },
+    cards: {
+      honeymoon: normalizeLocalizedImage(input?.cards?.honeymoon, "Balayı kart görseli"),
+      pavilion: normalizeLocalizedImage(input?.cards?.pavilion, "Pavilyon kart görseli"),
+      proposal: normalizeLocalizedImage(input?.cards?.proposal, "Evlilik teklifi kart görseli"),
+      birthday: normalizeLocalizedImage(input?.cards?.birthday, "Doğum günü kart görseli"),
+      flowers: normalizeLocalizedImage(input?.cards?.flowers, "Çiçek siparişi kart görseli"),
+    },
+    info: {
+      primary: normalizeLocalizedImage(input?.info?.primary, "Özel anlar birinci görseli"),
+      secondary: normalizeLocalizedImage(input?.info?.secondary, "Özel anlar ikinci görseli"),
+      layerOne: normalizeLocalizedImage(input?.info?.layerOne, "Birinci dekoratif katman"),
+      layerTwo: normalizeLocalizedImage(input?.info?.layerTwo, "İkinci dekoratif katman"),
+    },
+    gallery: normalizeImageCollection(input?.gallery, "Özel konsept galerisi"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeFitnessContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "fitness",
+    hero: normalizeLocalizedImage(input?.hero, "Fitness hero görseli"),
+    info: {
+      primary: normalizeLocalizedImage(
+        input?.info?.primary,
+        "Fitness bilgi alanı büyük görseli"
+      ),
+      secondary: normalizeLocalizedImage(
+        input?.info?.secondary,
+        "Fitness bilgi alanı yatay görseli"
+      ),
+    },
+    gallery: normalizeImageCollection(input?.gallery, "Fitness ana galerisi"),
+    activities: normalizeImageCollection(
+      input?.activities,
+      "Fitness aktiviteleri carousel alanı"
+    ),
+    features: {
+      beachVolley: normalizeLocalizedImage(
+        input?.features?.beachVolley,
+        "Plaj voleybolu görseli"
+      ),
+      personalTraining: normalizeLocalizedImage(
+        input?.features?.personalTraining,
+        "Kişisel antrenman görseli"
+      ),
+    },
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
 function normalizeRestaurantDetailContent(input, pageKey, pageLabel) {
   return {
     schemaVersion: 1,
@@ -413,6 +644,26 @@ export async function readSitePageContent(pageKey) {
     return normalizeBarCafesContent(content);
   }
 
+  if (pageKey === "beachpools") {
+    return normalizeBeachPoolsContent(content);
+  }
+
+  if (pageKey === "kidsclub") {
+    return normalizeKidsClubContent(content);
+  }
+
+  if (pageKey === "entertainment") {
+    return normalizeEntertainmentContent(content);
+  }
+
+  if (pageKey === "special") {
+    return normalizeSpecialContent(content);
+  }
+
+  if (pageKey === "fitness") {
+    return normalizeFitnessContent(content);
+  }
+
   const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
   if (restaurantDetailConfig) {
     return normalizeRestaurantDetailContent(
@@ -471,6 +722,16 @@ export async function writeSitePageContent(pageKey, input) {
     content = normalizeRestaurantsContent(input);
   } else if (pageKey === "barcafes") {
     content = normalizeBarCafesContent(input);
+  } else if (pageKey === "beachpools") {
+    content = normalizeBeachPoolsContent(input);
+  } else if (pageKey === "kidsclub") {
+    content = normalizeKidsClubContent(input);
+  } else if (pageKey === "entertainment") {
+    content = normalizeEntertainmentContent(input);
+  } else if (pageKey === "special") {
+    content = normalizeSpecialContent(input);
+  } else if (pageKey === "fitness") {
+    content = normalizeFitnessContent(input);
   } else if (restaurantDetailConfig) {
     content = normalizeRestaurantDetailContent(
       input,

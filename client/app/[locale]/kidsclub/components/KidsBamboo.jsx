@@ -2,13 +2,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
-import bamboo from "../images/bamboo2.png";
-import miniclub from "../images/1kids.webp";
-import juniorclub from "../images/childactivite-1.webp";
-import teenageclub from "../images/kids3.webp";
 import {useTranslations} from 'next-intl';
 
-const KidsBamboo = () => {
+const KidsBamboo = ({ media }) => {
   const t = useTranslations('KidsClub.InfoSection');
 
   const clubData = [
@@ -17,21 +13,21 @@ const KidsBamboo = () => {
       ageGroup: t("age1"),
       title: t("title1"),
       description:t("description1"),
-      image: miniclub,
+      image: media.clubs.mini,
     },
     {
       id: 2,
       ageGroup: t("age2"),
       title: t("title2"),
       description:t("description2"),
-      image: juniorclub,
+      image: media.clubs.junior,
     },
     {
       id: 3,
       ageGroup: t("age3"),
       title: t("title3"),
       description:t("description3"),
-      image: teenageclub,
+      image: media.clubs.teenage,
     },
   ];
 
@@ -65,10 +61,10 @@ const KidsBamboo = () => {
       <div className="flex flex-col w-[87.79%] md:w-[91.4%] lg:w-[76.8%] gap-[14px] justify-start items-start font-jost text-black">
         <div className="flex flex-col lg:flex-row justify-between items-center gap-[40px] lg:gap-[66px] w-full">
           <Image
-            src={bamboo}
-            alt="bamboo"
-            width={bamboo.width}
-            height={bamboo.height}
+            src={media.decoration.src}
+            alt={media.decoration.alt || "bamboo"}
+            width={media.decoration.width || 1200}
+            height={media.decoration.height || 800}
             className="lg:w-[59%] flex"
           />
           <div className="flex flex-col gap-[17px] items-start justify-center text-start lg:w-[39%]">
@@ -144,10 +140,10 @@ const KidsBamboo = () => {
               >
                 <div className="flex flex-col relative w-full items-start text-start justify-center gap-[15px] lg:gap-[20px] font-jost text-black ">
                   <Image
-                    src={club.image}
-                    alt={club.title}
-                    width={club.image.width}
-                    height={club.image.height}
+                    src={club.image.src}
+                    alt={club.image.alt || club.title}
+                    width={club.image.width || 800}
+                    height={club.image.height || 1200}
                      className="flex h-[383px] md:h-[400px] w-auto md:w-full"
                   />
                   <div className="absolute inset-0 bg-black/40 z-[1]"></div>

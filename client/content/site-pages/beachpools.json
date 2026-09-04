@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "beachpools",
+  "hero": {
+    "desktopBackground": { "image": "/uploads/pages/beachpools/hero-desktop.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "titleGraphic": { "image": "/uploads/pages/beachpools/hero-title.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "wave": { "image": "/uploads/pages/beachpools/hero-wave.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "mobileBackground": { "image": "/uploads/pages/beachpools/hero-mobile.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "info": {
+    "primary": { "image": "/uploads/pages/beachpools/info-beach-1.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "secondary": { "image": "/uploads/pages/beachpools/info-beach-2.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "cabanaBackground": { "image": "/uploads/pages/beachpools/cabana-background.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+  "activities": {
+    "activity1": { "image": "/uploads/pages/beachpools/activity-1.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "activity2": { "image": "/uploads/pages/beachpools/activity-2.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "activity3": { "image": "/uploads/pages/beachpools/activity-3.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } },
+    "activity4": { "image": "/uploads/pages/beachpools/activity-4.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }
+  },
+  "pools": {
+    "main": { "image": { "image": "/uploads/pages/beachpools/pool-main.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-main-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "relax": { "image": { "image": "/uploads/pages/beachpools/pool-relax.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-relax-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "maldiva": { "image": { "image": "/uploads/pages/beachpools/pool-maldiva.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-maldiva-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "infinity": { "image": { "image": "/uploads/pages/beachpools/pool-infinity.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-infinity-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "maldivaKids": { "image": { "image": "/uploads/pages/beachpools/pool-maldiva-kids.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-maldiva-kids-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "indoor": { "image": { "image": "/uploads/pages/beachpools/pool-indoor.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-indoor-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "aqua": { "image": { "image": "/uploads/pages/beachpools/pool-aqua.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-aqua-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "kidsAqua": { "image": { "image": "/uploads/pages/beachpools/pool-kids-aqua.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-kids-aqua-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } },
+    "megaAqua": { "image": { "image": "/uploads/pages/beachpools/pool-mega-aqua.webp", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } }, "hover": { "image": "/uploads/pages/beachpools/pool-mega-aqua-hover.png", "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } } } }
+  },
+  "updatedAt": null
+}

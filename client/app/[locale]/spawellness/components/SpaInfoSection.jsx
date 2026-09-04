@@ -20,7 +20,6 @@ const SpaInfoSection = ({img1,img2, texts=[],texts2=[],texts3=[]}) => {
           <div className="w-full flex relative">
             <Image
               src={img2.src || img2}
-              layout="cover"
               width={img2.width || 1200}
               height={img2.height || 900}
               alt={img2.alt || ""}
@@ -43,7 +42,6 @@ const SpaInfoSection = ({img1,img2, texts=[],texts2=[],texts3=[]}) => {
         <div className="w-full md:w-[45%] relative">
         <Image
           src={img1.src || img1}
-          layout="cover"
           width={img1.width || 1200}
           height={img1.height || 900}
           alt={img1.alt || ""}
