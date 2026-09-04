@@ -54,7 +54,12 @@ export default function SideBar({ username }) {
   };
 
   return (
-    <aside className="flex min-h-screen w-full flex-col justify-between border-r border-stone-200 bg-stone-950 px-6 py-8 text-stone-100 md:w-72">
+    <aside className="flex min-h-screen w-full flex-col justify-between border-r border-stone-200 bg-stone-950 px-6 py-8 text-stone-100 md:fixed
+    md:inset-y-0
+    md:left-0
+    md:h-screen
+    md:w-72
+    md:overflow-y-auto">
       <div className="space-y-8">
         <div className="space-y-2">
          <div className="flex flex-col gap-2">

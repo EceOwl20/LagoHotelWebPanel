@@ -338,7 +338,7 @@ export default function PanelContentPage() {
             ) : visibleGroups.length > 0 ? (
               visibleGroups.map((group) => (
                 <div key={group.id}>
-                  <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-400">
+                  <p className="mb-2 px-2 text-[12px] font-bold uppercase tracking-[0.18em] text-[#63978f]">
                     {group.label}
                   </p>
                   <div className="space-y-1">

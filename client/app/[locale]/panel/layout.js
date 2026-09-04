@@ -75,7 +75,7 @@ export default function PanelLayout({ children }) {
   return (
     <div className="min-h-screen bg-stone-100 md:flex">
       {!hideSidebar && <Sidebar username={authState.user?.username} />}
-      <main className={`flex-1 p-4 md:p-8 ${hideSidebar ? "w-full" : ""}`}>
+      <main className={`flex-1 p-4 md:p-8 ${hideSidebar ? "w-full" : "md:ml-72"}`}>
         {children}
       </main>
     </div>
