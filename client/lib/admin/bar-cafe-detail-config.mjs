@@ -86,6 +86,59 @@ export const BAR_CAFE_DETAIL_CONFIGS = Object.freeze([
     pageClassName:
       "flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] overflow-hidden md:gap-[80px] lg:gap-[100px]",
   },
+  {
+    namespace: "Abellapatisserie",
+    pageKey: "abellapatisserie",
+    pageTitle: "Abella Patisserie",
+    fieldLabel: "Abella Patisserie",
+    uploadFolder: "pages/abellapatisserie",
+    routeSegment: "abellapatisserie",
+    bannerVariant: "dark",
+    relatedGroup: "cafes",
+    relatedHeaderKey: "subtitle",
+    discoverHeaderKey: "subtitle",
+    discoverLink: "/barcafes",
+    pageClassName:
+      "flex flex-col items-center justify-center gap-[100px] bg-[#fbfbfb] overflow-hidden",
+  },
+  {
+    namespace: "Cafedehouse",
+    pageKey: "cafedehouse",
+    pageTitle: "Cafe de House",
+    fieldLabel: "Cafe de House",
+    uploadFolder: "pages/cafedehouse",
+    routeSegment: "cafedehouse",
+    bannerVariant: "dark",
+    relatedGroup: "cafes",
+    relatedHeaderKey: "title",
+    relatedLinks: ["/barcafes/piano"],
+    discoverHeaderKey: "subtitle",
+    discoverLink: "/barcafes",
+    pageClassName:
+      "flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] overflow-hidden md:gap-[80px] lg:gap-[100px]",
+  },
+  {
+    namespace: "Cafedelago",
+    pageKey: "cafedelago",
+    pageTitle: "Cafe de Lago",
+    fieldLabel: "Cafe de Lago",
+    uploadFolder: "pages/cafedelago",
+    routeSegment: "cafedelago",
+    bannerVariant: "dark",
+    relatedGroup: "cafes",
+    relatedHeaderKey: "title",
+    relatedLinks: ["/barcafes/piano"],
+    relatedTextKeys: [
+      "cuisines1text",
+      "cuisines2text",
+      "cuisines3text",
+      "cuisines3text",
+    ],
+    discoverHeaderKey: "title",
+    discoverLink: "/restaurant",
+    pageClassName:
+      "flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] overflow-hidden md:gap-[80px] lg:gap-[100px]",
+  },
 ]);
 
 export function getBarCafeDetailConfigByNamespace(namespace) {
