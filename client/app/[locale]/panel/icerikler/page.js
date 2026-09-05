@@ -1,30 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { FiCheck, FiChevronRight, FiFileText, FiSearch } from "react-icons/fi";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { FiCheck, FiChevronRight, FiFileText, FiSearch, FiX } from "react-icons/fi";
 import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
+import dynamic from "next/dynamic";
 import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.mjs";
-import CertificateMediaEditor from "./CertificateMediaEditor";
-import BarCafesMediaEditor from "./BarCafesMediaEditor";
-import BarCafeDetailMediaEditor from "./BarCafeDetailMediaEditor";
-import BeachPoolsMediaEditor from "./BeachPoolsMediaEditor";
-import KidsClubMediaEditor from "./KidsClubMediaEditor";
-import EntertainmentMediaEditor from "./EntertainmentMediaEditor";
-import SpecialMediaEditor from "./SpecialMediaEditor";
-import FitnessMediaEditor from "./FitnessMediaEditor";
-import DisabledRoomMediaEditor from "./DisabledRoomMediaEditor";
-import DuplexFamilyRoomMediaEditor from "./DuplexFamilyRoomMediaEditor";
-import FamilyRoomMediaEditor from "./FamilyRoomMediaEditor";
-import FamilySwimupRoomMediaEditor from "./FamilySwimupRoomMediaEditor";
-import RestaurantDetailMediaEditor from "./RestaurantDetailMediaEditor";
-import RoomsMediaEditor from "./RoomsMediaEditor";
-import RestaurantsMediaEditor from "./RestaurantsMediaEditor";
-import SharedRoomMediaEditor from "./SharedRoomMediaEditor";
-import SpaWellnessMediaEditor from "./SpaWellnessMediaEditor";
-import SuperiorRoomMediaEditor from "./SuperiorRoomMediaEditor";
-import SwimupRoomMediaEditor from "./SwimupRoomMediaEditor";
-import TinyVillaMediaEditor from "./TinyVillaMediaEditor";
+
+function getNamespaceLabel(namespace) {
+  if (namespaceLabels[namespace]) {
+    return namespaceLabels[namespace];
+  }
+
+  return namespace.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
+}
+
 
 const namespaceLabels = {
   LocaleSwitcher: "Dil seçici",
@@ -138,13 +128,98 @@ const namespaceGroups = [
   },
 ];
 
-function getNamespaceLabel(namespace) {
-  if (namespaceLabels[namespace]) {
-    return namespaceLabels[namespace];
-  }
-
-  return namespace.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
+function MediaEditorLoading() {
+  return (
+    <div className="h-40 animate-pulse rounded-2xl border border-stone-200 bg-white" />
+  );
 }
+
+const dynamicEditor = (loader) =>
+  dynamic(loader, {
+    loading: MediaEditorLoading,
+  });
+
+const CertificateMediaEditor = dynamicEditor(
+  () => import("./CertificateMediaEditor")
+);
+
+const BarCafesMediaEditor = dynamicEditor(
+  () => import("./BarCafesMediaEditor")
+);
+
+const BarCafeDetailMediaEditor = dynamicEditor(
+  () => import("./BarCafeDetailMediaEditor")
+);
+
+const BeachPoolsMediaEditor = dynamicEditor(
+  () => import("./BeachPoolsMediaEditor")
+);
+
+const KidsClubMediaEditor = dynamicEditor(
+  () => import("./KidsClubMediaEditor")
+);
+
+const EntertainmentMediaEditor = dynamicEditor(
+  () => import("./EntertainmentMediaEditor")
+);
+
+const SpecialMediaEditor = dynamicEditor(
+  () => import("./SpecialMediaEditor")
+);
+
+const FitnessMediaEditor = dynamicEditor(
+  () => import("./FitnessMediaEditor")
+);
+
+const DisabledRoomMediaEditor = dynamicEditor(
+  () => import("./DisabledRoomMediaEditor")
+);
+
+const DuplexFamilyRoomMediaEditor = dynamicEditor(
+  () => import("./DuplexFamilyRoomMediaEditor")
+);
+
+const FamilyRoomMediaEditor = dynamicEditor(
+  () => import("./FamilyRoomMediaEditor")
+);
+
+const FamilySwimupRoomMediaEditor = dynamicEditor(
+  () => import("./FamilySwimupRoomMediaEditor")
+);
+
+const RestaurantsMediaEditor = dynamicEditor(
+  () => import("./RestaurantsMediaEditor")
+);
+
+const SharedRoomMediaEditor = dynamicEditor(
+  () => import("./SharedRoomMediaEditor")
+);
+
+const SuperiorRoomMediaEditor = dynamicEditor(
+  () => import("./SuperiorRoomMediaEditor")
+);
+
+const SwimupRoomMediaEditor = dynamicEditor(
+  () => import("./SwimupRoomMediaEditor")
+);
+
+const TinyVillaMediaEditor = dynamicEditor(
+  () => import("./TinyVillaMediaEditor")
+);
+
+const SpaWellnessMediaEditor = dynamicEditor(
+  () => import("./SpaWellnessMediaEditor")
+);
+
+const RoomsMediaEditor = dynamicEditor(
+  () => import("./RoomsMediaEditor")
+);
+
+const RestaurantDetailMediaEditor = dynamicEditor(
+  () => import("./RestaurantDetailMediaEditor")
+);
+
+
 
 function groupNamespaces(namespaces, query) {
   const normalizedQuery = query.trim().toLocaleLowerCase("tr");
@@ -173,6 +248,55 @@ function groupNamespaces(namespaces, query) {
     .filter((group) => group.namespaces.length > 0);
 }
 
+const RESTAURANT_DETAIL_EDITOR_ENTRIES = Object.fromEntries(
+  RESTAURANT_DETAIL_CONFIGS.map((config) => [
+    config.namespace,
+    RestaurantDetailMediaEditor,
+  ])
+);
+
+const BAR_CAFE_DETAIL_NAMESPACES = [
+  "JoieBar",
+  "MaldivaBar",
+  "MignonBar",
+  "PianoBar",
+  "VagoBar",
+  "Abellapatisserie",
+  "Cafedehouse",
+  "Cafedelago",
+];
+
+const BAR_CAFE_DETAIL_EDITOR_ENTRIES = Object.fromEntries(
+  BAR_CAFE_DETAIL_NAMESPACES.map((namespace) => [
+    namespace,
+    BarCafeDetailMediaEditor,
+  ])
+);
+
+const MEDIA_EDITOR_REGISTRY = {
+  Certificates: CertificateMediaEditor,
+  Spa: SpaWellnessMediaEditor,
+  Accommodation: RoomsMediaEditor,
+  Restaurants: RestaurantsMediaEditor,
+  BarAndCafes: BarCafesMediaEditor,
+  BeachPools: BeachPoolsMediaEditor,
+  KidsClub: KidsClubMediaEditor,
+  Entertainment: EntertainmentMediaEditor,
+  Special: SpecialMediaEditor,
+  Fitness: FitnessMediaEditor,
+  RoomsParallax: SharedRoomMediaEditor,
+  SuperiorRoom: SuperiorRoomMediaEditor,
+  FamilyRoom: FamilyRoomMediaEditor,
+  SwimupRoom: SwimupRoomMediaEditor,
+  FamilySwimupRoom: FamilySwimupRoomMediaEditor,
+  DuplexFamilyRoom: DuplexFamilyRoomMediaEditor,
+  DisabledRoom: DisabledRoomMediaEditor,
+  TinyVilla: TinyVillaMediaEditor,
+
+  ...RESTAURANT_DETAIL_EDITOR_ENTRIES,
+  ...BAR_CAFE_DETAIL_EDITOR_ENTRIES,
+};
+
 export default function PanelContentPage() {
   const [namespaces, setNamespaces] = useState([]);
   const [selectedNamespace, setSelectedNamespace] = useState("");
@@ -184,6 +308,14 @@ export default function PanelContentPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false); //değişiklik yapıldı mı?
+  const [pendingNamespace, setPendingNamespace] = useState(""); //pendingNamespace
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false); //showUnsavedModal
+
+  const [messageType, setMessageType] = useState("success");
+
+  const editVersionRef = useRef(0);
 
   useEffect(() => {
     const loadNamespaces = async () => {
@@ -209,86 +341,216 @@ export default function PanelContentPage() {
     loadNamespaces();
   }, []);
 
-  useEffect(() => {
-    if (!selectedNamespace) return;
+useEffect(() => {
+  if (!selectedNamespace) return;
 
-    let cancelled = false;
+  const controller = new AbortController();
 
-    const loadBundle = async () => {
-      setLoadingBundle(true);
-      setError("");
-      setMessage("");
-
-      try {
-        const response = await fetch(
-          `/api/admin/messages/namespace?namespace=${encodeURIComponent(
-            selectedNamespace
-          )}`,
-          { cache: "no-store" }
-        );
-        const payload = await response.json();
-
-        if (!response.ok) {
-          throw new Error(payload.error || "İçerik alınamadı.");
-        }
-
-        if (!cancelled) setBundle(payload.bundle);
-      } catch (loadError) {
-        if (!cancelled) setError(loadError.message);
-      } finally {
-        if (!cancelled) setLoadingBundle(false);
-      }
-    };
-
-    loadBundle();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedNamespace]);
-
-  const activeValue = useMemo(() => bundle?.[activeLocale] || {}, [activeLocale, bundle]);
-  const visibleGroups = useMemo(
-    () => groupNamespaces(namespaces, query),
-    [namespaces, query]
-  );
-
-  const updateActiveLocaleValue = (updater) => {
-    setBundle((currentBundle) => ({
-      ...currentBundle,
-      [activeLocale]:
-        typeof updater === "function"
-          ? updater(currentBundle?.[activeLocale] || {})
-          : updater,
-    }));
-    setMessage("");
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
+  const loadBundle = async () => {
+    setLoadingBundle(true);
+    setBundle(null);
     setError("");
     setMessage("");
 
     try {
-      const response = await fetch("/api/admin/messages/namespace", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ namespace: selectedNamespace, bundle }),
-      });
+      const response = await fetch(
+        `/api/admin/messages/namespace?namespace=${encodeURIComponent(
+          selectedNamespace
+        )}`,
+        {
+          cache: "no-store",
+          signal: controller.signal,
+        }
+      );
+
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload.error || "İçerik kaydedilemedi.");
+        throw new Error(payload.error || "İçerik alınamadı.");
       }
 
       setBundle(payload.bundle);
-      setMessage("Tüm diller başarıyla kaydedildi.");
-    } catch (saveError) {
-      setError(saveError.message);
+    } catch (loadError) {
+      if (
+        loadError instanceof Error &&
+        loadError.name === "AbortError"
+      ) {
+        return;
+      }
+
+      setError(
+        loadError instanceof Error
+          ? loadError.message
+          : "İçerik alınamadı."
+      );
     } finally {
-      setSaving(false);
+      if (!controller.signal.aborted) {
+        setLoadingBundle(false);
+      }
     }
   };
+
+  loadBundle();
+
+  return () => {
+    controller.abort();
+  };
+}, [selectedNamespace]);
+
+  useEffect(() => {
+  const handleBeforeUnload = (event) => {
+    if (!hasUnsavedChanges) return;
+
+    event.preventDefault();
+    event.returnValue = "";
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
+}, [hasUnsavedChanges]);
+
+  const activeValue = bundle?.[activeLocale] ?? {};
+  
+const visibleGroups = useMemo(
+  () => groupNamespaces(namespaces, query),
+  [namespaces, query]
+);
+
+const updateActiveLocaleValue = (updater) => {
+  editVersionRef.current += 1;
+
+  setBundle((currentBundle) => ({
+    ...currentBundle,
+    [activeLocale]:
+      typeof updater === "function"
+        ? updater(currentBundle?.[activeLocale] || {})
+        : updater,
+  }));
+
+  setHasUnsavedChanges(true);
+  setMessage("");
+  setError("");
+};
+
+
+//Sayfa seçimini ayrı fonksiyondan yönet
+const handleNamespaceSelect = (nextNamespace) => {
+  if (saving || nextNamespace === selectedNamespace) {
+    return;
+  }
+
+  if (hasUnsavedChanges) {
+    setPendingNamespace(nextNamespace);
+    setShowUnsavedModal(true);
+    return;
+  }
+
+  setSelectedNamespace(nextNamespace);
+};
+
+const handleSave = async () => {
+  if (saving || !selectedNamespace || !bundle) {
+    return false;
+  }
+
+  const namespaceBeingSaved = selectedNamespace;
+  const bundleBeingSaved = bundle;
+  const editVersionBeingSaved = editVersionRef.current;
+
+  setSaving(true);
+setError("");
+setMessage("");
+setMessageType("success");
+
+  try {
+    const response = await fetch("/api/admin/messages/namespace", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        namespace: namespaceBeingSaved,
+        bundle: bundleBeingSaved,
+      }),
+    });
+
+    const payload = await response.json();
+
+    if (!response.ok) {
+      throw new Error(payload.error || "İçerik kaydedilemedi.");
+    }
+
+    const hasNewChanges =
+      editVersionRef.current !== editVersionBeingSaved;
+
+    if (hasNewChanges) {
+      setHasUnsavedChanges(true);
+      setMessageType("warning");
+      setMessage(
+        "İlk değişiklikler kaydedildi. Kayıt sırasında yaptığınız yeni değişiklikler henüz kaydedilmedi."
+      );
+
+      return false;
+    }
+
+    setBundle(payload.bundle);
+    setHasUnsavedChanges(false);
+    setMessageType("success");
+    setMessage("Tüm diller başarıyla kaydedildi.");
+
+    return true;
+  } catch (saveError) {
+    setError(
+      saveError instanceof Error
+        ? saveError.message
+        : "İçerik kaydedilemedi."
+    );
+
+    return false;
+  } finally {
+    setSaving(false);
+  }
+};
+
+const handleSaveAndContinue = async () => {
+  const nextNamespace = pendingNamespace;
+  const savedSuccessfully = await handleSave();
+
+  if (!savedSuccessfully) {
+    return;
+  }
+
+  setShowUnsavedModal(false);
+  setPendingNamespace("");
+  setSelectedNamespace(nextNamespace);
+};
+
+//Kaydetmeden devam et
+const handleDiscardAndContinue = () => {
+  const nextNamespace = pendingNamespace;
+
+  setShowUnsavedModal(false);
+  setPendingNamespace("");
+  setHasUnsavedChanges(false);
+  setMessage("");
+  setError("");
+  setSelectedNamespace(nextNamespace);
+};
+
+//Popup’ı kapatma
+const handleCloseUnsavedModal = () => {
+  if (saving) return;
+
+  setShowUnsavedModal(false);
+  setPendingNamespace("");
+};
+
+
+const SelectedMediaEditor =
+  MEDIA_EDITOR_REGISTRY[selectedNamespace] || null;
 
   return (
     <div className="mx-auto max-w-[1500px] space-y-7">
@@ -304,7 +566,7 @@ export default function PanelContentPage() {
       </header>
 
       <div className="grid items-start gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <aside className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-6">
+        <aside className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-12">
           <div className="border-b border-stone-200 p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -349,7 +611,7 @@ export default function PanelContentPage() {
                         <button
                           key={namespace}
                           type="button"
-                          onClick={() => setSelectedNamespace(namespace)}
+                          onClick={() => handleNamespaceSelect(namespace)}
                           className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
                             isSelected
                               ? "bg-stone-900 text-white shadow-sm"
@@ -397,8 +659,8 @@ export default function PanelContentPage() {
           </div>
         </aside>
 
-        <main className="min-w-0 space-y-5">
-          <section className="z-10 rounded-2xl border border-stone-200 bg-white/95 p-5 shadow-sm backdrop-blur sm:p-6 xl:sticky xl:top-6">
+        <section className="min-w-0 space-y-5">
+          <section className="z-10 rounded-2xl border border-stone-200 bg-white/95 p-5 shadow-sm backdrop-blur sm:p-6 lg:sticky lg:top-16">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-stone-400">
@@ -439,7 +701,7 @@ export default function PanelContentPage() {
                 <button
                   type="button"
                   onClick={handleSave}
-                  disabled={saving || !bundle}
+                  disabled={saving || !bundle || !hasUnsavedChanges}
                   className="rounded-xl bg-[#63978f] px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {saving ? "Kaydediliyor..." : "Tüm Dilleri Kaydet"}
@@ -450,12 +712,14 @@ export default function PanelContentPage() {
               <p
                 aria-live="polite"
                 className={`mt-4 border-t pt-4 text-sm font-medium ${
-                  message
-                    ? "border-emerald-100 text-emerald-700"
-                    : "border-rose-100 text-rose-700"
-                }`}
+                  error
+        ? "border-rose-100 text-rose-700"
+        : messageType === "warning"
+          ? "border-amber-100 text-amber-700"
+          : "border-emerald-100 text-emerald-700"
+    }`}
               >
-                {message || error}
+                {error || message}
               </p>
             ) : null}
           </section>
@@ -473,66 +737,12 @@ export default function PanelContentPage() {
             <div className="space-y-5">
               <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
 
-              {selectedNamespace === "Certificates" ? <CertificateMediaEditor /> : null}
-              {selectedNamespace === "Spa" ? (
-                <SpaWellnessMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "Accommodation" ? (
-                <RoomsMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "Restaurants" ? (
-                <RestaurantsMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "BarAndCafes" ? (
-                <BarCafesMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "BeachPools" ? (
-                <BeachPoolsMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "KidsClub" ? (
-                <KidsClubMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "Entertainment" ? (
-                <EntertainmentMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "Special" ? (
-                <SpecialMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "Fitness" ? (
-                <FitnessMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              <RestaurantDetailMediaEditor
-                namespace={selectedNamespace}
-                activeLocale={activeLocale}
-              />
-              <BarCafeDetailMediaEditor
-                namespace={selectedNamespace}
-                activeLocale={activeLocale}
-              />
-              {selectedNamespace === "RoomsParallax" ? (
-                <SharedRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "SuperiorRoom" ? (
-                <SuperiorRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "FamilyRoom" ? (
-                <FamilyRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "SwimupRoom" ? (
-                <SwimupRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "FamilySwimupRoom" ? (
-                <FamilySwimupRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "DuplexFamilyRoom" ? (
-                <DuplexFamilyRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "DisabledRoom" ? (
-                <DisabledRoomMediaEditor activeLocale={activeLocale} />
-              ) : null}
-              {selectedNamespace === "TinyVilla" ? (
-                <TinyVillaMediaEditor activeLocale={activeLocale} />
-              ) : null}
+            {SelectedMediaEditor ? (
+  <SelectedMediaEditor
+    namespace={selectedNamespace}
+    activeLocale={activeLocale}
+  />
+) : null}
 
             </div>
           ) : (
@@ -546,8 +756,85 @@ export default function PanelContentPage() {
               {error}
             </p>
           ) : null}
-        </main>
+        </section>
       </div>
+
+      {showUnsavedModal ? (
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950/50 p-4 backdrop-blur-sm"
+    role="presentation"
+  >
+    <section
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="unsaved-changes-title"
+      aria-describedby="unsaved-changes-description"
+      className="w-full max-w-md rounded-2xl border border-stone-200 bg-white p-6 shadow-2xl"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+            <FiFileText className="h-5 w-5" aria-hidden="true" />
+          </div>
+
+          <h2
+            id="unsaved-changes-title"
+            className="mt-4 text-xl font-semibold text-stone-900"
+          >
+            Kaydedilmemiş değişiklikler var
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleCloseUnsavedModal}
+          disabled={saving}
+          aria-label="Uyarıyı kapat"
+          className="rounded-lg p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <FiX className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
+
+      <p
+        id="unsaved-changes-description"
+        className="mt-3 text-sm leading-6 text-stone-600"
+      >
+        Bu sayfada yaptığınız değişiklikleri henüz kaydetmediniz.
+        Devam etmeden önce değişiklikleri kaydetmek ister misiniz?
+      </p>
+
+      {error ? (
+        <p
+          role="alert"
+          className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
+        >
+          {error}
+        </p>
+      ) : null}
+
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <button
+          type="button"
+          onClick={handleDiscardAndContinue}
+          disabled={saving}
+          className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Kaydetmeden devam et
+        </button>
+
+        <button
+          type="button"
+          onClick={handleSaveAndContinue}
+          disabled={saving}
+          className="rounded-xl bg-[#63978f] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#527f78] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {saving ? "Kaydediliyor..." : "Kaydet ve devam et"}
+        </button>
+      </div>
+    </section>
+  </div>
+) : null}
     </div>
   );
 }

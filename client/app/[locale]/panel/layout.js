@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import Sidebar from "./components/SideBar.jsx";
+import TopBar from "./components/TopBar.jsx";
 
 export default function PanelLayout({ children }) {
   const params = useParams();
@@ -74,8 +75,8 @@ export default function PanelLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-stone-100 md:flex">
-      {!hideSidebar && <Sidebar username={authState.user?.username} />}
-      <main className={`flex-1 p-4 md:p-8 ${hideSidebar ? "w-full" : "md:ml-72"}`}>
+      {!hideSidebar && <><Sidebar username={authState.user?.username} />  <TopBar username={authState.user?.username} /></>}
+      <main className={`flex-1 p-4 md:p-8 ${hideSidebar ? "w-full"   : "pt-20 md:ml-72 md:pt-24"}`}>
         {children}
       </main>
     </div>
