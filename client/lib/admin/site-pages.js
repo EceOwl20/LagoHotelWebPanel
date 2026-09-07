@@ -12,6 +12,10 @@ import {
 } from "./bar-cafe-detail-config.mjs";
 
 const SITE_PAGE_KEYS = new Set([
+  "homepage",
+  "about",
+  "contact",
+  "contactsection2",
   "certificates",
   "spawellness",
   "rooms",
@@ -102,15 +106,173 @@ function normalizeImageCollection(input, label) {
     assertImagePath(image.src, `${label} görseli ${index + 1}`);
     imageIds.add(image.id);
 
-    return {
+    const normalizedImage = {
       id: image.id,
       src: image.src,
       order: index,
       translations: normalizeImageTranslations(image.translations),
     };
+
+    if (
+      Number.isInteger(image.width) &&
+      image.width > 0 &&
+      Number.isInteger(image.height) &&
+      image.height > 0
+    ) {
+      normalizedImage.width = image.width;
+      normalizedImage.height = image.height;
+    }
+
+    return normalizedImage;
   });
 
   return { images };
+}
+
+function normalizeHomePageContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "homepage",
+    carousel: {
+      accommodation: normalizeLocalizedImage(
+        input?.carousel?.accommodation,
+        "Anasayfa Odalar carousel görseli"
+      ),
+      beachPools: normalizeLocalizedImage(
+        input?.carousel?.beachPools,
+        "Anasayfa Plaj ve Havuzlar carousel görseli"
+      ),
+      entertainment: normalizeLocalizedImage(
+        input?.carousel?.entertainment,
+        "Anasayfa Eğlence carousel görseli"
+      ),
+      restaurants: normalizeLocalizedImage(
+        input?.carousel?.restaurants,
+        "Anasayfa Restoranlar carousel görseli"
+      ),
+      kidsClub: normalizeLocalizedImage(
+        input?.carousel?.kidsClub,
+        "Anasayfa Çocuk Kulübü carousel görseli"
+      ),
+      spa: normalizeLocalizedImage(
+        input?.carousel?.spa,
+        "Anasayfa Spa carousel görseli"
+      ),
+      bars: normalizeLocalizedImage(
+        input?.carousel?.bars,
+        "Anasayfa Barlar carousel görseli"
+      ),
+    },
+    accommodationCards: {
+      familySwimup: normalizeLocalizedImage(
+        input?.accommodationCards?.familySwimup,
+        "Anasayfa Aile Swim Up oda kartı görseli"
+      ),
+      swimup: normalizeLocalizedImage(
+        input?.accommodationCards?.swimup,
+        "Anasayfa Swim Up oda kartı görseli"
+      ),
+      superior: normalizeLocalizedImage(
+        input?.accommodationCards?.superior,
+        "Anasayfa Superior oda kartı görseli"
+      ),
+    },
+    experience: {
+      background: normalizeLocalizedImage(
+        input?.experience?.background,
+        "Anasayfa tanıtım arka görseli"
+      ),
+      foreground: normalizeLocalizedImage(
+        input?.experience?.foreground,
+        "Anasayfa tanıtım ön görseli"
+      ),
+    },
+    banner: normalizeLocalizedImage(input?.banner, "Anasayfa banner görseli"),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeAboutContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "about",
+    hero: normalizeLocalizedImage(input?.hero, "Hakkımızda hero görseli"),
+    location: normalizeLocalizedImage(
+      input?.location,
+      "Hakkımızda konum tanıtımı görseli"
+    ),
+    moments: normalizeImageCollection(input?.moments, "Hakkımızda anlar carousel alanı"),
+    missionVision: {
+      mission: normalizeLocalizedImage(
+        input?.missionVision?.mission,
+        "Hakkımızda misyon görseli"
+      ),
+      vision: normalizeLocalizedImage(
+        input?.missionVision?.vision,
+        "Hakkımızda vizyon görseli"
+      ),
+      document: normalizeLocalizedImage(
+        input?.missionVision?.document,
+        "Hakkımızda misyon ve vizyon doküman görseli"
+      ),
+    },
+    discoveryCarousel: {
+      accommodation: normalizeLocalizedImage(
+        input?.discoveryCarousel?.accommodation,
+        "Hakkımızda Odalar carousel görseli"
+      ),
+      beachPools: normalizeLocalizedImage(
+        input?.discoveryCarousel?.beachPools,
+        "Hakkımızda Plaj ve Havuzlar carousel görseli"
+      ),
+      entertainment: normalizeLocalizedImage(
+        input?.discoveryCarousel?.entertainment,
+        "Hakkımızda Eğlence carousel görseli"
+      ),
+      restaurants: normalizeLocalizedImage(
+        input?.discoveryCarousel?.restaurants,
+        "Hakkımızda Restoranlar carousel görseli"
+      ),
+      kidsClub: normalizeLocalizedImage(
+        input?.discoveryCarousel?.kidsClub,
+        "Hakkımızda Çocuk Kulübü carousel görseli"
+      ),
+      spa: normalizeLocalizedImage(
+        input?.discoveryCarousel?.spa,
+        "Hakkımızda Spa carousel görseli"
+      ),
+      bars: normalizeLocalizedImage(
+        input?.discoveryCarousel?.bars,
+        "Hakkımızda Barlar carousel görseli"
+      ),
+    },
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeContactContent(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "contact",
+    hero: normalizeLocalizedImage(input?.hero, "İletişim hero görseli"),
+    formBackground: normalizeLocalizedImage(
+      input?.formBackground,
+      "İletişim formu arka plan görseli"
+    ),
+    updatedAt: input?.updatedAt || null,
+  };
+}
+
+function normalizeContactSection2Content(input) {
+  return {
+    schemaVersion: 1,
+    pageKey: "contactsection2",
+    socialGallery: normalizeLocalizedImage(
+      input?.socialGallery,
+      "Ortak iletişim alanı kayan galeri görseli"
+    ),
+    updatedAt: input?.updatedAt || null,
+  };
 }
 
 function normalizeCertificatesContent(input) {
@@ -588,6 +750,22 @@ export async function readSitePageContent(pageKey) {
     throw new SitePageContentError("Sayfa medya içeriği bulunamadı.", 404);
   }
 
+  if (pageKey === "homepage") {
+    return normalizeHomePageContent(content);
+  }
+
+  if (pageKey === "about") {
+    return normalizeAboutContent(content);
+  }
+
+  if (pageKey === "contact") {
+    return normalizeContactContent(content);
+  }
+
+  if (pageKey === "contactsection2") {
+    return normalizeContactSection2Content(content);
+  }
+
   if (pageKey === "certificates") {
     return normalizeCertificatesContent(content);
   }
@@ -690,7 +868,15 @@ export async function writeSitePageContent(pageKey, input) {
   const restaurantDetailConfig = getRestaurantDetailConfigByPageKey(pageKey);
   const barCafeDetailConfig = getBarCafeDetailConfigByPageKey(pageKey);
 
-  if (pageKey === "certificates") {
+  if (pageKey === "homepage") {
+    content = normalizeHomePageContent(input);
+  } else if (pageKey === "about") {
+    content = normalizeAboutContent(input);
+  } else if (pageKey === "contact") {
+    content = normalizeContactContent(input);
+  } else if (pageKey === "contactsection2") {
+    content = normalizeContactSection2Content(input);
+  } else if (pageKey === "certificates") {
     content = normalizeCertificatesContent(input);
   } else if (pageKey === "spawellness") {
     content = normalizeSpaWellnessContent(input);

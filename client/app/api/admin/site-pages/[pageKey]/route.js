@@ -93,6 +93,16 @@ const FITNESS_PATHS = [
   "/de/sport",
   "/ru/sport",
 ];
+const HOME_PAGE_PATHS = ["tr", "en", "de", "ru"].flatMap((locale) => [
+  `/${locale}`,
+  `/${locale}/connect`,
+]);
+const ABOUT_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/about`
+);
+const CONTACT_PATHS = ["tr", "en", "de", "ru"].map(
+  (locale) => `/${locale}/connect`
+);
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
 
@@ -147,6 +157,22 @@ export async function PUT(request, { params }) {
     }
 
     const saved = await writeSitePageContent(pageKey, content);
+
+    if (pageKey === "homepage") {
+      HOME_PAGE_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "about") {
+      ABOUT_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "contact") {
+      CONTACT_PATHS.forEach((pagePath) => revalidatePath(pagePath));
+    }
+
+    if (pageKey === "contactsection2") {
+      revalidatePath("/", "layout");
+    }
 
     if (pageKey === "certificates") {
       CERTIFICATE_PATHS.forEach((pagePath) => revalidatePath(pagePath));

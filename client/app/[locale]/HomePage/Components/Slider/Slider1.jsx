@@ -7,40 +7,26 @@ import Image from "next/image";
 import {useTranslations} from 'next-intl';
 import { MdArrowBackIosNew,MdArrowForwardIos } from "react-icons/md";
 import { Link } from '@/i18n/navigation';
+import accommodationImage from "./Images/Accommodation.webp";
+import beachPoolsImage from "./Images/BeachAndPool2.webp";
+import entertainmentImage from "./Images/Entertainment.webp";
+import restaurantsImage from "./Images/Flavours2.webp";
+import kidsClubImage from "./Images/Kids.webp";
+import spaImage from "./Images/img-12K.webp";
+import barsImage from "./Images/fresh1K.webp";
 
-// Varsayılan slaytlar
-const DEFAULT_SLIDES = [
-  {
-    src: require("./Images/Accommodation.webp"),
-    title: "Accommodation",
-    link: "/rooms",
-  },
-  {
-    src: require("./Images/BeachAndPool2.webp"),
-    title: "Beach & Pools",
-    link: "/beachpools",
-  },
-  {
-    src: require("./Images/Entertainment.webp"),
-    title: "Experiences",
-    link: "/entertainment",
-  },
-  {
-    src: require("./Images/Flavours2.webp"),
-    title: "Flavours",
-    link: "/restaurants",
-  },
-  {
-    src: require("./Images/Kids.webp"),
-    title: "Kids",
-    link: "/kidsclub",
-  },
-];
+const FALLBACK_IMAGES = {
+  accommodation: { src: accommodationImage, alt: "" },
+  beachPools: { src: beachPoolsImage, alt: "" },
+  entertainment: { src: entertainmentImage, alt: "" },
+  restaurants: { src: restaurantsImage, alt: "" },
+  kidsClub: { src: kidsClubImage, alt: "" },
+  spa: { src: spaImage, alt: "" },
+  bars: { src: barsImage, alt: "" },
+};
 
 // Tekil slayt bileşeni
 function Slide({ slide, marginClass }) {
-  const t = useTranslations('HomePage');
-
   return (
     <div
       className={`
@@ -60,7 +46,7 @@ function Slide({ slide, marginClass }) {
     >
       <Image
         src={slide.src}
-        alt={slide.title}
+        alt={slide.alt || slide.title}
         width={360}
         height={540}
         className="lg:w-full lg:h-full md:w-[270px] md:h-[405px] h-[266px] w-[177.3px] object-cover"
@@ -81,47 +67,55 @@ function Slide({ slide, marginClass }) {
   );
 }
 
-export default function Slider1({ slides }) {
+export default function Slider1({ images }) {
   const t = useTranslations('HomePage.EmblaCarousel');
+  const resolvedImages = images || FALLBACK_IMAGES;
 
   const DEFAULT_SLIDES = [
     {
-      src: require("./Images/Accommodation.webp"),
+      src: resolvedImages.accommodation.src,
+      alt: resolvedImages.accommodation.alt,
       title: t("accommodation"),
       link: "/rooms",
     },
     {
-      src: require("./Images/BeachAndPool2.webp"),
+      src: resolvedImages.beachPools.src,
+      alt: resolvedImages.beachPools.alt,
       title: t("beachPools"),
       link: "/beachpools",
     },
     {
-      src: require("./Images/Entertainment.webp"),
+      src: resolvedImages.entertainment.src,
+      alt: resolvedImages.entertainment.alt,
       title: t("experiences"),
       link: "/entertainment",
     },
     {
-      src: require("./Images/Flavours2.webp"),
+      src: resolvedImages.restaurants.src,
+      alt: resolvedImages.restaurants.alt,
       title: t("restaurants"),
       link: "/restaurants",
     },
     {
-      src: require("./Images/Kids.webp"),
+      src: resolvedImages.kidsClub.src,
+      alt: resolvedImages.kidsClub.alt,
       title: t("kids"),
       link: "/kidsclub",
     },
     {
-      src: require("./Images/img-12K.webp"),
+      src: resolvedImages.spa.src,
+      alt: resolvedImages.spa.alt,
       title: t("spa"),
       link: "/spawellness",
     },
     {
-      src: require("./Images/fresh1K.webp"),
+      src: resolvedImages.bars.src,
+      alt: resolvedImages.bars.alt,
       title: t("bars"),
       link: "/barcafes",
     },
   ];
-  const slidesOriginal = slides || DEFAULT_SLIDES;
+  const slidesOriginal = DEFAULT_SLIDES;
   const slidesCombined = [...slidesOriginal, ...slidesOriginal];
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -203,6 +197,4 @@ export default function Slider1({ slides }) {
     </section>
   );
 }
-
-
 

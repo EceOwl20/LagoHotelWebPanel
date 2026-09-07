@@ -6,6 +6,7 @@ import Link from 'next/link'
 import imgBackground from "./images/socialgalleryback3.webp"
 import { PiInstagramLogoLight, PiMetaLogoLight, PiFacebookLogoLight, PiYoutubeLogoLight } from "react-icons/pi";
 import {useTranslations} from 'next-intl';
+import { useSharedMedia } from "../../SharedMediaContext";
 
 const ContactDetails = () => {
   const t = useTranslations('ContactSection2');
@@ -68,8 +69,9 @@ const ContactDetails = () => {
   )
 }
 
-const GallerySection = () => {
+const GallerySection = ({ galleryImage }) => {
   const scrollRef = useRef(null);
+  const imageSource = galleryImage?.src || minigallery;
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -103,13 +105,13 @@ const GallerySection = () => {
       >
         <div className="flex flex-col">
           {[...Array(100)].flatMap((_, loopIndex) =>
-            [minigallery].map((img, index) => (
+            [imageSource].map((img, index) => (
               <Image
                 key={`${loopIndex}-${index}`}
                 src={img}
-                height={img.height}
-                width={img.width}
-                alt="Minigallery"
+                height={img.height || minigallery.height}
+                width={img.width || minigallery.width}
+                alt={galleryImage?.alt || "Minigallery"}
                 loading="lazy"
                 className="xl:w-[100%] h-auto overflow-hidden"
               />
@@ -121,19 +123,22 @@ const GallerySection = () => {
   )
 }
 
-const ContactSection2 = () => {
+const ContactSection2 = ({ galleryImage }) => {
+  const sharedMedia = useSharedMedia();
+  const resolvedGalleryImage = galleryImage || sharedMedia.contactSection2;
+
   return (
     <div className="flex w-screen max-w-[1440px] mb-[100px] justify-start">
       {/* Desktop görünüm: İki bölüm arasında ekstra boşluk */}
       <div className="hidden md:flex justify-center items-center gap-8 border-[1px] border-lagoBlack xl:min-w-[90vw] 2xl:min-w-[1401px]  h-[34vh] min-h-[422px]">
         <ContactDetails />
-        <GallerySection />
+        <GallerySection galleryImage={resolvedGalleryImage} />
       </div>
       {/* Mobil görünüm: Arkaplan resmi kaldırıldı */}
       <div className="flex flex-col w-full md:hidden justify-center items-center h-[65vh] bg-[#fbfbfb]">
         <div className="flex flex-col w-[90%] sm:w-[85%] bg-[#fbfbfb] gap-[33px] min-h-content h-[55vh] py-[30px] items-center justify-center text-center">
           <ContactDetails />
-          <GallerySection />
+          <GallerySection galleryImage={resolvedGalleryImage} />
         </div>
       </div>
     </div>

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "contactsection2",
+  "socialGallery": {
+    "image": "/uploads/pages/contactsection2/social-gallery.png",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "updatedAt": null
+}

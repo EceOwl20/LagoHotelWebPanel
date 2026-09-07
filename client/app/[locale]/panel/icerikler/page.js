@@ -143,6 +143,22 @@ const CertificateMediaEditor = dynamicEditor(
   () => import("./CertificateMediaEditor")
 );
 
+const HomePageMediaEditor = dynamicEditor(
+  () => import("./HomePageMediaEditor")
+);
+
+const AboutMediaEditor = dynamicEditor(
+  () => import("./AboutMediaEditor")
+);
+
+const ContactMediaEditor = dynamicEditor(
+  () => import("./ContactMediaEditor")
+);
+
+const ContactSection2MediaEditor = dynamicEditor(
+  () => import("./ContactSection2MediaEditor")
+);
+
 const BarCafesMediaEditor = dynamicEditor(
   () => import("./BarCafesMediaEditor")
 );
@@ -274,6 +290,10 @@ const BAR_CAFE_DETAIL_EDITOR_ENTRIES = Object.fromEntries(
 );
 
 const MEDIA_EDITOR_REGISTRY = {
+  HomePage: HomePageMediaEditor,
+  About: AboutMediaEditor,
+  Contact: ContactMediaEditor,
+  ContactSection2: ContactSection2MediaEditor,
   Certificates: CertificateMediaEditor,
   Spa: SpaWellnessMediaEditor,
   Accommodation: RoomsMediaEditor,

@@ -62,6 +62,7 @@ export default function SitePageMediaEditor({
   activeLocale,
   uploadFolder,
   singleImages,
+  imageSections = [],
   collections,
   localizedAlt = false,
 }) {
@@ -247,8 +248,51 @@ export default function SitePageMediaEditor({
         </p>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        {singleImages.map((field) => {
+      {imageSections.length > 0 ? (
+        <div className="space-y-5">
+          {imageSections.map((section) => (
+            <section
+              key={section.id}
+              className="space-y-4 rounded-2xl border border-stone-200 bg-stone-50 p-4 sm:p-5"
+            >
+              <div className="border-b border-stone-200 pb-4">
+                <h3 className="font-semibold text-stone-900">{section.title}</h3>
+                {section.description ? (
+                  <p className="mt-1 text-sm leading-6 text-stone-500">
+                    {section.description}
+                  </p>
+                ) : null}
+              </div>
+              <div className="grid gap-5 lg:grid-cols-2">
+                {section.fields.map((field) => {
+                  const value = getAtPath(content, field.path);
+
+                  return (
+                    <div key={field.path.join(".")} className="space-y-3 rounded-xl bg-white p-3 shadow-sm">
+                      <PageImagePicker
+                        label={field.label}
+                        value={value.image}
+                        onChange={(image) => updateSingleImage(field, image)}
+                        allowClear={false}
+                        uploadFolder={uploadFolder}
+                      />
+                      {localizedAlt ? (
+                        <AltField
+                          locale={activeLocale}
+                          value={value.translations?.[activeLocale]?.alt}
+                          onChange={(alt) => updateSingleAlt(field, alt)}
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-5 lg:grid-cols-2">
+          {singleImages.map((field) => {
           const value = getAtPath(content, field.path);
 
           return (
@@ -269,8 +313,9 @@ export default function SitePageMediaEditor({
               ) : null}
             </div>
           );
-        })}
-      </div>
+          })}
+        </div>
+      )}
 
       {collections.map((field) => {
         const collection = getAtPath(content, field.path);
@@ -363,7 +408,7 @@ export default function SitePageMediaEditor({
               onChange={(src) => addCollectionImage(field, src)}
               allowClear={false}
               uploadFolder={uploadFolder}
-              hint="Galeriden seçilen veya yeni yüklenen görsel listenin sonuna eklenir."
+              hint="Medya Kütüphanesinden seçilen veya yeni yüklenen görsel listenin sonuna eklenir."
             />
           </div>
         );

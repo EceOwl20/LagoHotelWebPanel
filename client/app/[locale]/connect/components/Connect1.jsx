@@ -25,19 +25,20 @@ const ContactColumn = ({ icon, title, children }) => (
   </div>
 );
 
-const Page = () => {
+const Page = ({ heroImage }) => {
   const t = useTranslations('Contact');
+  const imageSource = heroImage?.src || image1;
 
   return (
     <div className='flex flex-col justify-center items-center mb-[4%] w-screen'>
       {/* Resim ve overlay container */}
       <div className='relative flex w-full h-[60vh]'>
         <Image 
-          src={image1} 
+          src={imageSource}
           width={1000} 
           height={3000} 
           className='w-full h-full object-cover' 
-          alt="Header Image" 
+          alt={heroImage?.alt || "Header Image"}
         />
         <div className='absolute inset-0 flex flex-col justify-center items-center text-center gap-[30px] lg:gap-[50px]'>
           <h1 className="font-jost text-[12px] md:text-[16px] font-medium leading-[14px] tracking-[0.6px] uppercase text-white">

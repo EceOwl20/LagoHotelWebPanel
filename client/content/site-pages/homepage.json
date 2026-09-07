@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "homepage",
+  "carousel": {
+    "accommodation": {
+      "image": "/uploads/pages/homepage/carousel-accommodation.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "beachPools": {
+      "image": "/uploads/pages/homepage/carousel-beach-pools.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "entertainment": {
+      "image": "/uploads/pages/homepage/carousel-entertainment.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "restaurants": {
+      "image": "/uploads/pages/homepage/carousel-restaurants.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "kidsClub": {
+      "image": "/uploads/pages/homepage/carousel-kids.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "spa": {
+      "image": "/uploads/pages/homepage/carousel-spa.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "bars": {
+      "image": "/uploads/pages/homepage/carousel-bars.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    }
+  },
+  "accommodationCards": {
+    "familySwimup": {
+      "image": "/uploads/pages/homepage/accommodation-family-swimup.jpg",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "swimup": {
+      "image": "/uploads/pages/homepage/accommodation-swimup.jpg",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "superior": {
+      "image": "/uploads/pages/homepage/accommodation-superior.webp",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    }
+  },
+  "experience": {
+    "background": {
+      "image": "/uploads/pages/homepage/experience-background.jpg",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    },
+    "foreground": {
+      "image": "/uploads/pages/homepage/experience-foreground.jpg",
+      "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+    }
+  },
+  "banner": {
+    "image": "/uploads/pages/homepage/banner-beach-pools.webp",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "updatedAt": null
+}

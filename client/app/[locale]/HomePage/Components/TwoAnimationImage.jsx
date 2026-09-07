@@ -1,12 +1,10 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import img1 from "./Images/sag3.jpg";
-import img2 from "./Images/sol3.jpg";
 import { Link } from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
 
-const TwoAnimationImage = () => {
+const TwoAnimationImage = ({ foregroundImage, backgroundImage }) => {
   const t = useTranslations('HomePage.TwoAnimationSection');
   const [animate, setAnimate] = useState(false);
   const sectionRef = useRef(null); 
@@ -61,8 +59,8 @@ const TwoAnimationImage = () => {
 
         <div className="flex w-[65%] min-w-[310px] md:w-[50%] h-[327px] md:h-full lg:w-[43.8%] items-end justify-end relative  mt-[67px] md:mt-0">
           <Image
-            src={img2}
-            alt="art"
+            src={backgroundImage.src}
+            alt={backgroundImage.alt}
             width={300}
             height={450}
             className={`w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] absolute bottom-[100px] right-[140px] md:bottom-[110px] md:right-[104px] lg:bottom-[105px] lg:right-[215px] z-10 transition-all duration-1000 ease-in-out ${
@@ -70,8 +68,8 @@ const TwoAnimationImage = () => {
             }`}
           />
           <Image
-            src={img1}
-            alt="art"
+            src={foregroundImage.src}
+            alt={foregroundImage.alt}
             width={300}
             height={450}
             className={`w-[175px] h-[260px] md:w-[186.60px] md:h-[279.91px] lg:w-[300px] lg:h-[450px] z-50 transition-all duration-1000 ease-in-out ${

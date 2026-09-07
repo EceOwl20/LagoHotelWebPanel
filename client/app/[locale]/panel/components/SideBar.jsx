@@ -10,6 +10,7 @@ import { FiTable } from "react-icons/fi";
 import { FiFile } from "react-icons/fi";
 import { FiLayers } from "react-icons/fi";
 import { FiFilm } from "react-icons/fi";
+import { FiImage } from "react-icons/fi";
 // import { FiSlack } from "react-icons/fi";
 // import { FiGrid } from "react-icons/fi";
 import { FiPackage } from "react-icons/fi";
@@ -19,6 +20,7 @@ const navigationItems = [
   { href: "/panel/dashboard", label: "Dashboard", icon: FiTable},
   { href: "/panel/sayfalar", label: "Sayfalar", icon: FiFile },
   { href: "/panel/icerikler", label: "Sayfa Icerikleri", icon: FiLayers },
+  { href: "/panel/medya", label: "Medya Kutuphanesi", icon: FiImage },
   { href: "/panel/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/blog", label: "Blog", icon: FiPackage },
 ];

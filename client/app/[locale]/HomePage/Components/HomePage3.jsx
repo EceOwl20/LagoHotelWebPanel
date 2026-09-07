@@ -11,13 +11,14 @@ import Sea from "./Icons/Sea";
 import { Link } from '@/i18n/navigation';
 import {useTranslations} from 'next-intl';
 
-export default function HomePage3() {
+export default function HomePage3({ images: mediaImages }) {
   const t = useTranslations('HomePage.Accommodation');
 
 
   const images = [
     {
-      src: FamilySwimUpRoom,
+      src: mediaImages?.familySwimup?.src || FamilySwimUpRoom,
+      alt: mediaImages?.familySwimup?.alt || "",
       title:t("roomname1"),
       desc: t("roomtext1"),
              area:t("m1"),
@@ -26,7 +27,8 @@ export default function HomePage3() {
            
     },
     {
-      src: Swimup,
+      src: mediaImages?.swimup?.src || Swimup,
+      alt: mediaImages?.swimup?.alt || "",
       title:t("roomname2"),
       desc: t("roomtext2"),
              area:t("m2"),
@@ -34,7 +36,8 @@ export default function HomePage3() {
              link:"/rooms/swimuproom"
     },
     {
-      src: SuperiorRoom,
+      src: mediaImages?.superior?.src || SuperiorRoom,
+      alt: mediaImages?.superior?.alt || "",
       title:t("roomname3"),
       desc: t("roomtext3"),
              area:t("m3"),
@@ -81,7 +84,7 @@ export default function HomePage3() {
             {/* Resim */}
             <Image
               src={img.src}
-              alt={img.title}
+              alt={img.alt || img.title}
               width={0}
               height={0}
               sizes="100vw"

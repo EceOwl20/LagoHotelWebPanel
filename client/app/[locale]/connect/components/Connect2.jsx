@@ -4,8 +4,9 @@ import Image from "next/image";
 import image from "../Image/SRF_7996-min.webp";
 import { useTranslations } from "next-intl";
 
-const Connect2 = () => {
+const Connect2 = ({ backgroundImage }) => {
   const t = useTranslations("Contact.Form");
+  const imageSource = backgroundImage?.src || image;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -81,8 +82,8 @@ const Connect2 = () => {
       {/* Arka plan resmi container'ı */}
       <div className="relative w-full lg:w-[978px] lg:h-[744px] lg:-ml-[15%]">
         <Image
-          src={image}
-          alt="Resim"
+          src={imageSource}
+          alt={backgroundImage?.alt || "Resim"}
           width={image.width}
           height={image.height}
           className="object-cover w-full min-h-[650px]"

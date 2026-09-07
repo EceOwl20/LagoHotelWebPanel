@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { getMessages, setRequestLocale } from 'next-intl/server'   // ← setRequestLocale ekledik
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
 import { listPublishedPageNavigation } from "@/lib/admin/pages";
+import { readSitePageContent } from "@/lib/admin/site-pages";
 
 export const dynamic = "force-dynamic";
 
@@ -44,15 +45,34 @@ export default async function RootLayout({ children, params }) {
    setRequestLocale(locale)
   
     // 2) Ardından mesajları yükleyip client’a iletebiliriz
-    const messages = await getMessages()
-    const dynamicNavigation = await listPublishedPageNavigation(locale)
+  const [messages, dynamicNavigation, contactSectionMedia, homePageMedia] =
+    await Promise.all([
+      getMessages(),
+      listPublishedPageNavigation(locale),
+      readSitePageContent("contactsection2"),
+      readSitePageContent("homepage"),
+    ]);
+
+  const sharedMedia = {
+    contactSection2: {
+      src: contactSectionMedia.socialGallery.image,
+      alt: contactSectionMedia.socialGallery.translations?.[locale]?.alt || "",
+    },
+    banner: {
+      src: homePageMedia.banner.image,
+      alt: homePageMedia.banner.translations?.[locale]?.alt || "",
+    },
+  };
 
 
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ClientLayoutWrapper dynamicNavigation={dynamicNavigation}>
+          <ClientLayoutWrapper
+            dynamicNavigation={dynamicNavigation}
+            sharedMedia={sharedMedia}
+          >
             {children}
           </ClientLayoutWrapper>
         </NextIntlClientProvider>

@@ -3,17 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
-const CATEGORY_LABELS = {
-  general: "Genel Görünüm",
-  rooms: "Odalar",
-  pool: "Havuz ve Plaj",
-  flavours: "Lezzetler",
-  spa: "Spa",
-  kidsclub: "Kids Club",
-  entertainment: "Eğlence",
-  bar: "Barlar",
-  lobby: "Lobi",
-};
+const PICKER_PAGE_SIZE = 80;
 
 function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
@@ -28,51 +18,63 @@ export default function PageImagePicker({
   uploadFolder = "pages",
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [gallery, setGallery] = useState(null);
-  const [activeCategory, setActiveCategory] = useState("general");
-  const [galleryRequested, setGalleryRequested] = useState(false);
-  const [loadingGallery, setLoadingGallery] = useState(false);
+  const [library, setLibrary] = useState(null);
+  const [activeFolder, setActiveFolder] = useState("all");
+  const [query, setQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PICKER_PAGE_SIZE);
+  const [libraryRequested, setLibraryRequested] = useState(false);
+  const [loadingLibrary, setLoadingLibrary] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!isOpen || gallery || galleryRequested) {
+    if (!isOpen || library || libraryRequested) {
       return;
     }
 
-    const loadGallery = async () => {
-      setLoadingGallery(true);
-      setGalleryRequested(true);
+    const loadLibrary = async () => {
+      setLoadingLibrary(true);
+      setLibraryRequested(true);
       setError("");
 
       try {
-        const response = await fetch("/api/admin/gallery", { cache: "no-store" });
+        const response = await fetch("/api/admin/media", { cache: "no-store" });
         const payload = await response.json();
 
         if (!response.ok) {
-          throw new Error(payload.error || "Galeri görselleri alınamadı.");
+          throw new Error(payload.error || "Medya kütüphanesi alınamadı.");
         }
 
-        setGallery(payload.gallery);
-        const firstCategory = payload.gallery?.categories?.[0]?.id;
-
-        if (firstCategory) {
-          setActiveCategory(firstCategory);
-        }
+        setLibrary(payload.library);
+        setActiveFolder(
+          payload.library?.folders?.includes(uploadFolder) ? uploadFolder : "all"
+        );
       } catch (loadError) {
         setError(loadError.message);
       } finally {
-        setLoadingGallery(false);
+        setLoadingLibrary(false);
       }
     };
 
-    loadGallery();
-  }, [gallery, galleryRequested, isOpen]);
+    loadLibrary();
+  }, [isOpen, library, libraryRequested, uploadFolder]);
 
-  const currentCategory = useMemo(
-    () => gallery?.categories?.find((category) => category.id === activeCategory),
-    [activeCategory, gallery]
-  );
+  useEffect(() => {
+    setVisibleCount(PICKER_PAGE_SIZE);
+  }, [activeFolder, query]);
+
+  const filteredAssets = useMemo(() => {
+    const normalizedQuery = query.trim().toLocaleLowerCase("tr");
+
+    return (library?.assets || []).filter((asset) => {
+      if (activeFolder !== "all" && asset.folder !== activeFolder) return false;
+      if (!normalizedQuery) return true;
+
+      return `${asset.name} ${asset.folder} ${asset.extension}`
+        .toLocaleLowerCase("tr")
+        .includes(normalizedQuery);
+    });
+  }, [activeFolder, library, query]);
 
   const selectImage = (src) => {
     onChange(src);
@@ -105,6 +107,8 @@ export default function PageImagePicker({
         throw new Error(payload.error || "Görsel yüklenemedi.");
       }
 
+      setLibrary(null);
+      setLibraryRequested(false);
       selectImage(payload.url);
     } catch (uploadError) {
       setError(uploadError.message);
@@ -173,7 +177,7 @@ export default function PageImagePicker({
               <div>
                 <h3 className="text-xl font-semibold text-stone-900">{label}</h3>
                 <p className="mt-1 text-sm text-stone-500">
-                  Galeriden seçim yapabilir veya yeni bir görsel yükleyebilirsin.
+                  Medya Kütüphanesinden seçim yapabilir veya yeni bir görsel yükleyebilirsin.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -198,31 +202,42 @@ export default function PageImagePicker({
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 border-b border-stone-200 p-4">
-              {(gallery?.categories || []).map((category) => (
-                <button
-                  key={category.id}
-                  type="button"
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`rounded-lg px-3 py-2 text-xs font-medium ${
-                    activeCategory === category.id
-                      ? "bg-stone-900 text-white"
-                      : "border border-stone-200 text-stone-700 hover:bg-stone-50"
-                  }`}
+            <div className="grid gap-3 border-b border-stone-200 p-4 md:grid-cols-[minmax(0,1fr)_320px]">
+              <label>
+                <span className="sr-only">Medya ara</span>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Dosya adı veya klasör ara..."
+                  className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-stone-600 focus:bg-white"
+                />
+              </label>
+              <label>
+                <span className="sr-only">Medya klasörü</span>
+                <select
+                  value={activeFolder}
+                  onChange={(event) => setActiveFolder(event.target.value)}
+                  className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-stone-600 focus:bg-white"
                 >
-                  {CATEGORY_LABELS[category.id] || category.id} ({category.images.length})
-                </button>
-              ))}
+                  <option value="all">Tüm klasörler</option>
+                  {(library?.folders || []).map((folder) => (
+                    <option key={folder || "root"} value={folder}>
+                      {folder || "Ana uploads klasörü"}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
 
             <div className="overflow-y-auto p-5">
               {error ? (
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
                   <span>{error}</span>
-                  {!gallery ? (
+                  {!library ? (
                     <button
                       type="button"
-                      onClick={() => setGalleryRequested(false)}
+                      onClick={() => setLibraryRequested(false)}
                       className="rounded-lg border border-rose-300 px-3 py-2 text-xs font-medium"
                     >
                       Tekrar Dene
@@ -231,24 +246,28 @@ export default function PageImagePicker({
                 </div>
               ) : null}
 
-              {loadingGallery ? (
-                <p className="text-sm text-stone-500">Galeri yükleniyor...</p>
-              ) : currentCategory?.images?.length ? (
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                  {currentCategory.images.map((image) => (
+              {loadingLibrary ? (
+                <p className="text-sm text-stone-500">Medya Kütüphanesi yükleniyor...</p>
+              ) : filteredAssets.length > 0 ? (
+                <>
+                  <p className="mb-4 text-sm text-stone-500">
+                    {filteredAssets.length} görsel bulundu
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                  {filteredAssets.slice(0, visibleCount).map((asset) => (
                     <button
-                      key={image.id}
+                      key={asset.id}
                       type="button"
-                      onClick={() => selectImage(image.src)}
+                      onClick={() => selectImage(asset.url)}
                       className={`group overflow-hidden rounded-xl border-2 text-left transition ${
-                        value === image.src
+                        value === asset.url
                           ? "border-emerald-600 ring-2 ring-emerald-200"
                           : "border-transparent hover:border-stone-400"
                       }`}
                     >
                       <div className="relative aspect-[4/3] bg-stone-100">
                         <Image
-                          src={image.src}
+                          src={asset.url}
                           alt=""
                           fill
                           unoptimized
@@ -256,14 +275,33 @@ export default function PageImagePicker({
                           className="object-cover transition group-hover:scale-[1.02]"
                         />
                       </div>
-                      <div className="truncate px-3 py-2 text-xs text-stone-500">
-                        {image.src}
+                      <div className="space-y-1 px-3 py-2">
+                        <div className="truncate text-xs font-medium text-stone-700">
+                          {asset.name}
+                        </div>
+                        <div className="truncate text-[11px] text-stone-400">
+                          {asset.folder || "uploads"}
+                        </div>
                       </div>
                     </button>
                   ))}
-                </div>
+                  </div>
+                  {visibleCount < filteredAssets.length ? (
+                    <div className="flex justify-center pt-5">
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount((count) => count + PICKER_PAGE_SIZE)}
+                        className="rounded-xl bg-stone-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-stone-800"
+                      >
+                        Daha fazla göster
+                      </button>
+                    </div>
+                  ) : null}
+                </>
               ) : (
-                <p className="text-sm text-stone-500">Bu galeri kategorisinde görsel yok.</p>
+                <p className="text-sm text-stone-500">
+                  Bu filtrelerle eşleşen görsel bulunamadı.
+                </p>
               )}
             </div>
           </div>

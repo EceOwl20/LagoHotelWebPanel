@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "pageKey": "contact",
+  "hero": {
+    "image": "/uploads/pages/contact/hero.webp",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "formBackground": {
+    "image": "/uploads/pages/contact/form-background.webp",
+    "translations": { "tr": { "alt": "" }, "en": { "alt": "" }, "de": { "alt": "" }, "ru": { "alt": "" } }
+  },
+  "updatedAt": null
+}

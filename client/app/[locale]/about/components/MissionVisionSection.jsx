@@ -17,11 +17,11 @@ const MissionColumn = ({
 }) => (
   <div className="flex flex-col w-full md:w-[49%] items-start justify-center text-start gap-[15px] lg:gap-[25px] font-jost text-black">
     <Image
-      src={img}
-      width={img.width}
-      height={img.height}
-      alt="hotel"
-      className="flex w-full"
+      src={img.src || img}
+      width={img.width || 1200}
+      height={img.height || 706}
+      alt={img.alt || ""}
+      className="flex aspect-[534/314] w-full object-cover"
     />
     <span className="text-[12px] font-medium leading-[14px] tracking-[0.48px] uppercase">
       {spanText}
@@ -76,6 +76,7 @@ const MissionVisionSection = ({
   link1,
   link2,
   buttonText,
+  documentImage,
   documentSections = []
 }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -156,10 +157,10 @@ const MissionVisionSection = ({
             <MissionDocument sections={documentSections} />
           ) : (
             <Image
-              src={imgVizyonMission}
-              alt="vizyonmisyon"
-              width={imgVizyonMission.width}
-              height={imgVizyonMission.height}
+              src={documentImage?.src || imgVizyonMission}
+              alt={documentImage?.alt || "vizyonmisyon"}
+              width={documentImage?.width || imgVizyonMission.width}
+              height={documentImage?.height || imgVizyonMission.height}
             />
           )}
         </div>

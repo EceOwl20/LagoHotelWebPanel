@@ -419,7 +419,7 @@ export default function NewPageAdminPage() {
                 hero: { ...current.hero, image: value },
               }))
             }
-            hint="Bu görsel tüm dillerde ortak kullanılır. Galeriden seçilebilir veya yeni yüklenebilir."
+            hint="Bu görsel tüm dillerde ortak kullanılır. Medya Kütüphanesinden seçilebilir veya yeni yüklenebilir."
           />
         </div>
 

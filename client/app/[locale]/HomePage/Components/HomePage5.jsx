@@ -4,9 +4,13 @@ import React from "react"
 import GreenAndBlueFull from "./Images/GreenAndBlueFull2.webp"
 import Link from "next/link"
 import {useTranslations} from 'next-intl';
+import { useSharedMedia } from "../../SharedMediaContext";
 
-export default function HomePage5() {
+export default function HomePage5({ backgroundImage }) {
   const t = useTranslations('HomePage.Banner');
+  const sharedMedia = useSharedMedia();
+  const backgroundSrc =
+    backgroundImage?.src || sharedMedia.banner?.src || GreenAndBlueFull.src;
 
   return (
     <div className="flex flex-col items-center justify-center gap-0 w-screen">
@@ -40,7 +44,7 @@ export default function HomePage5() {
       <div
       className="relative w-full h-[246.39px] md:h-[335px] lg:h-[530px] 2xl:h-[50vh] bg-cover bg-start items-center justify-center"
       style={{
-        backgroundImage: `url(${GreenAndBlueFull.src})`
+        backgroundImage: `url(${backgroundSrc})`
       }}
     >
       {/* 
