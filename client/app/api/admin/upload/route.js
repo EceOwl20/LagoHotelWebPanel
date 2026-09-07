@@ -9,17 +9,11 @@ import {
   consumeRateLimit,
   getClientIp,
 } from "@/lib/admin/security";
+import {
+  isAllowedImageExtension,
+  validateImageUpload,
+} from "@/lib/admin/image-upload-policy.mjs";
 
-const ALLOWED_EXTENSIONS = new Set([
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".webp",
-  ".gif",
-  ".svg",
-  ".pdf",
-]);
-const PAGE_IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
 const ALLOWED_ROOT_FOLDERS = new Set(["gallery", "blog", "misc", "pages"]);
 const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
 
@@ -69,8 +63,28 @@ export async function POST(request) {
 
   const extension = path.extname(file.name || "").toLowerCase();
 
-  if (!ALLOWED_EXTENSIONS.has(extension)) {
-    return NextResponse.json({ error: "Bu dosya uzantısı desteklenmiyor." }, { status: 400 });
+  if (!isAllowedImageExtension(extension)) {
+    return NextResponse.json(
+      { error: "Yalnızca JPG, PNG, WEBP veya GIF görselleri yüklenebilir." },
+      { status: 400 }
+    );
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const imageValidation = validateImageUpload({
+    extension,
+    mimeType: file.type,
+    bytes: buffer,
+  });
+
+  if (!imageValidation.ok) {
+    return NextResponse.json(
+      {
+        error:
+          "Dosyanın uzantısı, içerik türü ve gerçek görsel formatı birbiriyle uyuşmuyor.",
+      },
+      { status: 400 }
+    );
   }
 
   const rootFolder = folder.split("/")[0] || "misc";
@@ -82,19 +96,11 @@ export async function POST(request) {
     );
   }
 
-  if (rootFolder === "pages" && !PAGE_IMAGE_EXTENSIONS.has(extension)) {
-    return NextResponse.json(
-      { error: "Sayfalarda yalnızca JPG, PNG, WEBP veya GIF görselleri kullanılabilir." },
-      { status: 400 }
-    );
-  }
-
   const targetDirectory = path.join(uploadsRoot, folder);
   await ensureDir(targetDirectory);
 
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
   const targetFilePath = path.join(targetDirectory, fileName);
-  const buffer = Buffer.from(await file.arrayBuffer());
 
   await writeFile(targetFilePath, buffer);
 

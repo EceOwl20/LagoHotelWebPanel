@@ -3,7 +3,8 @@ import "server-only";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import { ADMIN_SESSION_COOKIE_NAME } from "./constants";
-import { hashAdminPassword, verifyAdminPassword } from "./password.mjs";
+import { findPanelUserById } from "./users";
+import { resolveSessionSecret } from "./session-secret.mjs";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 12;
 
@@ -11,8 +12,21 @@ function isProduction() {
   return process.env.NODE_ENV === "production";
 }
 
-function getSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET || "change-me-before-production";
+function getSessionSecretConfig() {
+  return resolveSessionSecret({
+    secret: process.env.ADMIN_SESSION_SECRET,
+    nodeEnv: process.env.NODE_ENV,
+  });
+}
+
+function getSessionSecretOrThrow() {
+  const secretConfig = getSessionSecretConfig();
+
+  if (!secretConfig.valid) {
+    throw new Error(secretConfig.error);
+  }
+
+  return secretConfig.value;
 }
 
 export function getAdminSecurityConfig() {
@@ -20,6 +34,7 @@ export function getAdminSecurityConfig() {
   const password = process.env.ADMIN_PASSWORD || "";
   const passwordHash = process.env.ADMIN_PASSWORD_HASH || "";
   const sessionSecret = process.env.ADMIN_SESSION_SECRET || "";
+  const sessionSecretConfig = getSessionSecretConfig();
   const usingDefaultPassword = !passwordHash && !password && !isProduction();
 
   return {
@@ -30,7 +45,7 @@ export function getAdminSecurityConfig() {
     isConfigured:
       Boolean(username) &&
       Boolean(passwordHash || password || !isProduction()) &&
-      Boolean(sessionSecret || !isProduction()),
+      sessionSecretConfig.valid,
     canUseDefaults: !isProduction(),
     usingDefaultPassword,
   };
@@ -47,8 +62,10 @@ export function assertAdminSecurityConfig() {
     throw new Error("ADMIN_USERNAME tanimlanmali.");
   }
 
-  if (!config.sessionSecret || config.sessionSecret === "change-me-before-production") {
-    throw new Error("Production icin guclu bir ADMIN_SESSION_SECRET tanimlanmali.");
+  const sessionSecretConfig = getSessionSecretConfig();
+
+  if (!sessionSecretConfig.valid) {
+    throw new Error(sessionSecretConfig.error);
   }
 
   if (!config.passwordHash && !config.password) {
@@ -75,16 +92,20 @@ function fromBase64Url(value) {
   return Buffer.from(value, "base64url").toString("utf8");
 }
 
-function signPayload(payload) {
+function signPayload(payload, secret = getSessionSecretOrThrow()) {
   return crypto
-    .createHmac("sha256", getSessionSecret())
+    .createHmac("sha256", secret)
     .update(payload)
     .digest("base64url");
 }
 
-export function createSessionToken(username) {
+export function createSessionToken(user) {
   const payload = JSON.stringify({
-    username,
+    userId: user.id,
+    username: user.username,
+    displayName: user.displayName || user.username,
+    role: user.role,
+    sessionVersion: user.sessionVersion || 1,
     expiresAt: Date.now() + SESSION_TTL_SECONDS * 1000,
   });
   const encodedPayload = toBase64Url(payload);
@@ -98,8 +119,14 @@ export function verifySessionToken(token) {
     return null;
   }
 
+  const secretConfig = getSessionSecretConfig();
+
+  if (!secretConfig.valid) {
+    return null;
+  }
+
   const [encodedPayload, providedSignature] = token.split(".");
-  const expectedSignature = signPayload(encodedPayload);
+  const expectedSignature = signPayload(encodedPayload, secretConfig.value);
 
   if (
     !providedSignature ||
@@ -128,11 +155,39 @@ export function verifySessionToken(token) {
 export async function getAdminSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_SESSION_COOKIE_NAME)?.value;
-  return verifySessionToken(token);
+  const session = verifySessionToken(token);
+
+  if (!session) {
+    return null;
+  }
+
+  if (session.userId === "environment-admin") {
+    const config = getAdminSecurityConfig();
+    return session.username === config.username && session.role === "admin"
+      ? session
+      : null;
+  }
+
+  const user = await findPanelUserById(session.userId);
+
+  if (
+    !user ||
+    !user.active ||
+    user.username !== session.username ||
+    user.role !== session.role ||
+    user.sessionVersion !== session.sessionVersion
+  ) {
+    return null;
+  }
+
+  return {
+    ...session,
+    displayName: user.displayName,
+  };
 }
 
-export function applyAdminSessionCookie(response, username) {
-  response.cookies.set(ADMIN_SESSION_COOKIE_NAME, createSessionToken(username), {
+export function applyAdminSessionCookie(response, user) {
+  response.cookies.set(ADMIN_SESSION_COOKIE_NAME, createSessionToken(user), {
     httpOnly: true,
     sameSite: "strict",
     secure: process.env.NODE_ENV === "production",

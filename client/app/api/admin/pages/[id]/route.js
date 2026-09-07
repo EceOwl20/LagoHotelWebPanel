@@ -8,6 +8,8 @@ import {
   updatePageDraft,
 } from "@/lib/admin/pages";
 import { getAdminSession } from "@/lib/admin/session";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -90,6 +92,7 @@ export async function PATCH(request, { params }) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
@@ -146,6 +149,7 @@ export async function DELETE(request, { params }) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });

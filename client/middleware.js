@@ -2,9 +2,9 @@ import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import { routing } from "./i18n/routing";
 import { ADMIN_SESSION_COOKIE_NAME } from "@/lib/admin/constants";
+import { resolveSessionSecret } from "@/lib/admin/session-secret.mjs";
 
 const intlMiddleware = createMiddleware(routing);
-const DEFAULT_SESSION_SECRET = "change-me-before-production";
 
 function decodeBase64Url(value) {
   const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
@@ -29,10 +29,18 @@ function compareSignatures(left, right) {
 }
 
 async function createSignature(encodedPayload) {
-  const secret = process.env.ADMIN_SESSION_SECRET || DEFAULT_SESSION_SECRET;
+  const secretConfig = resolveSessionSecret({
+    secret: process.env.ADMIN_SESSION_SECRET,
+    nodeEnv: process.env.NODE_ENV,
+  });
+
+  if (!secretConfig.valid) {
+    return null;
+  }
+
   const key = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(secret),
+    new TextEncoder().encode(secretConfig.value),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"]
@@ -69,7 +77,12 @@ async function hasValidAdminSession(token) {
 
   try {
     const payload = JSON.parse(decodeBase64Url(encodedPayload));
-    return Boolean(payload?.username && payload?.expiresAt > Date.now());
+    return Boolean(
+      payload?.userId &&
+      payload?.username &&
+      ["admin", "editor"].includes(payload?.role) &&
+      payload?.expiresAt > Date.now()
+    );
   } catch {
     return false;
   }

@@ -4,6 +4,7 @@ import {
   assertAdminSecurityConfig,
 } from "@/lib/admin/session";
 import { verifyAdminPassword } from "@/lib/admin/password.mjs";
+import { authenticatePanelUser } from "@/lib/admin/users";
 import {
   assertSameOrigin,
   checkRateLimit,
@@ -110,15 +111,25 @@ export async function POST(request) {
   } catch (error) {
     return NextResponse.json(
       { error: error.message },
-      { status: 500, headers: { "Cache-Control": "no-store" } }
+      { status: 503, headers: { "Cache-Control": "no-store" } }
     );
   }
 
   const passwordSecret = configured.passwordHash || configured.password || "admin123";
-  const passwordIsValid = verifyAdminPassword(password, passwordSecret);
-  const usernameIsValid = username === configured.username;
+  const environmentAdminIsValid =
+    username === configured.username && verifyAdminPassword(password, passwordSecret);
+  const storedUser = await authenticatePanelUser(username, password);
+  const authenticatedUser = storedUser || (environmentAdminIsValid
+    ? {
+        id: "environment-admin",
+        username: configured.username,
+        displayName: configured.username,
+        role: "admin",
+        sessionVersion: 1,
+      }
+    : null);
 
-  if (!usernameIsValid || !passwordIsValid) {
+  if (!authenticatedUser) {
     consumeRateLimit({ key: accountFailureKey, ...LOGIN_ACCOUNT_FAILURE_LIMIT });
     consumeRateLimit({ key: identityFailureKey, ...LOGIN_IDENTITY_FAILURE_LIMIT });
     consumeRateLimit({ key: ipFailureKey, ...LOGIN_IP_FAILURE_LIMIT });
@@ -134,9 +145,14 @@ export async function POST(request) {
 
   const response = NextResponse.json({
     success: true,
-    user: { username: configured.username },
+    user: {
+      id: authenticatedUser.id,
+      username: authenticatedUser.username,
+      displayName: authenticatedUser.displayName,
+      role: authenticatedUser.role,
+    },
   }, { headers: { "Cache-Control": "no-store" } });
 
-  applyAdminSessionCookie(response, configured.username);
+  applyAdminSessionCookie(response, authenticatedUser);
   return response;
 }

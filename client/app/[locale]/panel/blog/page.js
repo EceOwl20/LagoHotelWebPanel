@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { CMS_LOCALES } from "@/lib/admin/constants";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { usePanelPermission } from "../PanelSessionContext";
+import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 
 function createEmptyTranslations() {
   return CMS_LOCALES.reduce((accumulator, locale) => {
@@ -28,6 +31,8 @@ function createEmptyPost() {
 }
 
 export default function BlogAdminPage() {
+  const canPublish = usePanelPermission(PANEL_PERMISSIONS.PUBLISH_CONTENT);
+  const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
   const [posts, setPosts] = useState([]);
   const [selectedSlug, setSelectedSlug] = useState(null);
   const [draft, setDraft] = useState(createEmptyPost());
@@ -311,7 +316,7 @@ export default function BlogAdminPage() {
                 className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
               >
                 <option value="draft">Taslak</option>
-                <option value="published">Yayinda</option>
+                <option value="published" disabled={!canPublish}>Yayinda</option>
               </select>
             </label>
 
@@ -336,7 +341,7 @@ export default function BlogAdminPage() {
                 Kapak Yukle
                 <input
                   type="file"
-                  accept="image/*"
+                  accept={IMAGE_UPLOAD_ACCEPT}
                   className="hidden"
                   onChange={handleCoverUpload}
                 />
@@ -434,13 +439,13 @@ export default function BlogAdminPage() {
             <button
               type="button"
               onClick={handleSave}
-              disabled={saving}
+              disabled={saving || (!canPublish && draft.status === "published")}
               className="rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-70"
             >
               {saving ? "Kaydediliyor..." : "Blog Yazisini Kaydet"}
             </button>
 
-            {selectedSlug ? (
+            {selectedSlug && canDelete ? (
               <button
                 type="button"
                 onClick={handleDelete}
@@ -448,6 +453,12 @@ export default function BlogAdminPage() {
               >
                 Yaziyi Sil
               </button>
+            ) : null}
+
+            {!canPublish && draft.status === "published" ? (
+              <span className="text-sm text-amber-700">
+                Yayındaki blog kayıtlarını yalnızca yönetici güncelleyebilir.
+              </span>
             ) : null}
 
             {message && <span className="text-sm text-emerald-600">{message}</span>}

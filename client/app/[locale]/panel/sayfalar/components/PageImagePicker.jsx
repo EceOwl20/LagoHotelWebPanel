@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 import { useEffect, useMemo, useState } from "react";
 
 const PICKER_PAGE_SIZE = 80;
@@ -185,7 +186,7 @@ export default function PageImagePicker({
                   {uploading ? "Yükleniyor..." : "Yeni Görsel Yükle"}
                   <input
                     type="file"
-                    accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+                    accept={IMAGE_UPLOAD_ACCEPT}
                     onChange={handleUpload}
                     disabled={uploading}
                     className="hidden"

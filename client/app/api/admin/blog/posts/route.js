@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { listBlogPosts, saveBlogPost } from "@/lib/admin/blog";
 import { getAdminSession } from "@/lib/admin/session";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -47,6 +49,14 @@ export async function POST(request) {
   }
 
   const { post } = await request.json();
+
+  if (post?.status === "published") {
+    try {
+      assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
+    } catch (error) {
+      return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+    }
+  }
 
   if (!post) {
     return NextResponse.json({ error: "Post verisi zorunludur." }, { status: 400 });

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { usePanelPermission } from "../PanelSessionContext";
 
 function getPageStatus(page) {
   if (page.status !== "published") {
@@ -27,6 +29,7 @@ function getPageStatus(page) {
 
 export default function PagesAdminPage() {
   const router = useRouter();
+  const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -198,13 +201,15 @@ export default function PagesAdminPage() {
                 >
                   Taslağı Düzenle
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => setPageToDelete(page)}
-                  className="inline-flex rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-100"
-                >
-                  Sayfayı Sil
-                </button>
+                {canDelete ? (
+                  <button
+                    type="button"
+                    onClick={() => setPageToDelete(page)}
+                    className="inline-flex rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-100"
+                  >
+                    Sayfayı Sil
+                  </button>
+                ) : null}
               </div>
               </article>
             );

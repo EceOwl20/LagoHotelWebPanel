@@ -2,6 +2,9 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { usePanelPermission } from "../PanelSessionContext";
+import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 
 const categoryLabels = {
   general: "Genel Gorunum",
@@ -30,6 +33,7 @@ function moveImage(images, index, direction) {
 }
 
 export default function GalleryAdminPage() {
+  const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
   const [gallery, setGallery] = useState(null);
   const [activeCategory, setActiveCategory] = useState("general");
   const [uploading, setUploading] = useState(false);
@@ -333,7 +337,7 @@ export default function GalleryAdminPage() {
             <span>{uploading ? "Yukleniyor..." : "Yeni Gorsel Yukle"}</span>
             <input
               type="file"
-              accept="image/*"
+              accept={IMAGE_UPLOAD_ACCEPT}
               className="hidden"
               onChange={handleUpload}
               disabled={uploading}
@@ -393,14 +397,16 @@ export default function GalleryAdminPage() {
                       >
                         Asagi
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(image.id)}
-                        data-gallery-delete-button
-                        className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700"
-                      >
-                        Sil
-                      </button>
+                      {canDelete ? (
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(image.id)}
+                          data-gallery-delete-button
+                          className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700"
+                        >
+                          Sil
+                        </button>
+                      ) : null}
                     </div>
                   </div>
                 </div>

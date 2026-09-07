@@ -21,6 +21,8 @@ import {
   getBlockDefinition,
   getBlockDefinitionsForTemplate,
 } from "@/lib/pages/block-definitions.mjs";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { usePanelPermission } from "../../PanelSessionContext";
 
 const localeLabels = {
   tr: "Türkçe",
@@ -128,6 +130,7 @@ function SectionEditor({
 export default function NewPageAdminPage() {
   const params = useParams();
   const router = useRouter();
+  const canPublish = usePanelPermission(PANEL_PERMISSIONS.PUBLISH_CONTENT);
   const pageId = typeof params.id === "string" ? params.id : null;
   const isEditing = Boolean(pageId);
   const [draft, setDraft] = useState(() => createPageDraftFromPreset("editorial"));
@@ -680,7 +683,7 @@ export default function NewPageAdminPage() {
           {saveError ? <p className="mt-2 text-sm text-rose-600">{saveError}</p> : null}
         </div>
         <div className="flex flex-wrap justify-end gap-3">
-          {isEditing && draft.status === "published" ? (
+          {canPublish && isEditing && draft.status === "published" ? (
             <button
               type="button"
               onClick={() => handlePublicationChange("draft")}
@@ -702,7 +705,7 @@ export default function NewPageAdminPage() {
                 ? "Değişiklikleri Taslak Olarak Kaydet"
                 : "Taslağı Kaydet"}
           </button>
-          {isEditing ? (
+          {canPublish && isEditing ? (
             <button
               type="button"
               onClick={() => handlePublicationChange("published")}

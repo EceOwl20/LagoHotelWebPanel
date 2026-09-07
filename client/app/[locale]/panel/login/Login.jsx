@@ -143,8 +143,8 @@ export default function LoginForm() {
           </div>
         ) : (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs text-emerald-900">
-            Canli panel erisimi icin sunucuda `ADMIN_USERNAME`,
-            `ADMIN_PASSWORD_HASH` ve `ADMIN_SESSION_SECRET` tanimli olmali.
+            Sistem yöneticisi sunucu ortam değişkenleriyle tanımlanır. Diğer yönetici
+            ve editör hesapları paneldeki Kullanıcılar bölümünden yönetilir.
           </div>
         )}
 

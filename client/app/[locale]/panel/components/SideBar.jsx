@@ -13,7 +13,7 @@ import { FiFilm } from "react-icons/fi";
 import { FiImage } from "react-icons/fi";
 // import { FiSlack } from "react-icons/fi";
 // import { FiGrid } from "react-icons/fi";
-import { FiPackage } from "react-icons/fi";
+import { FiPackage, FiUsers } from "react-icons/fi";
 
 
 const navigationItems = [
@@ -23,9 +23,10 @@ const navigationItems = [
   { href: "/panel/medya", label: "Medya Kutuphanesi", icon: FiImage },
   { href: "/panel/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/blog", label: "Blog", icon: FiPackage },
+  { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
 ];
 
-export default function SideBar({ username }) {
+export default function SideBar({ user }) {
   const router = useRouter();
   const params = useParams();
   const [loggingOut, setLoggingOut] = useState(false);
@@ -76,12 +77,12 @@ export default function SideBar({ username }) {
          </div>
           <div className="text-2xl font-semibold">Icerik Yonetimi</div>
           <div className="text-sm text-stone-400">
-            Giris yapan kullanici: {username || "admin"}
+            Giriş yapan: {user?.displayName || user?.username || "admin"}
           </div>
         </div>
 
         <nav className="space-y-2">
-  {navigationItems.map((item) => {
+  {navigationItems.filter((item) => !item.adminOnly || user?.role === "admin").map((item) => {
     const Icon = item.icon;
 
     return (

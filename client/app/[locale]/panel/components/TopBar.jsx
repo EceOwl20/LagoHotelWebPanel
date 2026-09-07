@@ -2,7 +2,7 @@
 
 import { FiBell, FiSearch } from "react-icons/fi";
 
-export default function TopBar({ username }) {
+export default function TopBar({ user }) {
   return (
     <header
       className="
@@ -38,8 +38,13 @@ export default function TopBar({ username }) {
           <FiBell className="h-5 w-5" />
         </button>
 
-        <div className="text-sm font-medium text-stone-700">
-          {username || "admin"}
+        <div className="text-right">
+          <div className="text-sm font-medium text-stone-700">
+            {user?.displayName || user?.username || "admin"}
+          </div>
+          <div className="text-[10px] uppercase tracking-[0.16em] text-stone-400">
+            {user?.role === "editor" ? "Editör" : "Yönetici"}
+          </div>
         </div>
       </div>
     </header>

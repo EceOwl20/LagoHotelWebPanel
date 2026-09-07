@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { deleteGalleryImage, readGallery, writeGallery } from "@/lib/admin/gallery";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -69,6 +71,7 @@ export async function DELETE(request) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });

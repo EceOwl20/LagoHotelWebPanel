@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { deleteBlogPost, readBlogPost, saveBlogPost } from "@/lib/admin/blog";
 import { getAdminSession } from "@/lib/admin/session";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -54,6 +56,15 @@ export async function PUT(request, { params }) {
 
   const { slug } = await params;
   const { post } = await request.json();
+  const existingPost = await readBlogPost(slug);
+
+  if (post?.status === "published" || existingPost?.status === "published") {
+    try {
+      assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
+    } catch (error) {
+      return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+    }
+  }
 
   const savedPost = await saveBlogPost({ ...post, slug });
 
@@ -73,6 +84,7 @@ export async function DELETE(request, { params }) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
