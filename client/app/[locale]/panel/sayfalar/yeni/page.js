@@ -25,6 +25,15 @@ import {
 } from "@/lib/pages/block-definitions.mjs";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../../PanelSessionContext";
+import {
+  FiCheckCircle,
+  FiChevronDown,
+  FiEye,
+  FiFileText,
+  FiGlobe,
+  FiImage,
+  FiLayers,
+} from "react-icons/fi";
 
 const localeLabels = {
   tr: "Türkçe",
@@ -73,19 +82,35 @@ function SectionEditor({
     <details
       open={isOpen}
       onToggle={(event) => setIsOpen(event.currentTarget.open)}
-      className="rounded-2xl border border-stone-200 bg-stone-50"
+      className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition open:border-[#63978f]/50 open:shadow-md"
     >
-      <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-stone-900">
-        Bölüm {index + 1}: {getBlockDefinition(section.type)?.label || section.type}
+      <summary className="flex cursor-pointer list-none items-center gap-4 px-5 py-4 text-sm font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2f423f] text-xs font-semibold text-white">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate">
+            {getBlockDefinition(section.type)?.label || section.type}
+          </span>
+          <span className="mt-0.5 block text-[11px] font-normal uppercase tracking-[0.14em] text-stone-400">
+            {section.enabled !== false ? "Yayında görünür" : "Gizli component"}
+          </span>
+        </span>
+        <span
+          className={`h-2.5 w-2.5 rounded-full ${
+            section.enabled !== false ? "bg-emerald-500" : "bg-stone-300"
+          }`}
+        />
+        <FiChevronDown className="h-4 w-4 text-stone-400 transition group-open:rotate-180" />
       </summary>
-      <div className="grid gap-4 border-t border-stone-200 p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3">
+      <div className="grid gap-5 border-t border-stone-200 bg-stone-50/70 p-5 md:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-sm">
           <label className="inline-flex items-center gap-2 text-sm font-medium text-stone-700">
             <input
               type="checkbox"
               checked={section.enabled !== false}
               onChange={(event) => onFieldChange("enabled", event.target.checked)}
-              className="h-4 w-4 rounded border-stone-300"
+              className="h-4 w-4 rounded border-stone-300 accent-[#63978f]"
             />
             Bölümü önizlemede göster
           </label>
@@ -94,7 +119,7 @@ function SectionEditor({
               type="button"
               onClick={() => onMove(-1)}
               disabled={index === 0}
-              className="rounded-lg border border-stone-300 px-3 py-2 text-xs text-stone-700 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-700 transition hover:border-[#63978f] hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Yukarı Taşı
             </button>
@@ -102,7 +127,7 @@ function SectionEditor({
               type="button"
               onClick={() => onMove(1)}
               disabled={index === totalSections - 1}
-              className="rounded-lg border border-stone-300 px-3 py-2 text-xs text-stone-700 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-700 transition hover:border-[#63978f] hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Aşağı Taşı
             </button>
@@ -151,6 +176,19 @@ export default function NewPageAdminPage() {
     [draft]
   );
   const publicationErrors = useMemo(() => validatePageDocument(draft), [draft]);
+  const editingPageTitle = useMemo(() => {
+    if (!isEditing) return "";
+
+    return (
+      draft.hero?.translations?.tr?.title ||
+      draft.hero?.translations?.en?.title ||
+      draft.hero?.translations?.de?.title ||
+      draft.hero?.translations?.ru?.title ||
+      draft.slugs?.tr ||
+      draft.slugs?.en ||
+      "Başlıksız sayfa"
+    );
+  }, [draft, isEditing]);
 
   useEffect(() => {
     if (!pageId || editLock.status === "acquiring") {
@@ -390,17 +428,54 @@ export default function NewPageAdminPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.3em] text-stone-500">Sayfalar</p>
-        <h1 className="text-3xl font-semibold text-stone-900">
-          {isEditing ? "Sayfa taslağını düzenle" : "Yeni sayfa hazırla"}
-        </h1>
-        <p className="max-w-3xl text-sm leading-6 text-stone-600">
-          Dört dildeki sayfa adreslerini ve içerikleri hazırlayabilir, taslak olarak
-          saklayabilir ve kontroller tamamlandıktan sonra yayınlayabilirsin.
-        </p>
-      </div>
+    <div className="mx-auto max-w-[1600px] space-y-8 pb-10">
+      <header className="relative overflow-hidden rounded-3xl bg-[#2f423f] px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
+        <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#63978f]/25 blur-3xl" />
+        <div className="absolute -bottom-24 left-1/3 h-52 w-52 rounded-full bg-white/5 blur-3xl" />
+        <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
+              Sayfalar / İçerik oluşturucu
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+              {isEditing ? "Sayfa taslağını düzenle" : "Yeni sayfa hazırla"}
+            </h1>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
+              Sayfa yapısını, dört dildeki içerikleri ve yayın ayarlarını tek bir
+              çalışma alanından düzenleyin.
+            </p>
+            {isEditing ? (
+              <div className="mt-5 inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-2.5 py-1.5 backdrop-blur-sm">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/10 text-[#b9d6d1]">
+                  <FiFileText className="h-4 w-4" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.1em] text-[#a9c9c4]">
+                    Düzenlenen sayfa
+                  </span>
+                  <span className="mt-0.2 block truncate text-xs font-semibold text-white md:text-sm">
+                    {editingPageTitle}
+                  </span>
+                </span>
+              </div>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <FiLayers className="h-4 w-4 text-[#a9c9c4]" />
+              {draft.sections.length} component
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <FiGlobe className="h-4 w-4 text-[#a9c9c4]" />
+              4 dil
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-amber-300" />
+              {draft.status === "published" ? "Yayında" : "Taslak"}
+            </span>
+          </div>
+        </div>
+      </header>
 
       <PageEditLockNotice
         status={editLock.status}
@@ -413,32 +488,39 @@ export default function NewPageAdminPage() {
 
       <fieldset
         disabled={isEditing && !editLock.editable}
-        className="space-y-8 disabled:cursor-not-allowed disabled:opacity-70"
+        className="space-y-10 disabled:cursor-not-allowed disabled:opacity-70"
       >
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-        Taslağı Kaydet butonu yalnızca çalışma kopyasını günceller. Sayfa zaten
-        yayındaysa ziyaretçiler son yayınlanan sürümü görmeye devam eder; yeni
-        değişiklikler ancak yeniden yayınlandığında canlıya aktarılır.
+      <div className="flex items-start gap-3 rounded-2xl border border-[#63978f]/30 bg-[#edf5f3] p-4 text-sm leading-6 text-[#2f423f] shadow-sm">
+        <FiCheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#507f78]" />
+        <p>
+          <span className="font-semibold">Güvenli taslak çalışma alanı.</span>{" "}
+          Taslağı kaydetmek canlı sayfayı değiştirmez. Yeni içerik yalnızca yeniden
+          yayınlandığında ziyaretçilere gösterilir.
+        </p>
       </div>
 
       {!isEditing ? (
-        <section className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.25em] text-stone-500">
-              Başlangıç düzeni
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-stone-900">Sayfa preseti seç</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-600">
-              Preset yalnızca component düzenini değiştirir. Girdiğin sayfa adresleri,
-              header bilgileri, hero ve SEO alanları korunur.
-            </p>
+        <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+          <div className="flex items-start gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-900 text-white">
+              <FiFileText className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
+                Başlangıç düzeni
+              </p>
+              <h2 className="mt-1 text-xl font-semibold text-stone-900">Sayfa preseti seç</h2>
+              <p className="mt-1 max-w-3xl text-sm leading-6 text-stone-500">
+                Hazır bir component akışı seçin. Slug, hero, header ve SEO alanları korunur.
+              </p>
+            </div>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-4 p-6 md:grid-cols-3 md:p-7">
             {PAGE_PRESETS.map((preset) => (
               <div
                 key={preset.id}
-                className="flex flex-col items-start rounded-xl border border-stone-200 bg-stone-50 p-4"
+                className="group flex flex-col items-start rounded-2xl border border-stone-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-md"
               >
                 <h3 className="text-sm font-semibold text-stone-900">{preset.title}</h3>
                 <p className="mt-2 flex-1 text-xs leading-5 text-stone-500">
@@ -447,7 +529,7 @@ export default function NewPageAdminPage() {
                 <button
                   type="button"
                   onClick={() => applyPreset(preset)}
-                  className="mt-4 rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs font-medium text-stone-700 hover:border-stone-500"
+                  className="mt-5 rounded-xl border border-[#63978f]/40 bg-[#edf5f3] px-3.5 py-2.5 text-xs font-semibold text-[#2f423f] transition group-hover:bg-[#63978f] group-hover:text-white"
                 >
                   Bu düzeni uygula
                 </button>
@@ -457,8 +539,22 @@ export default function NewPageAdminPage() {
         </section>
       ) : null}
 
-      <section className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-        <div className="grid gap-4">
+      <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+        <div className="flex items-start gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#63978f] text-white">
+            <FiImage className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
+              Sayfa medyası
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-stone-900">Hero görünümü</h2>
+            <p className="mt-1 text-sm leading-6 text-stone-500">
+              Sayfanın en üstünde kullanılacak ortak görseli belirleyin.
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-5 p-6 md:p-7">
           <PageImagePicker
             label="Hero görseli"
             value={draft.hero.image}
@@ -473,7 +569,7 @@ export default function NewPageAdminPage() {
         </div>
 
         {validationErrors.length > 0 ? (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+          <div className="mx-6 mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700 md:mx-7">
             {validationErrors.map((error) => (
               <div key={error}>{error}</div>
             ))}
@@ -481,34 +577,50 @@ export default function NewPageAdminPage() {
         ) : null}
       </section>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="rounded-2xl border border-stone-200 bg-white p-2 shadow-sm">
+        <div className="flex flex-wrap gap-2">
         {PAGE_LOCALES.map((locale) => (
           <button
             key={locale}
             type="button"
             onClick={() => setActiveLocale(locale)}
-            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+            className={`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition sm:flex-none sm:min-w-28 ${
               activeLocale === locale
-                ? "bg-stone-900 text-white"
-                : "border border-stone-200 bg-white text-stone-700 hover:bg-stone-50"
+                ? "bg-[#2f423f] text-white shadow-sm"
+                : "text-stone-600 hover:bg-stone-100 hover:text-stone-900"
             }`}
           >
             {localeLabels[locale]}
           </button>
         ))}
+        </div>
       </div>
 
-      <section className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-        <div>
-          <div className="text-xs font-medium uppercase tracking-[0.25em] text-stone-500">
-            Aktif dil
+      <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+        <div className="flex items-start gap-4 border-b border-stone-200 bg-[#edf5f3]/70 px-6 py-5 md:px-7">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2f423f] text-white">
+            <FiGlobe className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
+              Aktif dil · {activeLocale.toUpperCase()}
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-stone-900">
+              {localeLabels[activeLocale]} içeriği
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-stone-500">
+              Adres, navigasyon, hero metinleri ve component içeriklerini düzenleyin.
+            </p>
           </div>
-          <h2 className="mt-1 text-xl font-semibold text-stone-900">
-            {localeLabels[activeLocale]} içeriği
-          </h2>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="space-y-8 p-6 md:p-7">
+        <div className="rounded-2xl border border-stone-200 bg-stone-50/70 p-5">
+          <div className="mb-5 flex items-center gap-3">
+            <FiGlobe className="h-4 w-4 text-[#507f78]" />
+            <h3 className="text-sm font-semibold text-stone-900">Adres ve navigasyon</h3>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
           <Field
             label={`${localeLabels[activeLocale]} sayfa adresi (slug)`}
             value={draft.slugs[activeLocale]}
@@ -582,6 +694,15 @@ export default function NewPageAdminPage() {
               />
             </label>
           </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+          <div className="mb-5 flex items-center gap-3">
+            <FiImage className="h-4 w-4 text-[#507f78]" />
+            <h3 className="text-sm font-semibold text-stone-900">Hero metinleri</h3>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
           <Field
             label="Hero üst başlığı"
             value={activeHero.eyebrow}
@@ -597,9 +718,25 @@ export default function NewPageAdminPage() {
             value={activeHero.imageAlt}
             onChange={(value) => updateHeroTranslation("imageAlt", value)}
           />
+          </div>
         </div>
 
-        <div className="space-y-3 border-t border-stone-200 pt-5">
+        <div className="rounded-2xl border border-stone-200 bg-stone-50/70 p-5 md:p-6">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <FiLayers className="h-4 w-4 text-[#507f78]" />
+              <div>
+                <h3 className="text-sm font-semibold text-stone-900">Sayfa akışı</h3>
+                <p className="mt-1 text-xs text-stone-500">
+                  Componentleri açarak düzenleyin veya sıralarını değiştirin.
+                </p>
+              </div>
+            </div>
+            <span className="rounded-full bg-[#edf5f3] px-3 py-1.5 text-xs font-semibold text-[#507f78]">
+              {draft.sections.length} bölüm
+            </span>
+          </div>
+          <div className="space-y-4">
           {draft.sections.map((section, index) => (
             <SectionEditor
               key={section.id}
@@ -617,12 +754,12 @@ export default function NewPageAdminPage() {
             />
           ))}
 
-          <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 p-4">
+          <div className="rounded-2xl border border-dashed border-[#63978f]/60 bg-white p-4">
             {!showComponentLibrary ? (
               <button
                 type="button"
                 onClick={() => setShowComponentLibrary(true)}
-                className="flex w-full items-center justify-center rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white hover:bg-stone-800"
+                className="mx-auto flex w-full items-center justify-center rounded-xl bg-[#2f423f] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-[#3c5551] sm:w-auto sm:min-w-64"
               >
                 + Component Ekle
               </button>
@@ -649,7 +786,7 @@ export default function NewPageAdminPage() {
                       key={component.type}
                       type="button"
                       onClick={() => addSection(component.type)}
-                      className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:border-stone-500 hover:shadow-sm"
+                      className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-md"
                     >
                       <span className="block text-sm font-semibold text-stone-900">
                         {component.libraryTitle}
@@ -664,12 +801,16 @@ export default function NewPageAdminPage() {
             )}
           </div>
         </div>
+        </div>
 
-        <details className="rounded-2xl border border-stone-200 bg-stone-50">
-          <summary className="cursor-pointer px-5 py-4 text-sm font-semibold text-stone-900">
-            SEO alanları
+        <details className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+          <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+            <FiFileText className="h-4 w-4 text-[#507f78]" />
+            <span className="flex-1">SEO alanları</span>
+            <span className="text-xs font-normal text-stone-400">İsteğe bağlı</span>
+            <FiChevronDown className="h-4 w-4 text-stone-400 transition group-open:rotate-180" />
           </summary>
-          <div className="grid gap-4 border-t border-stone-200 p-5 lg:grid-cols-2">
+          <div className="grid gap-4 border-t border-stone-200 bg-stone-50/70 p-5 lg:grid-cols-2">
             <Field
               label="SEO başlığı"
               value={activeSeo.title}
@@ -698,24 +839,41 @@ export default function NewPageAdminPage() {
             />
           </div>
         </details>
-      </section>
-
-      <section className="space-y-4">
-        <div>
-          <p className="text-sm uppercase tracking-[0.3em] text-stone-500">Canlı önizleme</p>
-          <h2 className="mt-1 text-2xl font-semibold text-stone-900">
-            {localeLabels[activeLocale]} görünümü
-          </h2>
         </div>
-        <StandardPageTemplate page={draft} locale={activeLocale} preview />
-        <p className="text-xs leading-5 text-stone-500">
-          Panel önizlemesinde iletişim bölümü performans ve ekran alanı için gizlidir;
-          yayınlanan standart şablonda görünür olacaktır.
-        </p>
       </section>
 
-      <div className="flex items-center justify-between rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-        <div>
+      <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+        <div className="flex items-start gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-900 text-white">
+            <FiEye className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
+              Canlı önizleme
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-stone-900">
+              {localeLabels[activeLocale]} görünümü
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-stone-500">
+              Sayfanın yayınlanmadan önceki yaklaşık görünümünü kontrol edin.
+            </p>
+          </div>
+        </div>
+        <div className="bg-stone-100 p-3 md:p-6">
+          <div className="overflow-hidden rounded-2xl bg-white shadow-inner ring-1 ring-stone-200">
+            <StandardPageTemplate page={draft} locale={activeLocale} preview />
+          </div>
+          <p className="mt-4 px-1 text-xs leading-5 text-stone-500">
+            Panel önizlemesinde iletişim bölümü performans ve ekran alanı için gizlidir;
+            yayınlanan standart şablonda görünür olacaktır.
+          </p>
+        </div>
+      </section>
+
+      <div className="sticky bottom-4 z-20 flex flex-col gap-4 rounded-2xl border border-stone-200/80 bg-white/95 p-4 shadow-xl backdrop-blur-md lg:flex-row lg:items-center lg:justify-between lg:p-5">
+        <div className="flex items-center gap-3">
+          <span className={`h-2.5 w-2.5 rounded-full ${draft.status === "published" ? "bg-emerald-500" : "bg-amber-400"}`} />
+          <div>
           <p className="text-sm text-stone-600">
             Kayıt durumu:{" "}
             <span className="font-medium text-stone-900">
@@ -727,8 +885,9 @@ export default function NewPageAdminPage() {
             </span>
           </p>
           {saveError ? <p className="mt-2 text-sm text-rose-600">{saveError}</p> : null}
+          </div>
         </div>
-        <div className="flex flex-wrap justify-end gap-3">
+        <div className="flex flex-wrap gap-3 lg:justify-end">
           {canPublish && isEditing && draft.status === "published" ? (
             <button
               type="button"
@@ -743,7 +902,7 @@ export default function NewPageAdminPage() {
             type="button"
             onClick={handleSave}
             disabled={saving || changingStatus || validationErrors.length > 0}
-            className="rounded-xl border border-stone-300 bg-white px-5 py-3 text-sm font-medium text-stone-800 transition hover:bg-stone-50 disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-400"
+            className="rounded-xl border border-stone-300 bg-white px-5 py-3 text-sm font-medium text-stone-800 transition hover:border-[#63978f] hover:bg-[#edf5f3] disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-400"
           >
             {saving
               ? "Kaydediliyor..."
@@ -763,7 +922,7 @@ export default function NewPageAdminPage() {
                   ? "Yayınlamak için dört dildeki slug alanlarını doldurun."
                   : undefined
               }
-              className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-600"
+              className="rounded-xl bg-[#2f423f] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-600"
             >
               {changingStatus
                 ? "Yayınlanıyor..."

@@ -108,14 +108,28 @@ export default function BlockDefinitionFields({
         : section[field.name];
       const handleChange = field.localized ? onTranslationChange : onFieldChange;
 
+      const isCollection = ["imageArray", "cardArray", "otherOptionArray"].includes(
+        field.type
+      );
+
       return (
-        <DefinitionField
+        <div
           key={field.name}
-          field={field}
-          value={value}
-          locale={locale}
-          onChange={(nextValue) => handleChange(field.name, nextValue)}
-        />
+          className={
+            isCollection
+              ? "w-full"
+              : field.type === "textarea"
+                ? "max-w-4xl"
+                : "max-w-3xl"
+          }
+        >
+          <DefinitionField
+            field={field}
+            value={value}
+            locale={locale}
+            onChange={(nextValue) => handleChange(field.name, nextValue)}
+          />
+        </div>
       );
     });
 }

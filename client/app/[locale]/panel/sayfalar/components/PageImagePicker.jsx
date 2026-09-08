@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 import { useEffect, useMemo, useState } from "react";
+import { FiImage, FiUploadCloud } from "react-icons/fi";
 
 const PICKER_PAGE_SIZE = 80;
 
@@ -122,48 +123,75 @@ export default function PageImagePicker({
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium text-stone-700">{label}</div>
-      <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-50">
-        {value ? (
-          <div className="relative h-32 w-full bg-stone-200 md:h-36">
-            <Image
-              src={value}
-              alt="Seçili görsel önizlemesi"
-              fill
-              unoptimized={isGif(value)}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <div className="flex h-20 items-center justify-center text-sm text-stone-500 md:h-24">
-            Henüz görsel seçilmedi
-          </div>
-        )}
-
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-stone-200 bg-white p-3">
-          <div className="min-w-0 flex-1 truncate text-xs text-stone-500">
-            {value || "Görsel yolu oluşmadı"}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {value && allowClear ? (
-              <button
-                type="button"
-                onClick={() => onChange("")}
-                className="rounded-lg border border-rose-200 px-3 py-2 text-xs font-medium text-rose-700 hover:bg-rose-50"
-              >
-                Görseli Kaldır
-              </button>
-            ) : null}
-            <button
-              type="button"
-              onClick={() => setIsOpen(true)}
-              className="rounded-lg bg-stone-900 px-3 py-2 text-xs font-medium text-white hover:bg-stone-800"
-            >
-              Görsel Seç veya Yükle
-            </button>
+      {value ? (
+        <div className="max-w-2xl overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+          <div className="flex flex-col sm:flex-row">
+            <div className="relative aspect-[4/3] w-full shrink-0 bg-[linear-gradient(45deg,#f5f5f4_25%,transparent_25%),linear-gradient(-45deg,#f5f5f4_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f5f5f4_75%),linear-gradient(-45deg,transparent_75%,#f5f5f4_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] sm:w-56">
+              <Image
+                src={value}
+                alt="Seçili görsel önizlemesi"
+                fill
+                unoptimized={isGif(value)}
+                sizes="224px"
+                className="object-contain"
+              />
+              <span className="absolute bottom-2 left-2 rounded-lg bg-stone-950/75 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-white backdrop-blur-sm">
+                Panel önizlemesi
+              </span>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col justify-between gap-4 border-t border-stone-200 p-4 sm:border-l sm:border-t-0">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#507f78]">
+                  Seçili görsel
+                </p>
+                <p className="mt-2 break-all text-xs leading-5 text-stone-500">
+                  {value}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {allowClear ? (
+                  <button
+                    type="button"
+                    onClick={() => onChange("")}
+                    className="rounded-lg border border-rose-200 px-3 py-2 text-xs font-medium text-rose-700 hover:bg-rose-50"
+                  >
+                    Görseli Kaldır
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(true)}
+                  className="rounded-lg bg-[#2f423f] px-3 py-2 text-xs font-medium text-white transition hover:bg-[#3c5551]"
+                >
+                  Görseli Değiştir
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex max-w-xl flex-col gap-4 rounded-2xl border border-dashed border-[#63978f]/60 bg-[#edf5f3]/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#507f78] shadow-sm ring-1 ring-stone-200">
+              <FiImage className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-sm font-medium text-stone-700">Henüz görsel seçilmedi</p>
+              <p className="mt-0.5 text-xs text-stone-500">
+                Medya kütüphanesinden seçin veya yükleyin.
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#3c5551]"
+          >
+            <FiUploadCloud className="h-4 w-4" />
+            Görsel Seç
+          </button>
+        </div>
+      )}
       {hint ? <div className="text-xs leading-5 text-stone-500">{hint}</div> : null}
 
       {isOpen ? (
