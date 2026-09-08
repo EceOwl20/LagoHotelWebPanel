@@ -10,6 +10,7 @@ import {
   writeJson,
 } from "./storage";
 import { findManagedMediaUsage } from "./media-usage";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 
 const galleryFilePath = path.join(contentRoot, "gallery", "gallery.json");
 
@@ -53,7 +54,7 @@ export async function readGallery() {
   return normalizeGallery(gallery);
 }
 
-export async function writeGallery(gallery) {
+async function writeGalleryUnlocked(gallery) {
   const normalized = normalizeGallery({
     ...gallery,
     updatedAt: new Date().toISOString(),
@@ -62,7 +63,13 @@ export async function writeGallery(gallery) {
   return normalized;
 }
 
-export async function deleteGalleryImage(categoryId, imageId) {
+export function writeGallery(gallery) {
+  return enqueueFileOperation(path.dirname(galleryFilePath), () =>
+    writeGalleryUnlocked(gallery)
+  );
+}
+
+async function deleteGalleryImageUnlocked(categoryId, imageId) {
   const gallery = await readGallery();
   const category = gallery.categories.find((item) => item.id === categoryId);
   const targetImage = category?.images.find((image) => image.id === imageId);
@@ -97,11 +104,17 @@ export async function deleteGalleryImage(categoryId, imageId) {
     };
   });
 
-  const updatedGallery = await writeGallery({ ...gallery, categories });
+  const updatedGallery = await writeGalleryUnlocked({ ...gallery, categories });
 
   if (targetImage.src?.startsWith("/uploads/")) {
     await removeFileIfExists(getUploadFilePath(targetImage.src));
   }
 
   return updatedGallery;
+}
+
+export function deleteGalleryImage(categoryId, imageId) {
+  return enqueueFileOperation(path.dirname(galleryFilePath), () =>
+    deleteGalleryImageUnlocked(categoryId, imageId)
+  );
 }

@@ -3,6 +3,7 @@ import "server-only";
 import path from "path";
 import { CMS_LOCALES } from "./constants";
 import { messagesRoot, readJson, writeJson } from "./storage";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 
 function assertLocale(locale) {
   if (!CMS_LOCALES.includes(locale)) {
@@ -41,7 +42,7 @@ export async function readNamespaceBundle(namespace) {
   return bundle;
 }
 
-export async function updateNamespaceBundle(namespace, localizedValues) {
+async function updateNamespaceBundleUnlocked(namespace, localizedValues) {
   for (const locale of CMS_LOCALES) {
     const localeMessages = await readLocaleMessages(locale);
     localeMessages[namespace] = localizedValues[locale] ?? {};
@@ -49,4 +50,10 @@ export async function updateNamespaceBundle(namespace, localizedValues) {
   }
 
   return readNamespaceBundle(namespace);
+}
+
+export function updateNamespaceBundle(namespace, localizedValues) {
+  return enqueueFileOperation(messagesRoot, () =>
+    updateNamespaceBundleUnlocked(namespace, localizedValues)
+  );
 }

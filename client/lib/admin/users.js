@@ -5,6 +5,7 @@ import path from "path";
 import { hashAdminPassword, verifyAdminPassword } from "./password.mjs";
 import { isPanelRole } from "./permissions.mjs";
 import { contentRoot, readJson, writeJson } from "./storage";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 import {
   normalizePanelUsername,
   normalizePanelUserInput,
@@ -90,7 +91,7 @@ export async function authenticatePanelUser(username, password) {
   return toPublicUser(user);
 }
 
-export async function createPanelUser(input, reservedUsernames = []) {
+async function createPanelUserUnlocked(input, reservedUsernames = []) {
   const normalized = validateUserInput(input, { passwordRequired: true });
   const store = await readUserStore();
 
@@ -119,7 +120,13 @@ export async function createPanelUser(input, reservedUsernames = []) {
   return toPublicUser(user);
 }
 
-export async function updatePanelUser(id, input, currentUserId, reservedUsernames = []) {
+export function createPanelUser(input, reservedUsernames = []) {
+  return enqueueFileOperation(path.dirname(usersFilePath), () =>
+    createPanelUserUnlocked(input, reservedUsernames)
+  );
+}
+
+async function updatePanelUserUnlocked(id, input, currentUserId, reservedUsernames = []) {
   const store = await readUserStore();
   const userIndex = store.users.findIndex((user) => user.id === id);
 
@@ -179,4 +186,10 @@ export async function updatePanelUser(id, input, currentUserId, reservedUsername
   store.users[userIndex] = updated;
   await writeJson(usersFilePath, store);
   return toPublicUser(updated);
+}
+
+export function updatePanelUser(id, input, currentUserId, reservedUsernames = []) {
+  return enqueueFileOperation(path.dirname(usersFilePath), () =>
+    updatePanelUserUnlocked(id, input, currentUserId, reservedUsernames)
+  );
 }

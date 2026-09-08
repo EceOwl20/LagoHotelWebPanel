@@ -1,0 +1,196 @@
+{
+  "storageVersion": 2,
+  "id": "726959e3-38f5-4b69-bf0e-d407724cf5d5",
+  "createdAt": "2026-09-07T13:54:47.060Z",
+  "updatedAt": "2026-09-07T13:54:47.060Z",
+  "publishedAt": null,
+  "draft": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "owldeneme",
+      "en": "owldenemeen",
+      "de": "owldenemede",
+      "ru": "owldenemeru"
+    },
+    "status": "draft",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel owldeneme",
+          "title": "Yeni Sayfa owldeneme",
+          "imageAlt": " owldeneme"
+        },
+        "en": {
+          "eyebrow": "Lago Hotel owldenemeen",
+          "title": "New Page",
+          "imageAlt": "owldenemeen"
+        },
+        "de": {
+          "eyebrow": "Lago Hotel owldenemede",
+          "title": "Neue Seite",
+          "imageAlt": "owldenemede"
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel owldenemeru",
+          "title": "Новая страница",
+          "imageAlt": "owldenemeru"
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "Yeni Sayfa"
+        },
+        "en": {
+          "label": "New Page"
+        },
+        "de": {
+          "label": "Neue Seite"
+        },
+        "ru": {
+          "label": "Новая страница"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-dbe78b69-ffc8-41b0-993c-56cb2dae73ff",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "owldenemeen",
+            "title": "owldenemeen",
+            "text": "owldenemeen"
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-ffe0c94b-b9fb-4aa0-957b-13fbd37ac619",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "left",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-ba4ade1e-7a41-4ded-a308-6b480c717728",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "right",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-07T13:54:47.060Z",
+    "updatedAt": "2026-09-07T13:54:47.060Z",
+    "id": "726959e3-38f5-4b69-bf0e-d407724cf5d5"
+  },
+  "published": null
+}

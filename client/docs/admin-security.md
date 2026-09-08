@@ -95,6 +95,25 @@ Uygulama birden fazla process, container veya serverless instance üzerinde
 Rate limiter arayüzü bu geçişin endpoint davranışlarını değiştirmeden yapılabilmesi
 için ayrı bir modülde tutulur.
 
+## Atomik JSON kayıtları
+
+Panelin sayfa, mesaj, kullanıcı, galeri ve blog JSON dosyaları doğrudan hedef dosyanın
+üzerine yazılmaz. Yeni içerik önce hedefle aynı klasörde, benzersiz isimli geçici bir
+dosyaya tamamen yazılır. Yazma başarıyla tamamlandıktan sonra geçici dosya `rename`
+ile hedef dosyanın yerine geçirilir.
+
+Yazma veya değiştirme işlemi başarısız olursa geçici dosya temizlenir ve mevcut JSON
+dosyası korunur. Böylece bir kayıt hatası sırasında yarım JSON bırakma riski azaltılır.
+
+JSON yazmaları hedef dosya bazında kuyruğa alınır. Okuma-değiştirme-yazma yapan sayfa,
+kullanıcı, çeviri, galeri ve blog işlemlerinde kuyruk bütün işlem boyunca tutulur.
+Aynı içerik koleksiyonuna gelen ikinci işlem birincinin tamamlanmasını bekler; farklı
+koleksiyonlar ise birbirini engellemeden çalışır. Başarısız bir işlem sonraki kayıtları
+kilitlemez ve tamamlanan kuyruklar bellekten temizlenir.
+
+Bu kuyruk tek Node.js süreci içinde çalışır. Uygulama birden fazla process veya sunucu
+örneğinde çalıştırılırsa süreçler arası kilit ya da ortak bir veri tabanı gerekir.
+
 ## Kaynaklar
 
 - [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)

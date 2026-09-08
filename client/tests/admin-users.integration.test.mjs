@@ -14,6 +14,7 @@ const adminPassword = "IntegrationAdminPassword!2026";
 const editorUsername = "integration-editor";
 const editorPassword = "IntegrationEditorPassword!2026";
 const replacementPassword = "ReplacementEditorPassword!2026";
+const concurrentUsernames = ["concurrent-editor-a", "concurrent-editor-b"];
 
 let serverProcess;
 let serverOrigin;
@@ -178,6 +179,39 @@ test("admin editör oluşturur ve parola yalnızca scrypt özeti olarak saklanı
   const stored = JSON.parse(await readFile(usersFilePath, "utf8"));
   assert.equal(stored.users[0].passwordHash.startsWith("scrypt:"), true);
   assert.equal(JSON.stringify(stored).includes(editorPassword), false);
+});
+
+test("aynı anda oluşturulan iki kullanıcıdan hiçbiri kaybolmaz", async () => {
+  const responses = await Promise.all(
+    concurrentUsernames.map((username) =>
+      request("/api/admin/users", {
+        method: "POST",
+        cookie: adminCookie,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          user: {
+            username,
+            displayName: username,
+            password: editorPassword,
+            role: "editor",
+          },
+        }),
+      })
+    )
+  );
+
+  assert.deepEqual(responses.map((response) => response.status), [201, 201]);
+
+  const listResponse = await request("/api/admin/users", {
+    cookie: adminCookie,
+    origin: null,
+  });
+  const payload = await listResponse.json();
+  const storedUsernames = payload.users.map((user) => user.username);
+
+  for (const username of concurrentUsernames) {
+    assert.ok(storedUsernames.includes(username));
+  }
 });
 
 test("aynı kullanıcı adı ve sistem yöneticisi adı tekrar oluşturulamaz", async () => {

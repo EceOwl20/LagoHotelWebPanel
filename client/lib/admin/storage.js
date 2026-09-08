@@ -1,7 +1,9 @@
 import "server-only";
 
-import { mkdir, readFile, readdir, rm, writeFile } from "fs/promises";
+import { mkdir, readFile, readdir, rm } from "fs/promises";
 import path from "path";
+import { writeFileAtomically } from "./atomic-file.mjs";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 import { isSafeUploadUrl } from "./media-references.mjs";
 
 const appRoot = process.cwd();
@@ -31,7 +33,15 @@ export async function readJson(filePath, fallbackValue = null) {
 
 export async function writeJson(filePath, value) {
   await ensureDir(path.dirname(filePath));
-  await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  const serializedValue = JSON.stringify(value, null, 2);
+
+  if (serializedValue === undefined) {
+    throw new TypeError("JSON dosyasına undefined değer yazılamaz.");
+  }
+
+  await enqueueFileOperation(filePath, () =>
+    writeFileAtomically(filePath, `${serializedValue}\n`, "utf8")
+  );
 }
 
 export async function listJsonFiles(dirPath) {

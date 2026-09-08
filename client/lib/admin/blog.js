@@ -12,6 +12,7 @@ import {
   writeJson,
 } from "./storage";
 import { findManagedMediaUsage } from "./media-usage";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 
 const postsDirectory = path.join(contentRoot, "blog", "posts");
 
@@ -71,13 +72,17 @@ export async function readBlogPost(slug) {
   return post ? normalizePost(post) : null;
 }
 
-export async function saveBlogPost(post) {
+async function saveBlogPostUnlocked(post) {
   const normalized = normalizePost(post);
   await writeJson(getPostFilePath(normalized.slug), normalized);
   return normalized;
 }
 
-export async function deleteBlogPost(slug) {
+export function saveBlogPost(post) {
+  return enqueueFileOperation(postsDirectory, () => saveBlogPostUnlocked(post));
+}
+
+async function deleteBlogPostUnlocked(slug) {
   const existingPost = await readBlogPost(slug);
   let mediaUsages = [];
 
@@ -97,4 +102,8 @@ export async function deleteBlogPost(slug) {
     retainedCoverImage: mediaUsages.length > 0 ? existingPost?.coverImage : null,
     usages: mediaUsages,
   };
+}
+
+export function deleteBlogPost(slug) {
+  return enqueueFileOperation(postsDirectory, () => deleteBlogPostUnlocked(slug));
 }

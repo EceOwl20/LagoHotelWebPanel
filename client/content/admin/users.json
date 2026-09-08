@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "users": [
+    {
+      "id": "6c621665-16d5-4e1c-9eea-335de70bea43",
+      "username": "owl12",
+      "displayName": "owl owl",
+      "passwordHash": "scrypt:976c86438e2f39ff3f7d12f65a23b40c:e6ee2b61c333471b57f7d130bd9cb70031c7b81cae312f11675615d4ae7ba64c8db6a0716d35ee6ee22adb136013a942eab9fff738caffdea2f3d4d12e60dc9e",
+      "role": "editor",
+      "active": true,
+      "sessionVersion": 3,
+      "createdAt": "2026-09-07T13:52:42.191Z",
+      "updatedAt": "2026-09-07T14:57:41.882Z"
+    }
+  ]
+}

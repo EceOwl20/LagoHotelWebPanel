@@ -23,6 +23,7 @@ import {
   removeFileIfExists,
   writeJson,
 } from "./storage";
+import { enqueueFileOperation } from "./file-operation-queue.mjs";
 
 const pagesDirectory = path.join(contentRoot, "pages");
 
@@ -170,7 +171,7 @@ async function assertValidDraft(candidate, ignorePageId = null) {
   }
 }
 
-export async function createPageDraft(input) {
+async function createPageDraftUnlocked(input) {
   const sanitizedInput = sanitizeAdminPageInput(input);
   const candidate = {
     ...sanitizedInput,
@@ -191,7 +192,11 @@ export async function createPageDraft(input) {
   return createAdminPageView(record);
 }
 
-export async function updatePageDraft(id, input) {
+export function createPageDraft(input) {
+  return enqueueFileOperation(pagesDirectory, () => createPageDraftUnlocked(input));
+}
+
+async function updatePageDraftUnlocked(id, input) {
   const existingRecord = await readPageRecord(id);
 
   if (!existingRecord) {
@@ -219,7 +224,11 @@ export async function updatePageDraft(id, input) {
   return createAdminPageView(record);
 }
 
-export async function deletePageDraft(id) {
+export function updatePageDraft(id, input) {
+  return enqueueFileOperation(pagesDirectory, () => updatePageDraftUnlocked(id, input));
+}
+
+async function deletePageDraftUnlocked(id) {
   const filePath = getPageFilePath(id);
   const existingRecord = normalizePageRecord(await readJson(filePath, null));
 
@@ -231,7 +240,11 @@ export async function deletePageDraft(id) {
   return createAdminPageView(existingRecord);
 }
 
-export async function setPagePublicationStatus(id, status) {
+export function deletePageDraft(id) {
+  return enqueueFileOperation(pagesDirectory, () => deletePageDraftUnlocked(id));
+}
+
+async function setPagePublicationStatusUnlocked(id, status) {
   if (!["draft", "published"].includes(status)) {
     throw new PageDraftError("Geçersiz yayın durumu.");
   }
@@ -275,4 +288,10 @@ export async function setPagePublicationStatus(id, status) {
 
   await writeJson(getPageFilePath(id), record);
   return createAdminPageView(record);
+}
+
+export function setPagePublicationStatus(id, status) {
+  return enqueueFileOperation(pagesDirectory, () =>
+    setPagePublicationStatusUnlocked(id, status)
+  );
 }
