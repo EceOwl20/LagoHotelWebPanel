@@ -273,6 +273,118 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
   assert.deepEqual(responses.map((response) => response.status), [403, 403, 403, 403, 403, 403]);
 });
 
+test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden ayırır", async () => {
+  const pagesResponse = await request("/api/admin/pages", {
+    cookie: adminCookie,
+    origin: null,
+  });
+  const pagesPayload = await pagesResponse.json();
+  assert.equal(pagesResponse.status, 200);
+  assert.ok(pagesPayload.pages.length > 0, "Kilit testi için dinamik sayfa bulunmalı");
+
+  const pageId = pagesPayload.pages[0].id;
+  const pageResponse = await request(`/api/admin/pages/${pageId}`, {
+    cookie: editorCookie,
+    origin: null,
+  });
+  const pagePayload = await pageResponse.json();
+  assert.equal(pageResponse.status, 200);
+
+  const adminAcquire = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "11111111-1111-4111-8111-111111111111",
+    }),
+  });
+  const adminLock = await adminAcquire.json();
+  assert.equal(adminAcquire.status, 200);
+  assert.ok(adminLock.lockToken);
+
+  const editorAcquire = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "22222222-2222-4222-8222-222222222222",
+    }),
+  });
+  const blockedLock = await editorAcquire.json();
+  assert.equal(editorAcquire.status, 409);
+  assert.equal(blockedLock.lock.displayName, adminUsername);
+  assert.equal(Object.hasOwn(blockedLock.lock, "token"), false);
+
+  const editorTakeover = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "takeover",
+      clientId: "22222222-2222-4222-8222-222222222222",
+    }),
+  });
+  assert.equal(editorTakeover.status, 403);
+
+  const unlockedUpdate = await request(`/api/admin/pages/${pageId}`, {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ page: pagePayload.page }),
+  });
+  assert.equal(unlockedUpdate.status, 409);
+
+  const adminRelease = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: adminLock.lockToken }),
+  });
+  assert.equal(adminRelease.status, 200);
+
+  const editorAcquireAfterRelease = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "22222222-2222-4222-8222-222222222222",
+    }),
+  });
+  const editorLock = await editorAcquireAfterRelease.json();
+  assert.equal(editorAcquireAfterRelease.status, 200);
+
+  const adminTakeover = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "takeover",
+      clientId: "11111111-1111-4111-8111-111111111111",
+    }),
+  });
+  const takeoverLock = await adminTakeover.json();
+  assert.equal(adminTakeover.status, 200);
+
+  const staleHeartbeat = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "heartbeat", lockToken: editorLock.lockToken }),
+  });
+  assert.equal(staleHeartbeat.status, 409);
+
+  const takeoverRelease = await request(`/api/admin/pages/${pageId}/lock`, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: takeoverLock.lockToken }),
+  });
+  assert.equal(takeoverRelease.status, 200);
+});
+
 test("pasifleştirme kullanıcının açık oturumunu geçersiz kılar", async () => {
   const updateResponse = await request(`/api/admin/users/${editorId}`, {
     method: "PUT",

@@ -17,6 +17,7 @@ test("editor içerik düzenleyebilir ancak yayınlama, silme ve kullanıcı yön
   assert.equal(hasPanelPermission("editor", PANEL_PERMISSIONS.PUBLISH_CONTENT), false);
   assert.equal(hasPanelPermission("editor", PANEL_PERMISSIONS.DELETE_CONTENT), false);
   assert.equal(hasPanelPermission("editor", PANEL_PERMISSIONS.MANAGE_USERS), false);
+  assert.equal(hasPanelPermission("editor", PANEL_PERMISSIONS.OVERRIDE_EDIT_LOCK), false);
 });
 
 test("bilinmeyen roller hiçbir yetki kazanamaz", () => {

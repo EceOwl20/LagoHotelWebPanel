@@ -3,6 +3,7 @@ export const PANEL_PERMISSIONS = Object.freeze({
   PUBLISH_CONTENT: "content:publish",
   DELETE_CONTENT: "content:delete",
   MANAGE_USERS: "users:manage",
+  OVERRIDE_EDIT_LOCK: "edit-lock:override",
 });
 
 const ROLE_PERMISSIONS = Object.freeze({

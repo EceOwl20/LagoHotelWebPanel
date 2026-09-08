@@ -3,15 +3,21 @@ import "server-only";
 import { mkdir, readFile, readdir, rm } from "fs/promises";
 import path from "path";
 import { writeFileAtomically } from "./atomic-file.mjs";
+import { resolvePanelDataPaths } from "./data-paths.mjs";
 import { enqueueFileOperation } from "./file-operation-queue.mjs";
 import { isSafeUploadUrl } from "./media-references.mjs";
 
-const appRoot = process.cwd();
+const panelDataPaths = resolvePanelDataPaths({
+  appRoot: process.cwd(),
+  dataRoot: process.env.PANEL_DATA_ROOT,
+});
 
-export const contentRoot = path.join(appRoot, "content");
-export const messagesRoot = path.join(appRoot, "messages");
-export const publicRoot = path.join(appRoot, "public");
-export const uploadsRoot = path.join(publicRoot, "uploads");
+export const panelDataRoot = panelDataPaths.dataRoot;
+export const usesPersistentPanelDataRoot = panelDataPaths.usesPersistentDataRoot;
+export const contentRoot = panelDataPaths.contentRoot;
+export const messagesRoot = panelDataPaths.messagesRoot;
+export const publicRoot = panelDataPaths.publicRoot;
+export const uploadsRoot = panelDataPaths.uploadsRoot;
 
 export async function ensureDir(dirPath) {
   await mkdir(dirPath, { recursive: true });

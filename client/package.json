@@ -11,7 +11,8 @@
     "test:admin": "node --test lib/admin/*.test.mjs",
     "test:integration": "node --test --test-concurrency=1 tests/*.integration.test.mjs",
     "test": "npm run test:pages && npm run test:admin && npm run test:integration",
-    "admin:hash": "node scripts/generate-admin-password-hash.mjs"
+    "admin:hash": "node scripts/generate-admin-password-hash.mjs",
+    "panel:data:prepare": "node scripts/prepare-panel-data-root.mjs"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.5.2",

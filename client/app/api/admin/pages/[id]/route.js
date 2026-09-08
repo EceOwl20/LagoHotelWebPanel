@@ -11,6 +11,11 @@ import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
+  assertPageEditLock,
+  assertPageNotLockedByAnother,
+  clearPageEditLock,
+} from "@/lib/admin/edit-locks";
+import {
   assertSameOrigin,
   consumeRateLimit,
   getClientIp,
@@ -74,6 +79,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Sayfa verisi zorunludur." }, { status: 400 });
     }
 
+    assertPageEditLock(id, session, request.headers.get("x-panel-edit-lock"));
     const updatedPage = await updatePageDraft(id, page);
     return NextResponse.json({ page: updatedPage });
   } catch (error) {
@@ -114,6 +120,7 @@ export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
     const { status } = await request.json();
+    assertPageEditLock(id, session, request.headers.get("x-panel-edit-lock"));
     const previousPage = await readPageDraft(id);
     const page = await setPagePublicationStatus(id, status);
 
@@ -170,7 +177,9 @@ export async function DELETE(request, { params }) {
 
   try {
     const { id } = await params;
+    assertPageNotLockedByAnother(id, session);
     const deletedPage = await deletePageDraft(id);
+    clearPageEditLock(id);
 
     PAGE_LOCALES.forEach((locale) => {
       const affectedSlugs = new Set([

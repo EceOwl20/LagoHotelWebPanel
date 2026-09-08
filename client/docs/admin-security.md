@@ -36,6 +36,52 @@ sunucu sürecinde `PANEL_USERS_FILE_PATH` değişkenini geçici bir dosyaya yön
 Normal çalışma ortamında bu değişken tanımlanmaz ve standart `content/admin/users.json`
 yolu kullanılır.
 
+## Kalıcı production veri dizini
+
+Panelin JSON verileri tek bir merkezi yol çözümleyicisi üzerinden okunur ve yazılır.
+`PANEL_DATA_ROOT` tanımlanmadığında geliştirme davranışı değişmez; `content` ve
+`messages` klasörleri proje içinden kullanılmaya devam eder.
+
+Production sunucusunda `PANEL_DATA_ROOT` mutlak bir dizin olarak tanımlandığında:
+
+- `content` verileri `<PANEL_DATA_ROOT>/content` altında,
+- dört dildeki çeviriler `<PANEL_DATA_ROOT>/messages` altında tutulur.
+
+Örneğin `PANEL_DATA_ROOT=/var/lib/lago-panel` ayarı, sayfa verilerini
+`/var/lib/lago-panel/content` ve çevirileri `/var/lib/lago-panel/messages` yoluna
+yönlendirir. Göreceli yollar çalışma dizinine göre farklı sonuç üretebileceği için
+bilinçli olarak reddedilir.
+
+Bu ilk aşamada `public/uploads` taşınmaz. Dışarıdaki bir upload klasörü Next.js
+tarafından kendiliğinden `/uploads/...` adresinde yayınlanmayacağı için önce Nginx
+eşlemesi veya güvenli bir dosya sunma endpoint'i hazırlanmalıdır. Böylece kalıcı JSON
+yapısını devreye alırken mevcut görsel URL'leri bozulmaz.
+
+Kalıcı dizin ilk kez devreye alınmadan önce mevcut `content` ve `messages` klasörleri
+aynı alt klasör yapısıyla hedefe kopyalanmalı, ardından sunucu kullanıcısına yalnızca
+gereken okuma/yazma izinleri verilmelidir. Bu geçiş otomatik yapılmaz; yanlış veya boş
+bir dizinin mevcut canlı içeriğin üzerine geçmesi engellenir.
+
+İlk taşıma iki aşamalı komutla yapılır. Önce yalnızca kaynak, hedef, dosya sayısı ve
+boyut kontrol edilir; bu komut hiçbir dosyaya yazmaz:
+
+```bash
+PANEL_DATA_ROOT=/var/lib/lago-panel npm run panel:data:prepare
+```
+
+Gösterilen plan doğrulandıktan sonra aynı işlem açık onay parametresiyle uygulanır:
+
+```bash
+PANEL_DATA_ROOT=/var/lib/lago-panel npm run panel:data:prepare -- --apply
+```
+
+Hazırlama aracı hedefin proje/release klasörü dışında olmasını ve boş olmasını zorunlu
+tutar. Dosyaları önce hedefte benzersiz bir geçici klasöre kopyalar; her iki kaynak da
+başarıyla kopyalandıktan sonra `content` ve `messages` adlarıyla yerlerine geçirir.
+Mevcut hedef içeriğin üzerine yazmaz. Kopyalama doğrulandıktan sonra aynı
+`PANEL_DATA_ROOT` değeri build ve çalışan sunucu sürecine kalıcı ortam değişkeni olarak
+verilmelidir.
+
 ## Production session secret
 
 Development ortamında hızlı yerel kurulum için dahili örnek secret kullanılabilir.
@@ -113,6 +159,22 @@ kilitlemez ve tamamlanan kuyruklar bellekten temizlenir.
 
 Bu kuyruk tek Node.js süreci içinde çalışır. Uygulama birden fazla process veya sunucu
 örneğinde çalıştırılırsa süreçler arası kilit ya da ortak bir veri tabanı gerekir.
+
+## Dinamik sayfa düzenleme kilidi
+
+Kayıtlı bir dinamik sayfanın editörü açıldığında kullanıcı ve tarayıcı sekmesine özel,
+90 saniyelik bir düzenleme kilidi alınır. İçerik kilit alındıktan sonra yüklenir. Editör
+kilidi 30 saniyede bir heartbeat isteğiyle yeniler ve ekrandan çıkarken serbest bırakır.
+
+Sayfa başka kullanıcıda kilitliyse içerik salt okunur açılır. Arayüz kilidi 15 saniyede
+bir yeniden kontrol eder. Admin rolü açık bir onaydan sonra kilidi devralabilir; editor
+rolü devralamaz. Her taslak kaydetme ve yayın durumu isteğinde kullanıcıya özel kilit
+tokenı sunucuda yeniden doğrulanır. Sayfa başka biri tarafından düzenlenirken silme
+isteği de reddedilir.
+
+Kilitler geçici çalışma durumu olduğu için sunucu belleğinde tutulur ve yeniden başlatma
+sırasında temizlenir. Birden fazla Node.js süreci kullanılırsa kilit deposunun Redis veya
+ortak bir veri tabanına taşınması gerekir.
 
 ## Kaynaklar
 

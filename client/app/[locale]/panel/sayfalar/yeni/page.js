@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import StandardPageTemplate from "../../../_page-template/StandardPageTemplate";
 import BlockDefinitionFields from "../components/BlockDefinitionFields";
 import Field from "../components/EditorField";
+import PageEditLockNotice from "../components/PageEditLockNotice";
 import PageImagePicker from "../components/PageImagePicker";
+import usePageEditLock from "../components/usePageEditLock";
 import {
   PAGE_LOCALES,
   createPageSection,
@@ -131,8 +133,10 @@ export default function NewPageAdminPage() {
   const params = useParams();
   const router = useRouter();
   const canPublish = usePanelPermission(PANEL_PERMISSIONS.PUBLISH_CONTENT);
+  const canOverrideEditLock = usePanelPermission(PANEL_PERMISSIONS.OVERRIDE_EDIT_LOCK);
   const pageId = typeof params.id === "string" ? params.id : null;
   const isEditing = Boolean(pageId);
+  const editLock = usePageEditLock(pageId);
   const [draft, setDraft] = useState(() => createPageDraftFromPreset("editorial"));
   const [activeLocale, setActiveLocale] = useState("tr");
   const [loadingPage, setLoadingPage] = useState(isEditing);
@@ -141,6 +145,7 @@ export default function NewPageAdminPage() {
   const [saveError, setSaveError] = useState("");
   const [showComponentLibrary, setShowComponentLibrary] = useState(false);
   const [lastAddedSectionId, setLastAddedSectionId] = useState(null);
+  const loadedPageKeyRef = useRef("");
   const validationErrors = useMemo(
     () => validatePageDocument(draft, { allowEmptySlugs: true }),
     [draft]
@@ -148,13 +153,19 @@ export default function NewPageAdminPage() {
   const publicationErrors = useMemo(() => validatePageDocument(draft), [draft]);
 
   useEffect(() => {
-    if (!pageId) {
+    if (!pageId || editLock.status === "acquiring") {
       return;
     }
+
+    const loadKey = `${pageId}:${editLock.status === "owned" ? "owned" : "readonly"}`;
+    if (loadedPageKeyRef.current === loadKey) return;
+    loadedPageKeyRef.current = loadKey;
 
     let cancelled = false;
 
     const loadPage = async () => {
+      setLoadingPage(true);
+
       try {
         const response = await fetch(`/api/admin/pages/${pageId}`, { cache: "no-store" });
         const payload = await response.json();
@@ -168,6 +179,7 @@ export default function NewPageAdminPage() {
         }
       } catch (error) {
         if (!cancelled) {
+          loadedPageKeyRef.current = "";
           setSaveError(error.message);
         }
       } finally {
@@ -182,7 +194,7 @@ export default function NewPageAdminPage() {
     return () => {
       cancelled = true;
     };
-  }, [pageId]);
+  }, [editLock.status, pageId]);
 
   const applyPreset = (preset) => {
     if (
@@ -280,9 +292,16 @@ export default function NewPageAdminPage() {
   };
 
   const saveDraft = async () => {
+    if (isEditing && !editLock.editable) {
+      throw new Error("Düzenleme kilidi olmadan bu sayfa kaydedilemez.");
+    }
+
     const response = await fetch(pageId ? `/api/admin/pages/${pageId}` : "/api/admin/pages", {
         method: pageId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(isEditing ? { "X-Panel-Edit-Lock": editLock.lockToken } : {}),
+        },
         body: JSON.stringify({ page: draft }),
     });
     const payload = await response.json();
@@ -325,7 +344,10 @@ export default function NewPageAdminPage() {
 
       const response = await fetch(`/api/admin/pages/${pageId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Panel-Edit-Lock": editLock.lockToken,
+        },
         body: JSON.stringify({ status }),
       });
       const payload = await response.json();
@@ -348,6 +370,17 @@ export default function NewPageAdminPage() {
   const activeNavigation = draft.navigation.translations[activeLocale];
   const activeSeo = draft.seo[activeLocale];
 
+  const handleLockTakeover = () => {
+    const editorName = editLock.lock?.displayName || "diğer kullanıcı";
+    if (
+      window.confirm(
+        `${editorName} bu sayfayı düzenliyor. Kilidi devralırsanız diğer kullanıcının kaydetme yetkisi hemen sona erecek. Devam edilsin mi?`
+      )
+    ) {
+      editLock.takeover();
+    }
+  };
+
   if (loadingPage) {
     return (
       <div className="rounded-2xl border border-stone-200 bg-white p-6 text-sm text-stone-600 shadow-sm">
@@ -369,6 +402,19 @@ export default function NewPageAdminPage() {
         </p>
       </div>
 
+      <PageEditLockNotice
+        status={editLock.status}
+        lock={editLock.lock}
+        error={editLock.error}
+        canOverride={canOverrideEditLock}
+        onRetry={editLock.retry}
+        onTakeover={handleLockTakeover}
+      />
+
+      <fieldset
+        disabled={isEditing && !editLock.editable}
+        className="space-y-8 disabled:cursor-not-allowed disabled:opacity-70"
+      >
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
         Taslağı Kaydet butonu yalnızca çalışma kopyasını günceller. Sayfa zaten
         yayındaysa ziyaretçiler son yayınlanan sürümü görmeye devam eder; yeni
@@ -728,6 +774,7 @@ export default function NewPageAdminPage() {
           ) : null}
         </div>
       </div>
+      </fieldset>
     </div>
   );
 }
