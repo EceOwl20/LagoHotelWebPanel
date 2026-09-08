@@ -7,6 +7,7 @@ const FIELD_TYPES = new Set([
   "boolean",
   "imageArray",
   "cardArray",
+  "otherOptionArray",
 ]);
 
 function validateImageCollection(section, collectionLabel) {
@@ -58,6 +59,32 @@ function validateCardCollection(section) {
 
     if (typeof card?.image !== "string") {
       errors.push(`içindeki kart ${cardIndex + 1} için görsel yolu metin olmalıdır.`);
+    }
+  });
+
+  return errors;
+}
+
+function validateOtherOptions(section) {
+  const errors = [];
+
+  if (!Array.isArray(section.options)) {
+    return ["için seçenekler bir dizi olmalıdır."];
+  }
+
+  const optionIds = new Set();
+
+  section.options.forEach((option, optionIndex) => {
+    if (!option?.id || typeof option.id !== "string" || optionIds.has(option.id)) {
+      errors.push(
+        `içindeki seçenek ${optionIndex + 1} benzersiz bir id değerine sahip olmalıdır.`
+      );
+    } else {
+      optionIds.add(option.id);
+    }
+
+    if (typeof option?.image !== "string") {
+      errors.push(`içindeki seçenek ${optionIndex + 1} için görsel yolu metin olmalıdır.`);
     }
   });
 
@@ -124,6 +151,85 @@ const definitions = [
       ["left", "right"].includes(section.imagePosition)
         ? []
         : ["için görsel konumu left veya right olmalıdır."],
+  },
+  {
+    type: "twoAnimationImage",
+    label: "Animasyonlu çift görsel",
+    libraryTitle: "Animasyonlu Çift Görsel",
+    description: "Kaydırma sırasında hareketlenen iki görsel, metin ve buton alanı.",
+    group: "content",
+    allowedTemplates: [STANDARD_TEMPLATE],
+    defaultVariant: "overlap",
+    variants: [{ id: "overlap", label: "Üst üste görseller" }],
+    fields: [
+      {
+        name: "backgroundImage",
+        label: "Arkadaki görsel",
+        type: "image",
+        localized: false,
+      },
+      {
+        name: "foregroundImage",
+        label: "Öndeki görsel",
+        type: "image",
+        localized: false,
+      },
+      { name: "eyebrow", label: "Üst başlık", type: "text", localized: true },
+      { name: "title", label: "Başlık", type: "text", localized: true },
+      { name: "text", label: "Birinci metin", type: "textarea", localized: true },
+      { name: "text2", label: "İkinci metin", type: "textarea", localized: true },
+      {
+        name: "backgroundImageAlt",
+        label: "Arkadaki görsel açıklaması (alt)",
+        type: "text",
+        localized: true,
+      },
+      {
+        name: "foregroundImageAlt",
+        label: "Öndeki görsel açıklaması (alt)",
+        type: "text",
+        localized: true,
+      },
+      { name: "buttonText", label: "Buton metni", type: "text", localized: true },
+      { name: "buttonHref", label: "Buton bağlantısı", type: "text", localized: true },
+    ],
+    validate: (section) => {
+      const errors = [];
+
+      if (typeof section.backgroundImage !== "string") {
+        errors.push("için arkadaki görsel yolu metin olmalıdır.");
+      }
+
+      if (typeof section.foregroundImage !== "string") {
+        errors.push("için öndeki görsel yolu metin olmalıdır.");
+      }
+
+      return errors;
+    },
+  },
+  {
+    type: "otherOptions",
+    label: "Diğer seçenekler",
+    libraryTitle: "Diğer Seçenekler",
+    description: "Görsel, alan ve kapasite bilgileri içeren kaydırılabilir seçenek kartları.",
+    group: "content",
+    allowedTemplates: [STANDARD_TEMPLATE],
+    defaultVariant: "carousel",
+    variants: [{ id: "carousel", label: "Yatay carousel" }],
+    fields: [
+      { name: "eyebrow", label: "Üst başlık", type: "text", localized: true },
+      { name: "title", label: "Başlık", type: "text", localized: true },
+      { name: "buttonText", label: "Kart butonu metni", type: "text", localized: true },
+      {
+        name: "options",
+        label: "Seçenekler",
+        type: "otherOptionArray",
+        localized: false,
+        labels: { singular: "Seçenek", plural: "Seçenekler" },
+        addLabel: "Yeni seçenek ekle",
+      },
+    ],
+    validate: validateOtherOptions,
   },
   {
     type: "gallery",
@@ -322,7 +428,7 @@ function validateDefinitionRegistry(items) {
       }
 
       if (
-        ["imageArray", "cardArray"].includes(field?.type) &&
+        ["imageArray", "cardArray", "otherOptionArray"].includes(field?.type) &&
         (!field.labels?.singular || !field.labels?.plural || !field.addLabel)
       ) {
         errors.push(`${fieldLabel} için dizi panel etiketleri zorunludur.`);

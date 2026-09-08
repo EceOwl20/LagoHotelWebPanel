@@ -20,7 +20,16 @@ test("standard şablonu yalnızca izin verilen block tanımlarını listeler", (
 
   assert.deepEqual(
     definitions.map((definition) => definition.type),
-    ["intro", "imageText", "gallery", "carousel", "callToAction", "cardCollection"]
+    [
+      "intro",
+      "imageText",
+      "twoAnimationImage",
+      "otherOptions",
+      "gallery",
+      "carousel",
+      "callToAction",
+      "cardCollection",
+    ]
   );
   assert.equal(definitions.every((definition) => definition.fields.length > 0), true);
 });
@@ -81,6 +90,37 @@ test("imageText görsel ve konum alanlarını şema üzerinden tanımlar", () =>
     { label: "Solda", value: "left" },
     { label: "Sağda", value: "right" },
   ]);
+});
+
+test("twoAnimationImage iki ortak görsel ve yerelleştirilmiş içerik alanları sunar", () => {
+  const fields = getBlockDefinition("twoAnimationImage").fields;
+
+  assert.equal(fields.find((field) => field.name === "backgroundImage").localized, false);
+  assert.equal(fields.find((field) => field.name === "foregroundImage").localized, false);
+  assert.equal(fields.find((field) => field.name === "backgroundImageAlt").localized, true);
+  assert.equal(fields.find((field) => field.name === "buttonHref").localized, true);
+});
+
+test("otherOptions özel seçenek dizisi alanını ve carousel varyantını sunar", () => {
+  const definition = getBlockDefinition("otherOptions");
+  const optionsField = definition.fields.find((field) => field.name === "options");
+
+  assert.equal(optionsField.type, "otherOptionArray");
+  assert.equal(optionsField.localized, false);
+  assert.deepEqual(definition.variants, [{ id: "carousel", label: "Yatay carousel" }]);
+});
+
+test("otherOptions tekrarlanan seçenek kimliklerini ve geçersiz görseli reddeder", () => {
+  const errors = validateBlock({
+    type: "otherOptions",
+    options: [
+      { id: "same-option", image: "" },
+      { id: "same-option", image: null },
+    ],
+  });
+
+  assert.equal(errors.some((error) => error.includes("benzersiz bir id")), true);
+  assert.equal(errors.some((error) => error.includes("görsel yolu metin")), true);
 });
 
 test("select alanında eksik ve tekrarlanan seçenekleri reddeder", () => {

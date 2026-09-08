@@ -4,6 +4,7 @@ import {
   PAGE_LOCALES,
   createPageCard,
   createPageGalleryImage,
+  createPageOtherOption,
   createPageSection,
   createStandardPageDraft,
   findLocalizedSlugConflicts,
@@ -28,6 +29,8 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
     idFactory,
     imagePosition: "right",
   });
+  const twoAnimationImage = createPageSection("twoAnimationImage", { idFactory });
+  const otherOptions = createPageSection("otherOptions", { idFactory });
   const gallery = createPageSection("gallery", { idFactory });
   const carousel = createPageSection("carousel", { idFactory });
   const callToAction = createPageSection("callToAction", { idFactory });
@@ -42,9 +45,14 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
   cardCollection.cards.push(
     createPageCard("/uploads/pages/card.webp", { idFactory })
   );
+  otherOptions.options.push(
+    createPageOtherOption("/uploads/pages/room.webp", { idFactory })
+  );
   page.sections = [
     intro,
     imageText,
+    twoAnimationImage,
+    otherOptions,
     gallery,
     carousel,
     callToAction,
@@ -53,9 +61,22 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
 
   assert.deepEqual(
     page.sections.map((section) => section.type),
-    ["intro", "imageText", "gallery", "carousel", "callToAction", "cardCollection"]
+    [
+      "intro",
+      "imageText",
+      "twoAnimationImage",
+      "otherOptions",
+      "gallery",
+      "carousel",
+      "callToAction",
+      "cardCollection",
+    ]
   );
   assert.equal(imageText.imagePosition, "right");
+  assert.equal(twoAnimationImage.backgroundImage, "");
+  assert.equal(twoAnimationImage.foregroundImage, "");
+  assert.deepEqual(Object.keys(twoAnimationImage.translations), PAGE_LOCALES);
+  assert.deepEqual(Object.keys(otherOptions.options[0].translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(gallery.translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(gallery.images[0].translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(carousel.images[0].translations), PAGE_LOCALES);
@@ -78,6 +99,18 @@ test("cardCollection fabrikası sıralanabilir ve dört dilli kart oluşturur", 
   assert.equal(card.order, 0);
   assert.equal(card.image, "/uploads/pages/card.webp");
   assert.deepEqual(Object.keys(card.translations), PAGE_LOCALES);
+});
+
+test("otherOptions fabrikası sıralanabilir ve dört dilli seçenek oluşturur", () => {
+  const section = createPageSection("otherOptions");
+  const option = createPageOtherOption("/uploads/pages/room.webp");
+
+  section.options.push(option);
+
+  assert.equal(section.type, "otherOptions");
+  assert.equal(option.order, 0);
+  assert.equal(option.image, "/uploads/pages/room.webp");
+  assert.deepEqual(Object.keys(option.translations), PAGE_LOCALES);
 });
 
 test("desteklenmeyen component tipini oluşturmayı reddeder", () => {

@@ -14,6 +14,8 @@ function createCompleteRendererMap() {
   return {
     intro: { centered: Renderer },
     imageText: { imageLeft: Renderer, imageRight: Renderer },
+    twoAnimationImage: { overlap: Renderer },
+    otherOptions: { carousel: Renderer },
     gallery: { horizontal: Renderer },
     carousel: { centered: Renderer },
     callToAction: { image: Renderer },

@@ -4,6 +4,8 @@ import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";
 import DynamicCardCollection from "./DynamicCardCollection";
 import DynamicPageCarousel from "./DynamicPageCarousel";
+import DynamicTwoAnimationImage from "./DynamicTwoAnimationImage";
+import DynamicOtherOptions from "./DynamicOtherOptions";
 import {
   createSectionRendererRegistry,
   resolveSectionRenderer,
@@ -85,6 +87,24 @@ function ImagePlaceholder() {
     <div className="flex aspect-[4/3] w-full items-center justify-center bg-stone-200 font-jost text-sm uppercase tracking-[0.2em] text-stone-500">
       Görsel alanı
     </div>
+  );
+}
+
+function TwoAnimationImageSection({ section, locale }) {
+  const content = getLocalizedContent(section.translations, locale);
+
+  return (
+    <DynamicTwoAnimationImage
+      backgroundImage={{
+        src: section.backgroundImage,
+        alt: content.backgroundImageAlt || "",
+      }}
+      foregroundImage={{
+        src: section.foregroundImage,
+        alt: content.foregroundImageAlt || "",
+      }}
+      content={content}
+    />
   );
 }
 
@@ -324,6 +344,12 @@ const SECTION_RENDERERS = createSectionRendererRegistry({
   imageText: {
     imageLeft: ImageTextSection,
     imageRight: ImageTextSection,
+  },
+  twoAnimationImage: {
+    overlap: TwoAnimationImageSection,
+  },
+  otherOptions: {
+    carousel: DynamicOtherOptions,
   },
   gallery: {
     horizontal: GallerySection,

@@ -1,6 +1,7 @@
 import CardArrayField from "./CardArrayField";
 import EditorField from "./EditorField";
 import ImageArrayField from "./ImageArrayField";
+import OtherOptionArrayField from "./OtherOptionArrayField";
 import PageImagePicker from "./PageImagePicker";
 
 const AUTOMATIC_FIELD_TYPES = new Set([
@@ -11,6 +12,7 @@ const AUTOMATIC_FIELD_TYPES = new Set([
   "imageArray",
   "boolean",
   "cardArray",
+  "otherOptionArray",
 ]);
 
 function DefinitionField({ field, value, locale, onChange }) {
@@ -53,6 +55,17 @@ function DefinitionField({ field, value, locale, onChange }) {
 
   if (field.type === "cardArray") {
     return <CardArrayField field={field} value={value} locale={locale} onChange={onChange} />;
+  }
+
+  if (field.type === "otherOptionArray") {
+    return (
+      <OtherOptionArrayField
+        field={field}
+        value={value}
+        locale={locale}
+        onChange={onChange}
+      />
+    );
   }
 
   if (field.type === "boolean") {

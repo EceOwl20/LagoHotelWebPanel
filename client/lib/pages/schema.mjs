@@ -65,6 +65,40 @@ function createImageTextSection(idFactory, imagePosition) {
   };
 }
 
+function createTwoAnimationImageSection(idFactory) {
+  return {
+    id: idFactory("two-animation-image"),
+    type: "twoAnimationImage",
+    enabled: true,
+    backgroundImage: "",
+    foregroundImage: "",
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+      text2: "",
+      backgroundImageAlt: "",
+      foregroundImageAlt: "",
+      buttonText: "",
+      buttonHref: "",
+    })),
+  };
+}
+
+function createOtherOptionsSection(idFactory) {
+  return {
+    id: idFactory("other-options"),
+    type: "otherOptions",
+    enabled: true,
+    options: [],
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      buttonText: "",
+    })),
+  };
+}
+
 function createGallerySection(idFactory) {
   return {
     id: idFactory("gallery"),
@@ -150,6 +184,23 @@ export function createPageCard(image = "", { idFactory = createId } = {}) {
   };
 }
 
+export function createPageOtherOption(image = "", { idFactory = createId } = {}) {
+  return {
+    id: idFactory("other-option"),
+    image,
+    order: 0,
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      size: "",
+      capacity: "",
+      text: "",
+      imageAlt: "",
+      buttonHref: "",
+    })),
+  };
+}
+
 export function createPageSection(
   type,
   { idFactory = createId, imagePosition = "left" } = {}
@@ -160,6 +211,14 @@ export function createPageSection(
 
   if (type === "imageText") {
     return createImageTextSection(idFactory, imagePosition);
+  }
+
+  if (type === "twoAnimationImage") {
+    return createTwoAnimationImageSection(idFactory);
+  }
+
+  if (type === "otherOptions") {
+    return createOtherOptionsSection(idFactory);
   }
 
   if (type === "gallery") {
