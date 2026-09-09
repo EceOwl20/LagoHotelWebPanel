@@ -149,7 +149,7 @@ export async function listPublishedPageNavigation(locale) {
 }
 
 async function assertValidDraft(candidate, ignorePageId = null) {
-  const validationErrors = validatePageDocument(candidate, { allowEmptySlugs: true });
+  const validationErrors = validatePageDocument(candidate);
 
   if (validationErrors.length > 0) {
     throw new PageDraftError(validationErrors.join(" "));

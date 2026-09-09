@@ -208,6 +208,146 @@ const definitions = [
     },
   },
   {
+    type: "spaInfo",
+    label: "Resimli liste bilgi alanı",
+    libraryTitle: "Resimli Liste Bilgi Alanı",
+    description: "Ana açıklama, üzeri yazılı iki görsel ve liste içeren genel amaçlı bilgi alanı.",
+    group: "content",
+    allowedTemplates: [STANDARD_TEMPLATE],
+    defaultVariant: "splitImages",
+    variants: [{ id: "splitImages", label: "İki görselli" }],
+    panelGroups: [
+      {
+        id: "main",
+        label: "Ana içerik",
+        description: "Bölümün üst kısmında görünen ortak giriş metinleri.",
+      },
+      {
+        id: "left",
+        label: "Sol görsel",
+        description: "Sol taraftaki görseli ve görsel üzerinde kullanılan metinleri düzenleyin.",
+      },
+      {
+        id: "right",
+        label: "Sağ görsel",
+        description: "Sağ taraftaki görseli, açıklamaları ve liste maddelerini düzenleyin.",
+      },
+    ],
+    fields: [
+      {
+        name: "leftImage",
+        label: "Sol alt görsel",
+        type: "image",
+        localized: false,
+        panelGroup: "left",
+      },
+      {
+        name: "rightImage",
+        label: "Sağ uzun görsel",
+        type: "image",
+        localized: false,
+        panelGroup: "right",
+      },
+      {
+        name: "eyebrow",
+        label: "Ana üst başlık",
+        type: "text",
+        localized: true,
+        panelGroup: "main",
+      },
+      {
+        name: "title",
+        label: "Ana başlık",
+        type: "text",
+        localized: true,
+        panelGroup: "main",
+      },
+      {
+        name: "text",
+        label: "Ana metin",
+        type: "textarea",
+        localized: true,
+        panelGroup: "main",
+      },
+      {
+        name: "leftEyebrow",
+        label: "Sol görsel üst başlığı",
+        type: "text",
+        localized: true,
+        panelGroup: "left",
+      },
+      {
+        name: "leftTitle",
+        label: "Sol görsel başlığı",
+        type: "text",
+        localized: true,
+        panelGroup: "left",
+      },
+      {
+        name: "leftText",
+        label: "Sol görsel metni",
+        type: "textarea",
+        localized: true,
+        panelGroup: "left",
+      },
+      {
+        name: "leftImageAlt",
+        label: "Sol görsel açıklaması (alt)",
+        type: "text",
+        localized: true,
+        panelGroup: "left",
+      },
+      {
+        name: "rightEyebrow",
+        label: "Sağ görsel üst başlığı",
+        type: "text",
+        localized: true,
+        panelGroup: "right",
+      },
+      {
+        name: "rightTitle",
+        label: "Sağ görsel başlığı",
+        type: "text",
+        localized: true,
+        panelGroup: "right",
+      },
+      {
+        name: "rightText",
+        label: "Sağ görsel metni",
+        type: "textarea",
+        localized: true,
+        panelGroup: "right",
+      },
+      {
+        name: "rightItems",
+        label: "Sağ görsel liste maddeleri (her satıra bir madde)",
+        type: "textarea",
+        localized: true,
+        panelGroup: "right",
+      },
+      {
+        name: "rightImageAlt",
+        label: "Sağ görsel açıklaması (alt)",
+        type: "text",
+        localized: true,
+        panelGroup: "right",
+      },
+    ],
+    validate: (section) => {
+      const errors = [];
+
+      if (typeof section.leftImage !== "string") {
+        errors.push("için sol görsel yolu metin olmalıdır.");
+      }
+
+      if (typeof section.rightImage !== "string") {
+        errors.push("için sağ görsel yolu metin olmalıdır.");
+      }
+
+      return errors;
+    },
+  },
+  {
     type: "otherOptions",
     label: "Diğer seçenekler",
     libraryTitle: "Diğer Seçenekler",
@@ -384,6 +524,26 @@ function validateDefinitionRegistry(items) {
       return;
     }
 
+    const panelGroupIds = new Set();
+
+    if (definition.panelGroups !== undefined) {
+      if (!Array.isArray(definition.panelGroups) || definition.panelGroups.length === 0) {
+        errors.push(`${label} için panel grupları boş olmayan bir dizi olmalıdır.`);
+      } else {
+        definition.panelGroups.forEach((group, groupIndex) => {
+          const groupLabel = `${label}, panel grubu ${groupIndex + 1}`;
+
+          if (!group?.id || !group?.label) {
+            errors.push(`${groupLabel} için id ve label zorunludur.`);
+          } else if (panelGroupIds.has(group.id)) {
+            errors.push(`${label} için tekrarlanan panel grup id değeri: ${group.id}.`);
+          } else {
+            panelGroupIds.add(group.id);
+          }
+        });
+      }
+    }
+
     const fieldNames = new Set();
 
     definition.fields.forEach((field, fieldIndex) => {
@@ -407,6 +567,10 @@ function validateDefinitionRegistry(items) {
 
       if (typeof field?.localized !== "boolean") {
         errors.push(`${fieldLabel} için localized true veya false olmalıdır.`);
+      }
+
+      if (field?.panelGroup && !panelGroupIds.has(field.panelGroup)) {
+        errors.push(`${fieldLabel} için bilinmeyen panel grubu: ${field.panelGroup}.`);
       }
 
       if (field?.type === "select") {

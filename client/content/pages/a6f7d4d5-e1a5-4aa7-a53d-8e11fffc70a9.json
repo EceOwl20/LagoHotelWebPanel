@@ -1,0 +1,196 @@
+{
+  "storageVersion": 2,
+  "id": "a6f7d4d5-e1a5-4aa7-a53d-8e11fffc70a9",
+  "createdAt": "2026-09-09T12:37:13.125Z",
+  "updatedAt": "2026-09-09T12:37:13.125Z",
+  "publishedAt": null,
+  "draft": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "yenisayfa",
+      "en": "newpage",
+      "de": "newpagede",
+      "ru": "newpageru"
+    },
+    "status": "draft",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "Yeni Sayfa",
+          "imageAlt": ""
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "Yeni Sayfa"
+        },
+        "en": {
+          "label": "New Page"
+        },
+        "de": {
+          "label": "Neue Seite"
+        },
+        "ru": {
+          "label": "Новая страница"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-d0b98a2a-685e-492a-8768-401f93668972",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "Lago Hotel",
+            "title": "İçerik başlığınızı buraya girin",
+            "text": "Yeni sayfanızın giriş metnini bu alanda düzenleyebilirsiniz."
+          },
+          "en": {
+            "eyebrow": "Lago Hotel",
+            "title": "Enter your content title here",
+            "text": "You can edit the introductory text of your new page in this area."
+          },
+          "de": {
+            "eyebrow": "Lago Hotel",
+            "title": "Geben Sie hier Ihren Inhaltstitel ein",
+            "text": "Hier können Sie den Einführungstext Ihrer neuen Seite bearbeiten."
+          },
+          "ru": {
+            "eyebrow": "Lago Hotel",
+            "title": "Введите заголовок содержимого",
+            "text": "Здесь можно изменить вводный текст новой страницы."
+          }
+        }
+      },
+      {
+        "id": "image-text-181b5774-65f1-4865-8ee2-631ed7681b76",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "left",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-db013d56-d18b-4d82-b91b-5cf2258f8d28",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "right",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-09T12:37:13.125Z",
+    "updatedAt": "2026-09-09T12:37:13.125Z",
+    "id": "a6f7d4d5-e1a5-4aa7-a53d-8e11fffc70a9"
+  },
+  "published": null
+}

@@ -99,6 +99,30 @@ function createOtherOptionsSection(idFactory) {
   };
 }
 
+function createSpaInfoSection(idFactory) {
+  return {
+    id: idFactory("spa-info"),
+    type: "spaInfo",
+    enabled: true,
+    leftImage: "",
+    rightImage: "",
+    translations: createLocalizedValue(() => ({
+      eyebrow: "",
+      title: "",
+      text: "",
+      leftEyebrow: "",
+      leftTitle: "",
+      leftText: "",
+      leftImageAlt: "",
+      rightEyebrow: "",
+      rightTitle: "",
+      rightText: "",
+      rightItems: "",
+      rightImageAlt: "",
+    })),
+  };
+}
+
 function createGallerySection(idFactory) {
   return {
     id: idFactory("gallery"),
@@ -215,6 +239,10 @@ export function createPageSection(
 
   if (type === "twoAnimationImage") {
     return createTwoAnimationImageSection(idFactory);
+  }
+
+  if (type === "spaInfo") {
+    return createSpaInfoSection(idFactory);
   }
 
   if (type === "otherOptions") {

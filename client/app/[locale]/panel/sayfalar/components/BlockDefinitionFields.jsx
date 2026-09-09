@@ -100,36 +100,83 @@ export default function BlockDefinitionFields({
   onTranslationChange,
   onFieldChange,
 }) {
-  return definition.fields
-    .filter((field) => AUTOMATIC_FIELD_TYPES.has(field.type))
-    .map((field) => {
-      const value = field.localized
-        ? section.translations?.[locale]?.[field.name]
-        : section[field.name];
-      const handleChange = field.localized ? onTranslationChange : onFieldChange;
+  const fields = definition.fields.filter((field) =>
+    AUTOMATIC_FIELD_TYPES.has(field.type)
+  );
 
-      const isCollection = ["imageArray", "cardArray", "otherOptionArray"].includes(
-        field.type
-      );
+  const renderField = (field, grouped = false) => {
+    const value = field.localized
+      ? section.translations?.[locale]?.[field.name]
+      : section[field.name];
+    const handleChange = field.localized ? onTranslationChange : onFieldChange;
+    const isCollection = ["imageArray", "cardArray", "otherOptionArray"].includes(
+      field.type
+    );
+    const spansFullRow = isCollection || ["image", "textarea"].includes(field.type);
 
-      return (
-        <div
-          key={field.name}
-          className={
-            isCollection
-              ? "w-full"
-              : field.type === "textarea"
-                ? "max-w-4xl"
-                : "max-w-3xl"
-          }
-        >
-          <DefinitionField
-            field={field}
-            value={value}
-            locale={locale}
-            onChange={(nextValue) => handleChange(field.name, nextValue)}
-          />
+    return (
+      <div
+        key={field.name}
+        className={`${isCollection ? "w-full" : spansFullRow ? "max-w-4xl" : "max-w-3xl"} ${
+          grouped && spansFullRow ? "lg:col-span-2" : ""
+        }`}
+      >
+        <DefinitionField
+          field={field}
+          value={value}
+          locale={locale}
+          onChange={(nextValue) => handleChange(field.name, nextValue)}
+        />
+      </div>
+    );
+  };
+
+  if (!Array.isArray(definition.panelGroups) || definition.panelGroups.length === 0) {
+    return fields.map((field) => renderField(field));
+  }
+
+  const definedGroupIds = new Set(definition.panelGroups.map((group) => group.id));
+  const ungroupedFields = fields.filter(
+    (field) => !field.panelGroup || !definedGroupIds.has(field.panelGroup)
+  );
+
+  return (
+    <div className="space-y-4">
+      {definition.panelGroups.map((group, index) => {
+        const groupFields = fields.filter((field) => field.panelGroup === group.id);
+
+        if (groupFields.length === 0) return null;
+
+        return (
+          <section
+            key={group.id}
+            className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+          >
+            <div className="flex items-start gap-3 border-b border-stone-200 bg-[#edf5f3]/60 px-4 py-3.5 md:px-5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#2f423f] text-[11px] font-semibold text-white">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h4 className="text-sm font-semibold text-stone-900">{group.label}</h4>
+                {group.description ? (
+                  <p className="mt-0.5 text-xs leading-5 text-stone-500">
+                    {group.description}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className="grid gap-5 p-4 md:p-5 lg:grid-cols-2">
+              {groupFields.map((field) => renderField(field, true))}
+            </div>
+          </section>
+        );
+      })}
+
+      {ungroupedFields.length > 0 ? (
+        <div className="grid gap-5">
+          {ungroupedFields.map((field) => renderField(field))}
         </div>
-      );
-    });
+      ) : null}
+    </div>
+  );
 }

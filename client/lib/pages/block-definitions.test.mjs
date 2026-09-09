@@ -24,6 +24,7 @@ test("standard şablonu yalnızca izin verilen block tanımlarını listeler", (
       "intro",
       "imageText",
       "twoAnimationImage",
+      "spaInfo",
       "otherOptions",
       "gallery",
       "carousel",
@@ -99,6 +100,28 @@ test("twoAnimationImage iki ortak görsel ve yerelleştirilmiş içerik alanlar�
   assert.equal(fields.find((field) => field.name === "foregroundImage").localized, false);
   assert.equal(fields.find((field) => field.name === "backgroundImageAlt").localized, true);
   assert.equal(fields.find((field) => field.name === "buttonHref").localized, true);
+});
+
+test("resimli liste bilgi alanı iki ortak görsel, üç metin grubu ve liste alanı sunar", () => {
+  const definition = getBlockDefinition("spaInfo");
+  const fields = definition.fields;
+
+  assert.equal(definition.libraryTitle, "Resimli Liste Bilgi Alanı");
+  assert.equal(fields.find((field) => field.name === "leftImage").localized, false);
+  assert.equal(fields.find((field) => field.name === "rightImage").localized, false);
+  assert.equal(fields.find((field) => field.name === "leftTitle").localized, true);
+  assert.equal(fields.find((field) => field.name === "rightTitle").localized, true);
+  assert.equal(fields.find((field) => field.name === "rightItems").type, "textarea");
+  assert.deepEqual(
+    definition.panelGroups.map((group) => group.label),
+    ["Ana içerik", "Sol görsel", "Sağ görsel"]
+  );
+  assert.equal(fields.find((field) => field.name === "title").panelGroup, "main");
+  assert.equal(fields.find((field) => field.name === "leftImage").panelGroup, "left");
+  assert.equal(fields.find((field) => field.name === "rightItems").panelGroup, "right");
+  assert.deepEqual(definition.variants, [
+    { id: "splitImages", label: "İki görselli" },
+  ]);
 });
 
 test("otherOptions özel seçenek dizisi alanını ve carousel varyantını sunar", () => {

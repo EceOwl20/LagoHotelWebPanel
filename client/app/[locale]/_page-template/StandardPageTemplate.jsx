@@ -6,6 +6,7 @@ import DynamicCardCollection from "./DynamicCardCollection";
 import DynamicPageCarousel from "./DynamicPageCarousel";
 import DynamicTwoAnimationImage from "./DynamicTwoAnimationImage";
 import DynamicOtherOptions from "./DynamicOtherOptions";
+import DynamicSpaInfoSection from "./DynamicSpaInfoSection";
 import {
   createSectionRendererRegistry,
   resolveSectionRenderer,
@@ -104,6 +105,15 @@ function TwoAnimationImageSection({ section, locale }) {
         alt: content.foregroundImageAlt || "",
       }}
       content={content}
+    />
+  );
+}
+
+function SpaInfoSection({ section, locale }) {
+  return (
+    <DynamicSpaInfoSection
+      section={section}
+      content={getLocalizedContent(section.translations, locale)}
     />
   );
 }
@@ -347,6 +357,9 @@ const SECTION_RENDERERS = createSectionRendererRegistry({
   },
   twoAnimationImage: {
     overlap: TwoAnimationImageSection,
+  },
+  spaInfo: {
+    splitImages: SpaInfoSection,
   },
   otherOptions: {
     carousel: DynamicOtherOptions,

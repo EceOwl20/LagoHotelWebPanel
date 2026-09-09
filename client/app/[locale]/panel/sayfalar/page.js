@@ -49,6 +49,7 @@ export default function PagesAdminPage() {
   const [error, setError] = useState("");
   const [pageToDelete, setPageToDelete] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
   const draftCount = pages.filter((page) => page.status !== "published").length;
   const publishedCount = pages.filter(
     (page) => page.status === "published" && !page.hasUnpublishedChanges
@@ -84,13 +85,13 @@ export default function PagesAdminPage() {
     }
 
     setDeletingId(pageToDelete.id);
-    setError("");
+    setDeleteError("");
 
     try {
       const response = await fetch(`/api/admin/pages/${pageToDelete.id}`, {
         method: "DELETE",
       });
-      const payload = await response.json();
+      const payload = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         throw new Error(payload.error || "Dinamik sayfa silinemedi.");
@@ -103,7 +104,7 @@ export default function PagesAdminPage() {
       setPageToDelete(null);
       router.refresh();
     } catch (deleteError) {
-      setError(deleteError.message);
+      setDeleteError(deleteError.message || "Dinamik sayfa silinemedi.");
     } finally {
       setDeletingId(null);
     }
@@ -283,7 +284,10 @@ export default function PagesAdminPage() {
                 {canDelete ? (
                   <button
                     type="button"
-                    onClick={() => setPageToDelete(page)}
+                    onClick={() => {
+                      setDeleteError("");
+                      setPageToDelete(page);
+                    }}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-medium text-rose-700 transition hover:bg-rose-100"
                   >
                     <FiTrash2 className="h-3.5 w-3.5" />
@@ -310,6 +314,7 @@ export default function PagesAdminPage() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="delete-page-title"
+          aria-describedby="delete-page-description"
           className="fixed inset-0 z-[10000] flex items-center justify-center bg-stone-950/60 p-4 backdrop-blur-sm"
         >
           <div className="w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl">
@@ -327,7 +332,7 @@ export default function PagesAdminPage() {
               </div>
             </div>
             <div className="p-6">
-            <p className="text-sm leading-6 text-stone-600">
+            <p id="delete-page-description" className="text-sm leading-6 text-stone-600">
               <span className="font-semibold text-stone-900">{pageToDelete.title}</span>{" "}
               sayfasının kaydı kalıcı olarak silinecek. Sayfa yayındaysa public adresleri
               kapanacak ve header bağlantısı otomatik kaldırılacak.
@@ -335,10 +340,25 @@ export default function PagesAdminPage() {
             <p className="mt-3 rounded-xl bg-stone-100 p-3 text-xs leading-5 text-stone-600">
               Sayfanın kullandığı yüklenmiş görsel dosyaları silinmeyecektir.
             </p>
+            {deleteError ? (
+              <div
+                role="alert"
+                className="mt-4 flex items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm leading-5 text-rose-700"
+              >
+                <FiAlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold">Sayfa silinemedi</p>
+                  <p className="mt-0.5 text-xs leading-5">{deleteError}</p>
+                </div>
+              </div>
+            ) : null}
             <div className="mt-6 flex flex-wrap justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setPageToDelete(null)}
+                onClick={() => {
+                  setDeleteError("");
+                  setPageToDelete(null);
+                }}
                 disabled={Boolean(deletingId)}
                 className="rounded-xl border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-50"
               >
@@ -350,7 +370,11 @@ export default function PagesAdminPage() {
                 disabled={Boolean(deletingId)}
                 className="rounded-xl bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {deletingId ? "Siliniyor..." : "Evet, Sayfayı Sil"}
+                {deletingId
+                  ? "Siliniyor..."
+                  : deleteError
+                    ? "Tekrar Dene"
+                    : "Evet, Sayfayı Sil"}
               </button>
             </div>
             </div>

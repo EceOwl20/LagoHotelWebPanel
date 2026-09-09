@@ -30,6 +30,7 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
     imagePosition: "right",
   });
   const twoAnimationImage = createPageSection("twoAnimationImage", { idFactory });
+  const spaInfo = createPageSection("spaInfo", { idFactory });
   const otherOptions = createPageSection("otherOptions", { idFactory });
   const gallery = createPageSection("gallery", { idFactory });
   const carousel = createPageSection("carousel", { idFactory });
@@ -52,6 +53,7 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
     intro,
     imageText,
     twoAnimationImage,
+    spaInfo,
     otherOptions,
     gallery,
     carousel,
@@ -65,6 +67,7 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
       "intro",
       "imageText",
       "twoAnimationImage",
+      "spaInfo",
       "otherOptions",
       "gallery",
       "carousel",
@@ -76,6 +79,10 @@ test("component fabrikası desteklenen dinamik bölüm tiplerini oluşturur", ()
   assert.equal(twoAnimationImage.backgroundImage, "");
   assert.equal(twoAnimationImage.foregroundImage, "");
   assert.deepEqual(Object.keys(twoAnimationImage.translations), PAGE_LOCALES);
+  assert.equal(spaInfo.leftImage, "");
+  assert.equal(spaInfo.rightImage, "");
+  assert.deepEqual(Object.keys(spaInfo.translations), PAGE_LOCALES);
+  assert.equal(spaInfo.translations.tr.rightItems, "");
   assert.deepEqual(Object.keys(otherOptions.options[0].translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(gallery.translations), PAGE_LOCALES);
   assert.deepEqual(Object.keys(gallery.images[0].translations), PAGE_LOCALES);
