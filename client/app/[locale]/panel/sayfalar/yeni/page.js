@@ -1,6 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import StandardPageTemplate from "../../../_page-template/StandardPageTemplate";
@@ -16,9 +25,12 @@ import {
 } from "@/lib/pages/schema.mjs";
 import {
   PAGE_PRESETS,
-  applyPagePresetSections,
   createPageDraftFromPreset,
 } from "@/lib/pages/page-presets.mjs";
+import {
+  PAGE_DRAFT_ACTIONS,
+  pageDraftReducer,
+} from "@/lib/pages/page-draft-reducer.mjs";
 import {
   getBlockDefinition,
   getBlockDefinitionsForTemplate,
@@ -26,19 +38,27 @@ import {
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../../PanelSessionContext";
 import {
+  FiAlignLeft,
   FiArrowDown,
   FiArrowUp,
   FiAlertCircle,
   FiBox,
   FiCheckCircle,
   FiChevronDown,
+  FiColumns,
+  FiCompass,
+  FiCopy,
   FiEye,
   FiFileText,
   FiGlobe,
+  FiGrid,
   FiImage,
   FiLayers,
+  FiList,
+  FiPlayCircle,
   FiPlus,
   FiSave,
+  FiTarget,
   FiTrash2,
   FiX,
 } from "react-icons/fi";
@@ -52,18 +72,26 @@ const localeLabels = {
 
 const componentLibrary = getBlockDefinitionsForTemplate("standard");
 
-function serializeDraft(draft) {
-  return JSON.stringify(draft);
+const componentLibraryIcons = {
+  intro: FiAlignLeft,
+  imageText: FiColumns,
+  twoAnimationImage: FiCopy,
+  spaInfo: FiList,
+  otherOptions: FiCompass,
+  gallery: FiImage,
+  carousel: FiPlayCircle,
+  callToAction: FiTarget,
+  cardCollection: FiGrid,
+};
+
+function ComponentLibraryIcon({ type }) {
+  const Icon = componentLibraryIcons[type] || FiBox;
+
+  return <Icon aria-hidden="true" className="h-4 w-4" />;
 }
 
-function updateTranslationCollection(collection, locale, field, value) {
-  return {
-    ...collection,
-    [locale]: {
-      ...(collection?.[locale] || {}),
-      [field]: value,
-    },
-  };
+function serializeDraft(draft) {
+  return JSON.stringify(draft);
 }
 
 function normalizeSlugInput(value, locale) {
@@ -234,6 +262,10 @@ function SectionEditor({
   );
 }
 
+const PagePreview = memo(function PagePreview({ page, locale }) {
+  return <StandardPageTemplate page={page} locale={locale} preview />;
+});
+
 export default function NewPageAdminPage() {
   const params = useParams();
   const router = useRouter();
@@ -242,10 +274,15 @@ export default function NewPageAdminPage() {
   const pageId = typeof params.id === "string" ? params.id : null;
   const isEditing = Boolean(pageId);
   const editLock = usePageEditLock(pageId);
-  const [draft, setDraft] = useState(() => createPageDraftFromPreset("editorial"));
+  const [draft, dispatchDraft] = useReducer(
+    pageDraftReducer,
+    null,
+    () => createPageDraftFromPreset("editorial")
+  );
   const [savedDraftSnapshot, setSavedDraftSnapshot] = useState(() =>
     serializeDraft(draft)
   );
+  const [draftRevision, setDraftRevision] = useState(0);
   const [activeLocale, setActiveLocale] = useState("tr");
   const [loadingPage, setLoadingPage] = useState(isEditing);
   const [saving, setSaving] = useState(false);
@@ -257,36 +294,29 @@ export default function NewPageAdminPage() {
   const [addedSectionNotice, setAddedSectionNotice] = useState("");
   const loadedPageKeyRef = useRef("");
   const allowNavigationRef = useRef(false);
-  const hasUnsavedChanges = useMemo(
-    () => serializeDraft(draft) !== savedDraftSnapshot,
-    [draft, savedDraftSnapshot]
-  );
+  const changeDraft = useCallback((action) => {
+    dispatchDraft(action);
+    setDraftRevision((revision) => revision + 1);
+  }, []);
+  const acceptSavedDraft = useCallback((savedDraft) => {
+    dispatchDraft({ type: PAGE_DRAFT_ACTIONS.REPLACE, draft: savedDraft });
+    setSavedDraftSnapshot(serializeDraft(savedDraft));
+    setDraftRevision(0);
+  }, []);
+  const deferredPreviewDraft = useDeferredValue(draft);
+  const isPreviewUpdating = deferredPreviewDraft !== draft;
+  const hasUnsavedChanges = draftRevision > 0;
   const validationErrors = useMemo(
     () => validatePageDocument(draft),
     [draft]
-  );
-  const publicationErrors = useMemo(() => validatePageDocument(draft), [draft]);
-  const publicationOnlyErrors = useMemo(
-    () => publicationErrors.filter((error) => !validationErrors.includes(error)),
-    [publicationErrors, validationErrors]
   );
   const shouldShowValidationErrors = isEditing || validationAttempted;
   const actionValidationErrors = useMemo(() => {
     if (!shouldShowValidationErrors) return [];
 
-    const errors =
-      validationErrors.length > 0
-        ? validationErrors
-        : canPublish && isEditing
-          ? publicationOnlyErrors
-          : [];
-
-    return errors.map((error) => getValidationDestination(error, draft));
+    return validationErrors.map((error) => getValidationDestination(error, draft));
   }, [
-    canPublish,
     draft,
-    isEditing,
-    publicationOnlyErrors,
     shouldShowValidationErrors,
     validationErrors,
   ]);
@@ -329,8 +359,7 @@ export default function NewPageAdminPage() {
         }
 
         if (!cancelled) {
-          setDraft(payload.page);
-          setSavedDraftSnapshot(serializeDraft(payload.page));
+          acceptSavedDraft(payload.page);
         }
       } catch (error) {
         if (!cancelled) {
@@ -349,7 +378,22 @@ export default function NewPageAdminPage() {
     return () => {
       cancelled = true;
     };
-  }, [editLock.status, pageId]);
+  }, [acceptSavedDraft, editLock.status, pageId]);
+
+  useEffect(() => {
+    if (!hasUnsavedChanges) return undefined;
+
+    const revisionAtSchedule = draftRevision;
+    const comparisonTimeout = window.setTimeout(() => {
+      if (serializeDraft(draft) !== savedDraftSnapshot) return;
+
+      setDraftRevision((currentRevision) =>
+        currentRevision === revisionAtSchedule ? 0 : currentRevision
+      );
+    }, 350);
+
+    return () => window.clearTimeout(comparisonTimeout);
+  }, [draft, draftRevision, hasUnsavedChanges, savedDraftSnapshot]);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -439,75 +483,46 @@ export default function NewPageAdminPage() {
       return;
     }
 
-    setDraft((current) => applyPagePresetSections(current, preset.id));
+    changeDraft({ type: PAGE_DRAFT_ACTIONS.APPLY_PRESET, presetId: preset.id });
     setLastAddedSectionId(null);
   };
 
   const updateHeroTranslation = (field, value) => {
-    setDraft((current) => ({
-      ...current,
-      hero: {
-        ...current.hero,
-        translations: updateTranslationCollection(
-          current.hero.translations,
-          activeLocale,
-          field,
-          value
-        ),
-      },
-    }));
+    changeDraft({
+      type: PAGE_DRAFT_ACTIONS.UPDATE_HERO_TRANSLATION,
+      locale: activeLocale,
+      field,
+      value,
+    });
   };
 
   const updateSectionTranslation = (sectionId, field, value) => {
-    setDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section) =>
-        section.id === sectionId
-          ? {
-              ...section,
-              translations: updateTranslationCollection(
-                section.translations,
-                activeLocale,
-                field,
-                value
-              ),
-            }
-          : section
-      ),
-    }));
+    changeDraft({
+      type: PAGE_DRAFT_ACTIONS.UPDATE_SECTION_TRANSLATION,
+      sectionId,
+      locale: activeLocale,
+      field,
+      value,
+    });
   };
 
   const updateSectionField = (sectionId, field, value) => {
-    setDraft((current) => ({
-      ...current,
-      sections: current.sections.map((section) =>
-        section.id === sectionId ? { ...section, [field]: value } : section
-      ),
-    }));
+    changeDraft({
+      type: PAGE_DRAFT_ACTIONS.UPDATE_SECTION_FIELD,
+      sectionId,
+      field,
+      value,
+    });
   };
 
   const moveSection = (index, direction) => {
-    setDraft((current) => {
-      const targetIndex = index + direction;
-
-      if (targetIndex < 0 || targetIndex >= current.sections.length) {
-        return current;
-      }
-
-      const sections = [...current.sections];
-      const [section] = sections.splice(index, 1);
-      sections.splice(targetIndex, 0, section);
-      return { ...current, sections };
-    });
+    changeDraft({ type: PAGE_DRAFT_ACTIONS.MOVE_SECTION, index, direction });
   };
 
   const addSection = (type) => {
     const section = createPageSection(type);
     const definition = getBlockDefinition(type);
-    setDraft((current) => ({
-      ...current,
-      sections: [...current.sections, section],
-    }));
+    changeDraft({ type: PAGE_DRAFT_ACTIONS.ADD_SECTION, section });
     setLastAddedSectionId(section.id);
     setAddedSectionNotice(
       `${definition?.libraryTitle || definition?.label || "Component"} sayfa akışına eklendi.`
@@ -521,10 +536,7 @@ export default function NewPageAdminPage() {
       return;
     }
 
-    setDraft((current) => ({
-      ...current,
-      sections: current.sections.filter((item) => item.id !== section.id),
-    }));
+    changeDraft({ type: PAGE_DRAFT_ACTIONS.REMOVE_SECTION, sectionId: section.id });
   };
 
   const saveDraft = async () => {
@@ -561,8 +573,7 @@ export default function NewPageAdminPage() {
 
     try {
       const savedPage = await saveDraft();
-      setDraft(savedPage);
-      setSavedDraftSnapshot(serializeDraft(savedPage));
+      acceptSavedDraft(savedPage);
       allowNavigationRef.current = true;
 
       router.push("/panel/sayfalar");
@@ -584,8 +595,7 @@ export default function NewPageAdminPage() {
 
     try {
       const savedPage = await saveDraft();
-      setDraft(savedPage);
-      setSavedDraftSnapshot(serializeDraft(savedPage));
+      acceptSavedDraft(savedPage);
 
       const response = await fetch(`/api/admin/pages/${pageId}`, {
         method: "PATCH",
@@ -601,8 +611,7 @@ export default function NewPageAdminPage() {
         throw new Error(payload.error || "Sayfanın yayın durumu değiştirilemedi.");
       }
 
-      setDraft(payload.page);
-      setSavedDraftSnapshot(serializeDraft(payload.page));
+      acceptSavedDraft(payload.page);
       allowNavigationRef.current = true;
       router.push("/panel/sayfalar");
       router.refresh();
@@ -621,8 +630,7 @@ export default function NewPageAdminPage() {
 
     try {
       const savedPage = await saveDraft();
-      setDraft(savedPage);
-      setSavedDraftSnapshot(serializeDraft(savedPage));
+      acceptSavedDraft(savedPage);
       allowNavigationRef.current = true;
       window.location.assign(pendingNavigationHref);
     } catch (error) {
@@ -864,10 +872,7 @@ export default function NewPageAdminPage() {
             label="Hero görseli"
             value={draft.hero.image}
             onChange={(value) =>
-              setDraft((current) => ({
-                ...current,
-                hero: { ...current.hero, image: value },
-              }))
+              changeDraft({ type: PAGE_DRAFT_ACTIONS.SET_HERO_IMAGE, value })
             }
             hint="Bu görsel tüm dillerde ortak kullanılır. Medya Kütüphanesinden seçilebilir veya yeni yüklenebilir."
           />
@@ -924,13 +929,11 @@ export default function NewPageAdminPage() {
               label={`${localeLabels[activeLocale]} sayfa adresi (slug)`}
               value={draft.slugs[activeLocale]}
               onChange={(value) =>
-                setDraft((current) => ({
-                  ...current,
-                  slugs: {
-                    ...current.slugs,
-                    [activeLocale]: normalizeSlugInput(value, activeLocale),
-                  },
-                }))
+                changeDraft({
+                  type: PAGE_DRAFT_ACTIONS.SET_SLUG,
+                  locale: activeLocale,
+                  value: normalizeSlugInput(value, activeLocale),
+                })
               }
               hint={
                 draft.slugs[activeLocale]
@@ -943,18 +946,12 @@ export default function NewPageAdminPage() {
             label="Menü etiketi"
             value={activeNavigation.label}
             onChange={(value) =>
-              setDraft((current) => ({
-                ...current,
-                navigation: {
-                  ...current.navigation,
-                  translations: updateTranslationCollection(
-                    current.navigation.translations,
-                    activeLocale,
-                    "label",
-                    value
-                  ),
-                },
-              }))
+              changeDraft({
+                type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_TRANSLATION,
+                locale: activeLocale,
+                field: "label",
+                value,
+              })
             }
           />
           <div className="grid gap-4 rounded-xl border border-stone-200 bg-stone-50 p-4 sm:grid-cols-2 lg:col-span-2">
@@ -963,13 +960,11 @@ export default function NewPageAdminPage() {
                 type="checkbox"
                 checked={draft.navigation.visible !== false}
                 onChange={(event) =>
-                  setDraft((current) => ({
-                    ...current,
-                    navigation: {
-                      ...current.navigation,
-                      visible: event.target.checked,
-                    },
-                  }))
+                  changeDraft({
+                    type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_FIELD,
+                    field: "visible",
+                    value: event.target.checked,
+                  })
                 }
                 className="h-4 w-4 rounded border-stone-300"
               />
@@ -982,13 +977,11 @@ export default function NewPageAdminPage() {
                 min="0"
                 value={draft.navigation.order ?? 100}
                 onChange={(event) =>
-                  setDraft((current) => ({
-                    ...current,
-                    navigation: {
-                      ...current.navigation,
-                      order: Number(event.target.value || 0),
-                    },
-                  }))
+                  changeDraft({
+                    type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_FIELD,
+                    field: "order",
+                    value: Number(event.target.value || 0),
+                  })
                 }
                 className="w-28 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-600"
               />
@@ -1065,7 +1058,7 @@ export default function NewPageAdminPage() {
                   className="group/component flex min-h-12 items-center gap-3 rounded-xl border border-white bg-white/90 px-3.5 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-md"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#edf5f3] text-[#2f423f] transition group-hover/component:bg-[#63978f] group-hover/component:text-white">
-                    <FiBox className="h-3.5 w-3.5" />
+                    <ComponentLibraryIcon type={component.type} />
                   </span>
                   <span className="min-w-0 flex-1 truncate text-xs font-semibold text-stone-800">
                     {component.libraryTitle}
@@ -1107,25 +1100,24 @@ export default function NewPageAdminPage() {
               label="SEO başlığı"
               value={activeSeo.title}
               onChange={(value) =>
-                setDraft((current) => ({
-                  ...current,
-                  seo: updateTranslationCollection(current.seo, activeLocale, "title", value),
-                }))
+                changeDraft({
+                  type: PAGE_DRAFT_ACTIONS.UPDATE_SEO_TRANSLATION,
+                  locale: activeLocale,
+                  field: "title",
+                  value,
+                })
               }
             />
             <Field
               label="SEO açıklaması"
               value={activeSeo.description}
               onChange={(value) =>
-                setDraft((current) => ({
-                  ...current,
-                  seo: updateTranslationCollection(
-                    current.seo,
-                    activeLocale,
-                    "description",
-                    value
-                  ),
-                }))
+                changeDraft({
+                  type: PAGE_DRAFT_ACTIONS.UPDATE_SEO_TRANSLATION,
+                  locale: activeLocale,
+                  field: "description",
+                  value,
+                })
               }
               textarea
             />
@@ -1135,25 +1127,42 @@ export default function NewPageAdminPage() {
       </section>
 
       <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
-        <div className="flex items-start gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-900 text-white">
-            <FiEye className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
-              Canlı önizleme
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-stone-900">
-              {localeLabels[activeLocale]} görünümü
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-stone-500">
-              Sayfanın yayınlanmadan önceki yaklaşık görünümünü kontrol edin.
-            </p>
+        <div className="flex items-start justify-between gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
+          <div className="flex items-start gap-4">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-900 text-white">
+              <FiEye className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
+                Canlı önizleme
+              </p>
+              <h2 className="mt-1 text-xl font-semibold text-stone-900">
+                {localeLabels[activeLocale]} görünümü
+              </h2>
+              <p className="mt-1 text-sm leading-6 text-stone-500">
+                Sayfanın yayınlanmadan önceki yaklaşık görünümünü kontrol edin.
+              </p>
+            </div>
           </div>
+          <span
+            aria-live="polite"
+            className={`mt-1 inline-flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+              isPreviewUpdating
+                ? "border-amber-200 bg-amber-50 text-amber-700"
+                : "border-emerald-200 bg-emerald-50 text-emerald-700"
+            }`}
+          >
+            {isPreviewUpdating ? (
+              <span className="h-2 w-2 animate-pulse rounded-full bg-amber-500" />
+            ) : (
+              <FiCheckCircle className="h-3.5 w-3.5" />
+            )}
+            {isPreviewUpdating ? "Güncelleniyor" : "Güncel"}
+          </span>
         </div>
-        <div className="bg-stone-100 p-3 md:p-6">
+        <div aria-busy={isPreviewUpdating} className="bg-stone-100 p-3 md:p-6">
           <div className="overflow-hidden rounded-2xl bg-white shadow-inner ring-1 ring-stone-200">
-            <StandardPageTemplate page={draft} locale={activeLocale} preview />
+            <PagePreview page={deferredPreviewDraft} locale={activeLocale} />
           </div>
           <p className="mt-4 px-1 text-xs leading-5 text-stone-500">
             Panel önizlemesinde iletişim bölümü performans ve ekran alanı için gizlidir;
@@ -1198,28 +1207,16 @@ export default function NewPageAdminPage() {
 
           {actionValidationErrors.length > 0 ? (
             <div
-              role={hasSaveBlockingErrors ? "alert" : "status"}
-              className={`mt-3 max-w-3xl rounded-xl border px-3 py-2.5 ${
-                hasSaveBlockingErrors
-                  ? "border-rose-200 bg-rose-50"
-                  : "border-amber-200 bg-amber-50"
-              }`}
+              role="alert"
+              className="mt-3 max-w-3xl rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5"
             >
               <div className="flex items-center gap-2">
                 <FiAlertCircle
-                  className={`h-4 w-4 shrink-0 ${
-                    hasSaveBlockingErrors ? "text-rose-600" : "text-amber-700"
-                  }`}
+                  className="h-4 w-4 shrink-0 text-rose-600"
                   aria-hidden="true"
                 />
-                <p
-                  className={`text-xs font-semibold ${
-                    hasSaveBlockingErrors ? "text-rose-800" : "text-amber-900"
-                  }`}
-                >
-                  {hasSaveBlockingErrors
-                    ? `${actionValidationErrors.length} doğrulama hatası kaydetmeyi engelliyor`
-                    : `${actionValidationErrors.length} alan yayınlanmadan önce tamamlanmalı`}
+                <p className="text-xs font-semibold text-rose-800">
+                  {actionValidationErrors.length} doğrulama hatası kaydetmeyi engelliyor
                 </p>
               </div>
               <div className="mt-2 flex max-h-24 flex-col gap-1 overflow-y-auto pr-1">
@@ -1228,11 +1225,7 @@ export default function NewPageAdminPage() {
                     key={`${destination.error}-${index}`}
                     type="button"
                     onClick={() => focusValidationDestination(destination)}
-                    className={`group flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition ${
-                      hasSaveBlockingErrors
-                        ? "text-rose-700 hover:bg-rose-100"
-                        : "text-amber-800 hover:bg-amber-100"
-                    }`}
+                    className="group flex w-full items-start gap-2 rounded-lg px-2 py-1.5 text-left text-xs text-rose-700 transition hover:bg-rose-100"
                   >
                     <span className="mt-px shrink-0 font-semibold group-hover:underline">
                       {destination.context}
@@ -1290,12 +1283,10 @@ export default function NewPageAdminPage() {
             <button
               type="button"
               onClick={() => handlePublicationChange("published")}
-              disabled={
-                saving || changingStatus || validationErrors.length > 0 || publicationErrors.length > 0
-              }
+              disabled={saving || changingStatus || validationErrors.length > 0}
               title={
-                publicationErrors.length > 0
-                  ? "Yayınlamak için dört dildeki slug alanlarını doldurun."
+                validationErrors.length > 0
+                  ? "Yayınlamak için doğrulama hatalarını düzeltin."
                   : undefined
               }
               className="rounded-xl bg-[#2f423f] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-300 disabled:text-stone-600"
