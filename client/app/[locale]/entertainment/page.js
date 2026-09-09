@@ -27,7 +27,7 @@ const page = async ({ params }) => {
   const media = await readSitePageContent('entertainment');
 
   return (
-    <div className='flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb]'>
+    <div className='flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb] overflow-x-hidden'>
       <MainBannerSection img={getLocalizedImage(media.hero, locale)}/>
       <ActivitiesSection
         images={{

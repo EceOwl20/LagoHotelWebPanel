@@ -13,6 +13,28 @@ function pickTranslation(post, locale) {
   );
 }
 
+function pickBlockTranslation(block, locale) {
+  const preferred = block.translations?.[locale];
+  if (preferred?.heading?.trim() || preferred?.content?.trim()) return preferred;
+
+  return (
+    ["tr", "en", "de", "ru"]
+      .map((fallbackLocale) => block.translations?.[fallbackLocale])
+      .find(
+        (translation) =>
+          translation?.heading?.trim() || translation?.content?.trim()
+      ) ||
+    preferred || { heading: "", content: "" }
+  );
+}
+
+function splitParagraphs(content = "") {
+  return content
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
   const post = await readBlogPost(slug);
@@ -38,10 +60,8 @@ export default async function NewsDetailPage({ params }) {
   }
 
   const translation = pickTranslation(post, locale);
-  const paragraphs = translation.content
-    .split(/\n{2,}/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+  const paragraphs = splitParagraphs(translation.content);
+  const contentBlocks = post.contentBlocks || [];
 
   return (
     <div className="bg-[#fbfbfb] pb-20">
@@ -80,6 +100,56 @@ export default async function NewsDetailPage({ params }) {
                 <p key={`${post.slug}-${index}`}>{paragraph}</p>
               ))}
             </div>
+
+            {contentBlocks.map((block) => {
+              const blockTranslation = pickBlockTranslation(block, locale);
+              const blockParagraphs = splitParagraphs(blockTranslation.content);
+              const HeadingTag = block.headingLevel === "h3" ? "h3" : "h2";
+
+              if (!blockTranslation.heading && blockParagraphs.length === 0 && !block.image) {
+                return null;
+              }
+
+              return (
+                <section
+                  key={block.id}
+                  className="space-y-5 border-t border-stone-200 pt-8 md:pt-10"
+                >
+                  {blockTranslation.heading ? (
+                    <HeadingTag
+                      className={
+                        block.headingLevel === "h3"
+                          ? "text-2xl font-medium leading-tight text-stone-900 md:text-3xl"
+                          : "text-3xl font-medium leading-tight text-stone-900 md:text-4xl"
+                      }
+                    >
+                      {blockTranslation.heading}
+                    </HeadingTag>
+                  ) : null}
+
+                  {block.image ? (
+                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[24px] bg-stone-100">
+                      <Image
+                        src={block.image}
+                        alt={blockTranslation.heading || translation.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 960px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  ) : null}
+
+                  {blockParagraphs.length > 0 ? (
+                    <div className="space-y-5 text-base leading-8 text-stone-700">
+                      {blockParagraphs.map((paragraph, paragraphIndex) => (
+                        <p key={`${block.id}-${paragraphIndex}`}>{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : null}
+                </section>
+              );
+            })}
           </div>
         </div>
       </article>

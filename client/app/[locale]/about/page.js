@@ -47,7 +47,7 @@ const texts3=[t3("clubsubtitle2"),t3("clubtitle2"),t3("clubtext2")]
   );
 
   return (
-    <div className='flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb]'>
+    <div className='flex flex-col items-center justify-center gap-[60px] md:gap-[80px] lg:gap-[100px] bg-[#fbfbfb] overflow-x-hidden'>
       <MainBanner2 span={t("subtitle")} header={t("title")} img={getLocalizedImage(media.hero, locale)} opacity={true}/>
       <SpaTypesInfoSection isImageLeft={false} span={t2("subtitle")} header={t2("title")} text={t2("text")} link="/" showLink={true} img={{ ...getLocalizedImage(media.location, locale), width: 538, height: 412 }} buttonText={t2("buttonText")}/>
       <KidsMomentCarousel showheader={false} header="" images={getLocalizedCollection(media.moments, locale)}/>

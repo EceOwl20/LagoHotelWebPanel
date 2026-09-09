@@ -2,10 +2,26 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FiAlertCircle,
+  FiArrowDown,
+  FiArrowUp,
+  FiCalendar,
+  FiCheckCircle,
+  FiEdit3,
+  FiFileText,
+  FiGlobe,
+  FiImage,
+  FiPlus,
+  FiSave,
+  FiTrash2,
+  FiX,
+} from "react-icons/fi";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
+import { findBlogPostToSelect } from "@/lib/admin/blog-selection.mjs";
 
 function createEmptyTranslations() {
   return CMS_LOCALES.reduce((accumulator, locale) => {
@@ -27,7 +43,40 @@ function createEmptyPost() {
     coverImage: "",
     publishedAt: new Date().toISOString().slice(0, 16),
     translations: createEmptyTranslations(),
+    contentBlocks: [],
   };
+}
+
+function createContentBlock(headingLevel) {
+  return {
+    id:
+      globalThis.crypto?.randomUUID?.() ||
+      `blog-block-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    headingLevel,
+    image: "",
+    translations: CMS_LOCALES.reduce((translations, locale) => {
+      translations[locale] = { heading: "", content: "" };
+      return translations;
+    }, {}),
+  };
+}
+
+const localeLabels = {
+  tr: "Türkçe",
+  en: "English",
+  de: "Deutsch",
+  ru: "Русский",
+};
+
+function getPostTitle(post) {
+  return (
+    post?.translations?.tr?.title ||
+    post?.translations?.en?.title ||
+    post?.translations?.de?.title ||
+    post?.translations?.ru?.title ||
+    post?.slug ||
+    "Başlıksız yazı"
+  );
 }
 
 export default function BlogAdminPage() {
@@ -39,10 +88,13 @@ export default function BlogAdminPage() {
   const [activeLocale, setActiveLocale] = useState("tr");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingBlockId, setUploadingBlockId] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const publishedCount = posts.filter((post) => post.status === "published").length;
+  const draftCount = posts.length - publishedCount;
 
-  const loadPosts = useCallback(async (preferredSlug = null) => {
+  const loadPosts = useCallback(async (preferredSlug = null, { selectFirst = false } = {}) => {
     const response = await fetch("/api/admin/blog/posts", { cache: "no-store" });
     const payload = await response.json();
 
@@ -51,30 +103,24 @@ export default function BlogAdminPage() {
     }
 
     setPosts(payload.posts);
+    const postToSelect = findBlogPostToSelect(payload.posts, {
+      preferredSlug,
+      selectFirst,
+    });
 
-    if (preferredSlug) {
-      const preferredPost = payload.posts.find((post) => post.slug === preferredSlug);
-      if (preferredPost) {
-        setSelectedSlug(preferredSlug);
-        setDraft({
-          ...preferredPost,
-          publishedAt: preferredPost.publishedAt.slice(0, 16),
-        });
-        return;
-      }
-    }
-
-    if (payload.posts.length > 0 && !selectedSlug) {
-      setSelectedSlug(payload.posts[0].slug);
+    if (postToSelect) {
+      setSelectedSlug(postToSelect.slug);
       setDraft({
-        ...payload.posts[0],
-        publishedAt: payload.posts[0].publishedAt.slice(0, 16),
+        ...postToSelect,
+        publishedAt: postToSelect.publishedAt.slice(0, 16),
       });
     }
-  }, [selectedSlug]);
+
+    return payload.posts;
+  }, []);
 
   useEffect(() => {
-    loadPosts()
+    loadPosts(null, { selectFirst: true })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [loadPosts]);
@@ -104,6 +150,102 @@ export default function BlogAdminPage() {
     }));
   };
 
+  const addContentBlock = (headingLevel) => {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      contentBlocks: [
+        ...(currentDraft.contentBlocks || []),
+        createContentBlock(headingLevel),
+      ],
+    }));
+  };
+
+  const updateContentBlock = (blockId, updates) => {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      contentBlocks: (currentDraft.contentBlocks || []).map((block) =>
+        block.id === blockId ? { ...block, ...updates } : block
+      ),
+    }));
+  };
+
+  const updateContentBlockTranslation = (blockId, field, value) => {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      contentBlocks: (currentDraft.contentBlocks || []).map((block) =>
+        block.id === blockId
+          ? {
+              ...block,
+              translations: {
+                ...block.translations,
+                [activeLocale]: {
+                  ...(block.translations?.[activeLocale] || {}),
+                  [field]: value,
+                },
+              },
+            }
+          : block
+      ),
+    }));
+  };
+
+  const moveContentBlock = (blockIndex, direction) => {
+    setDraft((currentDraft) => {
+      const contentBlocks = [...(currentDraft.contentBlocks || [])];
+      const targetIndex = blockIndex + direction;
+
+      if (targetIndex < 0 || targetIndex >= contentBlocks.length) return currentDraft;
+
+      [contentBlocks[blockIndex], contentBlocks[targetIndex]] = [
+        contentBlocks[targetIndex],
+        contentBlocks[blockIndex],
+      ];
+
+      return { ...currentDraft, contentBlocks };
+    });
+  };
+
+  const removeContentBlock = (blockId) => {
+    setDraft((currentDraft) => ({
+      ...currentDraft,
+      contentBlocks: (currentDraft.contentBlocks || []).filter(
+        (block) => block.id !== blockId
+      ),
+    }));
+  };
+
+  const handleBlockImageUpload = async (blockId, event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploadingBlockId(blockId);
+    setError("");
+    setMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "blog");
+
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Bölüm görseli yüklenemedi.");
+      }
+
+      updateContentBlock(blockId, { image: payload.url });
+      event.target.value = "";
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingBlockId(null);
+    }
+  };
+
   const handleCoverUpload = async (event) => {
     const file = event.target.files?.[0];
 
@@ -126,7 +268,7 @@ export default function BlogAdminPage() {
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload.error || "Kapak gorseli yuklenemedi.");
+        throw new Error(payload.error || "Kapak görseli yüklenemedi.");
       }
 
       setDraft((currentDraft) => ({
@@ -145,6 +287,12 @@ export default function BlogAdminPage() {
     setMessage("");
 
     try {
+      const publishedAt = new Date(draft.publishedAt);
+
+      if (Number.isNaN(publishedAt.getTime())) {
+        throw new Error("Geçerli bir yayın tarihi girilmelidir.");
+      }
+
       const requestInit = {
         method: selectedSlug ? "PUT" : "POST",
         headers: {
@@ -153,7 +301,7 @@ export default function BlogAdminPage() {
         body: JSON.stringify({
           post: {
             ...draft,
-            publishedAt: new Date(draft.publishedAt).toISOString(),
+            publishedAt: publishedAt.toISOString(),
           },
         }),
       };
@@ -188,7 +336,7 @@ export default function BlogAdminPage() {
     if (
       !selectedSlug ||
       !window.confirm(
-        "Bu blog yazısı kalıcı olarak silinecek. Kullanılmayan kapak dosyası da uploads klasöründen kaldırılacak. Devam etmek istediğinize emin misiniz?"
+        "Bu blog yazısı kalıcı olarak silinecek. Başka yerde kullanılmayan kapak ve bölüm görselleri de kaldırılacak. Devam etmek istediğinize emin misiniz?"
       )
     ) {
       return;
@@ -211,9 +359,9 @@ export default function BlogAdminPage() {
       setSelectedSlug(null);
       setDraft(createEmptyPost());
       setMessage(
-        payload.retainedCoverImage
-          ? `Blog yazısı silindi. Kapak görseli ${payload.usages.length} başka kullanım bulunduğu için korundu.`
-          : "Blog yazısı ve kullanılmayan kapak görseli silindi."
+        payload.retainedMedia?.length
+          ? `Blog yazısı silindi. ${payload.retainedMedia.length} görsel başka yerlerde kullanıldığı için korundu.`
+          : "Blog yazısı ve kullanılmayan görselleri silindi."
       );
     } catch (err) {
       setError(err.message);
@@ -229,33 +377,74 @@ export default function BlogAdminPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.3em] text-stone-500">Blog</p>
-        <h1 className="text-3xl font-semibold text-stone-900">
-          Blog icerik yonetimi
-        </h1>
-        <p className="max-w-3xl text-sm text-stone-600">
-          Blog kartlari ve detay sayfalari bu modulu kullanir. Her yazinin tum
-          dillerde baslik, ozet ve govde icerigi ayridir.
-        </p>
-      </div>
+    <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
+      <header className="relative overflow-hidden rounded-3xl bg-[#2f423f] px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
+        <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#63978f]/25 blur-3xl" />
+        <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
+        <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
+              İçerik yönetimi / Blog
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+              Blog içerik yönetimi
+            </h1>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
+              Blog yazılarını dört dilde hazırlayın, yayın durumlarını yönetin ve
+              kapak görsellerini tek bir çalışma alanından düzenleyin.
+            </p>
+          </div>
 
-      <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <aside className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="text-sm font-semibold text-stone-900">Yazilar</div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <FiFileText className="h-4 w-4 text-[#a9c9c4]" />
+              {posts.length} yazı
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              {publishedCount} yayında
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-amber-300" />
+              {draftCount} taslak
+            </span>
             <button
               type="button"
               onClick={handleCreateNew}
-              className="rounded-lg bg-stone-900 px-3 py-2 text-xs font-medium text-white"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-[#2f423f] shadow-sm transition hover:-translate-y-0.5 hover:bg-[#edf5f3]"
             >
-              Yeni Yazi
+              <FiPlus className="h-4 w-4" />
+              Yeni Yazı
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="grid items-start gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
+        <aside className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-20">
+          <div className="flex items-center justify-between border-b border-stone-200 bg-stone-50/70 p-4">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#63978f]">Yazı arşivi</p>
+              <p className="mt-1 text-sm font-semibold text-stone-900">Blog yazıları</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleCreateNew}
+              title="Yeni yazı oluştur"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2f423f] text-white transition hover:bg-[#3c5551]"
+            >
+              <FiPlus className="h-4 w-4" />
+              <span className="sr-only">Yeni Yazı</span>
             </button>
           </div>
 
+          <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-3">
           {loading ? (
-            <p className="text-sm text-stone-500">Yukleniyor...</p>
+            <div className="space-y-2">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="h-16 animate-pulse rounded-xl bg-stone-100" />
+              ))}
+            </div>
           ) : posts.length > 0 ? (
             <div className="space-y-2">
               {posts.map((post) => (
@@ -263,44 +452,99 @@ export default function BlogAdminPage() {
                   key={post.slug}
                   type="button"
                   onClick={() => selectPost(post)}
-                  className={`w-full rounded-xl border px-3 py-3 text-left transition ${
+                  className={`group w-full rounded-2xl border px-3 py-3 text-left transition ${
                     selectedSlug === post.slug
-                      ? "border-stone-900 bg-stone-900 text-white"
-                      : "border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100"
+                      ? "border-[#2f423f] bg-[#2f423f] text-white shadow-sm"
+                      : "border-transparent bg-stone-50 text-stone-700 hover:border-[#63978f]/30 hover:bg-[#edf5f3]"
                   }`}
                 >
-                  <div className="text-sm font-semibold">
-                    {post.translations.tr.title ||
-                      post.translations.en.title ||
-                      post.slug}
-                  </div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.2em] opacity-70">
-                    {post.status}
+                  <div className="flex items-start gap-3">
+                    <span className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${selectedSlug === post.slug ? "bg-white/10 text-white" : "bg-white text-[#507f78]"}`}>
+                      <FiFileText className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold">{getPostTitle(post)}</span>
+                      <span className={`mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${selectedSlug === post.slug ? "text-stone-300" : post.status === "published" ? "text-emerald-700" : "text-amber-700"}`}>
+                        <span className={`h-1.5 w-1.5 rounded-full ${post.status === "published" ? "bg-emerald-500" : "bg-amber-400"}`} />
+                        {post.status === "published" ? "Yayında" : "Taslak"}
+                      </span>
+                    </span>
                   </div>
                 </button>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-stone-500">Henuz blog yazisi yok.</p>
+            <div className="px-3 py-8 text-center">
+              <FiFileText className="mx-auto h-6 w-6 text-stone-300" />
+              <p className="mt-2 text-sm text-stone-500">Henüz blog yazısı yok.</p>
+            </div>
           )}
+          </div>
         </aside>
 
-        <section className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-          <div className="grid gap-4 lg:grid-cols-2">
+        <section className="min-w-0 space-y-5">
+          <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+            <div className="h-1 bg-gradient-to-r from-[#2f423f] via-[#63978f] to-[#a9c9c4]" />
+            <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+              <div className="flex min-w-0 items-center gap-3.5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#edf5f3] text-[#507f78]">
+                  <FiEdit3 className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-stone-400">
+                    {selectedSlug ? "Düzenlenen blog yazısı" : "Yeni blog yazısı"}
+                  </p>
+                  <h2 className="mt-1 truncate text-xl font-semibold text-stone-900 sm:text-2xl">
+                    {selectedSlug ? getPostTitle(draft) : "Yeni içerik hazırlayın"}
+                  </h2>
+                  {selectedSlug ? <p className="mt-0.5 truncate font-mono text-[11px] text-stone-400">/{selectedSlug}</p> : null}
+                </div>
+              </div>
+              <span className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${draft.status === "published" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+                <span className={`h-2 w-2 rounded-full ${draft.status === "published" ? "bg-emerald-500" : "bg-amber-400"}`} />
+                {draft.status === "published" ? "Yayında" : "Taslak"}
+              </span>
+            </div>
+          </section>
+
+          {message || error ? (
+            <div role={error ? "alert" : "status"} className={`flex items-start gap-3 rounded-2xl border p-4 text-sm ${error ? "border-rose-200 bg-rose-50 text-rose-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>
+              {error ? <FiAlertCircle className="mt-0.5 h-5 w-5 shrink-0" /> : <FiCheckCircle className="mt-0.5 h-5 w-5 shrink-0" />}
+              <span>{error || message}</span>
+            </div>
+          ) : null}
+
+          <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+            <div className="flex items-center gap-3 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:px-6">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#edf5f3] text-[#507f78]">
+                <FiCalendar className="h-4 w-4" />
+              </span>
+              <div>
+                <h3 className="font-semibold text-stone-900">Yayın ayarları</h3>
+                <p className="mt-0.5 text-xs text-stone-500">Adres, durum, tarih ve kapak görselini belirleyin.</p>
+              </div>
+            </div>
+            <div className="grid gap-5 p-5 lg:grid-cols-2 sm:p-6">
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-stone-700">Slug</span>
               <input
                 type="text"
                 value={draft.slug}
+                disabled={Boolean(selectedSlug)}
                 onChange={(event) =>
                   setDraft((currentDraft) => ({
                     ...currentDraft,
                     slug: event.target.value,
                   }))
                 }
-                className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10 disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-500"
                 placeholder="yeni-blog-yazisi"
               />
+              {selectedSlug ? (
+                <span className="text-xs text-stone-500">
+                  Mevcut yazının adresi değiştirilemez. Farklı bir adres için yeni yazı oluşturun.
+                </span>
+              ) : null}
             </label>
 
             <label className="flex flex-col gap-2">
@@ -313,15 +557,15 @@ export default function BlogAdminPage() {
                     status: event.target.value,
                   }))
                 }
-                className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               >
                 <option value="draft">Taslak</option>
-                <option value="published" disabled={!canPublish}>Yayinda</option>
+                <option value="published" disabled={!canPublish}>Yayında</option>
               </select>
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Yayin tarihi</span>
+              <span className="text-sm font-medium text-stone-700">Yayın tarihi</span>
               <input
                 type="datetime-local"
                 value={draft.publishedAt}
@@ -331,14 +575,15 @@ export default function BlogAdminPage() {
                     publishedAt: event.target.value,
                   }))
                 }
-                className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
             </label>
 
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Kapak gorseli</span>
-              <label className="inline-flex cursor-pointer items-center justify-center rounded-xl bg-stone-900 px-4 py-3 text-sm font-medium text-white">
-                Kapak Yukle
+              <span className="text-sm font-medium text-stone-700">Kapak görseli</span>
+              <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#3c5551]">
+                <FiImage className="h-4 w-4" />
+                Kapak Yükle
                 <input
                   type="file"
                   accept={IMAGE_UPLOAD_ACCEPT}
@@ -347,81 +592,100 @@ export default function BlogAdminPage() {
                 />
               </label>
             </div>
-          </div>
+              {draft.coverImage ? (
+                <div className="lg:col-span-2">
+                  <p className="mb-2 text-sm font-medium text-stone-700">Seçili kapak</p>
+                  <div className="relative h-52 max-w-xl overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
+                    <Image src={draft.coverImage} alt={getPostTitle(draft)} fill sizes="(max-width: 1024px) 100vw, 576px" unoptimized className="object-contain" />
+                  </div>
+                  <p className="mt-2 max-w-xl truncate font-mono text-[11px] text-stone-400">{draft.coverImage}</p>
+                </div>
+              ) : (
+                <div className="flex h-28 items-center justify-center rounded-2xl border border-dashed border-stone-300 bg-stone-50 lg:col-span-2">
+                  <div className="text-center text-stone-400">
+                    <FiImage className="mx-auto h-5 w-5" />
+                    <p className="mt-2 text-xs">Henüz kapak görseli seçilmedi</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
 
-          {draft.coverImage ? (
-            <Image
-              src={draft.coverImage}
-              alt=""
-              width={1600}
-              height={900}
-              unoptimized
-              className="h-64 w-full rounded-2xl object-cover"
-            />
-          ) : null}
-
-          <div className="flex flex-wrap gap-2 border-t border-stone-200 pt-5">
+          <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+            <div className="flex flex-col gap-4 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#edf5f3] text-[#507f78]">
+                  <FiGlobe className="h-4 w-4" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-stone-900">İçerik ve SEO</h3>
+                  <p className="mt-0.5 text-xs text-stone-500">Düzenleme dili: {localeLabels[activeLocale]}</p>
+                </div>
+              </div>
+              <div className="inline-flex w-fit flex-wrap gap-1 rounded-xl bg-stone-200/70 p-1">
             {CMS_LOCALES.map((locale) => (
               <button
                 key={locale}
                 type="button"
                 onClick={() => setActiveLocale(locale)}
-                className={`rounded-xl px-4 py-2 text-sm font-medium uppercase transition ${
+                title={localeLabels[locale]}
+                className={`rounded-lg px-3.5 py-2 text-xs font-semibold uppercase transition ${
                   activeLocale === locale
-                    ? "bg-stone-900 text-white"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
+                    ? "bg-[#2f423f] text-white shadow-sm"
+                    : "text-stone-600 hover:bg-white"
                 }`}
               >
                 {locale}
               </button>
             ))}
-          </div>
+              </div>
+            </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-5 p-5 sm:p-6">
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Baslik</span>
+              <span className="text-sm font-medium text-stone-700">Başlık</span>
               <input
                 type="text"
                 value={selectedTranslation.title}
                 onChange={(event) => updateTranslation("title", event.target.value)}
-                className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Ozet</span>
+              <span className="text-sm font-medium text-stone-700">Özet</span>
               <textarea
                 rows={3}
                 value={selectedTranslation.excerpt}
                 onChange={(event) => updateTranslation("excerpt", event.target.value)}
-                className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="rounded-xl border border-stone-200 px-4 py-3 text-sm leading-6 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Icerik</span>
+              <span className="text-sm font-medium text-stone-700">Ana metin</span>
               <textarea
                 rows={12}
                 value={selectedTranslation.content}
                 onChange={(event) => updateTranslation("content", event.target.value)}
-                className="min-h-[260px] rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                className="min-h-[260px] rounded-xl border border-stone-200 px-4 py-3 text-sm leading-6 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
             </label>
 
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-5 rounded-2xl border border-stone-200 bg-stone-50/70 p-4 lg:grid-cols-2">
               <label className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-stone-700">SEO baslik</span>
+                <span className="text-sm font-medium text-stone-700">SEO başlık</span>
                 <input
                   type="text"
                   value={selectedTranslation.seoTitle}
                   onChange={(event) => updateTranslation("seoTitle", event.target.value)}
-                  className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                  className="rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
                 />
               </label>
 
               <label className="flex flex-col gap-2">
                 <span className="text-sm font-medium text-stone-700">
-                  SEO aciklama
+                  SEO açıklama
                 </span>
                 <input
                   type="text"
@@ -429,29 +693,226 @@ export default function BlogAdminPage() {
                   onChange={(event) =>
                     updateTranslation("seoDescription", event.target.value)
                   }
-                  className="rounded-xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-500"
+                  className="rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
                 />
               </label>
             </div>
           </div>
+          </section>
 
-          <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
+          <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
+            <div className="flex flex-col gap-4 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#edf5f3] text-[#507f78]">
+                  <FiFileText className="h-4 w-4" />
+                </span>
+                <div>
+                  <h3 className="font-semibold text-stone-900">İçerik bölümleri</h3>
+                  <p className="mt-0.5 text-xs text-stone-500">
+                    İstediğiniz kadar H2 veya H3 bölümü ekleyin. Görsel kullanımı isteğe bağlıdır.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => addContentBlock("h2")}
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#2f423f] px-3.5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3c5551]"
+                >
+                  <FiPlus className="h-4 w-4" />
+                  H2 Bölümü
+                </button>
+                <button
+                  type="button"
+                  onClick={() => addContentBlock("h3")}
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#63978f]/30 bg-[#edf5f3] px-3.5 py-2.5 text-xs font-semibold text-[#365c56] transition hover:bg-[#dfeeea]"
+                >
+                  <FiPlus className="h-4 w-4" />
+                  H3 Bölümü
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-4 p-5 sm:p-6">
+              {(draft.contentBlocks || []).length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-stone-300 bg-stone-50 px-5 py-10 text-center">
+                  <FiFileText className="mx-auto h-7 w-7 text-stone-300" />
+                  <p className="mt-3 text-sm font-medium text-stone-600">Henüz içerik bölümü eklenmedi</p>
+                  <p className="mt-1 text-xs text-stone-400">
+                    Ana metnin altına devam edecek ilk H2 veya H3 bölümünü ekleyebilirsiniz.
+                  </p>
+                </div>
+              ) : (
+                (draft.contentBlocks || []).map((block, blockIndex) => {
+                  const blockTranslation = block.translations?.[activeLocale] || {
+                    heading: "",
+                    content: "",
+                  };
+
+                  return (
+                    <article
+                      key={block.id}
+                      className="overflow-hidden rounded-2xl border border-stone-200 bg-white"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-200 bg-stone-50/80 px-4 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="rounded-lg bg-[#2f423f] px-2.5 py-1.5 text-xs font-bold uppercase text-white">
+                            {block.headingLevel}
+                          </span>
+                          <span className="text-xs font-medium text-stone-500">
+                            Bölüm {blockIndex + 1} · {localeLabels[activeLocale]}
+                          </span>
+                          {block.image ? (
+                            <span className="hidden items-center gap-1 text-xs text-[#507f78] sm:inline-flex">
+                              <FiImage className="h-3.5 w-3.5" /> Görselli
+                            </span>
+                          ) : null}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => moveContentBlock(blockIndex, -1)}
+                            disabled={blockIndex === 0}
+                            title="Yukarı taşı"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-500 transition hover:bg-white hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-30"
+                          >
+                            <FiArrowUp className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveContentBlock(blockIndex, 1)}
+                            disabled={blockIndex === draft.contentBlocks.length - 1}
+                            title="Aşağı taşı"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-500 transition hover:bg-white hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-30"
+                          >
+                            <FiArrowDown className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => removeContentBlock(block.id)}
+                            title="Bölümü kaldır"
+                            className="flex h-8 w-8 items-center justify-center rounded-lg text-rose-500 transition hover:bg-rose-50 hover:text-rose-700"
+                          >
+                            <FiTrash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-5 p-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+                        <div className="space-y-4">
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-medium text-stone-700">
+                              {block.headingLevel.toUpperCase()} başlığı
+                            </span>
+                            <input
+                              type="text"
+                              value={blockTranslation.heading}
+                              onChange={(event) =>
+                                updateContentBlockTranslation(
+                                  block.id,
+                                  "heading",
+                                  event.target.value
+                                )
+                              }
+                              className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
+                              placeholder={`${localeLabels[activeLocale]} bölüm başlığı`}
+                            />
+                          </label>
+                          <label className="flex flex-col gap-2">
+                            <span className="text-sm font-medium text-stone-700">Bölüm metni</span>
+                            <textarea
+                              rows={6}
+                              value={blockTranslation.content}
+                              onChange={(event) =>
+                                updateContentBlockTranslation(
+                                  block.id,
+                                  "content",
+                                  event.target.value
+                                )
+                              }
+                              className="min-h-36 rounded-xl border border-stone-200 px-4 py-3 text-sm leading-6 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
+                              placeholder="Paragrafları boş bir satırla ayırabilirsiniz."
+                            />
+                          </label>
+                        </div>
+
+                        <div>
+                          <p className="mb-2 text-sm font-medium text-stone-700">
+                            Bölüm görseli <span className="font-normal text-stone-400">(isteğe bağlı)</span>
+                          </p>
+                          {block.image ? (
+                            <div className="space-y-2">
+                              <div className="relative h-40 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
+                                <Image
+                                  src={block.image}
+                                  alt={blockTranslation.heading || "Blog bölüm görseli"}
+                                  fill
+                                  sizes="260px"
+                                  unoptimized
+                                  className="object-contain"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => updateContentBlock(block.id, { image: "" })}
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+                              >
+                                <FiX className="h-4 w-4" /> Görseli kaldır
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="flex h-40 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-stone-300 bg-stone-50 text-center transition hover:border-[#63978f] hover:bg-[#edf5f3]">
+                              {uploadingBlockId === block.id ? (
+                                <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#63978f]/30 border-t-[#507f78]" />
+                              ) : (
+                                <FiImage className="h-6 w-6 text-stone-400" />
+                              )}
+                              <span className="mt-2 text-xs font-semibold text-stone-600">
+                                {uploadingBlockId === block.id ? "Yükleniyor..." : "Görsel seç"}
+                              </span>
+                              <span className="mt-1 text-[11px] text-stone-400">Eklemek zorunlu değildir</span>
+                              <input
+                                type="file"
+                                accept={IMAGE_UPLOAD_ACCEPT}
+                                disabled={Boolean(uploadingBlockId)}
+                                className="hidden"
+                                onChange={(event) => handleBlockImageUpload(block.id, event)}
+                              />
+                            </label>
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })
+              )}
+            </div>
+          </section>
+
+          <section className="flex flex-col gap-4 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-stone-800">Değişiklikleri tamamladınız mı?</p>
+              <p className="mt-1 text-xs text-stone-500">Kayıt işlemi dört dildeki tüm alanları birlikte günceller.</p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={handleSave}
               disabled={saving || (!canPublish && draft.status === "published")}
-              className="rounded-xl bg-stone-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {saving ? "Kaydediliyor..." : "Blog Yazisini Kaydet"}
+              {saving ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : <FiSave className="h-4 w-4" />}
+              {saving ? "Kaydediliyor..." : "Blog Yazısını Kaydet"}
             </button>
 
             {selectedSlug && canDelete ? (
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded-xl border border-rose-200 bg-rose-50 px-5 py-3 text-sm font-medium text-rose-700"
+                className="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
               >
-                Yaziyi Sil
+                <FiTrash2 className="h-4 w-4" />
+                Yazıyı Sil
               </button>
             ) : null}
 
@@ -461,9 +922,8 @@ export default function BlogAdminPage() {
               </span>
             ) : null}
 
-            {message && <span className="text-sm text-emerald-600">{message}</span>}
-            {error && <span className="text-sm text-rose-600">{error}</span>}
-          </div>
+            </div>
+          </section>
         </section>
       </div>
     </div>

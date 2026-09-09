@@ -22,7 +22,7 @@ export default async function NewsPage({ params }) {
   const posts = (await listBlogPosts()).filter((post) => post.status === "published");
 
   return (
-    <div className="flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] lg:gap-[100px]">
+    <div className="flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] lg:gap-[100px] overflow-x-hidden">
       <MainBanner2 img={mainImg} span={t("subtitle")} header={t("title")} />
 
       <section className="w-full max-w-[1240px] px-4 md:px-8">
@@ -82,7 +82,7 @@ export default async function NewsPage({ params }) {
                       href={{ pathname: "/news/[slug]", params: { slug: post.slug } }}
                       className="inline-flex rounded-full border border-stone-300 px-4 py-2 text-sm font-medium text-stone-800 transition hover:bg-stone-900 hover:text-white"
                     >
-                      Yaziyi Ac
+                      Devamını oku
                     </Link>
                   </div>
                 </article>

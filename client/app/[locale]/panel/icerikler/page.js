@@ -1,7 +1,19 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FiCheck, FiChevronRight, FiFileText, FiSearch, FiX } from "react-icons/fi";
+import {
+  FiAlertCircle,
+  FiCheck,
+  FiCheckCircle,
+  FiChevronRight,
+  FiEdit3,
+  FiFileText,
+  FiGlobe,
+  FiLayers,
+  FiSave,
+  FiSearch,
+  FiX,
+} from "react-icons/fi";
 import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import dynamic from "next/dynamic";
@@ -52,6 +64,13 @@ const namespaceLabels = {
   Explore: "Keşfet alanı",
   IconSection: "İkon alanı",
   Certificates: "Sertifikalar",
+};
+
+const localeLabels = {
+  tr: "Türkçe",
+  en: "English",
+  de: "Deutsch",
+  ru: "Русский",
 };
 
 const namespaceGroups = [
@@ -573,27 +592,54 @@ const SelectedMediaEditor =
   MEDIA_EDITOR_REGISTRY[selectedNamespace] || null;
 
   return (
-    <div className="mx-auto max-w-[1500px] space-y-7">
-      <header className="space-y-2">
-        <p className="text-sm uppercase tracking-[0.3em] text-stone-500">
-          Sayfa İçerikleri
-        </p>
-        <h1 className="text-3xl font-semibold text-stone-900">İçerik düzenleyici</h1>
-        <p className="max-w-3xl text-sm leading-6 text-stone-600">
-          Düzenlemek istediğiniz sayfayı seçin, dili belirleyin ve metin alanlarını
-          bölüm bölüm güncelleyin.
-        </p>
+    <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
+      <header className="relative overflow-hidden rounded-3xl bg-[#2f423f] px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
+        <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#63978f]/25 blur-3xl" />
+        <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
+        <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
+              İçerik yönetimi / Sayfa içerikleri
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+              İçerik düzenleyici
+            </h1>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
+              Sayfaların metinlerini ve medya alanlarını dört dilde, tek bir çalışma
+              alanından güvenle yönetin.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <FiLayers className="h-4 w-4 text-[#a9c9c4]" />
+              {loading ? "Yükleniyor" : `${namespaces.length} içerik grubu`}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
+              <FiGlobe className="h-4 w-4 text-[#a9c9c4]" />
+              4 dil
+            </span>
+            {hasUnsavedChanges ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-300/15 px-3 py-2 text-xs text-amber-100 backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-amber-300" />
+                Kaydedilmemiş değişiklik
+              </span>
+            ) : null}
+          </div>
+        </div>
       </header>
 
-      <div className="grid items-start gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <aside className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-12">
-          <div className="border-b border-stone-200 p-5">
+      <div className="grid items-start gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
+        <aside className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-20">
+          <div className="border-b border-stone-200 bg-stone-50/70 p-5">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="font-semibold text-stone-900">Sayfa seçimi</p>
-                <p className="mt-1 text-xs text-stone-500">{namespaces.length} içerik grubu</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#63978f]">
+                  İçerik navigasyonu
+                </p>
+                <p className="mt-1.5 font-semibold text-stone-900">Sayfa veya bölüm seçin</p>
               </div>
-              <span className="rounded-xl bg-stone-100 p-2.5 text-stone-500">
+              <span className="rounded-xl bg-[#edf5f3] p-2.5 text-[#507f78]">
                 <FiFileText className="h-5 w-5" aria-hidden="true" />
               </span>
             </div>
@@ -609,18 +655,32 @@ const SelectedMediaEditor =
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Sayfa veya bölüm ara..."
-                className="w-full rounded-xl border border-stone-300 bg-stone-50 py-2.5 pl-10 pr-3 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-stone-700 focus:bg-white focus:ring-4 focus:ring-stone-100"
+                className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-9 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
+              {query ? (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Aramayı temizle"
+                  className="absolute right-2.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-md text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
+                >
+                  <FiX className="h-3.5 w-3.5" />
+                </button>
+              ) : null}
             </label>
           </div>
 
-          <div className="max-h-[calc(100vh-15rem)] space-y-5 overflow-y-auto p-3">
+          <div className="max-h-[calc(100vh-12rem)] space-y-5 overflow-y-auto p-3">
             {loading ? (
-              <p className="p-3 text-sm text-stone-500">Sayfalar yükleniyor...</p>
+              <div className="space-y-2 p-1">
+                {[1, 2, 3, 4].map((item) => (
+                  <div key={item} className="h-12 animate-pulse rounded-xl bg-stone-100" />
+                ))}
+              </div>
             ) : visibleGroups.length > 0 ? (
               visibleGroups.map((group) => (
                 <div key={group.id}>
-                  <p className="mb-2 px-2 text-[12px] font-bold uppercase tracking-[0.18em] text-[#63978f]">
+                  <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#63978f]">
                     {group.label}
                   </p>
                   <div className="space-y-1">
@@ -634,15 +694,15 @@ const SelectedMediaEditor =
                           onClick={() => handleNamespaceSelect(namespace)}
                           className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
                             isSelected
-                              ? "bg-stone-900 text-white shadow-sm"
-                              : "text-stone-700 hover:bg-stone-100"
+                              ? "bg-[#2f423f] text-white shadow-sm"
+                              : "text-stone-700 hover:bg-[#edf5f3] hover:text-[#2f423f]"
                           }`}
                         >
                           <span
                             className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
                               isSelected
                                 ? "bg-white/10 text-white"
-                                : "bg-stone-100 text-stone-400 group-hover:bg-white"
+                                : "bg-stone-100 text-stone-400 group-hover:bg-white group-hover:text-[#507f78]"
                             }`}
                           >
                             {isSelected ? (
@@ -680,37 +740,60 @@ const SelectedMediaEditor =
         </aside>
 
         <section className="min-w-0 space-y-5">
-          <section className="z-10 rounded-2xl border border-stone-200 bg-white/95 p-5 shadow-sm backdrop-blur sm:p-6 lg:sticky lg:top-16">
+          <section className="z-10 overflow-hidden rounded-3xl border border-stone-200 bg-white/95 shadow-sm backdrop-blur lg:sticky lg:top-16">
+            <div className="h-1 bg-gradient-to-r from-[#2f423f] via-[#63978f] to-[#a9c9c4]" />
+            <div className="p-5 sm:p-6">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-[0.25em] text-stone-400">
-                  Seçili sayfa / bölüm
-                </p>
-                <h2 className="mt-2 text-2xl font-semibold text-[#63978f]">
-                  {selectedNamespace
-                    ? getNamespaceLabel(selectedNamespace)
-                    : "Sayfa seçin"}
-                </h2>
-                {selectedNamespace ? (
-                  <p className="mt-1 font-mono text-xs text-stone-400">
-                    {selectedNamespace}
-                  </p>
-                ) : null}
+              <div className="flex min-w-0 items-center gap-3.5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#edf5f3] text-[#507f78]">
+                  <FiEdit3 className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">
+                      Düzenlenen içerik
+                    </p>
+                    {hasUnsavedChanges ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-700">
+                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                        Kaydedilmedi
+                      </span>
+                    ) : bundle ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
+                        <FiCheck className="h-3 w-3" />
+                        Güncel
+                      </span>
+                    ) : null}
+                  </div>
+                  <h2 className="mt-1 truncate text-xl font-semibold text-stone-900 sm:text-2xl">
+                    {selectedNamespace
+                      ? getNamespaceLabel(selectedNamespace)
+                      : "Sayfa seçin"}
+                  </h2>
+                  {selectedNamespace ? (
+                    <p className="mt-0.5 truncate font-mono text-[11px] text-stone-400">
+                      {selectedNamespace}
+                    </p>
+                  ) : null}
+                </div>
               </div>
 
-              <div className="flex flex-wrap items-end gap-3">
-                <div>
-                  <p className="mb-2 text-xs font-medium text-stone-500">Düzenleme dili</p>
-                  <div className="inline-flex rounded-xl bg-stone-100 p-1">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <div className="min-w-0">
+                  <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-stone-400">
+                    Düzenleme dili
+                  </p>
+                  <div className="inline-flex max-w-full rounded-xl bg-stone-100 p-1">
                     {CMS_LOCALES.map((locale) => (
                       <button
                         key={locale}
                         type="button"
                         onClick={() => setActiveLocale(locale)}
-                        className={`rounded-lg px-4 py-2 text-xs font-semibold uppercase transition ${
+                        title={localeLabels[locale]}
+                        className={`rounded-lg px-3 py-2 text-xs font-semibold uppercase transition sm:px-4 ${
                           activeLocale === locale
-                            ? "bg-stone-900 text-white shadow-sm"
-                            : "text-stone-600 hover:bg-white"
+                            ? "bg-[#2f423f] text-white shadow-sm"
+                            : "text-stone-600 hover:bg-white hover:text-[#2f423f]"
                         }`}
                       >
                         {locale}
@@ -722,35 +805,43 @@ const SelectedMediaEditor =
                   type="button"
                   onClick={handleSave}
                   disabled={saving || !bundle || !hasUnsavedChanges}
-                  className="rounded-xl bg-[#63978f] px-5 py-3 text-sm font-medium text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400 disabled:shadow-none"
                 >
+                  {saving ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  ) : (
+                    <FiSave className="h-4 w-4" />
+                  )}
                   {saving ? "Kaydediliyor..." : "Tüm Dilleri Kaydet"}
                 </button>
               </div>
             </div>
             {message || error ? (
-              <p
+              <div
                 aria-live="polite"
-                className={`mt-4 border-t pt-4 text-sm font-medium ${
+                className={`mt-5 flex items-start gap-2.5 rounded-xl border px-3.5 py-3 text-sm font-medium ${
                   error
-        ? "border-rose-100 text-rose-700"
-        : messageType === "warning"
-          ? "border-amber-100 text-amber-700"
-          : "border-emerald-100 text-emerald-700"
-    }`}
+                    ? "border-rose-200 bg-rose-50 text-rose-700"
+                    : messageType === "warning"
+                      ? "border-amber-200 bg-amber-50 text-amber-700"
+                      : "border-emerald-200 bg-emerald-50 text-emerald-700"
+                }`}
               >
-                {error || message}
-              </p>
+                {error || messageType === "warning" ? (
+                  <FiAlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                ) : (
+                  <FiCheckCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                )}
+                <span>{error || message}</span>
+              </div>
             ) : null}
+            </div>
           </section>
 
           {loadingBundle ? (
             <div className="space-y-4">
               {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="h-36 animate-pulse rounded-2xl border border-stone-200 bg-white"
-                />
+                <div key={item} className="h-36 animate-pulse rounded-3xl border border-stone-200 bg-white shadow-sm" />
               ))}
             </div>
           ) : bundle ? (
@@ -766,9 +857,15 @@ const SelectedMediaEditor =
 
             </div>
           ) : (
-            <p className="rounded-2xl border border-stone-200 bg-white p-6 text-sm text-stone-500 shadow-sm">
-              Düzenlemek için soldan bir sayfa veya bölüm seçin.
-            </p>
+            <div className="flex flex-col items-center rounded-3xl border border-dashed border-[#63978f]/40 bg-white px-6 py-14 text-center shadow-sm">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf5f3] text-[#507f78]">
+                <FiFileText className="h-5 w-5" />
+              </span>
+              <p className="mt-4 text-sm font-semibold text-stone-800">Düzenlenecek içeriği seçin</p>
+              <p className="mt-1 max-w-sm text-xs leading-5 text-stone-500">
+                Metin ve medya alanlarını görüntülemek için soldaki listeden bir sayfa veya bölüm seçin.
+              </p>
+            </div>
           )}
 
           {error && !bundle ? (
@@ -789,12 +886,14 @@ const SelectedMediaEditor =
       aria-modal="true"
       aria-labelledby="unsaved-changes-title"
       aria-describedby="unsaved-changes-description"
-      className="w-full max-w-md rounded-2xl border border-stone-200 bg-white p-6 shadow-2xl"
+      className="w-full max-w-md overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-2xl"
     >
+      <div className="h-1.5 bg-amber-400" />
+      <div className="p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-            <FiFileText className="h-5 w-5" aria-hidden="true" />
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-700">
+            <FiAlertCircle className="h-5 w-5" aria-hidden="true" />
           </div>
 
           <h2
@@ -810,7 +909,7 @@ const SelectedMediaEditor =
           onClick={handleCloseUnsavedModal}
           disabled={saving}
           aria-label="Uyarıyı kapat"
-          className="rounded-lg p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-xl p-2 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <FiX className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -838,7 +937,7 @@ const SelectedMediaEditor =
           type="button"
           onClick={handleDiscardAndContinue}
           disabled={saving}
-          className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition hover:border-stone-400 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Kaydetmeden devam et
         </button>
@@ -847,10 +946,16 @@ const SelectedMediaEditor =
           type="button"
           onClick={handleSaveAndContinue}
           disabled={saving}
-          className="rounded-xl bg-[#63978f] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#527f78] disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:opacity-60"
         >
+          {saving ? (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+          ) : (
+            <FiSave className="h-4 w-4" />
+          )}
           {saving ? "Kaydediliyor..." : "Kaydet ve devam et"}
         </button>
+      </div>
       </div>
     </section>
   </div>

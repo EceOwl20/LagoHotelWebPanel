@@ -26,7 +26,7 @@ const handleClick = (e) => {
 
 
   return (
-    <div className="flex flex-col w-screen min-h-screen items-center justify-start">
+    <div className="flex flex-col w-screen min-h-screen items-center justify-start overflow-x-hidden">
       <Banner img={mainImg2} span="" header={t("sustainability")} />
       <a
         href={REPORT_HREF}

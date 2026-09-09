@@ -85,14 +85,14 @@ function EditorNode({ label, value, path, onChange }) {
             value={value}
             onChange={(event) => onChange(path, event.target.value)}
             rows={5}
-            className="min-h-[118px] resize-y rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm leading-6 text-stone-900 outline-none transition focus:border-stone-700 focus:ring-4 focus:ring-stone-100"
+            className="min-h-[118px] resize-y rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm leading-6 text-stone-900 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
           />
         ) : (
           <input
             type="text"
             value={value}
             onChange={(event) => onChange(path, event.target.value)}
-            className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-stone-700 focus:ring-4 focus:ring-stone-100"
+            className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
           />
         )}
       </label>
@@ -101,7 +101,7 @@ function EditorNode({ label, value, path, onChange }) {
 
   if (Array.isArray(value)) {
     return (
-      <section className="col-span-full overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+      <section className="col-span-full overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
         <SectionHeading label={label} detail={`${value.length} öğe`} />
         <div className="grid gap-5 p-5 lg:grid-cols-2">
           {value.map((item, index) => (
@@ -122,7 +122,7 @@ function EditorNode({ label, value, path, onChange }) {
     const entries = Object.entries(value);
 
     return (
-      <section className="col-span-full overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+      <section className="col-span-full overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
         <SectionHeading label={label} detail={`${entries.length} alan`} />
         <div className="grid gap-5 p-5 lg:grid-cols-2">
           {entries.map(([key, childValue]) => (
@@ -146,7 +146,7 @@ function EditorNode({ label, value, path, onChange }) {
         type="text"
         value={value == null ? "" : String(value)}
         onChange={(event) => onChange(path, event.target.value)}
-        className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-stone-700 focus:ring-4 focus:ring-stone-100"
+        className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
       />
     </label>
   );
@@ -154,12 +154,12 @@ function EditorNode({ label, value, path, onChange }) {
 
 function SectionHeading({ label, detail }) {
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-stone-200 bg-[#2f423f] px-5 py-4">
+    <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-[#2f423f] px-5 py-4">
       <div>
         <h3 className="font-semibold text-stone-100">{humanizeLabel(label)}</h3>
         <p className="mt-0.5 font-mono text-[10px] text-stone-400">{label}</p>
       </div>
-      <span className="shrink-0 rounded-full border border-stone-200 bg-white px-2.5 py-1 text-[11px] font-medium text-stone-500">
+      <span className="shrink-0 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-stone-200">
         {detail}
       </span>
     </div>
@@ -181,7 +181,7 @@ export default function ObjectEditor({ value, onChange }) {
   return (
     <div className="space-y-5">
       {simpleEntries.length > 0 ? (
-        <section className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
           <SectionHeading label="Genel alanlar" detail={`${simpleEntries.length} alan`} />
           <div className="grid gap-5 p-5 lg:grid-cols-2">
             {simpleEntries.map(([key, childValue]) => (

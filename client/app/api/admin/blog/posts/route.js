@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { CMS_LOCALES } from "@/lib/admin/constants";
-import { listBlogPosts, saveBlogPost } from "@/lib/admin/blog";
+import { createBlogPost, listBlogPosts } from "@/lib/admin/blog";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
@@ -48,26 +48,25 @@ export async function POST(request) {
     );
   }
 
-  const { post } = await request.json();
+  try {
+    const { post } = await request.json();
 
-  if (post?.status === "published") {
-    try {
+    if (post?.status === "published") {
       assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
-    } catch (error) {
-      return NextResponse.json({ error: error.message }, { status: error.status || 403 });
     }
+
+    const savedPost = await createBlogPost(post);
+
+    for (const locale of CMS_LOCALES) {
+      revalidatePath(`/${locale}/news`);
+      revalidatePath(`/${locale}/news/${savedPost.slug}`);
+    }
+
+    return NextResponse.json({ post: savedPost }, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Blog yazısı oluşturulamadı." },
+      { status: error.status || 500 }
+    );
   }
-
-  if (!post) {
-    return NextResponse.json({ error: "Post verisi zorunludur." }, { status: 400 });
-  }
-
-  const savedPost = await saveBlogPost(post);
-
-  for (const locale of CMS_LOCALES) {
-    revalidatePath(`/${locale}/news`);
-    revalidatePath(`/${locale}/news/${savedPost.slug}`);
-  }
-
-  return NextResponse.json({ post: savedPost });
 }

@@ -26,6 +26,9 @@ import {
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../../PanelSessionContext";
 import {
+  FiArrowDown,
+  FiArrowUp,
+  FiBox,
   FiCheckCircle,
   FiChevronDown,
   FiEye,
@@ -33,6 +36,9 @@ import {
   FiGlobe,
   FiImage,
   FiLayers,
+  FiPlus,
+  FiTrash2,
+  FiX,
 } from "react-icons/fi";
 
 const localeLabels = {
@@ -77,80 +83,107 @@ function SectionEditor({
 }) {
   const [isOpen, setIsOpen] = useState(index === 0 || initiallyOpen);
   const definition = getBlockDefinition(section.type);
+  const isLast = index === totalSections - 1;
+  const isEnabled = section.enabled !== false;
 
   return (
-    <details
-      open={isOpen}
-      onToggle={(event) => setIsOpen(event.currentTarget.open)}
-      className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition open:border-[#63978f]/50 open:shadow-md"
-    >
-      <summary className="flex cursor-pointer list-none items-center gap-4 px-5 py-4 text-sm font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+    <div className="flex gap-4">
+      {/* Sıra rayı: component'lerin bir akış olduğunu gösteren bağlantı çizgisi */}
+      <div className="flex w-9 shrink-0 flex-col items-center">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2f423f] text-xs font-semibold text-white">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="block truncate">
-            {getBlockDefinition(section.type)?.label || section.type}
-          </span>
-          <span className="mt-0.5 block text-[11px] font-normal uppercase tracking-[0.14em] text-stone-400">
-            {section.enabled !== false ? "Yayında görünür" : "Gizli component"}
-          </span>
-        </span>
-        <span
-          className={`h-2.5 w-2.5 rounded-full ${
-            section.enabled !== false ? "bg-emerald-500" : "bg-stone-300"
-          }`}
-        />
-        <FiChevronDown className="h-4 w-4 text-stone-400 transition group-open:rotate-180" />
-      </summary>
-      <div className="grid gap-5 border-t border-stone-200 bg-stone-50/70 p-5 md:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-sm">
-          <label className="inline-flex items-center gap-2 text-sm font-medium text-stone-700">
-            <input
-              type="checkbox"
-              checked={section.enabled !== false}
-              onChange={(event) => onFieldChange("enabled", event.target.checked)}
-              className="h-4 w-4 rounded border-stone-300 accent-[#63978f]"
-            />
-            Bölümü önizlemede göster
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => onMove(-1)}
-              disabled={index === 0}
-              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-700 transition hover:border-[#63978f] hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Yukarı Taşı
-            </button>
-            <button
-              type="button"
-              onClick={() => onMove(1)}
-              disabled={index === totalSections - 1}
-              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-xs text-stone-700 transition hover:border-[#63978f] hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Aşağı Taşı
-            </button>
-            <button
-              type="button"
-              onClick={onRemove}
-              className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700 hover:bg-rose-100"
-            >
-              Componenti Kaldır
-            </button>
-          </div>
-        </div>
-        {definition ? (
-          <BlockDefinitionFields
-            definition={definition}
-            section={section}
-            locale={locale}
-            onTranslationChange={onTranslationChange}
-            onFieldChange={onFieldChange}
-          />
-        ) : null}
+        {!isLast ? <span className="mt-1 w-px flex-1 bg-stone-200" /> : null}
       </div>
-    </details>
+
+      <details
+        open={isOpen}
+        onToggle={(event) => setIsOpen(event.currentTarget.open)}
+        className="group mb-1 flex-1 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition open:border-[#63978f]/50 open:shadow-md"
+      >
+        <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
+          <span className="min-w-0 flex-1">
+            <span className="block truncate">
+              {definition?.label || section.type}
+            </span>
+            <span className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] font-normal text-stone-400">
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  isEnabled ? "bg-emerald-500" : "bg-stone-300"
+                }`}
+              />
+              {isEnabled ? "Yayında görünür" : "Gizli component"}
+            </span>
+          </span>
+          <FiChevronDown className="h-4 w-4 shrink-0 text-stone-400 transition group-open:rotate-180" />
+        </summary>
+        <div className="grid gap-5 border-t border-stone-200 bg-stone-50/70 p-5 md:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-sm">
+            <label className="inline-flex items-center gap-2.5 text-sm font-medium text-stone-700">
+              <input
+                type="checkbox"
+                checked={isEnabled}
+                onChange={(event) => onFieldChange("enabled", event.target.checked)}
+                className="h-4 w-4 rounded border-stone-300 accent-[#63978f]"
+              />
+              Bölümü önizlemede göster
+              <span
+                className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                  isEnabled
+                    ? "bg-emerald-50 text-emerald-700"
+                    : "bg-stone-100 text-stone-500"
+                }`}
+              >
+                {isEnabled ? "Görünür" : "Gizli"}
+              </span>
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center overflow-hidden rounded-lg border border-stone-300 bg-white">
+                <button
+                  type="button"
+                  onClick={() => onMove(-1)}
+                  disabled={index === 0}
+                  title="Yukarı taşı"
+                  className="flex h-9 w-9 items-center justify-center text-stone-600 transition hover:bg-stone-100 hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <FiArrowUp className="h-4 w-4" />
+                  <span className="sr-only">Yukarı Taşı</span>
+                </button>
+                <span className="h-5 w-px bg-stone-200" />
+                <button
+                  type="button"
+                  onClick={() => onMove(1)}
+                  disabled={isLast}
+                  title="Aşağı taşı"
+                  className="flex h-9 w-9 items-center justify-center text-stone-600 transition hover:bg-stone-100 hover:text-[#2f423f] disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <FiArrowDown className="h-4 w-4" />
+                  <span className="sr-only">Aşağı Taşı</span>
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={onRemove}
+                title="Componenti kaldır"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-rose-200 bg-rose-50 text-rose-700 transition hover:bg-rose-100"
+              >
+                <FiTrash2 className="h-4 w-4" />
+                <span className="sr-only">Componenti Kaldır</span>
+              </button>
+            </div>
+          </div>
+          {definition ? (
+            <BlockDefinitionFields
+              definition={definition}
+              section={section}
+              locale={locale}
+              onTranslationChange={onTranslationChange}
+              onFieldChange={onFieldChange}
+            />
+          ) : null}
+        </div>
+      </details>
+    </div>
   );
 }
 
@@ -759,25 +792,33 @@ export default function NewPageAdminPage() {
               <button
                 type="button"
                 onClick={() => setShowComponentLibrary(true)}
-                className="mx-auto flex w-full items-center justify-center rounded-xl bg-[#2f423f] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-[#3c5551] sm:w-auto sm:min-w-64"
+                className="mx-auto flex w-full items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-[#3c5551] sm:w-auto sm:min-w-64"
               >
-                + Component Ekle
+                <FiPlus className="h-4 w-4" />
+                Component Ekle
               </button>
             ) : (
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <h3 className="font-semibold text-stone-900">Component kütüphanesi</h3>
-                    <p className="mt-1 text-xs text-stone-500">
-                      Seçilen component sayfanın en altına eklenir ve daha sonra taşınabilir.
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#63978f] text-white">
+                      <FiLayers className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <h3 className="font-semibold text-stone-900">Component kütüphanesi</h3>
+                      <p className="mt-1 text-xs text-stone-500">
+                        Seçilen component sayfanın en altına eklenir ve daha sonra taşınabilir.
+                      </p>
+                    </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowComponentLibrary(false)}
-                    className="rounded-lg border border-stone-300 px-3 py-2 text-xs text-stone-700"
+                    title="Kapat"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-stone-300 text-stone-600 transition hover:bg-stone-100"
                   >
-                    Kapat
+                    <FiX className="h-4 w-4" />
+                    <span className="sr-only">Kapat</span>
                   </button>
                 </div>
                 <div className="grid gap-3 md:grid-cols-2">
@@ -786,14 +827,20 @@ export default function NewPageAdminPage() {
                       key={component.type}
                       type="button"
                       onClick={() => addSection(component.type)}
-                      className="rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-md"
+                      className="group/card flex items-start gap-3 rounded-xl border border-stone-200 bg-white p-4 text-left transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-md"
                     >
-                      <span className="block text-sm font-semibold text-stone-900">
-                        {component.libraryTitle}
+                      <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#edf5f3] text-[#2f423f] transition group-hover/card:bg-[#63978f] group-hover/card:text-white">
+                        <FiBox className="h-4 w-4" />
                       </span>
-                      <span className="mt-2 block text-xs leading-5 text-stone-500">
-                        {component.description}
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-sm font-semibold text-stone-900">
+                          {component.libraryTitle}
+                        </span>
+                        <span className="mt-1 block text-xs leading-5 text-stone-500">
+                          {component.description}
+                        </span>
                       </span>
+                      <FiPlus className="mt-1 h-4 w-4 shrink-0 text-stone-300 transition group-hover/card:text-[#63978f]" />
                     </button>
                   ))}
                 </div>

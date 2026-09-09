@@ -54,26 +54,33 @@ export async function PUT(request, { params }) {
     );
   }
 
-  const { slug } = await params;
-  const { post } = await request.json();
-  const existingPost = await readBlogPost(slug);
+  try {
+    const { slug } = await params;
+    const { post } = await request.json();
+    const existingPost = await readBlogPost(slug);
 
-  if (post?.status === "published" || existingPost?.status === "published") {
-    try {
-      assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
-    } catch (error) {
-      return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+    if (!existingPost) {
+      return NextResponse.json({ error: "Blog yazısı bulunamadı." }, { status: 404 });
     }
+
+    if (post?.status === "published" || existingPost.status === "published") {
+      assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
+    }
+
+    const savedPost = await saveBlogPost({ ...post, slug });
+
+    for (const locale of CMS_LOCALES) {
+      revalidatePath(`/${locale}/news`);
+      revalidatePath(`/${locale}/news/${savedPost.slug}`);
+    }
+
+    return NextResponse.json({ post: savedPost });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Blog yazısı güncellenemedi." },
+      { status: error.status || 500 }
+    );
   }
-
-  const savedPost = await saveBlogPost({ ...post, slug });
-
-  for (const locale of CMS_LOCALES) {
-    revalidatePath(`/${locale}/news`);
-    revalidatePath(`/${locale}/news/${savedPost.slug}`);
-  }
-
-  return NextResponse.json({ post: savedPost });
 }
 
 export async function DELETE(request, { params }) {
