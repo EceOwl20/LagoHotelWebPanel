@@ -6,12 +6,17 @@ import {
   FiCheck,
   FiCheckCircle,
   FiChevronRight,
+  FiCoffee,
+  FiCompass,
   FiEdit3,
   FiFileText,
   FiGlobe,
+  FiGrid,
+  FiHome,
   FiLayers,
   FiSave,
   FiSearch,
+  FiSettings,
   FiX,
 } from "react-icons/fi";
 import ObjectEditor from "../components/ObjectEditor";
@@ -146,6 +151,146 @@ const namespaceGroups = [
     ],
   },
 ];
+
+const GROUP_VISUALS = {
+  general: {
+    icon: FiSettings,
+    iconClass: "bg-[#edf5f3] text-[#507f78]",
+    itemIconClass: "bg-[#dcece9]/80 text-[#507f78]",
+    headerClass: "bg-[#edf5f3]/60",
+    borderClass: "border-[#63978f]/20",
+    accentClass: "bg-[#63978f]",
+  },
+
+  home: {
+    icon: FiHome,
+    iconClass: "bg-amber-100 text-amber-700",
+    itemIconClass: "bg-amber-100/80 text-amber-700",
+    headerClass: "bg-amber-50/60",
+    borderClass: "border-amber-200/70",
+    accentClass: "bg-amber-400",
+  },
+
+  rooms: {
+    icon: FiGrid,
+    iconClass: "bg-sky-100 text-sky-700",
+    itemIconClass: "bg-sky-100/80 text-sky-700",
+    headerClass: "bg-sky-50/60",
+    borderClass: "border-sky-200/70",
+    accentClass: "bg-sky-400",
+  },
+
+  food: {
+    icon: FiCoffee,
+    iconClass: "bg-orange-100 text-orange-700",
+    itemIconClass: "bg-orange-100/80 text-orange-700",
+    headerClass: "bg-orange-50/60",
+    borderClass: "border-orange-200/70",
+    accentClass: "bg-orange-400",
+  },
+
+  pages: {
+    icon: FiCompass,
+   iconClass: "bg-violet-100 text-violet-700",
+    itemIconClass: "bg-violet-100/80 text-violet-700",
+    headerClass: "bg-violet-50/60",
+    borderClass: "border-violet-200/70",
+    accentClass: "bg-violet-400",
+  },
+
+  other: {
+    icon: FiLayers,
+    iconClass: "bg-violet-100 text-violet-700",
+    itemIconClass: "bg-violet-100/80 text-violet-700",
+    headerClass: "bg-violet-50/60",
+    borderClass: "border-violet-200/70",
+    accentClass: "bg-violet-400",
+  },
+};
+
+const BAR_CAFE_DETAIL_NAMESPACE_LIST = [
+  "JoieBar",
+  "MaldivaBar",
+  "MignonBar",
+  "PianoBar",
+  "VagoBar",
+  "Abellapatisserie",
+  "Cafedehouse",
+  "Cafedelago",
+];
+
+const MAIN_PAGE_NAMESPACES = new Set([
+  "HomePage",
+  "Accommodation",
+  "Restaurants",
+  "BarAndCafes",
+]);
+
+const ROOM_DETAIL_NAMESPACES = new Set([
+  "SuperiorRoom",
+  "FamilyRoom",
+  "SwimupRoom",
+  "FamilySwimupRoom",
+  "DuplexFamilyRoom",
+  "DisabledRoom",
+  "TinyVilla",
+]);
+
+const RESTAURANT_DETAIL_NAMESPACES = new Set(
+  RESTAURANT_DETAIL_CONFIGS.map((config) => config.namespace)
+);
+
+const BAR_CAFE_DETAIL_NAMESPACES = new Set(
+  BAR_CAFE_DETAIL_NAMESPACE_LIST
+);
+
+const STANDALONE_PAGE_NAMESPACES = new Set([
+  "BeachPools",
+  "Spa",
+  "Fitness",
+  "Entertainment",
+  "KidsClub",
+  "Special",
+  "About",
+  "BlogNews",
+  "Contact",
+  "Gallery",
+  "Certificates",
+]);
+
+function getNamespaceType(namespace) {
+  if (MAIN_PAGE_NAMESPACES.has(namespace)) {
+    return "Ana sayfa";
+  }
+
+  if (ROOM_DETAIL_NAMESPACES.has(namespace)) {
+    return "Oda detayı";
+  }
+
+  if (RESTAURANT_DETAIL_NAMESPACES.has(namespace)) {
+    return "Restoran detayı";
+  }
+
+  if (BAR_CAFE_DETAIL_NAMESPACES.has(namespace)) {
+    return "Bar / kafe detayı";
+  }
+
+  if (STANDALONE_PAGE_NAMESPACES.has(namespace)) {
+    return "Sayfa";
+  }
+
+  return "Ortak bölüm";
+}
+
+function isDetailNamespace(namespace) {
+  return (
+    ROOM_DETAIL_NAMESPACES.has(namespace) ||
+    RESTAURANT_DETAIL_NAMESPACES.has(namespace) ||
+    BAR_CAFE_DETAIL_NAMESPACES.has(namespace)
+  );
+}
+
+
 
 function MediaEditorLoading() {
   return (
@@ -290,19 +435,9 @@ const RESTAURANT_DETAIL_EDITOR_ENTRIES = Object.fromEntries(
   ])
 );
 
-const BAR_CAFE_DETAIL_NAMESPACES = [
-  "JoieBar",
-  "MaldivaBar",
-  "MignonBar",
-  "PianoBar",
-  "VagoBar",
-  "Abellapatisserie",
-  "Cafedehouse",
-  "Cafedelago",
-];
 
 const BAR_CAFE_DETAIL_EDITOR_ENTRIES = Object.fromEntries(
-  BAR_CAFE_DETAIL_NAMESPACES.map((namespace) => [
+  BAR_CAFE_DETAIL_NAMESPACE_LIST.map((namespace) => [
     namespace,
     BarCafeDetailMediaEditor,
   ])
@@ -631,7 +766,7 @@ const SelectedMediaEditor =
 
       <div className="grid items-start gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
         <aside className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm xl:sticky xl:top-20">
-          <div className="border-b border-stone-200 bg-stone-50/70 p-5">
+          <div className="border-b border-stone-200 bg-stone-50/70 px-5 pt-5 pb-3">
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#63978f]">
@@ -644,7 +779,7 @@ const SelectedMediaEditor =
               </span>
             </div>
 
-            <label className="relative mt-4 block">
+            <label className="relative mt-3 block">
               <span className="sr-only">Sayfalarda ara</span>
               <FiSearch
                 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400"
@@ -655,7 +790,7 @@ const SelectedMediaEditor =
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Sayfa veya bölüm ara..."
-                className="w-full rounded-xl border border-stone-200 bg-white py-2.5 pl-10 pr-9 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
+                className="w-full rounded-xl border border-stone-200 bg-white py-1.5 pl-10 pr-9 text-sm text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
               />
               {query ? (
                 <button
@@ -670,7 +805,7 @@ const SelectedMediaEditor =
             </label>
           </div>
 
-          <div className="max-h-[calc(100vh-12rem)] space-y-5 overflow-y-auto p-3">
+          <div className="max-h-[calc(100vh-12rem)] space-y-3 overflow-y-auto p-3">
             {loading ? (
               <div className="space-y-2 p-1">
                 {[1, 2, 3, 4].map((item) => (
@@ -678,59 +813,169 @@ const SelectedMediaEditor =
                 ))}
               </div>
             ) : visibleGroups.length > 0 ? (
-              visibleGroups.map((group) => (
-                <div key={group.id}>
-                  <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#63978f]">
-                    {group.label}
-                  </p>
-                  <div className="space-y-1">
-                    {group.namespaces.map((namespace) => {
-                      const isSelected = selectedNamespace === namespace;
+             visibleGroups.map((group) => {
+  const visual =
+    GROUP_VISUALS[group.id] || GROUP_VISUALS.other;
 
-                      return (
-                        <button
-                          key={namespace}
-                          type="button"
-                          onClick={() => handleNamespaceSelect(namespace)}
-                          className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
-                            isSelected
-                              ? "bg-[#2f423f] text-white shadow-sm"
-                              : "text-stone-700 hover:bg-[#edf5f3] hover:text-[#2f423f]"
-                          }`}
-                        >
-                          <span
-                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
-                              isSelected
-                                ? "bg-white/10 text-white"
-                                : "bg-stone-100 text-stone-400 group-hover:bg-white group-hover:text-[#507f78]"
-                            }`}
-                          >
-                            {isSelected ? (
-                              <FiCheck className="h-4 w-4" aria-hidden="true" />
-                            ) : (
-                              <FiFileText className="h-3.5 w-3.5" aria-hidden="true" />
-                            )}
-                          </span>
-                          <span className="min-w-0 flex-1">
-                            <span className="block truncate text-sm font-medium">
-                              {getNamespaceLabel(namespace)}
-                            </span>
-                            <span className="mt-0.5 block truncate font-mono text-[10px] text-stone-400">
-                              {namespace}
-                            </span>
-                          </span>
-                          <FiChevronRight
-                            className={`h-4 w-4 shrink-0 ${
-                              isSelected ? "text-stone-400" : "text-stone-300"
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))
+  const GroupIcon = visual.icon;
+
+  return (
+    <section
+      key={group.id}
+      className={`overflow-hidden rounded-2xl border bg-white ${visual.borderClass}`}
+    >
+      {/* Grup başlığı */}
+      <div
+        className={`relative flex items-center gap-3 border-b px-3 py-3 ${visual.headerClass} ${visual.borderClass}`}
+      >
+        <span
+          aria-hidden="true"
+          className={`absolute bottom-0 left-0 top-0 w-1 ${visual.accentClass}`}
+        />
+
+        <span
+          className={`ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${visual.iconClass}`}
+        >
+          <GroupIcon className="h-4 w-4" aria-hidden="true" />
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-stone-700">
+            {group.label}
+          </p>
+
+          <p className="mt-0.5 text-[10px] text-stone-400">
+            {group.namespaces.length} içerik
+          </p>
+        </div>
+      </div>
+
+      {/* Grup sayfaları */}
+      <div className="divide-y divide-stone-100">
+        {group.namespaces.map((namespace) => {
+          const isSelected =
+            selectedNamespace === namespace;
+
+          const isDetail =
+            isDetailNamespace(namespace);
+
+          const namespaceType =
+            getNamespaceType(namespace);
+
+          return (
+            <button
+              key={namespace}
+              type="button"
+              onClick={() =>
+                handleNamespaceSelect(namespace)
+              }
+              aria-current={isSelected ? "page" : undefined}
+              className={`group relative flex w-full items-center gap-3 py-3 pr-3 text-left transition ${
+                isDetail ? "pl-6" : "pl-3"
+              } ${
+                isSelected
+                  ? "bg-[#2f423f] text-white"
+                  : MAIN_PAGE_NAMESPACES.has(namespace)
+                    ? "bg-stone-50/70 text-stone-800 hover:bg-[#edf5f3]"
+                    : "bg-white text-stone-700 hover:bg-[#edf5f3]/70"
+              }`}
+            >
+              {/* Detay sayfası hiyerarşi çizgisi */}
+              {isDetail && !isSelected ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-0 left-[17px] top-0 w-px bg-stone-200"
+                />
+              ) : null}
+
+              {/* Seçili sayfa çizgisi */}
+              {isSelected ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-[#8bc3ba]"
+                />
+              ) : null}
+
+              <span
+  className={`relative z-[1] flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition duration-200 ${
+    isSelected
+      ? "bg-white/10 text-white"
+      : `${visual.itemIconClass} ${
+          MAIN_PAGE_NAMESPACES.has(namespace)
+            ? "shadow-sm ring-1 ring-black/5"
+            : ""
+        }`
+  }`}
+>
+  {isSelected ? (
+    <FiCheck
+      className="h-4 w-4"
+      aria-hidden="true"
+    />
+  ) : MAIN_PAGE_NAMESPACES.has(namespace) ? (
+    <FiHome
+      className="h-4 w-4"
+      aria-hidden="true"
+    />
+  ) : (
+    <FiFileText
+      className="h-3.5 w-3.5"
+      aria-hidden="true"
+    />
+  )}
+</span>
+
+              <span className="min-w-0 flex-1">
+                <span
+                  className={`block truncate text-sm ${
+                    MAIN_PAGE_NAMESPACES.has(namespace)
+                      ? "font-semibold"
+                      : "font-medium"
+                  }`}
+                >
+                  {getNamespaceLabel(namespace)}
+                </span>
+
+                <span className="mt-1 flex min-w-0 items-center gap-1.5">
+                  <span
+                    className={`shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                      isSelected
+                        ? "bg-white/10 text-stone-200"
+                        : MAIN_PAGE_NAMESPACES.has(namespace)
+                          ? "bg-[#63978f]/10 text-[#507f78]"
+                          : "bg-stone-100 text-stone-500"
+                    }`}
+                  >
+                    {namespaceType}
+                  </span>
+
+                  <span
+                    className={`min-w-0 truncate font-mono text-[9px] ${
+                      isSelected
+                        ? "text-stone-400"
+                        : "text-stone-400"
+                    }`}
+                  >
+                    {namespace}
+                  </span>
+                </span>
+              </span>
+
+              <FiChevronRight
+                className={`h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 ${
+                  isSelected
+                    ? "text-[#a9c9c4]"
+                    : "text-stone-300"
+                }`}
+                aria-hidden="true"
+              />
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+})
             ) : (
               <p className="rounded-xl bg-stone-50 p-4 text-center text-sm text-stone-500">
                 Aramanızla eşleşen sayfa bulunamadı.

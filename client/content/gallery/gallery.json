@@ -34,28 +34,28 @@
           "order": 5
         },
         {
-          "id": "general-7",
-          "src": "/uploads/gallery/genel/img-07.jpg",
-          "order": 6
-        },
-        {
           "id": "general-8",
           "src": "/uploads/gallery/genel/img-08.jpg",
-          "order": 7
+          "order": 6
         },
         {
           "id": "general-9",
           "src": "/uploads/gallery/genel/img-09.jpg",
-          "order": 8
+          "order": 7
         },
         {
-          "id": "general-10",
-          "src": "/uploads/gallery/genel/img-10.jpg",
-          "order": 9
+          "id": "general-7",
+          "src": "/uploads/gallery/genel/img-07.jpg",
+          "order": 8
         },
         {
           "id": "general-11",
           "src": "/uploads/gallery/genel/img-11.jpg",
+          "order": 9
+        },
+        {
+          "id": "general-10",
+          "src": "/uploads/gallery/genel/img-10.jpg",
           "order": 10
         },
         {
@@ -1631,5 +1631,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-04-08T13:04:49.181Z"
+  "updatedAt": "2026-09-10T13:59:45.051Z"
 }
