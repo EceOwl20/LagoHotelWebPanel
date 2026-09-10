@@ -593,7 +593,7 @@ const SelectedMediaEditor =
 
   return (
     <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
-      <header className="relative overflow-hidden rounded-3xl bg-[#2f423f] px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
+      <header className="relative overflow-hidden rounded-3xl bg-lagoBlack px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
         <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#63978f]/25 blur-3xl" />
         <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
         <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">

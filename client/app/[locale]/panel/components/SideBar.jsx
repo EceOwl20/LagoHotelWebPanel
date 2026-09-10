@@ -57,7 +57,7 @@ export default function SideBar({ user }) {
   };
 
   return (
-    <aside className="flex min-h-screen w-full flex-col justify-between border-r border-stone-200 bg-stone-950 px-6 py-8 text-stone-100 md:fixed
+    <aside className="flex min-h-screen w-full flex-col justify-between border-r border-stone-200 bg-[#1D1D1B] px-6 py-8 text-stone-100 md:fixed
     md:inset-y-0
     md:left-0
     md:h-screen

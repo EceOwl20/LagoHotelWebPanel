@@ -179,7 +179,7 @@ function StatCard({ title, value, detail, icon: Icon, featured = false }) {
     <article
       className={`rounded-2xl border p-5 shadow-sm ${
         featured
-          ? "border-stone-900 bg-stone-900 text-[#63978f]"
+          ? "border-stone-900 bg-stone-900 text-[#63978f]" //[#2f423f]
           : "border-stone-200 bg-white text-[#63978f]"
       }`}
     >
