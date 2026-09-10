@@ -6,6 +6,7 @@ import {
   hasUnpublishedPageChanges,
   normalizePageRecord,
   publishPageRecord,
+  restorePageRecordAsDraft,
   sanitizeAdminPageInput,
   unpublishPageRecord,
 } from "./page-versions.mjs";
@@ -85,6 +86,26 @@ test("yayından kaldırma taslağı koruyup yalnızca canlı kopyayı temizler",
   assert.equal(createAdminPageView(draftRecord).status, "draft");
 });
 
+test("çöp kutusundan geri yüklenen sayfayı içeriğini koruyarak taslağa çevirir", () => {
+  const publishedRecord = publishPageRecord(
+    createPageRecord(createPage()),
+    "2026-01-01T13:00:00.000Z"
+  );
+  const restoredRecord = restorePageRecordAsDraft(
+    publishedRecord,
+    "2026-01-02T10:00:00.000Z"
+  );
+
+  assert.equal(restoredRecord.published, null);
+  assert.equal(restoredRecord.publishedAt, null);
+  assert.equal(restoredRecord.draft.status, "draft");
+  assert.equal(restoredRecord.updatedAt, "2026-01-02T10:00:00.000Z");
+  assert.equal(restoredRecord.draft.updatedAt, "2026-01-02T10:00:00.000Z");
+  assert.equal(restoredRecord.draft.hero.translations.tr.title, "İlk başlık");
+  assert.notEqual(restoredRecord.draft, publishedRecord.draft);
+  assert.equal(publishedRecord.published.status, "published");
+});
+
 test("panel metadatasını sayfa dokümanına kaydetmeden temizler", () => {
   const page = createAdminPageView(
     publishPageRecord(createPageRecord(createPage()), "2026-01-01T13:00:00.000Z")
@@ -95,4 +116,3 @@ test("panel metadatasını sayfa dokümanına kaydetmeden temizler", () => {
   assert.equal("publishedAt" in sanitized, false);
   assert.equal("publishedSlugs" in sanitized, false);
 });
-

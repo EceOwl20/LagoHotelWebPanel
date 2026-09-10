@@ -257,6 +257,26 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
       method: "DELETE",
       cookie: editorCookie,
     }),
+    request("/api/admin/pages/trash", {
+      cookie: editorCookie,
+      origin: null,
+    }),
+    request(
+      "/api/admin/pages/trash/00000000-0000-0000-0000-000000000000/restore",
+      {
+        method: "POST",
+        cookie: editorCookie,
+      }
+    ),
+    request(
+      "/api/admin/pages/trash/00000000-0000-0000-0000-000000000000",
+      {
+        method: "DELETE",
+        cookie: editorCookie,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ confirmation: "KALICI OLARAK SİL" }),
+      }
+    ),
     request("/api/admin/gallery?categoryId=test&imageId=test", {
       method: "DELETE",
       cookie: editorCookie,
@@ -270,7 +290,10 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
   ];
 
   const responses = await Promise.all(deniedRequests);
-  assert.deepEqual(responses.map((response) => response.status), [403, 403, 403, 403, 403, 403]);
+  assert.deepEqual(
+    responses.map((response) => response.status),
+    [403, 403, 403, 403, 403, 403, 403, 403, 403]
+  );
 });
 
 test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden ayırır", async () => {

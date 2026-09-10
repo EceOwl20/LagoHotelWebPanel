@@ -160,6 +160,77 @@ kilitlemez ve tamamlanan kuyruklar bellekten temizlenir.
 Bu kuyruk tek Node.js süreci içinde çalışır. Uygulama birden fazla process veya sunucu
 örneğinde çalıştırılırsa süreçler arası kilit ya da ortak bir veri tabanı gerekir.
 
+## Dinamik sayfa çöp kutusu
+
+Dinamik sayfalardaki silme işlemi kayıt dosyasını fiziksel olarak kaldırmaz. Sayfanın
+değiştirilmemiş kayıt dosyası ile silinme zamanı ve işlemi yapan kullanıcı bilgisi
+`<PANEL_DATA_ROOT>/trash/pages/<sayfa-id>/` altına taşınır. `PANEL_DATA_ROOT`
+tanımlı değilse geliştirme ortamında proje kökündeki `trash` klasörü kullanılır ve bu
+klasör Git tarafından takip edilmez.
+
+Taşıma sırasında aynı sayfa kimliği için daha önce oluşturulmuş bir çöp kaydının
+üzerine yazılmaz. Sayfa kaydı ile çöp kutusu aynı veri kökünde bulunduğu için aktif
+kayıt atomik dosya taşıma işlemiyle korunur. Sayfanın kullandığı yüklenmiş görseller
+bu işlem sırasında silinmez.
+
+Çöp kutusundaki sayfa özetleri salt okunur API ile listelenebilir. Bu endpoint yalnızca
+silme yetkisine sahip yöneticilere açıktır. Kaynak kaydı sağlam olup silinme meta verisi
+eksik kalan bir girdi de veri kaybını gizlememek için listede tutulur.
+
+Geri yükleme endpoint'i yalnızca silme yetkisine sahip yöneticilere açıktır ve aynı
+origin kontrolü ile istek sınırı uygular. Geri yüklemeden önce aktif sayfa kimliği ve
+bütün dillerdeki slug çakışmaları denetlenir. Çakışma varsa aktif veya silinmiş hiçbir
+kayıt değiştirilmez. Yayında silinen bir sayfa da doğrudan tekrar yayınlanmaz; içeriği
+korunarak taslak biçiminde geri yüklenir. Panel işlemden önce bu davranışı açıklayan
+bir onay penceresi gösterir ve başarılı geri yüklemeden sonra aktif sayfa listesini
+sunucudan yeniden okur.
+
+Kalıcı silme endpoint'i de yalnızca silme yetkisine sahip yöneticilere açıktır; aynı
+origin denetimi ve dakikada 10 istek sınırı uygular. İstek gövdesinde
+`KALICI OLARAK SİL` ifadesi eksiksiz yer almadan işlem yapılmaz. Kalıcı silme yalnızca
+sayfanın çöp kutusu kaydını kaldırır; sayfanın kullandığı yüklenmiş görsel dosyalarını
+silmez.
+
+## Çöp kutusu saklama ve otomatik temizlik
+
+Çöp kutusu bakım aracı varsayılan olarak 90 günden eski dinamik sayfa kayıtlarını
+temizleme adayı yapar, ancak silinme zamanından bağımsız olarak en yeni 20 geçerli
+kaydı daima korur. İki değer sunucu ortamından değiştirilebilir:
+
+- `PANEL_TRASH_RETENTION_DAYS`: Saklama süresi; varsayılan `90`, izin verilen aralık
+  `1-3650` gündür.
+- `PANEL_TRASH_MIN_ITEMS`: Her koşulda korunacak en yeni kayıt sayısı; varsayılan
+  `20` değeridir ve `0` olarak da ayarlanabilir.
+
+Eksik kaynak dosyası, geçersiz silinme tarihi veya kayıt kimliğiyle eşleşmeyen meta
+veri bulunan girdiler otomatik olarak silinmez ve bakım çıktısında atlanan kayıt olarak
+gösterilir. Böylece bozuk veya kısmen yazılmış bir kayıt veri kaybına dönüşmez.
+
+Komut varsayılan olarak yalnızca planı gösterir ve hiçbir kaydı değiştirmez:
+
+```bash
+PANEL_DATA_ROOT=/var/lib/lago-panel npm run panel:trash:cleanup
+```
+
+Plan doğrulandıktan sonra gerçek temizlik açık `--apply` parametresiyle yapılır:
+
+```bash
+PANEL_DATA_ROOT=/var/lib/lago-panel npm run panel:trash:cleanup -- --apply
+```
+
+Otomatik çalıştırma uygulama sürecindeki zamanlayıcıya bağlanmaz. Node.js süreci
+yeniden başlayabileceği veya birden fazla örnek çalışabileceği için komut sunucunun
+cron/systemd zamanlayıcısından günde bir kez çağrılmalıdır. Örnek cron girdisindeki
+proje yolu, Node/npm yolu ve log yolu sunucuya göre düzenlenmelidir:
+
+```cron
+15 3 * * * cd /srv/lago-panel/current/client && PANEL_DATA_ROOT=/var/lib/lago-panel PANEL_TRASH_RETENTION_DAYS=90 PANEL_TRASH_MIN_ITEMS=20 /usr/bin/npm run panel:trash:cleanup -- --apply >> /var/log/lago-panel-trash-cleanup.log 2>&1
+```
+
+Ortam değerleri değiştirildiğinde yeni politika bir sonraki çalışmada otomatik olarak
+uygulanır; uygulamayı yeniden derlemek gerekmez. Aynı kalıcı `PANEL_DATA_ROOT` değeri
+hem web uygulamasına hem bakım komutuna verilmelidir.
+
 ## Dinamik sayfa düzenleme kilidi
 
 Kayıtlı bir dinamik sayfanın editörü açıldığında kullanıcı ve tarayıcı sekmesine özel,

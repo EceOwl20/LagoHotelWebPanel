@@ -16,6 +16,7 @@ export const panelDataRoot = panelDataPaths.dataRoot;
 export const usesPersistentPanelDataRoot = panelDataPaths.usesPersistentDataRoot;
 export const contentRoot = panelDataPaths.contentRoot;
 export const messagesRoot = panelDataPaths.messagesRoot;
+export const trashRoot = panelDataPaths.trashRoot;
 export const publicRoot = panelDataPaths.publicRoot;
 export const uploadsRoot = panelDataPaths.uploadsRoot;
 

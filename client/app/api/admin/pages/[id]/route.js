@@ -178,7 +178,14 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
     assertPageNotLockedByAnother(id, session);
-    const deletedPage = await deletePageDraft(id);
+    const deletedPage = await deletePageDraft(id, {
+      deletedBy: {
+        id: session.userId,
+        username: session.username,
+        displayName: session.displayName,
+        role: session.role,
+      },
+    });
     clearPageEditLock(id);
 
     PAGE_LOCALES.forEach((locale) => {
@@ -199,7 +206,7 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ deletedPage });
   } catch (error) {
     return NextResponse.json(
-      { error: error.message || "Dinamik sayfa silinemedi." },
+      { error: error.message || "Dinamik sayfa çöp kutusuna taşınamadı." },
       { status: error.status || 500 }
     );
   }

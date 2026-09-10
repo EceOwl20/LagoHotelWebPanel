@@ -13,6 +13,7 @@ import {
   createPageRecord,
   normalizePageRecord,
   publishPageRecord,
+  restorePageRecordAsDraft,
   sanitizeAdminPageInput,
   unpublishPageRecord,
 } from "@/lib/pages/page-versions.mjs";
@@ -20,12 +21,24 @@ import {
   contentRoot,
   listJsonFiles,
   readJson,
-  removeFileIfExists,
+  trashRoot,
   writeJson,
 } from "./storage";
 import { enqueueFileOperation } from "./file-operation-queue.mjs";
+import {
+  listJsonTrashEntries,
+  moveJsonFileToTrash,
+  readJsonTrashEntry,
+  removeJsonTrashEntry,
+  restoreJsonTrashEntry,
+  TrashStoreError,
+} from "./trash-store.mjs";
+import { isPermanentDeleteConfirmed } from "./trash-policy.mjs";
 
 const pagesDirectory = path.join(contentRoot, "pages");
+const trashedPagesDirectory = path.join(trashRoot, "pages");
+const PAGE_ID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export class PageDraftError extends Error {
   constructor(message, status = 400) {
@@ -36,11 +49,16 @@ export class PageDraftError extends Error {
 }
 
 function getPageFilePath(id) {
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+  if (!PAGE_ID_PATTERN.test(id)) {
     throw new PageDraftError("Geçersiz sayfa kimliği.");
   }
 
   return path.join(pagesDirectory, `${id}.json`);
+}
+
+function getTrashedPageDirectory(id) {
+  getPageFilePath(id);
+  return path.join(trashedPagesDirectory, id);
 }
 
 async function readAllPageRecords() {
@@ -98,6 +116,36 @@ export async function listPageDrafts() {
   return records
     .map(toPageSummary)
     .sort((left, right) => (right.updatedAt || "").localeCompare(left.updatedAt || ""));
+}
+
+export async function listTrashedPageDrafts() {
+  const entries = await listJsonTrashEntries(trashedPagesDirectory);
+
+  return entries
+    .map(({ entryId, resource, metadata }) => {
+      if (!PAGE_ID_PATTERN.test(entryId)) return null;
+
+      const record = normalizePageRecord(resource);
+      if (!record || record.id !== entryId) return null;
+
+      const hasMatchingMetadata =
+        metadata?.resourceType === "dynamic-page" &&
+        metadata.resourceId === entryId;
+      const deletedAt = hasMatchingMetadata ? metadata.deletedAt : null;
+
+      return {
+        ...toPageSummary(record),
+        deletedAt:
+          deletedAt && !Number.isNaN(Date.parse(deletedAt)) ? deletedAt : null,
+        deletedBy: hasMatchingMetadata
+          ? normalizeDeletedBy(metadata.deletedBy)
+          : null,
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) =>
+      (right.deletedAt || "").localeCompare(left.deletedAt || "")
+    );
 }
 
 export async function readPageDraft(id) {
@@ -228,7 +276,20 @@ export function updatePageDraft(id, input) {
   return enqueueFileOperation(pagesDirectory, () => updatePageDraftUnlocked(id, input));
 }
 
-async function deletePageDraftUnlocked(id) {
+function normalizeDeletedBy(actor) {
+  if (!actor || typeof actor !== "object") {
+    return null;
+  }
+
+  return {
+    id: String(actor.id || ""),
+    username: String(actor.username || ""),
+    displayName: String(actor.displayName || actor.username || ""),
+    role: String(actor.role || ""),
+  };
+}
+
+async function deletePageDraftUnlocked(id, { deletedBy } = {}) {
   const filePath = getPageFilePath(id);
   const existingRecord = normalizePageRecord(await readJson(filePath, null));
 
@@ -236,12 +297,111 @@ async function deletePageDraftUnlocked(id) {
     throw new PageDraftError("Dinamik sayfa bulunamadı.", 404);
   }
 
-  await removeFileIfExists(filePath);
-  return createAdminPageView(existingRecord);
+  const deletedPage = createAdminPageView(existingRecord);
+
+  try {
+    await moveJsonFileToTrash({
+      sourcePath: filePath,
+      trashEntryDirectory: path.join(trashedPagesDirectory, id),
+      metadata: {
+        schemaVersion: 1,
+        resourceType: "dynamic-page",
+        resourceId: id,
+        resourceTitle: getPrimaryTitle(deletedPage),
+        deletedAt: new Date().toISOString(),
+        deletedBy: normalizeDeletedBy(deletedBy),
+      },
+    });
+  } catch (error) {
+    if (error instanceof TrashStoreError && error.code === "TRASH_ENTRY_EXISTS") {
+      throw new PageDraftError(error.message, 409);
+    }
+
+    throw error;
+  }
+
+  return deletedPage;
 }
 
-export function deletePageDraft(id) {
-  return enqueueFileOperation(pagesDirectory, () => deletePageDraftUnlocked(id));
+export function deletePageDraft(id, options) {
+  return enqueueFileOperation(pagesDirectory, () =>
+    deletePageDraftUnlocked(id, options)
+  );
+}
+
+async function restorePageDraftUnlocked(id) {
+  const filePath = getPageFilePath(id);
+
+  if (await readPageRecord(id)) {
+    throw new PageDraftError(
+      "Aynı kimliğe sahip aktif bir sayfa zaten bulunuyor.",
+      409
+    );
+  }
+
+  const trashEntryDirectory = getTrashedPageDirectory(id);
+  const { resource } = await readJsonTrashEntry(trashEntryDirectory);
+  const trashedRecord = normalizePageRecord(resource);
+
+  if (!trashedRecord || trashedRecord.id !== id) {
+    throw new PageDraftError("Çöp kutusunda bu sayfa bulunamadı.", 404);
+  }
+
+  const restoredRecord = restorePageRecordAsDraft(
+    trashedRecord,
+    new Date().toISOString()
+  );
+  await assertValidDraft(restoredRecord.draft);
+
+  try {
+    await restoreJsonTrashEntry({
+      trashEntryDirectory,
+      targetPath: filePath,
+      resource: restoredRecord,
+    });
+  } catch (error) {
+    if (
+      error instanceof TrashStoreError &&
+      error.code === "RESTORE_TARGET_EXISTS"
+    ) {
+      throw new PageDraftError(error.message, 409);
+    }
+
+    throw error;
+  }
+
+  return createAdminPageView(restoredRecord);
+}
+
+export function restorePageDraft(id) {
+  return enqueueFileOperation(pagesDirectory, () =>
+    restorePageDraftUnlocked(id)
+  );
+}
+
+async function permanentlyDeleteTrashedPageUnlocked(id, confirmation) {
+  if (!isPermanentDeleteConfirmed(confirmation)) {
+    throw new PageDraftError(
+      "Kalıcı silme için onay ifadesini eksiksiz girin."
+    );
+  }
+
+  const trashEntryDirectory = getTrashedPageDirectory(id);
+  const { resource } = await readJsonTrashEntry(trashEntryDirectory);
+  const trashedRecord = normalizePageRecord(resource);
+
+  if (!trashedRecord || trashedRecord.id !== id) {
+    throw new PageDraftError("Çöp kutusunda bu sayfa bulunamadı.", 404);
+  }
+
+  await removeJsonTrashEntry(trashEntryDirectory);
+  return toPageSummary(trashedRecord);
+}
+
+export function permanentlyDeleteTrashedPage(id, confirmation) {
+  return enqueueFileOperation(pagesDirectory, () =>
+    permanentlyDeleteTrashedPageUnlocked(id, confirmation)
+  );
 }
 
 async function setPagePublicationStatusUnlocked(id, status) {

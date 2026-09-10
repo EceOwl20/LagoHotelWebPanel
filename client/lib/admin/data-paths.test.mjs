@@ -11,6 +11,7 @@ test("ortam değişkeni yoksa mevcut proje dizinlerini kullanır", () => {
   assert.equal(paths.dataRoot, null);
   assert.equal(paths.contentRoot, path.join(appRoot, "content"));
   assert.equal(paths.messagesRoot, path.join(appRoot, "messages"));
+  assert.equal(paths.trashRoot, path.join(appRoot, "trash"));
   assert.equal(paths.publicRoot, path.join(appRoot, "public"));
   assert.equal(paths.uploadsRoot, path.join(appRoot, "public", "uploads"));
 });
@@ -24,6 +25,7 @@ test("PANEL_DATA_ROOT content ve messages dizinlerini kalıcı köke yönlendiri
   assert.equal(paths.dataRoot, dataRoot);
   assert.equal(paths.contentRoot, path.join(dataRoot, "content"));
   assert.equal(paths.messagesRoot, path.join(dataRoot, "messages"));
+  assert.equal(paths.trashRoot, path.join(dataRoot, "trash"));
   assert.equal(paths.uploadsRoot, path.join(appRoot, "public", "uploads"));
 });
 

@@ -136,3 +136,18 @@ export function unpublishPageRecord(record, updatedAt) {
   };
 }
 
+export function restorePageRecordAsDraft(record, restoredAt) {
+  return {
+    ...clonePage(record),
+    updatedAt: restoredAt,
+    publishedAt: null,
+    draft: {
+      ...clonePage(record.draft),
+      id: record.id,
+      status: "draft",
+      createdAt: record.createdAt,
+      updatedAt: restoredAt,
+    },
+    published: null,
+  };
+}

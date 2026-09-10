@@ -26,6 +26,9 @@ export function resolvePanelDataPaths({ appRoot, dataRoot }) {
     messagesRoot: resolvedDataRoot
       ? path.join(resolvedDataRoot, "messages")
       : path.join(resolvedAppRoot, "messages"),
+    trashRoot: resolvedDataRoot
+      ? path.join(resolvedDataRoot, "trash")
+      : path.join(resolvedAppRoot, "trash"),
     publicRoot: path.join(resolvedAppRoot, "public"),
     uploadsRoot: path.join(resolvedAppRoot, "public", "uploads"),
   });
