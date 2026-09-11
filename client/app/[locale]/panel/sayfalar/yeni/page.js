@@ -540,23 +540,36 @@ export default function NewPageAdminPage() {
     changeDraft({ type: PAGE_DRAFT_ACTIONS.REMOVE_SECTION, sectionId: section.id });
   };
 
-  const saveDraft = async () => {
+  const saveDraft = async ({ notify = true, publicationStatus } = {}) => {
     if (isEditing && !editLock.editable) {
       throw new Error("Düzenleme kilidi olmadan bu sayfa kaydedilemez.");
     }
 
-    const response = await fetch(pageId ? `/api/admin/pages/${pageId}` : "/api/admin/pages", {
-        method: pageId ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(isEditing ? { "X-Panel-Edit-Lock": editLock.lockToken } : {}),
-        },
-        body: JSON.stringify({ page: draft }),
+    const endpoint = pageId ? `/api/admin/pages/${pageId}` : "/api/admin/pages";
+    const response = await fetch(endpoint, {
+      method: pageId ? "PUT" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(isEditing ? { "X-Panel-Edit-Lock": editLock.lockToken } : {}),
+      },
+      body: JSON.stringify({
+        page: draft,
+        ...(publicationStatus !== undefined ? { publicationStatus } : {}),
+      }),
     });
     const payload = await response.json();
 
     if (!response.ok) {
-      throw new Error(payload.error || "Sayfa taslağı kaydedilemedi.");
+      throw new Error(
+        payload.error ||
+          (publicationStatus !== undefined
+            ? "Sayfa kaydedilip yayın durumu değiştirilemedi."
+            : "Sayfa taslağı kaydedilemedi.")
+      );
+    }
+
+    if (notify) {
+      window.dispatchEvent(new Event("admin-pages-updated"));
     }
 
     return payload.page;
@@ -595,24 +608,12 @@ export default function NewPageAdminPage() {
     setSaveError("");
 
     try {
-      const savedPage = await saveDraft();
-      acceptSavedDraft(savedPage);
-
-      const response = await fetch(`/api/admin/pages/${pageId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Panel-Edit-Lock": editLock.lockToken,
-        },
-        body: JSON.stringify({ status }),
+      const savedPage = await saveDraft({
+        notify: false,
+        publicationStatus: status,
       });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(payload.error || "Sayfanın yayın durumu değiştirilemedi.");
-      }
-
-      acceptSavedDraft(payload.page);
+      acceptSavedDraft(savedPage);
+      window.dispatchEvent(new Event("admin-pages-updated"));
       allowNavigationRef.current = true;
       router.push("/panel/sayfalar");
       router.refresh();

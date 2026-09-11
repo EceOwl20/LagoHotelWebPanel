@@ -13,6 +13,7 @@ import {
   isAllowedImageExtension,
   validateImageUpload,
 } from "@/lib/admin/image-upload-policy.mjs";
+import { invalidateMediaLibrary } from "@/lib/admin/media-library";
 
 const ALLOWED_ROOT_FOLDERS = new Set(["gallery", "blog", "misc", "pages"]);
 const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
@@ -103,6 +104,10 @@ export async function POST(request) {
   const targetFilePath = path.join(targetDirectory, fileName);
 
   await writeFile(targetFilePath, buffer);
+
+  if (rootFolder === "pages") {
+    invalidateMediaLibrary();
+  }
 
   return NextResponse.json({
     url: `/uploads/${folder}/${fileName}`,

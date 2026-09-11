@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { listBlogPosts } from "@/lib/admin/blog";
 import { readMediaLibrary } from "@/lib/admin/media-library";
 import { listPageDrafts } from "@/lib/admin/pages";
-import { rankSearchDocuments } from "@/lib/admin/panel-search.mjs";
+import {
+  prepareSearchDocument,
+  rankSearchDocuments,
+} from "@/lib/admin/panel-search.mjs";
 import { hasPanelPermission, PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { getAdminSession } from "@/lib/admin/session";
 import { listPanelUsers } from "@/lib/admin/users";
@@ -11,6 +14,7 @@ export const dynamic = "force-dynamic";
 
 const MAX_QUERY_LENGTH = 100;
 const MAX_RESULTS = 24;
+const mediaSearchDocumentsByAssets = new WeakMap();
 
 const panelDestinations = [
   ["dashboard", "Dashboard", "Genel bakış ve panel özeti", "/panel/dashboard"],
@@ -20,6 +24,31 @@ const panelDestinations = [
   ["gallery", "Galeri", "Galeri kategorileri ve görselleri", "/panel/galeri"],
   ["blog", "Blog", "Blog yazıları ve haberler", "/panel/blog"],
 ];
+
+function createMediaSearchDocuments(assets) {
+  const cachedDocuments = mediaSearchDocumentsByAssets.get(assets);
+
+  if (cachedDocuments) return cachedDocuments;
+
+  const documents = assets.map((asset) =>
+    prepareSearchDocument({
+      id: `media:${asset.id}`,
+      type: "media",
+      title: asset.name,
+      description: asset.folder || "Ana medya klasörü",
+      href: `/panel/medya?asset=${encodeURIComponent(asset.id)}`,
+      thumbnail: asset.url,
+      searchFields: [
+        { value: asset.name, weight: 4 },
+        { value: asset.folder, weight: 2 },
+        { value: asset.extension, weight: 1 },
+      ],
+    })
+  );
+
+  mediaSearchDocumentsByAssets.set(assets, documents);
+  return documents;
+}
 
 function createSearchDocuments({ pages, posts, assets, users, canManageUsers }) {
   const destinations = canManageUsers
@@ -71,19 +100,7 @@ function createSearchDocuments({ pages, posts, assets, users, canManageUsers }) 
         { value: post.slug, weight: 2 },
       ],
     })),
-    ...assets.map((asset) => ({
-      id: `media:${asset.id}`,
-      type: "media",
-      title: asset.name,
-      description: asset.folder || "Ana medya klasörü",
-      href: `/panel/medya?asset=${encodeURIComponent(asset.id)}`,
-      thumbnail: asset.url,
-      searchFields: [
-        { value: asset.name, weight: 4 },
-        { value: asset.folder, weight: 2 },
-        { value: asset.extension, weight: 1 },
-      ],
-    })),
+    ...createMediaSearchDocuments(assets),
     ...users.map((user) => ({
       id: `user:${user.id}`,
       type: "user",

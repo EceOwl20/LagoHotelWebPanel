@@ -4,8 +4,8 @@ import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
 import {
   deletePageDraft,
   readPageDraft,
+  savePageDraft,
   setPagePublicationStatus,
-  updatePageDraft,
 } from "@/lib/admin/pages";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
@@ -20,6 +20,23 @@ import {
   consumeRateLimit,
   getClientIp,
 } from "@/lib/admin/security";
+
+function revalidatePublishedPagePaths(previousSlugs, nextSlugs) {
+  PAGE_LOCALES.forEach((locale) => {
+    const affectedSlugs = new Set([
+      previousSlugs?.[locale],
+      nextSlugs?.[locale],
+    ]);
+
+    affectedSlugs.forEach((slug) => {
+      if (slug) {
+        revalidatePath(`/${locale}/${slug}`);
+      }
+    });
+
+    revalidatePath(`/${locale}`, "layout");
+  });
+}
 
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
@@ -58,9 +75,36 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
   }
 
+  let requestBody;
+
+  try {
+    requestBody = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Geçerli bir JSON gövdesi gönderin." },
+      { status: 400 }
+    );
+  }
+
+  const { page, publicationStatus } = requestBody;
+  const changesPublicationStatus = publicationStatus !== undefined;
+
+  if (changesPublicationStatus) {
+    try {
+      assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
+    } catch (error) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.status || 403 }
+      );
+    }
+  }
+
   const rateLimit = consumeRateLimit({
-    key: `admin-write:page-update:${getClientIp(request)}`,
-    limit: 60,
+    key: `admin-write:${
+      changesPublicationStatus ? "page-publication" : "page-update"
+    }:${getClientIp(request)}`,
+    limit: changesPublicationStatus ? 30 : 60,
     windowMs: 60 * 1000,
   });
 
@@ -73,14 +117,14 @@ export async function PUT(request, { params }) {
 
   try {
     const { id } = await params;
-    const { page } = await request.json();
 
     if (!page) {
       return NextResponse.json({ error: "Sayfa verisi zorunludur." }, { status: 400 });
     }
 
     assertPageEditLock(id, session, request.headers.get("x-panel-edit-lock"));
-    const updatedPage = await updatePageDraft(id, page, {
+    const result = await savePageDraft(id, page, {
+      publicationStatus,
       updatedBy: {
         id: session.userId,
         username: session.username,
@@ -88,7 +132,15 @@ export async function PUT(request, { params }) {
         role: session.role,
       },
     });
-    return NextResponse.json({ page: updatedPage });
+
+    if (changesPublicationStatus) {
+      revalidatePublishedPagePaths(
+        result.previousPublishedSlugs,
+        result.page.publishedSlugs
+      );
+    }
+
+    return NextResponse.json({ page: result.page });
   } catch (error) {
     return NextResponse.json(
       { error: error.message || "Sayfa taslağı güncellenemedi." },
@@ -131,20 +183,10 @@ export async function PATCH(request, { params }) {
     const previousPage = await readPageDraft(id);
     const page = await setPagePublicationStatus(id, status);
 
-    PAGE_LOCALES.forEach((locale) => {
-      const affectedSlugs = new Set([
-        previousPage?.publishedSlugs?.[locale],
-        page?.publishedSlugs?.[locale],
-      ]);
-
-      affectedSlugs.forEach((slug) => {
-        if (slug) {
-          revalidatePath(`/${locale}/${slug}`);
-        }
-      });
-
-      revalidatePath(`/${locale}`, "layout");
-    });
+    revalidatePublishedPagePaths(
+      previousPage?.publishedSlugs,
+      page?.publishedSlugs
+    );
 
     return NextResponse.json({ page });
   } catch (error) {

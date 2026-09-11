@@ -1,7 +1,14 @@
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
 import { spawn } from "node:child_process";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
@@ -85,6 +92,22 @@ async function login(username, password) {
 before(async () => {
   temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "lago-panel-users-"));
   usersFilePath = path.join(temporaryRoot, "users.json");
+  const sourcePagesDirectory = path.join(clientRoot, "content", "pages");
+  const temporaryPagesDirectory = path.join(temporaryRoot, "content", "pages");
+  const sourcePageFiles = (await readdir(sourcePagesDirectory))
+    .filter((fileName) => fileName.endsWith(".json"))
+    .sort();
+
+  assert.ok(
+    sourcePageFiles.length > 0,
+    "Entegrasyon testi için sayfa fixture'ı bulunmalı"
+  );
+  await mkdir(temporaryPagesDirectory, { recursive: true });
+  await writeFile(
+    path.join(temporaryPagesDirectory, sourcePageFiles[0]),
+    await readFile(path.join(sourcePagesDirectory, sourcePageFiles[0]))
+  );
+
   const port = await getFreePort();
   serverOrigin = `http://127.0.0.1:${port}`;
   serverProcess = spawn(
@@ -99,6 +122,7 @@ before(async () => {
         ADMIN_PASSWORD_HASH: "",
         ADMIN_SESSION_SECRET: "integration-test-session-secret-change-before-production",
         PANEL_USERS_FILE_PATH: usersFilePath,
+        PANEL_DATA_ROOT: temporaryRoot,
       },
       stdio: ["ignore", "pipe", "pipe"],
     }
@@ -135,6 +159,11 @@ test("oturumsuz sayfa geçmişi isteği 401 döner", async () => {
     "/api/admin/pages/00000000-0000-0000-0000-000000000000/history",
     { origin: null }
   );
+  assert.equal(response.status, 401);
+});
+
+test("oturumsuz taslak bildirim özeti isteği 401 döner", async () => {
+  const response = await request("/api/admin/pages/summary", { origin: null });
   assert.equal(response.status, 401);
 });
 
@@ -247,6 +276,18 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
   assert.equal(loginResult.payload.user.role, "editor");
   editorCookie = loginResult.cookie;
 
+  const summaryResponse = await request("/api/admin/pages/summary", {
+    cookie: editorCookie,
+    origin: null,
+  });
+  const summaryPayload = await summaryResponse.json();
+  assert.equal(summaryResponse.status, 200);
+  assert.equal(Number.isInteger(summaryPayload.summary.draftCount), true);
+  assert.equal(summaryPayload.summary.drafts.length <= 5, true);
+  summaryPayload.summary.drafts.forEach((draft) => {
+    assert.deepEqual(Object.keys(draft).sort(), ["id", "title", "updatedAt"]);
+  });
+
   const deniedRequests = [
     request("/api/admin/users", { cookie: editorCookie, origin: null }),
     request("/api/admin/users", {
@@ -260,6 +301,12 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
       cookie: editorCookie,
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ status: "published" }),
+    }),
+    request("/api/admin/pages/00000000-0000-0000-0000-000000000000", {
+      method: "PUT",
+      cookie: editorCookie,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ page: {}, publicationStatus: "published" }),
     }),
     request("/api/admin/pages/00000000-0000-0000-0000-000000000000", {
       method: "DELETE",
@@ -300,7 +347,7 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
   const responses = await Promise.all(deniedRequests);
   assert.deepEqual(
     responses.map((response) => response.status),
-    [403, 403, 403, 403, 403, 403, 403, 403, 403]
+    [403, 403, 403, 403, 403, 403, 403, 403, 403, 403]
   );
 });
 
@@ -428,6 +475,103 @@ test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden 
     body: JSON.stringify({ action: "heartbeat", lockToken: editorLock.lockToken }),
   });
   assert.equal(staleHeartbeat.status, 409);
+
+  const originalTitle = pagePayload.page.hero.translations.tr.title;
+  const nextPage = structuredClone(pagePayload.page);
+  nextPage.hero.translations.tr.title = `${originalTitle} atomik yayın`;
+
+  const recordBeforeInvalidStatus = await readFile(
+    path.join(temporaryRoot, "content", "pages", `${pageId}.json`),
+    "utf8"
+  );
+  const invalidStatusUpdate = await request(`/api/admin/pages/${pageId}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": takeoverLock.lockToken,
+    },
+    body: JSON.stringify({
+      page: nextPage,
+      publicationStatus: "scheduled",
+    }),
+  });
+  assert.equal(invalidStatusUpdate.status, 400);
+  assert.equal(
+    await readFile(
+      path.join(temporaryRoot, "content", "pages", `${pageId}.json`),
+      "utf8"
+    ),
+    recordBeforeInvalidStatus
+  );
+
+  const combinedPublish = await request(`/api/admin/pages/${pageId}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": takeoverLock.lockToken,
+    },
+    body: JSON.stringify({
+      page: nextPage,
+      publicationStatus: "published",
+    }),
+  });
+  const combinedPublishPayload = await combinedPublish.json();
+  assert.equal(combinedPublish.status, 200);
+  assert.equal(combinedPublishPayload.page.status, "published");
+  assert.equal(combinedPublishPayload.page.hasUnpublishedChanges, false);
+  assert.equal(
+    combinedPublishPayload.page.hero.translations.tr.title,
+    nextPage.hero.translations.tr.title
+  );
+
+  const storedRecord = JSON.parse(
+    await readFile(
+      path.join(temporaryRoot, "content", "pages", `${pageId}.json`),
+      "utf8"
+    )
+  );
+  assert.equal(
+    storedRecord.draft.hero.translations.tr.title,
+    nextPage.hero.translations.tr.title
+  );
+  assert.equal(
+    storedRecord.published.hero.translations.tr.title,
+    nextPage.hero.translations.tr.title
+  );
+  assert.equal(
+    storedRecord.history[0].draft.hero.translations.tr.title,
+    originalTitle
+  );
+
+  const combinedUnpublish = await request(`/api/admin/pages/${pageId}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": takeoverLock.lockToken,
+    },
+    body: JSON.stringify({
+      page: combinedPublishPayload.page,
+      publicationStatus: "draft",
+    }),
+  });
+  const combinedUnpublishPayload = await combinedUnpublish.json();
+  assert.equal(combinedUnpublish.status, 200);
+  assert.equal(combinedUnpublishPayload.page.status, "draft");
+
+  const unpublishedRecord = JSON.parse(
+    await readFile(
+      path.join(temporaryRoot, "content", "pages", `${pageId}.json`),
+      "utf8"
+    )
+  );
+  assert.equal(unpublishedRecord.published, null);
+  assert.equal(
+    unpublishedRecord.draft.hero.translations.tr.title,
+    nextPage.hero.translations.tr.title
+  );
 
   const takeoverRelease = await request(`/api/admin/pages/${pageId}/lock`, {
     method: "POST",

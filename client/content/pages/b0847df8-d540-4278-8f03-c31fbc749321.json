@@ -1,0 +1,1257 @@
+{
+  "storageVersion": 2,
+  "id": "b0847df8-d540-4278-8f03-c31fbc749321",
+  "createdAt": "2026-09-11T12:27:32.873Z",
+  "updatedAt": "2026-09-11T12:30:27.544Z",
+  "publishedAt": "2026-09-11T12:30:27.544Z",
+  "history": [
+    {
+      "versionId": "3145a7bd-99d9-4ee7-87b1-3e7ad6a5387d",
+      "createdAt": "2026-09-11T12:30:27.544Z",
+      "action": "draft-save",
+      "createdBy": {
+        "id": "environment-admin",
+        "username": "admin",
+        "displayName": "admin",
+        "role": "admin"
+      },
+      "wasPublished": true,
+      "draft": {
+        "schemaVersion": 1,
+        "template": "standard",
+        "slugs": {
+          "tr": "eyluldeneme",
+          "en": "eyluldeneme-en",
+          "de": "eyluldeneme-de",
+          "ru": "eyluldeneme-ru"
+        },
+        "status": "draft",
+        "showContactSection": true,
+        "hero": {
+          "image": "/uploads/pages/about/moment-2.webp",
+          "overlay": true,
+          "translations": {
+            "tr": {
+              "eyebrow": "Lago Hotel eyluldeneme",
+              "title": "eyluldeneme",
+              "imageAlt": "eyluldeneme"
+            },
+            "en": {
+              "eyebrow": "Lago Hotel",
+              "title": "New Page",
+              "imageAlt": ""
+            },
+            "de": {
+              "eyebrow": "Lago Hotel",
+              "title": "Neue Seite",
+              "imageAlt": ""
+            },
+            "ru": {
+              "eyebrow": "Lago Hotel",
+              "title": "Новая страница",
+              "imageAlt": ""
+            }
+          }
+        },
+        "navigation": {
+          "visible": true,
+          "order": 100,
+          "translations": {
+            "tr": {
+              "label": "eyluldeneme"
+            },
+            "en": {
+              "label": "eyluldeneme-en"
+            },
+            "de": {
+              "label": "eyluldeneme-de"
+            },
+            "ru": {
+              "label": "eyluldeneme-ru"
+            }
+          }
+        },
+        "seo": {
+          "tr": {
+            "title": "",
+            "description": ""
+          },
+          "en": {
+            "title": "",
+            "description": ""
+          },
+          "de": {
+            "title": "",
+            "description": ""
+          },
+          "ru": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "sections": [
+          {
+            "id": "intro-3be2b7a2-33bc-4a32-9992-c5e9b13509db",
+            "type": "intro",
+            "enabled": true,
+            "translations": {
+              "tr": {
+                "eyebrow": "eyluldeneme",
+                "title": "eyluldenemeeyluldeneme eyluldeneme",
+                "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum."
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "card-collection-6982ee4a-6f9c-4191-95b6-0d69db225401",
+            "type": "cardCollection",
+            "enabled": true,
+            "displayMode": "grid",
+            "cards": [
+              {
+                "id": "card-391011e7-d38e-49d2-89b2-418e18f38b87",
+                "image": "",
+                "order": 0,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-8bd6b746-d033-4f9c-ad0d-1db018f42f2f",
+                "image": "",
+                "order": 1,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-47a930b8-ccca-44ae-adaf-14cb1b83aefc",
+                "image": "",
+                "order": 2,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              }
+            ],
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "spa-info-4fb42434-c762-4e46-adba-2c5ce395e510",
+            "type": "spaInfo",
+            "enabled": true,
+            "leftImage": "",
+            "rightImage": "",
+            "translations": {
+              "tr": {
+                "eyebrow": "eylül eylül",
+                "title": "eylül",
+                "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades",
+                "leftEyebrow": "eylül1",
+                "leftTitle": "eylül1 eylül1",
+                "leftText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 ",
+                "leftImageAlt": "egrgvr",
+                "rightEyebrow": "eylül2",
+                "rightTitle": "eylül2 eylül2",
+                "rightText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.",
+                "rightItems": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. \nLorem Ipsum has been the industry's standard dummy\n text ever since 1966, when designers at Letraset\n and James Mosley, the librarian at St Bride Printing Library\n in London, took a 1914 Cicero",
+                "rightImageAlt": "hnfjy"
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              }
+            }
+          }
+        ],
+        "createdAt": "2026-09-11T12:27:32.873Z",
+        "updatedAt": "2026-09-11T12:29:16.876Z",
+        "id": "b0847df8-d540-4278-8f03-c31fbc749321"
+      }
+    },
+    {
+      "versionId": "a6eaa5c3-e168-4d22-99a8-9bbe36aa537c",
+      "createdAt": "2026-09-11T12:29:16.876Z",
+      "action": "draft-save",
+      "createdBy": {
+        "id": "environment-admin",
+        "username": "admin",
+        "displayName": "admin",
+        "role": "admin"
+      },
+      "wasPublished": false,
+      "draft": {
+        "schemaVersion": 1,
+        "template": "standard",
+        "slugs": {
+          "tr": "eyluldeneme",
+          "en": "eyluldeneme-en",
+          "de": "eyluldeneme-de",
+          "ru": "eyluldeneme-ru"
+        },
+        "status": "draft",
+        "showContactSection": true,
+        "hero": {
+          "image": "/uploads/pages/about/moment-2.webp",
+          "overlay": true,
+          "translations": {
+            "tr": {
+              "eyebrow": "Lago Hotel eyluldeneme",
+              "title": "eyluldeneme",
+              "imageAlt": "eyluldeneme"
+            },
+            "en": {
+              "eyebrow": "Lago Hotel",
+              "title": "New Page",
+              "imageAlt": ""
+            },
+            "de": {
+              "eyebrow": "Lago Hotel",
+              "title": "Neue Seite",
+              "imageAlt": ""
+            },
+            "ru": {
+              "eyebrow": "Lago Hotel",
+              "title": "Новая страница",
+              "imageAlt": ""
+            }
+          }
+        },
+        "navigation": {
+          "visible": true,
+          "order": 100,
+          "translations": {
+            "tr": {
+              "label": "eyluldeneme"
+            },
+            "en": {
+              "label": "eyluldeneme-en"
+            },
+            "de": {
+              "label": "eyluldeneme-de"
+            },
+            "ru": {
+              "label": "eyluldeneme-ru"
+            }
+          }
+        },
+        "seo": {
+          "tr": {
+            "title": "",
+            "description": ""
+          },
+          "en": {
+            "title": "",
+            "description": ""
+          },
+          "de": {
+            "title": "",
+            "description": ""
+          },
+          "ru": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "sections": [
+          {
+            "id": "intro-3be2b7a2-33bc-4a32-9992-c5e9b13509db",
+            "type": "intro",
+            "enabled": true,
+            "translations": {
+              "tr": {
+                "eyebrow": "eyluldeneme",
+                "title": "eyluldenemeeyluldeneme eyluldeneme",
+                "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum."
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "card-collection-6982ee4a-6f9c-4191-95b6-0d69db225401",
+            "type": "cardCollection",
+            "enabled": true,
+            "displayMode": "grid",
+            "cards": [
+              {
+                "id": "card-391011e7-d38e-49d2-89b2-418e18f38b87",
+                "image": "",
+                "order": 0,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-8bd6b746-d033-4f9c-ad0d-1db018f42f2f",
+                "image": "",
+                "order": 1,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-47a930b8-ccca-44ae-adaf-14cb1b83aefc",
+                "image": "",
+                "order": 2,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              }
+            ],
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "spa-info-4fb42434-c762-4e46-adba-2c5ce395e510",
+            "type": "spaInfo",
+            "enabled": true,
+            "leftImage": "",
+            "rightImage": "",
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "leftEyebrow": "",
+                "leftTitle": "",
+                "leftText": "",
+                "leftImageAlt": "",
+                "rightEyebrow": "",
+                "rightTitle": "",
+                "rightText": "",
+                "rightItems": "",
+                "rightImageAlt": ""
+              }
+            }
+          }
+        ],
+        "createdAt": "2026-09-11T12:27:32.873Z",
+        "updatedAt": "2026-09-11T12:27:32.873Z",
+        "id": "b0847df8-d540-4278-8f03-c31fbc749321"
+      }
+    }
+  ],
+  "draft": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "eyluldeneme",
+      "en": "eyluldeneme-en",
+      "de": "eyluldeneme-de",
+      "ru": "eyluldeneme-ru"
+    },
+    "status": "draft",
+    "showContactSection": true,
+    "hero": {
+      "image": "/uploads/pages/about/moment-2.webp",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel eyluldeneme",
+          "title": "eyluldeneme",
+          "imageAlt": "eyluldeneme"
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "eyluldeneme"
+        },
+        "en": {
+          "label": "eyluldeneme-en"
+        },
+        "de": {
+          "label": "eyluldeneme-de"
+        },
+        "ru": {
+          "label": "eyluldeneme-ru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-3be2b7a2-33bc-4a32-9992-c5e9b13509db",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "eyluldeneme",
+            "title": "eyluldenemeeyluldeneme eyluldeneme",
+            "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum."
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "card-collection-6982ee4a-6f9c-4191-95b6-0d69db225401",
+        "type": "cardCollection",
+        "enabled": true,
+        "displayMode": "grid",
+        "cards": [
+          {
+            "id": "card-391011e7-d38e-49d2-89b2-418e18f38b87",
+            "image": "",
+            "order": 0,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-8bd6b746-d033-4f9c-ad0d-1db018f42f2f",
+            "image": "",
+            "order": 1,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-47a930b8-ccca-44ae-adaf-14cb1b83aefc",
+            "image": "",
+            "order": 2,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          }
+        ],
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "spa-info-4fb42434-c762-4e46-adba-2c5ce395e510",
+        "type": "spaInfo",
+        "enabled": true,
+        "leftImage": "/uploads/pages/about/moment-4.webp",
+        "rightImage": "/uploads/pages/fitness/feature-personal-training.webp",
+        "translations": {
+          "tr": {
+            "eyebrow": "eylül eylül",
+            "title": "eylül",
+            "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades",
+            "leftEyebrow": "eylül1",
+            "leftTitle": "eylül1 eylül1",
+            "leftText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 ",
+            "leftImageAlt": "egrgvr",
+            "rightEyebrow": "eylül2",
+            "rightTitle": "eylül2 eylül2",
+            "rightText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.",
+            "rightItems": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. \nLorem Ipsum has been the industry's standard dummy\n text ever since 1966, when designers at Letraset\n and James Mosley, the librarian at St Bride Printing Library\n in London, took a 1914 Cicero",
+            "rightImageAlt": "hnfjy"
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-11T12:27:32.873Z",
+    "updatedAt": "2026-09-11T12:30:27.544Z",
+    "id": "b0847df8-d540-4278-8f03-c31fbc749321"
+  },
+  "published": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "eyluldeneme",
+      "en": "eyluldeneme-en",
+      "de": "eyluldeneme-de",
+      "ru": "eyluldeneme-ru"
+    },
+    "status": "published",
+    "showContactSection": true,
+    "hero": {
+      "image": "/uploads/pages/about/moment-2.webp",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel eyluldeneme",
+          "title": "eyluldeneme",
+          "imageAlt": "eyluldeneme"
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "eyluldeneme"
+        },
+        "en": {
+          "label": "eyluldeneme-en"
+        },
+        "de": {
+          "label": "eyluldeneme-de"
+        },
+        "ru": {
+          "label": "eyluldeneme-ru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-3be2b7a2-33bc-4a32-9992-c5e9b13509db",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "eyluldeneme",
+            "title": "eyluldenemeeyluldeneme eyluldeneme",
+            "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum."
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "card-collection-6982ee4a-6f9c-4191-95b6-0d69db225401",
+        "type": "cardCollection",
+        "enabled": true,
+        "displayMode": "grid",
+        "cards": [
+          {
+            "id": "card-391011e7-d38e-49d2-89b2-418e18f38b87",
+            "image": "",
+            "order": 0,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-8bd6b746-d033-4f9c-ad0d-1db018f42f2f",
+            "image": "",
+            "order": 1,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-47a930b8-ccca-44ae-adaf-14cb1b83aefc",
+            "image": "",
+            "order": 2,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          }
+        ],
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "spa-info-4fb42434-c762-4e46-adba-2c5ce395e510",
+        "type": "spaInfo",
+        "enabled": true,
+        "leftImage": "/uploads/pages/about/moment-4.webp",
+        "rightImage": "/uploads/pages/fitness/feature-personal-training.webp",
+        "translations": {
+          "tr": {
+            "eyebrow": "eylül eylül",
+            "title": "eylül",
+            "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades",
+            "leftEyebrow": "eylül1",
+            "leftTitle": "eylül1 eylül1",
+            "leftText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 ",
+            "leftImageAlt": "egrgvr",
+            "rightEyebrow": "eylül2",
+            "rightTitle": "eylül2 eylül2",
+            "rightText": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.",
+            "rightItems": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. \nLorem Ipsum has been the industry's standard dummy\n text ever since 1966, when designers at Letraset\n and James Mosley, the librarian at St Bride Printing Library\n in London, took a 1914 Cicero",
+            "rightImageAlt": "hnfjy"
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "leftEyebrow": "",
+            "leftTitle": "",
+            "leftText": "",
+            "leftImageAlt": "",
+            "rightEyebrow": "",
+            "rightTitle": "",
+            "rightText": "",
+            "rightItems": "",
+            "rightImageAlt": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-11T12:27:32.873Z",
+    "updatedAt": "2026-09-11T12:30:27.544Z",
+    "id": "b0847df8-d540-4278-8f03-c31fbc749321"
+  }
+}

@@ -26,6 +26,16 @@ function scoreField(normalizedField, token) {
   return 0;
 }
 
+export function prepareSearchDocument(document) {
+  return {
+    ...document,
+    normalizedSearchFields: (document.searchFields || []).map((field) => ({
+      value: normalizeSearchText(field.value),
+      weight: Number(field.weight) || 1,
+    })),
+  };
+}
+
 export function rankSearchDocuments(documents, rawQuery, { limit = 20 } = {}) {
   const query = normalizeSearchText(rawQuery);
   const tokens = [...new Set(query.split(" ").filter(Boolean))];
@@ -34,10 +44,9 @@ export function rankSearchDocuments(documents, rawQuery, { limit = 20 } = {}) {
 
   return documents
     .map((document) => {
-      const fields = (document.searchFields || []).map((field) => ({
-        value: normalizeSearchText(field.value),
-        weight: Number(field.weight) || 1,
-      }));
+      const fields =
+        document.normalizedSearchFields ||
+        prepareSearchDocument(document).normalizedSearchFields;
 
       let score = 0;
 
@@ -65,5 +74,12 @@ export function rankSearchDocuments(documents, rawQuery, { limit = 20 } = {}) {
         String(left.title).localeCompare(String(right.title), "tr")
     )
     .slice(0, limit)
-    .map(({ searchFields: _searchFields, score: _score, ...result }) => result);
+    .map(
+      ({
+        searchFields: _searchFields,
+        normalizedSearchFields: _normalizedSearchFields,
+        score: _score,
+        ...result
+      }) => result
+    );
 }

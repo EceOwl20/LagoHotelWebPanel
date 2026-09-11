@@ -4,6 +4,9 @@ import { createHash } from "crypto";
 import { readdir, stat } from "fs/promises";
 import path from "path";
 import { uploadsRoot } from "./storage";
+import { createAsyncCache } from "./async-cache.mjs";
+
+const MEDIA_LIBRARY_CACHE_TTL_MS = 30_000;
 
 const IMAGE_MIME_TYPES = {
   ".gif": "image/gif",
@@ -65,7 +68,7 @@ async function scanDirectory(directoryPath, relativeDirectory = "") {
   return results.flat();
 }
 
-export async function readMediaLibrary() {
+async function scanMediaLibrary() {
   const pagesUploadsRoot = path.join(uploadsRoot, "pages");
   const assets = await scanDirectory(pagesUploadsRoot, "pages");
 
@@ -78,10 +81,23 @@ export async function readMediaLibrary() {
     left.localeCompare(right, "tr")
   );
 
-  return {
-    assets,
-    folders,
+  return Object.freeze({
+    assets: Object.freeze(assets.map((asset) => Object.freeze(asset))),
+    folders: Object.freeze(folders),
     total: assets.length,
     totalSize: assets.reduce((sum, asset) => sum + asset.size, 0),
-  };
+  });
+}
+
+const mediaLibraryCache = createAsyncCache({
+  load: scanMediaLibrary,
+  ttlMs: MEDIA_LIBRARY_CACHE_TTL_MS,
+});
+
+export function readMediaLibrary() {
+  return mediaLibraryCache.get();
+}
+
+export function invalidateMediaLibrary() {
+  mediaLibraryCache.invalidate();
 }

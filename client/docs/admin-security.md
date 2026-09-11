@@ -124,6 +124,53 @@ dosyası JPEG MIME türüyle gönderilse bile dosya diske yazılmadan reddedilir
 imza kontrolü dosyanın tamamını yeniden kodlamaz; daha ileri içerik güvenliği için
 ileride güvenilir bir görsel decoder ile açma ve yeniden kodlama katmanı eklenebilir.
 
+Medya kütüphanesinin dosya sistemi indeksi aynı Node.js sürecinde 30 saniye süreyle
+bellekte tutulur. Aynı anda gelen medya ve arama istekleri tek tarama işlemini paylaşır;
+bu sayede her arama tuşunda bütün dosyalara yeniden `stat` çağrısı yapılmaz. Panelden
+`pages` klasörüne başarılı bir görsel yüklenince indeks anında geçersiz kılınır. Dosya
+sunucuya panel dışında bir yöntemle eklenirse kısa süreli cache en geç 30 saniye sonra
+kendiliğinden yenilenir. Cache yalnızca türetilmiş dosya metadatasını içerir; kalıcı
+içerik veya görsel dosyalarının yerini almaz.
+
+Arama için kullanılan medya dosya adı, klasör ve uzantı alanları aynı medya snapshot'ı
+başına yalnızca bir kez normalize edilir. Türetilmiş indeks `WeakMap` üzerinde
+tutulduğu için medya snapshot'ı yenilendiğinde eski indeks kalıcı bir bellek referansı
+oluşturmaz ve JavaScript çalışma zamanı tarafından temizlenebilir.
+
+## Topbar taslak bildirim özeti
+
+Topbar'daki zil göstergesi tam dinamik sayfa listesini indirmez. Yetkili
+`GET /api/admin/pages/summary` endpoint'i yalnızca yayınlanmamış toplam sayfa sayısını
+ve güncelleme tarihine göre en yeni beş taslağın `id`, `title`, `updatedAt` alanlarını
+döndürür. Slug, navigasyon, içerik bölümleri ve geçmiş sürümler bu yanıta eklenmez.
+
+Özet panel ilk açıldığında, tarayıcı yeniden odaklandığında, zil menüsü açıldığında
+ve bir sayfa işlemi başarıyla tamamlandığında yenilenir. Sıradan panel rotası
+değişiklikleri yeni istek üretmez. Yayınlama işleminin taslak kaydı ve durum değişikliği
+tek bir sunucu isteğinde tamamlanır; Topbar başarılı işlemden sonra bir kez
+bilgilendirilir.
+
+Özetin hazırlanması da aynı Node.js sürecinde 30 saniyelik cache kullanır. Sayfa
+oluşturma, güncelleme, silme, geri yükleme veya yayın durumu değişikliği başarıyla
+tamamlandığında cache anında geçersiz kılınır. Böylece odaklanma ve zil açma istekleri
+sayfa dosyalarını gereksiz yere yeniden okumaz; panel dışında yapılan dosya değişiklikleri
+ise en geç TTL sonunda özete yansır.
+
+## Birleşik taslak ve yayın kaydı
+
+Dinamik sayfa editöründeki “Kaydet ve Yayınla”, “Kaydet ve Yeniden Yayınla” ve
+“Kaydet ve Yayından Kaldır” işlemleri tek bir `PUT /api/admin/pages/:id` isteği
+gönderir. İstek, sayfa verisinin yanında isteğe bağlı `publicationStatus` alanını
+taşır. Bu alan gönderilmediğinde endpoint önceki taslak kaydetme davranışını korur.
+Eski `PATCH` yayın endpoint'i geriye uyumluluk için kullanılabilir durumdadır.
+
+Sunucu taslağı doğrular, gerekliyse önceki taslağı geçmişe ekler, yeni taslağı ve
+yayın kopyasını aynı kayıt nesnesinde hazırlar ve dosyayı yalnızca bir kez atomik
+olarak yazar. Böylece taslak kaydının başarılı, onu izleyen yayın isteğinin başarısız
+olduğu ara durum oluşmaz. `publicationStatus` kullanımı ayrıca
+`content:publish` yetkisi, düzenleme kilidi, origin kontrolü ve yayınlama istek sınırı
+gerektirir.
+
 ## Çıkış istek sınırı
 
 Çıkış endpoint'i IP başına dakikada 20 istekle sınırlandırılır. Arayüzde çıkış

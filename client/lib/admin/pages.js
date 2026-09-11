@@ -25,6 +25,7 @@ import {
   writeJson,
 } from "./storage";
 import { enqueueFileOperation } from "./file-operation-queue.mjs";
+import { createAsyncCache } from "./async-cache.mjs";
 import {
   listJsonTrashEntries,
   moveJsonFileToTrash,
@@ -41,6 +42,7 @@ import {
   prependPageHistorySnapshot,
   resolvePageHistoryLimit,
 } from "@/lib/pages/page-history.mjs";
+import { createPageNotificationSummary } from "@/lib/pages/page-notification-summary.mjs";
 
 const pagesDirectory = path.join(contentRoot, "pages");
 const trashedPagesDirectory = path.join(trashRoot, "pages");
@@ -77,6 +79,11 @@ async function readAllPageRecords() {
 
   return storedPages.map(normalizePageRecord).filter(Boolean);
 }
+
+const pageNotificationSummaryCache = createAsyncCache({
+  load: async () => createPageNotificationSummary(await readAllPageRecords()),
+  ttlMs: 30_000,
+});
 
 async function readPageRecord(id) {
   const storedPage = await readJson(getPageFilePath(id), null);
@@ -124,6 +131,10 @@ export async function listPageDrafts() {
   return records
     .map(toPageSummary)
     .sort((left, right) => (right.updatedAt || "").localeCompare(left.updatedAt || ""));
+}
+
+export async function readPageNotificationSummary() {
+  return pageNotificationSummaryCache.get();
 }
 
 export async function listTrashedPageDrafts() {
@@ -292,6 +303,7 @@ async function createPageDraftUnlocked(input) {
 
   const record = createPageRecord(page);
   await writeJson(getPageFilePath(page.id), record);
+  pageNotificationSummaryCache.invalidate();
   return createAdminPageView(record);
 }
 
@@ -299,7 +311,18 @@ export function createPageDraft(input) {
   return enqueueFileOperation(pagesDirectory, () => createPageDraftUnlocked(input));
 }
 
-async function updatePageDraftUnlocked(id, input, { updatedBy } = {}) {
+async function savePageDraftUnlocked(
+  id,
+  input,
+  { updatedBy, publicationStatus } = {}
+) {
+  if (
+    publicationStatus !== undefined &&
+    !["draft", "published"].includes(publicationStatus)
+  ) {
+    throw new PageDraftError("Geçersiz yayın durumu.");
+  }
+
   const existingRecord = await readPageRecord(id);
 
   if (!existingRecord) {
@@ -334,14 +357,29 @@ async function updatePageDraftUnlocked(id, input, { updatedBy } = {}) {
     draft: candidate,
   };
 
+  if (publicationStatus === "published") {
+    record = publishPageRecord(record, timestamp);
+  } else if (publicationStatus === "draft") {
+    record = unpublishPageRecord(record, timestamp);
+  }
+
   await writeJson(getPageFilePath(id), record);
-  return createAdminPageView(record);
+  pageNotificationSummaryCache.invalidate();
+  return {
+    page: createAdminPageView(record),
+    previousPublishedSlugs: existingRecord.published?.slugs || null,
+  };
 }
 
-export function updatePageDraft(id, input, options) {
+export function savePageDraft(id, input, options) {
   return enqueueFileOperation(pagesDirectory, () =>
-    updatePageDraftUnlocked(id, input, options)
+    savePageDraftUnlocked(id, input, options)
   );
+}
+
+export async function updatePageDraft(id, input, options) {
+  const result = await savePageDraft(id, input, options);
+  return result.page;
 }
 
 function normalizeDeletedBy(actor) {
@@ -388,6 +426,7 @@ async function deletePageDraftUnlocked(id, { deletedBy } = {}) {
     throw error;
   }
 
+  pageNotificationSummaryCache.invalidate();
   return deletedPage;
 }
 
@@ -438,6 +477,7 @@ async function restorePageDraftUnlocked(id) {
     throw error;
   }
 
+  pageNotificationSummaryCache.invalidate();
   return createAdminPageView(restoredRecord);
 }
 
@@ -515,6 +555,7 @@ async function setPagePublicationStatusUnlocked(id, status) {
       : unpublishPageRecord(existingRecord, timestamp);
 
   await writeJson(getPageFilePath(id), record);
+  pageNotificationSummaryCache.invalidate();
   return createAdminPageView(record);
 }
 

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { normalizeSearchText, rankSearchDocuments } from "./panel-search.mjs";
+import {
+  normalizeSearchText,
+  prepareSearchDocument,
+  rankSearchDocuments,
+} from "./panel-search.mjs";
 
 test("Türkçe karakterleri ve noktalama işaretlerini arama için normalize eder", () => {
   assert.equal(normalizeSearchText("İçerik, Işık & Görsel"), "icerik isik gorsel");
@@ -51,4 +55,17 @@ test("çok kelimeli aramada bütün kelimelerin bulunmasını zorunlu tutar", ()
   );
 
   assert.deepEqual(results.map((result) => result.id), ["complete"]);
+});
+
+test("önceden normalize edilen belgeyi sonuçta dahili indeks alanı olmadan kullanır", () => {
+  const preparedDocument = prepareSearchDocument({
+    id: "media",
+    title: "İç Mekân.webp",
+    searchFields: [{ value: "Sayfa Görselleri", weight: 2 }],
+  });
+  const [result] = rankSearchDocuments([preparedDocument], "gorselleri");
+
+  assert.equal(result.id, "media");
+  assert.equal("normalizedSearchFields" in result, false);
+  assert.equal("searchFields" in result, false);
 });

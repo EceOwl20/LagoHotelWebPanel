@@ -60,29 +60,36 @@ export default function TopBar({ user }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
-  const [draftPages, setDraftPages] = useState([]);
+  const [draftSummary, setDraftSummary] = useState({
+    draftCount: 0,
+    drafts: [],
+  });
   const [notificationsLoading, setNotificationsLoading] = useState(true);
   const [notificationsError, setNotificationsError] = useState("");
   const pageLabel = getPageLabel(pathname);
-  const draftCount = draftPages.length;
+  const draftCount = draftSummary.draftCount;
+  const draftPages = draftSummary.drafts;
 
-  const loadDraftPages = useCallback(async ({ silent = false } = {}) => {
+  const loadDraftSummary = useCallback(async ({ silent = false } = {}) => {
     if (!silent) setNotificationsLoading(true);
     setNotificationsError("");
 
     try {
-      const response = await fetch("/api/admin/pages", { cache: "no-store" });
+      const response = await fetch("/api/admin/pages/summary", {
+        cache: "no-store",
+      });
       const payload = await response.json();
 
       if (!response.ok) {
         throw new Error(payload.error || "Taslak bildirimleri alınamadı.");
       }
 
-      setDraftPages(
-        (Array.isArray(payload.pages) ? payload.pages : []).filter(
-          (page) => page.status !== "published"
-        )
-      );
+      setDraftSummary({
+        draftCount: Number(payload.summary?.draftCount) || 0,
+        drafts: Array.isArray(payload.summary?.drafts)
+          ? payload.summary.drafts
+          : [],
+      });
     } catch (error) {
       setNotificationsError(error.message);
     } finally {
@@ -120,10 +127,10 @@ export default function TopBar({ user }) {
   }, []);
 
   useEffect(() => {
-    loadDraftPages();
+    loadDraftSummary();
 
-    const refreshOnFocus = () => loadDraftPages({ silent: true });
-    const refreshOnPageChange = () => loadDraftPages({ silent: true });
+    const refreshOnFocus = () => loadDraftSummary({ silent: true });
+    const refreshOnPageChange = () => loadDraftSummary({ silent: true });
     window.addEventListener("focus", refreshOnFocus);
     window.addEventListener("admin-pages-updated", refreshOnPageChange);
 
@@ -131,7 +138,7 @@ export default function TopBar({ user }) {
       window.removeEventListener("focus", refreshOnFocus);
       window.removeEventListener("admin-pages-updated", refreshOnPageChange);
     };
-  }, [loadDraftPages, pathname]);
+  }, [loadDraftSummary]);
 
   const handleLogout = async () => {
     if (loggingOut) return;
@@ -190,7 +197,7 @@ export default function TopBar({ user }) {
             onClick={() => {
               const willOpen = openMenu !== "notifications";
               setOpenMenu(willOpen ? "notifications" : null);
-              if (willOpen) loadDraftPages({ silent: true });
+              if (willOpen) loadDraftSummary({ silent: true });
             }}
             className="relative flex h-9 w-9 items-center justify-center rounded-xl text-stone-400 transition hover:bg-stone-100 hover:text-stone-700"
           >
@@ -224,13 +231,13 @@ export default function TopBar({ user }) {
                 ) : notificationsError ? (
                   <div className="px-3 py-3">
                     <p className="text-xs leading-5 text-rose-600">{notificationsError}</p>
-                    <button type="button" onClick={() => loadDraftPages()} className="mt-2 text-xs font-semibold text-[#507f78] hover:text-[#2f423f]">
+                    <button type="button" onClick={() => loadDraftSummary()} className="mt-2 text-xs font-semibold text-[#507f78] hover:text-[#2f423f]">
                       Tekrar dene
                     </button>
                   </div>
                 ) : draftCount > 0 ? (
                   <div className="max-h-72 overflow-y-auto">
-                    {draftPages.slice(0, 5).map((page) => (
+                    {draftPages.map((page) => (
                       <Link
                         key={page.id}
                         href={`/panel/sayfalar/${page.id}`}
