@@ -11,6 +11,34 @@ function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
 }
 
+function createGalleryLibrary(gallery) {
+  const assets = (gallery?.categories || []).flatMap((category) =>
+    (category.images || []).flatMap((galleryImage) => {
+      const url = galleryImage.src || "";
+
+      if (!url) return [];
+
+      const name = url.split("/").pop() || "Galeri görseli";
+      const extension = name.includes(".") ? name.split(".").pop().toLowerCase() : "";
+
+      return [{
+        id: `gallery:${category.id}:${galleryImage.id}`,
+        url,
+        name,
+        folder: `gallery/${category.id}`,
+        extension,
+      }];
+    })
+  );
+
+  return {
+    assets,
+    folders: [...new Set(assets.map((asset) => asset.folder))].sort((left, right) =>
+      left.localeCompare(right, "tr")
+    ),
+  };
+}
+
 export default function PageImagePicker({
   label,
   value,
@@ -18,6 +46,8 @@ export default function PageImagePicker({
   hint,
   allowClear = true,
   uploadFolder = "pages",
+  librarySource = "media",
+  compact = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [library, setLibrary] = useState(null);
@@ -40,16 +70,29 @@ export default function PageImagePicker({
       setError("");
 
       try {
-        const response = await fetch("/api/admin/media", { cache: "no-store" });
+        const endpoint = librarySource === "gallery" ? "/api/admin/gallery" : "/api/admin/media";
+        const response = await fetch(endpoint, { cache: "no-store" });
         const payload = await response.json();
 
         if (!response.ok) {
-          throw new Error(payload.error || "Medya kütüphanesi alınamadı.");
+          throw new Error(
+            payload.error ||
+              (librarySource === "gallery"
+                ? "Galeri görselleri alınamadı."
+                : "Medya kütüphanesi alınamadı.")
+          );
         }
 
-        setLibrary(payload.library);
+        const nextLibrary =
+          librarySource === "gallery"
+            ? createGalleryLibrary(payload.gallery)
+            : payload.library;
+
+        setLibrary(nextLibrary);
         setActiveFolder(
-          payload.library?.folders?.includes(uploadFolder) ? uploadFolder : "all"
+          librarySource === "media" && nextLibrary?.folders?.includes(uploadFolder)
+            ? uploadFolder
+            : "all"
         );
       } catch (loadError) {
         setError(loadError.message);
@@ -59,7 +102,7 @@ export default function PageImagePicker({
     };
 
     loadLibrary();
-  }, [isOpen, library, libraryRequested, uploadFolder]);
+  }, [isOpen, library, libraryRequested, librarySource, uploadFolder]);
 
   useEffect(() => {
     setVisibleCount(PICKER_PAGE_SIZE);
@@ -125,8 +168,8 @@ export default function PageImagePicker({
       <div className="text-sm font-medium text-stone-700">{label}</div>
       {value ? (
         <div className="max-w-2xl overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
-          <div className="flex flex-col sm:flex-row">
-            <div className="relative aspect-[4/3] w-full shrink-0 bg-[linear-gradient(45deg,#f5f5f4_25%,transparent_25%),linear-gradient(-45deg,#f5f5f4_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f5f5f4_75%),linear-gradient(-45deg,transparent_75%,#f5f5f4_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] sm:w-56">
+          <div className={`flex flex-col ${compact ? "" : "sm:flex-row"}`}>
+            <div className={`relative aspect-[4/3] w-full shrink-0 bg-[linear-gradient(45deg,#f5f5f4_25%,transparent_25%),linear-gradient(-45deg,#f5f5f4_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f5f5f4_75%),linear-gradient(-45deg,transparent_75%,#f5f5f4_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] ${compact ? "" : "sm:w-56"}`}>
               <Image
                 src={value}
                 alt="Seçili görsel önizlemesi"
@@ -139,7 +182,7 @@ export default function PageImagePicker({
                 Panel önizlemesi
               </span>
             </div>
-            <div className="flex min-w-0 flex-1 flex-col justify-between gap-4 border-t border-stone-200 p-4 sm:border-l sm:border-t-0">
+            <div className={`flex min-w-0 flex-1 flex-col justify-between gap-4 border-t border-stone-200 p-4 ${compact ? "" : "sm:border-l sm:border-t-0"}`}>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#507f78]">
                   Seçili görsel
@@ -170,7 +213,7 @@ export default function PageImagePicker({
           </div>
         </div>
       ) : (
-        <div className="flex max-w-xl flex-col gap-4 rounded-2xl border border-dashed border-[#63978f]/60 bg-[#edf5f3]/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className={`flex max-w-xl flex-col gap-4 rounded-2xl border border-dashed border-[#63978f]/60 bg-[#edf5f3]/50 p-4 ${compact ? "" : "sm:flex-row sm:items-center sm:justify-between"}`}>
           <div className="flex items-center gap-3">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#507f78] shadow-sm ring-1 ring-stone-200">
               <FiImage className="h-5 w-5" />
@@ -178,7 +221,9 @@ export default function PageImagePicker({
             <div>
               <p className="text-sm font-medium text-stone-700">Henüz görsel seçilmedi</p>
               <p className="mt-0.5 text-xs text-stone-500">
-                Medya kütüphanesinden seçin veya yükleyin.
+                {librarySource === "gallery"
+                  ? "Galeriden seçin veya bilgisayarınızdan yükleyin."
+                  : "Medya kütüphanesinden seçin veya yükleyin."}
               </p>
             </div>
           </div>
@@ -206,7 +251,9 @@ export default function PageImagePicker({
               <div>
                 <h3 className="text-xl font-semibold text-stone-900">{label}</h3>
                 <p className="mt-1 text-sm text-stone-500">
-                  Medya Kütüphanesinden seçim yapabilir veya yeni bir görsel yükleyebilirsin.
+                  {librarySource === "gallery"
+                    ? "Galeriden seçim yapabilir veya bilgisayarından yeni bir görsel yükleyebilirsin."
+                    : "Medya Kütüphanesinden seçim yapabilir veya yeni bir görsel yükleyebilirsin."}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -276,7 +323,11 @@ export default function PageImagePicker({
               ) : null}
 
               {loadingLibrary ? (
-                <p className="text-sm text-stone-500">Medya Kütüphanesi yükleniyor...</p>
+                <p className="text-sm text-stone-500">
+                  {librarySource === "gallery"
+                    ? "Galeri görselleri yükleniyor..."
+                    : "Medya Kütüphanesi yükleniyor..."}
+                </p>
               ) : filteredAssets.length > 0 ? (
                 <>
                   <p className="mb-4 text-sm text-stone-500">

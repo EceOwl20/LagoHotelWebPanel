@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   FiAlertCircle,
@@ -15,13 +14,12 @@ import {
   FiPlus,
   FiSave,
   FiTrash2,
-  FiX,
 } from "react-icons/fi";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
-import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 import { findBlogPostToSelect } from "@/lib/admin/blog-selection.mjs";
+import PageImagePicker from "../sayfalar/components/PageImagePicker";
 
 function createEmptyTranslations() {
   return CMS_LOCALES.reduce((accumulator, locale) => {
@@ -88,7 +86,6 @@ export default function BlogAdminPage() {
   const [activeLocale, setActiveLocale] = useState("tr");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingBlockId, setUploadingBlockId] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const publishedCount = posts.filter((post) => post.status === "published").length;
@@ -212,73 +209,6 @@ export default function BlogAdminPage() {
         (block) => block.id !== blockId
       ),
     }));
-  };
-
-  const handleBlockImageUpload = async (blockId, event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setUploadingBlockId(blockId);
-    setError("");
-    setMessage("");
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "blog");
-
-      const response = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(payload.error || "Bölüm görseli yüklenemedi.");
-      }
-
-      updateContentBlock(blockId, { image: payload.url });
-      event.target.value = "";
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setUploadingBlockId(null);
-    }
-  };
-
-  const handleCoverUpload = async (event) => {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    setError("");
-    setMessage("");
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", "blog");
-
-      const response = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(payload.error || "Kapak görseli yüklenemedi.");
-      }
-
-      setDraft((currentDraft) => ({
-        ...currentDraft,
-        coverImage: payload.url,
-      }));
-      event.target.value = "";
-    } catch (err) {
-      setError(err.message);
-    }
   };
 
   const handleSave = async () => {
@@ -579,35 +509,18 @@ export default function BlogAdminPage() {
               />
             </label>
 
-            <div className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Kapak görseli</span>
-              <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#3c5551]">
-                <FiImage className="h-4 w-4" />
-                Kapak Yükle
-                <input
-                  type="file"
-                  accept={IMAGE_UPLOAD_ACCEPT}
-                  className="hidden"
-                  onChange={handleCoverUpload}
-                />
-              </label>
+            <div className="lg:col-span-2">
+              <PageImagePicker
+                label="Kapak görseli"
+                value={draft.coverImage}
+                onChange={(coverImage) =>
+                  setDraft((currentDraft) => ({ ...currentDraft, coverImage }))
+                }
+                hint="Galerideki mevcut bir görseli seçebilir veya bilgisayarınızdan yeni bir görsel yükleyebilirsiniz."
+                uploadFolder="blog"
+                librarySource="gallery"
+              />
             </div>
-              {draft.coverImage ? (
-                <div className="lg:col-span-2">
-                  <p className="mb-2 text-sm font-medium text-stone-700">Seçili kapak</p>
-                  <div className="relative h-52 max-w-xl overflow-hidden rounded-2xl border border-stone-200 bg-stone-100">
-                    <Image src={draft.coverImage} alt={getPostTitle(draft)} fill sizes="(max-width: 1024px) 100vw, 576px" unoptimized className="object-contain" />
-                  </div>
-                  <p className="mt-2 max-w-xl truncate font-mono text-[11px] text-stone-400">{draft.coverImage}</p>
-                </div>
-              ) : (
-                <div className="flex h-28 items-center justify-center rounded-2xl border border-dashed border-stone-300 bg-stone-50 lg:col-span-2">
-                  <div className="text-center text-stone-400">
-                    <FiImage className="mx-auto h-5 w-5" />
-                    <p className="mt-2 text-xs">Henüz kapak görseli seçilmedi</p>
-                  </div>
-                </div>
-              )}
             </div>
           </section>
 
@@ -836,51 +749,15 @@ export default function BlogAdminPage() {
                           </label>
                         </div>
 
-                        <div>
-                          <p className="mb-2 text-sm font-medium text-stone-700">
-                            Bölüm görseli <span className="font-normal text-stone-400">(isteğe bağlı)</span>
-                          </p>
-                          {block.image ? (
-                            <div className="space-y-2">
-                              <div className="relative h-40 overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
-                                <Image
-                                  src={block.image}
-                                  alt={blockTranslation.heading || "Blog bölüm görseli"}
-                                  fill
-                                  sizes="260px"
-                                  unoptimized
-                                  className="object-contain"
-                                />
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => updateContentBlock(block.id, { image: "" })}
-                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
-                              >
-                                <FiX className="h-4 w-4" /> Görseli kaldır
-                              </button>
-                            </div>
-                          ) : (
-                            <label className="flex h-40 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-stone-300 bg-stone-50 text-center transition hover:border-[#63978f] hover:bg-[#edf5f3]">
-                              {uploadingBlockId === block.id ? (
-                                <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#63978f]/30 border-t-[#507f78]" />
-                              ) : (
-                                <FiImage className="h-6 w-6 text-stone-400" />
-                              )}
-                              <span className="mt-2 text-xs font-semibold text-stone-600">
-                                {uploadingBlockId === block.id ? "Yükleniyor..." : "Görsel seç"}
-                              </span>
-                              <span className="mt-1 text-[11px] text-stone-400">Eklemek zorunlu değildir</span>
-                              <input
-                                type="file"
-                                accept={IMAGE_UPLOAD_ACCEPT}
-                                disabled={Boolean(uploadingBlockId)}
-                                className="hidden"
-                                onChange={(event) => handleBlockImageUpload(block.id, event)}
-                              />
-                            </label>
-                          )}
-                        </div>
+                        <PageImagePicker
+                          label="Bölüm görseli (isteğe bağlı)"
+                          value={block.image}
+                          onChange={(image) => updateContentBlock(block.id, { image })}
+                          hint="Galeriden seçebilir veya bilgisayarınızdan yükleyebilirsiniz."
+                          uploadFolder="blog"
+                          librarySource="gallery"
+                          compact
+                        />
                       </div>
                     </article>
                   );
