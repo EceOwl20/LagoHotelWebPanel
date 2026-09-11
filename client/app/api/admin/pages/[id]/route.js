@@ -80,7 +80,14 @@ export async function PUT(request, { params }) {
     }
 
     assertPageEditLock(id, session, request.headers.get("x-panel-edit-lock"));
-    const updatedPage = await updatePageDraft(id, page);
+    const updatedPage = await updatePageDraft(id, page, {
+      updatedBy: {
+        id: session.userId,
+        username: session.username,
+        displayName: session.displayName,
+        role: session.role,
+      },
+    });
     return NextResponse.json({ page: updatedPage });
   } catch (error) {
     return NextResponse.json(

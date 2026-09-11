@@ -34,11 +34,19 @@ import {
   TrashStoreError,
 } from "./trash-store.mjs";
 import { isPermanentDeleteConfirmed } from "./trash-policy.mjs";
+import {
+  createPageHistoryDetail,
+  createPageHistorySummary,
+  hasMeaningfulDraftChange,
+  prependPageHistorySnapshot,
+  resolvePageHistoryLimit,
+} from "@/lib/pages/page-history.mjs";
 
 const pagesDirectory = path.join(contentRoot, "pages");
 const trashedPagesDirectory = path.join(trashRoot, "pages");
 const PAGE_ID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const PAGE_HISTORY_VERSION_ID_PATTERN = PAGE_ID_PATTERN;
 
 export class PageDraftError extends Error {
   constructor(message, status = 400) {
@@ -153,6 +161,53 @@ export async function readPageDraft(id) {
   return createAdminPageView(record);
 }
 
+export async function listPageHistory(id) {
+  const record = await readPageRecord(id);
+
+  if (!record) {
+    throw new PageDraftError("Sayfa taslağı bulunamadı.", 404);
+  }
+
+  return {
+    page: {
+      id: record.id,
+      title: getPrimaryTitle(record.draft),
+    },
+    limit: resolvePageHistoryLimit(process.env),
+    versions: record.history.map(createPageHistorySummary).filter(Boolean),
+  };
+}
+
+export async function readPageHistoryVersion(id, versionId) {
+  if (!PAGE_HISTORY_VERSION_ID_PATTERN.test(versionId)) {
+    throw new PageDraftError("Geçersiz geçmiş sürüm kimliği.");
+  }
+
+  const record = await readPageRecord(id);
+
+  if (!record) {
+    throw new PageDraftError("Sayfa taslağı bulunamadı.", 404);
+  }
+
+  const historyEntry = record.history.find(
+    (entry) => entry.versionId === versionId
+  );
+  const version = createPageHistoryDetail(historyEntry);
+
+  if (!version) {
+    throw new PageDraftError("Geçmiş sürüm bulunamadı.", 404);
+  }
+
+  return {
+    page: {
+      id: record.id,
+      title: getPrimaryTitle(record.draft),
+      updatedAt: record.updatedAt,
+    },
+    version,
+  };
+}
+
 export async function readPublishedPageBySlug(locale, slug) {
   if (!PAGE_LOCALES.includes(locale) || !slug) {
     return null;
@@ -244,7 +299,7 @@ export function createPageDraft(input) {
   return enqueueFileOperation(pagesDirectory, () => createPageDraftUnlocked(input));
 }
 
-async function updatePageDraftUnlocked(id, input) {
+async function updatePageDraftUnlocked(id, input, { updatedBy } = {}) {
   const existingRecord = await readPageRecord(id);
 
   if (!existingRecord) {
@@ -262,8 +317,19 @@ async function updatePageDraftUnlocked(id, input) {
   };
 
   await assertValidDraft(candidate, id);
-  const record = {
-    ...existingRecord,
+  let record = existingRecord;
+
+  if (hasMeaningfulDraftChange(existingRecord.draft, candidate)) {
+    record = prependPageHistorySnapshot(existingRecord, {
+      versionId: randomUUID(),
+      createdAt: timestamp,
+      createdBy: updatedBy,
+      limit: resolvePageHistoryLimit(process.env),
+    });
+  }
+
+  record = {
+    ...record,
     updatedAt: timestamp,
     draft: candidate,
   };
@@ -272,8 +338,10 @@ async function updatePageDraftUnlocked(id, input) {
   return createAdminPageView(record);
 }
 
-export function updatePageDraft(id, input) {
-  return enqueueFileOperation(pagesDirectory, () => updatePageDraftUnlocked(id, input));
+export function updatePageDraft(id, input, options) {
+  return enqueueFileOperation(pagesDirectory, () =>
+    updatePageDraftUnlocked(id, input, options)
+  );
 }
 
 function normalizeDeletedBy(actor) {

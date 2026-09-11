@@ -130,6 +130,14 @@ test("oturumsuz kullanıcı yönetimi isteği 401 döner", async () => {
   assert.equal(response.status, 401);
 });
 
+test("oturumsuz sayfa geçmişi isteği 401 döner", async () => {
+  const response = await request(
+    "/api/admin/pages/00000000-0000-0000-0000-000000000000/history",
+    { origin: null }
+  );
+  assert.equal(response.status, 401);
+});
+
 test("hatalı giriş cookie üretmeden 401 döner", async () => {
   const result = await login(adminUsername, "wrong-password");
   assert.equal(result.response.status, 401);
@@ -306,6 +314,28 @@ test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden 
   assert.ok(pagesPayload.pages.length > 0, "Kilit testi için dinamik sayfa bulunmalı");
 
   const pageId = pagesPayload.pages[0].id;
+  const historyResponse = await request(`/api/admin/pages/${pageId}/history`, {
+    cookie: editorCookie,
+    origin: null,
+  });
+  const historyPayload = await historyResponse.json();
+  assert.equal(historyResponse.status, 200);
+  assert.equal(historyPayload.page.id, pageId);
+  assert.ok(Array.isArray(historyPayload.versions));
+  assert.equal(
+    historyPayload.versions.some((version) => "draft" in version),
+    false
+  );
+
+  const missingHistoryVersionResponse = await request(
+    `/api/admin/pages/${pageId}/history/00000000-0000-0000-0000-000000000000`,
+    {
+      cookie: editorCookie,
+      origin: null,
+    }
+  );
+  assert.equal(missingHistoryVersionResponse.status, 404);
+
   const pageResponse = await request(`/api/admin/pages/${pageId}`, {
     cookie: editorCookie,
     origin: null,

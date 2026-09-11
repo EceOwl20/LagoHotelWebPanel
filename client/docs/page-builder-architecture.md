@@ -165,6 +165,61 @@ Dinamik sayfa kaydı tek bir durum etiketi yerine iki ayrı içerik kopyası sak
 - Yayından kaldırmak yalnızca `published` kopyasını temizler; çalışma taslağı korunur.
 - Panel `Taslak`, `Yayında` ve `Yayında · Değişiklik var` durumlarını ayrı gösterir.
 
+Deneme aşamasında her sayfa kaydı ayrıca en fazla üç eski taslak sürümünü `history`
+alanında saklar. Sürüm, yalnızca mevcut bir sayfada içerik gerçekten değişerek başarıyla
+kaydedildiğinde oluşturulur; yalnızca zaman bilgisinin değişmesi veya yayın durumunun
+değiştirilmesi gereksiz bir içerik sürümü üretmez. Her geçmiş girdisi eski taslağın
+bağımsız kopyasını, kayıt zamanını ve işlemi yapan panel kullanıcısını içerir.
+
+```json
+{
+  "history": [
+    {
+      "versionId": "...",
+      "createdAt": "2026-09-11T10:00:00.000Z",
+      "action": "draft-save",
+      "createdBy": {},
+      "wasPublished": true,
+      "draft": {}
+    }
+  ]
+}
+```
+
+Varsayılan limit `PANEL_PAGE_VERSION_LIMIT=3` ortam değişkeniyle `1-100` arasında
+değiştirilebilir. Limit küçültildiğinde fazladan eski kayıtlar ilgili sayfanın bir
+sonraki anlamlı kaydında budanır. Geçmiş aynı sayfa kaydının parçası olduğu için sayfa
+çöp kutusuna taşındığında geçmişi de birlikte taşınır; kalıcı silmede ikisi birlikte
+kaldırılır. Görseller kopyalanmaz, sürümlerde yalnızca mevcut medya adresleri tutulur.
+
+Geçmiş listesi `GET /api/admin/pages/:id/history` endpoint'i üzerinden yalnızca giriş
+yapmış ve içerik düzenleme yetkisi bulunan panel kullanıcılarına sunulur. Liste yanıtı
+tam taslak verisini içermez; sürüm kimliği, tarih, kullanıcı, başlık, slug değerleri,
+önceki yayın durumu ve component sayısıyla sınırlandırılmıştır. Yanıt tarayıcı veya ara
+katmanlarda önbelleğe alınmaz.
+
+Bu aşama geçmişi güvenli biçimde üretme, sınırlandırma ve salt okunur özetini sunma
+altyapısını kapsar. Seçilen tek bir sürümün ön izleme verisi
+`GET /api/admin/pages/:id/history/:versionId` endpoint'iyle alınabilir. Bu endpoint
+yalnızca ilgili sürümün bağımsız taslak kopyasını döndürür; güncel kayıt üzerinde yazma,
+yayınlama veya geri yükleme işlemi yapmaz. Geçersiz sürüm kimlikleri `400`, mevcut
+olmayan sürümler `404` yanıtıyla reddedilir ve yanıt `no-store` olarak işaretlenir.
+
+Kayıtlı sayfa düzenleme ekranındaki `Sürüm Geçmişi` düğmesi bu iki endpoint'i talep
+üzerine çağırır. Açılan salt okunur pencerede sürümler yeni tarihten eskiye listelenir;
+seçilen sürüm dört dil arasında geçiş yapılabilen gerçek sayfa şablonuyla ön izlenir.
+Pencere açılmadan geçmiş verisi yüklenmez ve her yeniden açılışta liste sunucudan
+yenilenir.
+
+Kullanıcı `Farkları göster` eylemini seçtiğinde yalnızca açık geçmiş sürümü ile
+tarayıcıdaki güncel taslak karşılaştırılır. Karşılaştırma; değişen dilleri, genel sayfa
+ayarlarını, eklenen/silinen/değiştirilen component sayılarını ve component sırasını
+özetler. Component eşleştirmesi kimlik üzerinden `Map` ile doğrusal zamanda yapılır;
+modal kapalıyken veya kullanıcı karşılaştırmayı açmamışken hesaplama çalışmaz ve bu
+işlem için ek bir API isteği gönderilmez.
+
+Seçilen sürümü taslak olarak geri yükleme işlemi ayrı bir adımda eklenecektir.
+
 Eski düz JSON sayfaları okuma sırasında bu modele dönüştürülür. Dosya ancak bir sonraki
 kayıt veya yayın işleminde yeni formatta yazıldığı için toplu ve riskli bir veri
 migrasyonu gerekmez.

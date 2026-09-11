@@ -17,6 +17,7 @@ import BlockDefinitionFields from "../components/BlockDefinitionFields";
 import Field from "../components/EditorField";
 import PageEditLockNotice from "../components/PageEditLockNotice";
 import PageImagePicker from "../components/PageImagePicker";
+import PageHistoryPanel from "../components/PageHistoryPanel";
 import usePageEditLock from "../components/usePageEditLock";
 import {
   PAGE_LOCALES,
@@ -747,6 +748,9 @@ export default function NewPageAdminPage() {
             ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
+            {isEditing ? (
+              <PageHistoryPanel pageId={pageId} currentDraft={draft} />
+            ) : null}
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
               <FiLayers className="h-4 w-4 text-[#a9c9c4]" />
               {draft.sections.length} component

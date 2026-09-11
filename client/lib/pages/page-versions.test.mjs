@@ -33,6 +33,7 @@ test("eski yayınlanmış sayfayı çalışma ve canlı kopyaya ayırır", () =>
   assert.equal(record.storageVersion, 2);
   assert.equal(record.draft.status, "draft");
   assert.equal(record.published.status, "published");
+  assert.deepEqual(record.history, []);
   assert.equal(createAdminPageView(record).status, "published");
   assert.equal(hasUnpublishedPageChanges(record), false);
 });
@@ -55,6 +56,13 @@ test("taslak değişikliği yayınlanan kopyayı değiştirmez", () => {
   assert.equal(changedRecord.published.hero.translations.tr.title, "İlk başlık");
   assert.equal(createAdminPageView(changedRecord).status, "published");
   assert.equal(createAdminPageView(changedRecord).hasUnpublishedChanges, true);
+});
+
+test("sürüm 2 kayıtlarındaki geçmiş alanını geriye uyumlu olarak normalize eder", () => {
+  const record = createPageRecord(createPage());
+  delete record.history;
+
+  assert.deepEqual(normalizePageRecord(record).history, []);
 });
 
 test("yeniden yayınlama çalışma kopyasını canlı kopyaya aktarır", () => {

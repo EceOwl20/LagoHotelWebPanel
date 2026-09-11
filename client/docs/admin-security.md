@@ -231,6 +231,24 @@ Ortam değerleri değiştirildiğinde yeni politika bir sonraki çalışmada oto
 uygulanır; uygulamayı yeniden derlemek gerekmez. Aynı kalıcı `PANEL_DATA_ROOT` değeri
 hem web uygulamasına hem bakım komutuna verilmelidir.
 
+## Dinamik sayfa geçmişi
+
+Dinamik sayfaların eski taslakları deneme aşamasında güncel sayfa kaydının içinde en
+fazla üç sürümle sınırlandırılır. Limit sunucu ortamındaki
+`PANEL_PAGE_VERSION_LIMIT` değeriyle `1-100` arasında değiştirilebilir; tanımlanmazsa
+`3` kullanılır. Geçersiz değerler sınırsız kayıt büyümesine düşmek yerine kayıt
+işlemini kapalı-güvenli biçimde reddeder.
+
+Geçmiş girdileri işlemi yapan kullanıcının kimlik, kullanıcı adı, görünen ad ve rol
+bilgisini içerir; parola, oturum tokenı veya düzenleme kilidi tokenı saklanmaz.
+Geçmiş sürümde görsel dosyanın kendisi çoğaltılmaz, yalnızca sayfa taslağındaki medya
+adresi korunur. Salt okunur geçmiş listesi yalnızca içerik düzenleme yetkisi olan panel
+kullanıcılarına açıktır ve tam taslak yerine sınırlı sürüm özetleri döndürür. Kullanıcı
+kimliği ile taslak içeriği liste yanıtında paylaşılmaz ve yanıt `no-store` olarak
+işaretlenir. Tek sürüm detay endpoint'i de aynı yetki denetimini uygular ve yalnızca
+seçilen geçmiş girdisinin bağımsız kopyasını döndürür; isteğin kendisi güncel sayfa
+kaydını değiştiremez.
+
 ## Dinamik sayfa düzenleme kilidi
 
 Kayıtlı bir dinamik sayfanın editörü açıldığında kullanıcı ve tarayıcı sekmesine özel,

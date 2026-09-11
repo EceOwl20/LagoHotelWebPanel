@@ -1,3 +1,5 @@
+import { normalizePageHistory } from "./page-history.mjs";
+
 export const PAGE_STORAGE_VERSION = 2;
 
 function clonePage(page) {
@@ -34,7 +36,10 @@ export function normalizePageRecord(value) {
   }
 
   if (isVersionedPageRecord(value)) {
-    return value;
+    return {
+      ...value,
+      history: normalizePageHistory(value.history),
+    };
   }
 
   const draft = {
@@ -55,6 +60,7 @@ export function normalizePageRecord(value) {
     createdAt: value.createdAt || null,
     updatedAt: value.updatedAt || value.createdAt || null,
     publishedAt: published ? value.updatedAt || value.createdAt || null : null,
+    history: [],
     draft,
     published,
   };
@@ -67,6 +73,7 @@ export function createPageRecord(draft) {
     createdAt: draft.createdAt,
     updatedAt: draft.updatedAt,
     publishedAt: null,
+    history: [],
     draft: {
       ...clonePage(draft),
       status: "draft",
