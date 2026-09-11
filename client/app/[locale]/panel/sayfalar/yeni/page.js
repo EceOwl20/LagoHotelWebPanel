@@ -14,13 +14,11 @@ import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import StandardPageTemplate from "../../../_page-template/StandardPageTemplate";
 import BlockDefinitionFields from "../components/BlockDefinitionFields";
-import Field from "../components/EditorField";
+import PageBuilderHeader from "../components/PageBuilderHeader";
 import PageEditLockNotice from "../components/PageEditLockNotice";
-import PageImagePicker from "../components/PageImagePicker";
-import PageHistoryPanel from "../components/PageHistoryPanel";
+import PageSettingsEditor from "../components/PageSettingsEditor";
 import usePageEditLock from "../components/usePageEditLock";
 import {
-  PAGE_LOCALES,
   createPageSection,
   validatePageDocument,
 } from "@/lib/pages/schema.mjs";
@@ -51,7 +49,6 @@ import {
   FiCopy,
   FiEye,
   FiFileText,
-  FiGlobe,
   FiGrid,
   FiImage,
   FiLayers,
@@ -93,16 +90,6 @@ function ComponentLibraryIcon({ type }) {
 
 function serializeDraft(draft) {
   return JSON.stringify(draft);
-}
-
-function normalizeSlugInput(value, locale) {
-  return value
-    .toLocaleLowerCase(locale)
-    .normalize("NFKD")
-    .replace(/\p{M}/gu, "")
-    .replace(/ı/g, "i")
-    .replace(/[^\p{L}\p{N}]+/gu, "-")
-    .replace(/(^-|-$)/g, "");
 }
 
 function getValidationDestination(error, draft) {
@@ -488,15 +475,6 @@ export default function NewPageAdminPage() {
     setLastAddedSectionId(null);
   };
 
-  const updateHeroTranslation = (field, value) => {
-    changeDraft({
-      type: PAGE_DRAFT_ACTIONS.UPDATE_HERO_TRANSLATION,
-      locale: activeLocale,
-      field,
-      value,
-    });
-  };
-
   const updateSectionTranslation = (sectionId, field, value) => {
     changeDraft({
       type: PAGE_DRAFT_ACTIONS.UPDATE_SECTION_TRANSLATION,
@@ -692,10 +670,6 @@ export default function NewPageAdminPage() {
     });
   };
 
-  const activeHero = draft.hero.translations[activeLocale];
-  const activeNavigation = draft.navigation.translations[activeLocale];
-  const activeSeo = draft.seo[activeLocale];
-
   const handleLockTakeover = () => {
     const editorName = editLock.lock?.displayName || "diğer kullanıcı";
     if (
@@ -717,62 +691,12 @@ export default function NewPageAdminPage() {
 
   return (
     <div className="mx-auto max-w-[1600px] space-y-8 pb-10">
-      <header className="relative overflow-hidden rounded-3xl bg-[#2f423f] px-6 py-7 text-white shadow-lg md:px-9 md:py-9">
-        <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#63978f]/25 blur-3xl" />
-        <div className="absolute -bottom-24 left-1/3 h-52 w-52 rounded-full bg-white/5 blur-3xl" />
-        <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
-              Sayfalar / İçerik oluşturucu
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-              {isEditing ? "Sayfa taslağını düzenle" : "Yeni sayfa hazırla"}
-            </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
-              Sayfa yapısını, dört dildeki içerikleri ve yayın ayarlarını tek bir
-              çalışma alanından düzenleyin.
-            </p>
-            {isEditing ? (
-              <div className="mt-5 inline-flex max-w-full items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-2.5 py-1.5 backdrop-blur-sm">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/10 text-[#b9d6d1]">
-                  <FiFileText className="h-4 w-4" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.1em] text-[#a9c9c4]">
-                    Düzenlenen sayfa
-                  </span>
-                  <span className="mt-0.2 block truncate text-xs font-semibold text-white md:text-sm">
-                    {editingPageTitle}
-                  </span>
-                </span>
-              </div>
-            ) : null}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {isEditing ? (
-              <PageHistoryPanel pageId={pageId} currentDraft={draft} />
-            ) : null}
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
-              <FiLayers className="h-4 w-4 text-[#a9c9c4]" />
-              {draft.sections.length} component
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
-              <FiGlobe className="h-4 w-4 text-[#a9c9c4]" />
-              4 dil
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
-              <span className="h-2 w-2 rounded-full bg-amber-300" />
-              {draft.status === "published" ? "Yayında" : "Taslak"}
-            </span>
-            {hasUnsavedChanges ? (
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-300/15 px-3 py-2 text-xs text-amber-100 backdrop-blur-sm">
-                <span className="h-2 w-2 rounded-full bg-amber-300" />
-                Kaydedilmemiş değişiklik
-              </span>
-            ) : null}
-          </div>
-        </div>
-      </header>
+      <PageBuilderHeader
+        pageId={pageId}
+        draft={draft}
+        editingPageTitle={editingPageTitle}
+        hasUnsavedChanges={hasUnsavedChanges}
+      />
 
       {addedSectionNotice ? (
         <div
@@ -854,171 +778,13 @@ export default function NewPageAdminPage() {
         </section>
       ) : null}
 
-      <section
-        data-validation-target="page-settings"
-        className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+      <PageSettingsEditor
+        draft={draft}
+        activeLocale={activeLocale}
+        localeLabels={localeLabels}
+        onActiveLocaleChange={setActiveLocale}
+        onDraftChange={changeDraft}
       >
-        <div className="flex items-start gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#63978f] text-white">
-            <FiImage className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
-              Sayfa medyası
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-stone-900">Hero görünümü</h2>
-            <p className="mt-1 text-sm leading-6 text-stone-500">
-              Sayfanın en üstünde kullanılacak ortak görseli belirleyin.
-            </p>
-          </div>
-        </div>
-        <div className="grid gap-5 p-6 md:p-7">
-          <PageImagePicker
-            label="Hero görseli"
-            value={draft.hero.image}
-            onChange={(value) =>
-              changeDraft({ type: PAGE_DRAFT_ACTIONS.SET_HERO_IMAGE, value })
-            }
-            hint="Bu görsel tüm dillerde ortak kullanılır. Medya Kütüphanesinden seçilebilir veya yeni yüklenebilir."
-          />
-        </div>
-
-      </section>
-
-      <div className="rounded-2xl border border-stone-200 bg-white p-2 shadow-sm">
-        <div className="flex flex-wrap gap-2">
-        {PAGE_LOCALES.map((locale) => (
-          <button
-            key={locale}
-            type="button"
-            onClick={() => setActiveLocale(locale)}
-            className={`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition sm:flex-none sm:min-w-28 ${
-              activeLocale === locale
-                ? "bg-[#2f423f] text-white shadow-sm"
-                : "text-stone-600 hover:bg-stone-100 hover:text-stone-900"
-            }`}
-          >
-            {localeLabels[locale]}
-          </button>
-        ))}
-        </div>
-      </div>
-
-      <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
-        <div className="flex items-start gap-4 border-b border-stone-200 bg-[#edf5f3]/70 px-6 py-5 md:px-7">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#2f423f] text-white">
-            <FiGlobe className="h-5 w-5" />
-          </span>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#507f78]">
-              Aktif dil · {activeLocale.toUpperCase()}
-            </p>
-            <h2 className="mt-1 text-xl font-semibold text-stone-900">
-              {localeLabels[activeLocale]} içeriği
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-stone-500">
-              Adres, navigasyon, hero metinleri ve component içeriklerini düzenleyin.
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-8 p-6 md:p-7">
-        <div className="rounded-2xl border border-stone-200 bg-stone-50/70 p-5">
-          <div className="mb-5 flex items-center gap-3">
-            <FiGlobe className="h-4 w-4 text-[#507f78]" />
-            <h3 className="text-sm font-semibold text-stone-900">Adres ve navigasyon</h3>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-          <div data-validation-target={`slug-${activeLocale}`}>
-            <Field
-              label={`${localeLabels[activeLocale]} sayfa adresi (slug)`}
-              value={draft.slugs[activeLocale]}
-              onChange={(value) =>
-                changeDraft({
-                  type: PAGE_DRAFT_ACTIONS.SET_SLUG,
-                  locale: activeLocale,
-                  value: normalizeSlugInput(value, activeLocale),
-                })
-              }
-              hint={
-                draft.slugs[activeLocale]
-                  ? `Örnek adres: /${activeLocale}/${draft.slugs[activeLocale]}`
-                  : "Her dil için ayrı ve benzersiz bir adres girilebilir."
-              }
-            />
-          </div>
-          <Field
-            label="Menü etiketi"
-            value={activeNavigation.label}
-            onChange={(value) =>
-              changeDraft({
-                type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_TRANSLATION,
-                locale: activeLocale,
-                field: "label",
-                value,
-              })
-            }
-          />
-          <div className="grid gap-4 rounded-xl border border-stone-200 bg-stone-50 p-4 sm:grid-cols-2 lg:col-span-2">
-            <label className="flex items-center gap-3 text-sm font-medium text-stone-700">
-              <input
-                type="checkbox"
-                checked={draft.navigation.visible !== false}
-                onChange={(event) =>
-                  changeDraft({
-                    type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_FIELD,
-                    field: "visible",
-                    value: event.target.checked,
-                  })
-                }
-                className="h-4 w-4 rounded border-stone-300"
-              />
-              Yayınlandığında header menüsünde göster
-            </label>
-            <label className="flex items-center justify-between gap-3 text-sm font-medium text-stone-700">
-              Menü sırası
-              <input
-                type="number"
-                min="0"
-                value={draft.navigation.order ?? 100}
-                onChange={(event) =>
-                  changeDraft({
-                    type: PAGE_DRAFT_ACTIONS.UPDATE_NAVIGATION_FIELD,
-                    field: "order",
-                    value: Number(event.target.value || 0),
-                  })
-                }
-                className="w-28 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-600"
-              />
-            </label>
-          </div>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-          <div className="mb-5 flex items-center gap-3">
-            <FiImage className="h-4 w-4 text-[#507f78]" />
-            <h3 className="text-sm font-semibold text-stone-900">Hero metinleri</h3>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-          <Field
-            label="Hero üst başlığı"
-            value={activeHero.eyebrow}
-            onChange={(value) => updateHeroTranslation("eyebrow", value)}
-          />
-          <Field
-            label="Hero başlığı"
-            value={activeHero.title}
-            onChange={(value) => updateHeroTranslation("title", value)}
-          />
-          <Field
-            label="Hero görsel açıklaması (alt)"
-            value={activeHero.imageAlt}
-            onChange={(value) => updateHeroTranslation("imageAlt", value)}
-          />
-          </div>
-        </div>
-
         <div className="rounded-2xl border border-stone-200 bg-stone-50/70 p-5 md:p-6">
           <div className="mb-5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -1092,44 +858,7 @@ export default function NewPageAdminPage() {
           ))}
         </div>
         </div>
-
-        <details className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
-          <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-semibold text-stone-900 [&::-webkit-details-marker]:hidden">
-            <FiFileText className="h-4 w-4 text-[#507f78]" />
-            <span className="flex-1">SEO alanları</span>
-            <span className="text-xs font-normal text-stone-400">İsteğe bağlı</span>
-            <FiChevronDown className="h-4 w-4 text-stone-400 transition group-open:rotate-180" />
-          </summary>
-          <div className="grid gap-4 border-t border-stone-200 bg-stone-50/70 p-5 lg:grid-cols-2">
-            <Field
-              label="SEO başlığı"
-              value={activeSeo.title}
-              onChange={(value) =>
-                changeDraft({
-                  type: PAGE_DRAFT_ACTIONS.UPDATE_SEO_TRANSLATION,
-                  locale: activeLocale,
-                  field: "title",
-                  value,
-                })
-              }
-            />
-            <Field
-              label="SEO açıklaması"
-              value={activeSeo.description}
-              onChange={(value) =>
-                changeDraft({
-                  type: PAGE_DRAFT_ACTIONS.UPDATE_SEO_TRANSLATION,
-                  locale: activeLocale,
-                  field: "description",
-                  value,
-                })
-              }
-              textarea
-            />
-          </div>
-        </details>
-        </div>
-      </section>
+      </PageSettingsEditor>
 
       <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
         <div className="flex items-start justify-between gap-4 border-b border-stone-200 bg-stone-50/80 px-6 py-5 md:px-7">
