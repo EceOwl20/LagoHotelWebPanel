@@ -12,6 +12,7 @@ export const GALLERY_CATEGORY_ORDER = [
   "entertainment",
   "bar",
   "lobby",
+  "other",
 ];
 
 export const BLOG_STATUSES = ["draft", "published"];

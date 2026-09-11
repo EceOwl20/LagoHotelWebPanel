@@ -27,6 +27,7 @@ const categoryLabels = {
   entertainment: "Eğlence",
   bar: "Barlar",
   lobby: "Lobi",
+  other: "Diğer",
 };
 
 function moveImage(images, index, direction) {
@@ -83,6 +84,7 @@ export default function GalleryAdminPage() {
   const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
   const [gallery, setGallery] = useState(null);
   const [activeCategory, setActiveCategory] = useState("general");
+  const [uploadCategory, setUploadCategory] = useState("general");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -214,7 +216,13 @@ export default function GalleryAdminPage() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", `gallery/${activeCategory}`);
+      const targetCategory = gallery.categories.some(
+        (category) => category.id === uploadCategory
+      )
+        ? uploadCategory
+        : "other";
+
+      formData.append("folder", `gallery/${targetCategory}`);
 
       const uploadResponse = await fetch("/api/admin/upload", {
         method: "POST",
@@ -226,26 +234,23 @@ export default function GalleryAdminPage() {
         throw new Error(uploadPayload.error || "Dosya yuklenemedi.");
       }
 
-      const nextGallery = {
-        ...gallery,
-        categories: gallery.categories.map((category) =>
-          category.id === activeCategory
-            ? {
-                ...category,
-                images: [
-                  ...category.images,
-                  {
-                    id: `${Date.now()}`,
-                    src: uploadPayload.url,
-                    order: category.images.length,
-                  },
-                ],
-              }
-            : category
-        ),
-      };
+      const galleryResponse = await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ categoryId: targetCategory, src: uploadPayload.url }),
+      });
+      const galleryPayload = await galleryResponse.json();
 
-      await persistGallery(nextGallery);
+      if (!galleryResponse.ok) {
+        throw new Error(galleryPayload.error || "Görsel galeriye eklenemedi.");
+      }
+
+      setGallery(galleryPayload.gallery);
+      setActiveCategory(galleryPayload.categoryId);
+      setUploadCategory(galleryPayload.categoryId);
+      setMessage(
+        `Görsel ${categoryLabels[galleryPayload.categoryId] || galleryPayload.categoryId} kategorisine eklendi.`
+      );
       event.target.value = "";
     } catch (err) {
       setError(err.message);
@@ -405,7 +410,10 @@ export default function GalleryAdminPage() {
             <button
               key={category.id}
               type="button"
-              onClick={() => setActiveCategory(category.id)}
+              onClick={() => {
+                setActiveCategory(category.id);
+                setUploadCategory(category.id);
+              }}
               aria-pressed={isActive}
               className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
                 isActive
@@ -461,27 +469,41 @@ export default function GalleryAdminPage() {
             </div>
           </div>
 
-          <label
-            className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition ${
-              uploading
-                ? "cursor-not-allowed bg-stone-400"
-                : "cursor-pointer bg-stone-900 hover:-translate-y-0.5 hover:bg-[#507f78] hover:shadow-md"
-            }`}
-          >
-            <FiUploadCloud className="h-4 w-4" aria-hidden="true" />
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-end">
+            <label className="flex min-w-52 flex-col gap-1.5 text-xs font-semibold text-stone-600">
+              Görsel kategorisi
+              <select
+                value={uploadCategory}
+                onChange={(event) => setUploadCategory(event.target.value)}
+                disabled={uploading}
+                className="rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm font-normal text-stone-700 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10 disabled:opacity-60"
+              >
+                {(gallery?.categories || []).map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {categoryLabels[category.id] || category.id}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-            <span>
-              {uploading ? "Görsel yükleniyor..." : "Yeni görsel yükle"}
-            </span>
-
-            <input
-              type="file"
-              accept={IMAGE_UPLOAD_ACCEPT}
-              className="hidden"
-              onChange={handleUpload}
-              disabled={uploading}
-            />
-          </label>
+            <label
+              className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition ${
+                uploading
+                  ? "cursor-not-allowed bg-stone-400"
+                  : "cursor-pointer bg-stone-900 hover:-translate-y-0.5 hover:bg-[#507f78] hover:shadow-md"
+              }`}
+            >
+              <FiUploadCloud className="h-4 w-4" aria-hidden="true" />
+              <span>{uploading ? "Görsel yükleniyor..." : "Yeni görsel yükle"}</span>
+              <input
+                type="file"
+                accept={IMAGE_UPLOAD_ACCEPT}
+                className="hidden"
+                onChange={handleUpload}
+                disabled={uploading}
+              />
+            </label>
+          </div>
         </div>
       </div>
 

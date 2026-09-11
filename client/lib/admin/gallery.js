@@ -1,5 +1,6 @@
 import "server-only";
 
+import { randomUUID } from "crypto";
 import path from "path";
 import { GALLERY_CATEGORY_ORDER } from "./constants";
 import {
@@ -11,6 +12,7 @@ import {
 } from "./storage";
 import { findManagedMediaUsage } from "./media-usage";
 import { enqueueFileOperation } from "./file-operation-queue.mjs";
+import { isSafeUploadUrl } from "./media-references.mjs";
 
 const galleryFilePath = path.join(contentRoot, "gallery", "gallery.json");
 
@@ -66,6 +68,46 @@ async function writeGalleryUnlocked(gallery) {
 export function writeGallery(gallery) {
   return enqueueFileOperation(path.dirname(galleryFilePath), () =>
     writeGalleryUnlocked(gallery)
+  );
+}
+
+async function addGalleryImageUnlocked({ categoryId, src }) {
+  if (!isSafeUploadUrl(src)) {
+    throw new GalleryContentError("Geçerli bir galeri görseli zorunludur.");
+  }
+
+  const resolvedCategoryId = GALLERY_CATEGORY_ORDER.includes(categoryId)
+    ? categoryId
+    : "other";
+  const gallery = await readGallery();
+
+  for (const category of gallery.categories) {
+    const existingImage = category.images.find((image) => image.src === src);
+
+    if (existingImage) {
+      return { gallery, image: existingImage, categoryId: category.id };
+    }
+  }
+
+  const image = {
+    id: randomUUID(),
+    src,
+    order: gallery.categories.find((category) => category.id === resolvedCategoryId)
+      ?.images.length || 0,
+  };
+  const categories = gallery.categories.map((category) =>
+    category.id === resolvedCategoryId
+      ? { ...category, images: [...category.images, image] }
+      : category
+  );
+  const savedGallery = await writeGalleryUnlocked({ ...gallery, categories });
+
+  return { gallery: savedGallery, image, categoryId: resolvedCategoryId };
+}
+
+export function addGalleryImage(input) {
+  return enqueueFileOperation(path.dirname(galleryFilePath), () =>
+    addGalleryImageUnlocked(input)
   );
 }
 

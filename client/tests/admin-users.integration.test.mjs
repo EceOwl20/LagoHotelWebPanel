@@ -181,6 +181,38 @@ test("sistem yöneticisi admin rolüyle giriş yapar", async () => {
   adminCookie = result.cookie;
 });
 
+test("kategorisiz galeri görseli Diğer kategorisine atomik olarak eklenir", async () => {
+  const src = "/uploads/gallery/other/integration-gallery-image.webp";
+  const createImage = () =>
+    request("/api/admin/gallery", {
+      method: "POST",
+      cookie: adminCookie,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ categoryId: "", src }),
+    });
+
+  const firstResponse = await createImage();
+  const firstPayload = await firstResponse.json();
+
+  assert.equal(firstResponse.status, 201);
+  assert.equal(firstPayload.categoryId, "other");
+  assert.equal(
+    firstPayload.gallery.categories
+      .find((category) => category.id === "other")
+      .images.some((image) => image.src === src),
+    true
+  );
+
+  const retryResponse = await createImage();
+  const retryPayload = await retryResponse.json();
+  const matchingImages = retryPayload.gallery.categories
+    .flatMap((category) => category.images)
+    .filter((image) => image.src === src);
+
+  assert.equal(retryResponse.status, 201);
+  assert.equal(matchingImages.length, 1);
+});
+
 test("farklı origin üzerinden kullanıcı oluşturma isteği 403 döner", async () => {
   const response = await request("/api/admin/users", {
     method: "POST",

@@ -1900,7 +1900,8 @@
     "kidsclub": "Kinderclub",
     "entertainment": "Entertainment",
     "bar": "Bar",
-    "lobby": "Lobby"
+    "lobby": "Lobby",
+    "other": "Sonstige"
   },
   "CookiePopup": {
     "cookie": "Wir verwenden Cookies: ",

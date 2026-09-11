@@ -7,6 +7,19 @@ import { FiImage, FiUploadCloud } from "react-icons/fi";
 
 const PICKER_PAGE_SIZE = 80;
 
+const galleryCategoryLabels = {
+  general: "Genel Görünüm",
+  rooms: "Odalar",
+  pool: "Havuz ve Plaj",
+  flavours: "Lezzetler",
+  spa: "Spa",
+  kidsclub: "Kids Club",
+  entertainment: "Eğlence",
+  bar: "Barlar",
+  lobby: "Lobi",
+  other: "Diğer",
+};
+
 function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");
 }
@@ -33,6 +46,7 @@ function createGalleryLibrary(gallery) {
 
   return {
     assets,
+    categories: (gallery?.categories || []).map((category) => category.id),
     folders: [...new Set(assets.map((asset) => asset.folder))].sort((left, right) =>
       left.localeCompare(right, "tr")
     ),
@@ -57,6 +71,7 @@ export default function PageImagePicker({
   const [libraryRequested, setLibraryRequested] = useState(false);
   const [loadingLibrary, setLoadingLibrary] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [galleryUploadCategory, setGalleryUploadCategory] = useState("other");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -140,7 +155,11 @@ export default function PageImagePicker({
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", uploadFolder);
+      const targetCategory = galleryUploadCategory || "other";
+      formData.append(
+        "folder",
+        librarySource === "gallery" ? `gallery/${targetCategory}` : uploadFolder
+      );
 
       const response = await fetch("/api/admin/upload", {
         method: "POST",
@@ -150,6 +169,19 @@ export default function PageImagePicker({
 
       if (!response.ok) {
         throw new Error(payload.error || "Görsel yüklenemedi.");
+      }
+
+      if (librarySource === "gallery") {
+        const galleryResponse = await fetch("/api/admin/gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ categoryId: targetCategory, src: payload.url }),
+        });
+        const galleryPayload = await galleryResponse.json();
+
+        if (!galleryResponse.ok) {
+          throw new Error(galleryPayload.error || "Görsel galeriye eklenemedi.");
+        }
       }
 
       setLibrary(null);
@@ -257,6 +289,23 @@ export default function PageImagePicker({
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
+                {librarySource === "gallery" ? (
+                  <label>
+                    <span className="sr-only">Yeni görsel kategorisi</span>
+                    <select
+                      value={galleryUploadCategory}
+                      onChange={(event) => setGalleryUploadCategory(event.target.value)}
+                      disabled={uploading}
+                      className="h-full min-w-44 rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 outline-none focus:border-[#63978f] disabled:opacity-50"
+                    >
+                      {(library?.categories || ["other"]).map((categoryId) => (
+                        <option key={categoryId} value={categoryId}>
+                          {galleryCategoryLabels[categoryId] || categoryId}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : null}
                 <label className="cursor-pointer rounded-xl bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800">
                   {uploading ? "Yükleniyor..." : "Yeni Görsel Yükle"}
                   <input

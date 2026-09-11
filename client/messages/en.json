@@ -1892,7 +1892,8 @@
     "kidsclub": "Kids Club",
     "entertainment": "Entertainment",
     "bar": "Bars",
-    "lobby": "Lobby"
+    "lobby": "Lobby",
+    "other": "Other"
   },
   "CookiePopup": {
     "cookie": "We Use Cookies: ",

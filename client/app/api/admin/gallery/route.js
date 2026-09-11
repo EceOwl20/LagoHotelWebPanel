@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { deleteGalleryImage, readGallery, writeGallery } from "@/lib/admin/gallery";
+import {
+  addGalleryImage,
+  deleteGalleryImage,
+  readGallery,
+  writeGallery,
+} from "@/lib/admin/gallery";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
@@ -20,6 +25,49 @@ export async function GET() {
 
   const gallery = await readGallery();
   return NextResponse.json({ gallery });
+}
+
+export async function POST(request) {
+  const session = await getAdminSession();
+
+  if (!session) {
+    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
+  }
+
+  try {
+    assertSameOrigin(request);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+  }
+
+  const rateLimit = consumeRateLimit({
+    key: `admin-write:gallery-add:${getClientIp(request)}`,
+    limit: 60,
+    windowMs: 60 * 1000,
+  });
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      { error: "Cok hizli istek gonderildi. Lutfen tekrar deneyin." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } }
+    );
+  }
+
+  try {
+    const { categoryId, src } = await request.json();
+    const result = await addGalleryImage({ categoryId, src });
+
+    for (const locale of CMS_LOCALES) {
+      revalidatePath(`/${locale}/gallery`);
+    }
+
+    return NextResponse.json(result, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Görsel galeriye eklenemedi." },
+      { status: error.status || 500 }
+    );
+  }
 }
 
 export async function PUT(request) {

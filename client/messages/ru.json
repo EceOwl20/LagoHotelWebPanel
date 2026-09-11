@@ -1894,7 +1894,8 @@
     "kidsclub": "Детский клуб",
     "entertainment": "Развлечения",
     "bar": "Бары",
-    "lobby": "Лобби"
+    "lobby": "Лобби",
+    "other": "Другое"
   },
   "CookiePopup": {
     "cookie": "Мы используем Cookies: ",
