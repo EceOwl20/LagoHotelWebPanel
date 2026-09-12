@@ -218,7 +218,7 @@ export default function BlogAdminPage() {
     }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async ({ publicationStatus } = {}) => {
     if (isEditBlocked) {
       setError("Bu blog yazısı başka bir kullanıcı tarafından düzenleniyor.");
       return;
@@ -248,6 +248,7 @@ export default function BlogAdminPage() {
             ...draft,
             publishedAt: publishedAt.toISOString(),
           },
+          ...(publicationStatus ? { publicationStatus } : {}),
         }),
       };
 
@@ -269,7 +270,13 @@ export default function BlogAdminPage() {
         publishedAt: savedPost.publishedAt.slice(0, 16),
       });
       await loadPosts(savedPost.slug);
-      setMessage("Blog yazisi kaydedildi.");
+      setMessage(
+        publicationStatus === "published"
+          ? "Blog yazısının güncel taslağı yayınlandı."
+          : publicationStatus === "draft"
+            ? "Blog yazısı yayından kaldırıldı; taslak korunuyor."
+            : "Blog taslağı kaydedildi. Canlı içerik değiştirilmedi."
+      );
     } catch (err) {
       setError(err.message);
     } finally {
@@ -431,7 +438,11 @@ export default function BlogAdminPage() {
                       <span className="block truncate text-sm font-semibold">{getPostTitle(post)}</span>
                       <span className={`mt-1 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${selectedSlug === post.slug ? "text-stone-300" : post.status === "published" ? "text-emerald-700" : "text-amber-700"}`}>
                         <span className={`h-1.5 w-1.5 rounded-full ${post.status === "published" ? "bg-emerald-500" : "bg-amber-400"}`} />
-                        {post.status === "published" ? "Yayında" : "Taslak"}
+                        {post.status === "published"
+                          ? post.hasUnpublishedChanges
+                            ? "Yayında · taslak değişti"
+                            : "Yayında"
+                          : "Taslak"}
                       </span>
                     </span>
                   </div>
@@ -467,7 +478,11 @@ export default function BlogAdminPage() {
               </div>
               <span className={`inline-flex w-fit items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${draft.status === "published" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
                 <span className={`h-2 w-2 rounded-full ${draft.status === "published" ? "bg-emerald-500" : "bg-amber-400"}`} />
-                {draft.status === "published" ? "Yayında" : "Taslak"}
+                {draft.status === "published"
+                  ? draft.hasUnpublishedChanges
+                    ? "Yayında · taslak değişti"
+                    : "Yayında"
+                  : "Taslak"}
               </span>
             </div>
           </section>
@@ -522,22 +537,21 @@ export default function BlogAdminPage() {
               ) : null}
             </label>
 
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Durum</span>
-              <select
-                value={draft.status}
-                onChange={(event) =>
-                  setDraft((currentDraft) => ({
-                    ...currentDraft,
-                    status: event.target.value,
-                  }))
-                }
-                className="rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
-              >
-                <option value="draft">Taslak</option>
-                <option value="published" disabled={!canPublish}>Yayında</option>
-              </select>
-            </label>
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-medium text-stone-700">Yayın durumu</span>
+              <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
+                <span className="font-semibold">
+                  {draft.status === "published" ? "Yayında" : "Yalnızca taslak"}
+                </span>
+                <p className="mt-1 text-xs leading-5 text-stone-500">
+                  {draft.status === "published"
+                    ? draft.hasUnpublishedChanges
+                      ? "Kaydedilmiş taslak değişiklikleri henüz canlı yazıya aktarılmadı."
+                      : "Taslak ve ziyaretçilerin gördüğü canlı kopya aynı."
+                    : "Bu yazı ziyaretçilere gösterilmiyor."}
+                </p>
+              </div>
+            </div>
 
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-stone-700">Yayın tarihi</span>
@@ -825,17 +839,36 @@ export default function BlogAdminPage() {
             <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
-              onClick={handleSave}
-              disabled={
-                saving ||
-                isEditBlocked ||
-                (!canPublish && draft.status === "published")
-              }
+              onClick={() => handleSave()}
+              disabled={saving || isEditBlocked}
               className="inline-flex items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {saving ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : <FiSave className="h-4 w-4" />}
-              {saving ? "Kaydediliyor..." : "Blog Yazısını Kaydet"}
+              {saving ? "Kaydediliyor..." : "Taslağı Kaydet"}
             </button>
+
+            {selectedSlug && canPublish ? (
+              <button
+                type="button"
+                onClick={() => handleSave({ publicationStatus: "published" })}
+                disabled={saving || isEditBlocked}
+                className="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <FiCheckCircle className="h-4 w-4" />
+                {draft.status === "published" ? "Taslağı Yayına Aktar" : "Yayınla"}
+              </button>
+            ) : null}
+
+            {selectedSlug && canPublish && draft.status === "published" ? (
+              <button
+                type="button"
+                onClick={() => handleSave({ publicationStatus: "draft" })}
+                disabled={saving || isEditBlocked}
+                className="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Yayından Kaldır
+              </button>
+            ) : null}
 
             {selectedSlug && canDelete ? (
               <button
@@ -851,7 +884,7 @@ export default function BlogAdminPage() {
 
             {!canPublish && draft.status === "published" ? (
               <span className="text-sm text-amber-700">
-                Yayındaki blog kayıtlarını yalnızca yönetici güncelleyebilir.
+                Taslağı düzenleyebilirsiniz; canlı kopyayı yalnızca yönetici güncelleyebilir.
               </span>
             ) : null}
 

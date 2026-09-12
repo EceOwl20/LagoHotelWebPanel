@@ -1,0 +1,83 @@
+{
+  "storageVersion": 2,
+  "slug": "yeni-eylul-blog-yaz-s",
+  "createdAt": "2026-09-12T10:17:22.489Z",
+  "updatedAt": "2026-09-12T10:17:42.105Z",
+  "publicationUpdatedAt": "2026-09-12T10:17:42.105Z",
+  "draft": {
+    "slug": "yeni-eylul-blog-yaz-s",
+    "status": "draft",
+    "coverImage": "/uploads/gallery/genel/img-08.jpg",
+    "publishedAt": "2026-09-12T04:16:00.000Z",
+    "updatedAt": "2026-09-12T10:17:42.105Z",
+    "translations": {
+      "tr": {
+        "title": "eylul-blog-yazısı",
+        "excerpt": "eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı",
+        "content": "eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "en": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "de": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "ru": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      }
+    },
+    "contentBlocks": []
+  },
+  "published": {
+    "slug": "yeni-eylul-blog-yaz-s",
+    "status": "published",
+    "coverImage": "/uploads/gallery/genel/img-08.jpg",
+    "publishedAt": "2026-09-12T04:16:00.000Z",
+    "updatedAt": "2026-09-12T10:17:42.105Z",
+    "translations": {
+      "tr": {
+        "title": "eylul-blog-yazısı",
+        "excerpt": "eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı",
+        "content": "eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı eylul-blog-yazısı",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "en": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "de": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      },
+      "ru": {
+        "title": "",
+        "excerpt": "",
+        "content": "",
+        "seoTitle": "",
+        "seoDescription": ""
+      }
+    },
+    "contentBlocks": []
+  }
+}

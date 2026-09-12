@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";
 import MainBanner2 from "../GeneralComponents/MainBanner2";
 import mainImg from "./images/mainfoto.webp";
-import { listBlogPosts } from "@/lib/admin/blog";
+import { listPublishedBlogPosts } from "@/lib/admin/blog";
 
 function pickTranslation(post, locale) {
   return (
@@ -19,7 +19,7 @@ function pickTranslation(post, locale) {
 export default async function NewsPage({ params }) {
   const { locale } = await params;
   const t = await getTranslations("BlogNews");
-  const posts = (await listBlogPosts()).filter((post) => post.status === "published");
+  const posts = await listPublishedBlogPosts();
 
   return (
     <div className="flex flex-col items-center justify-center gap-[50px] bg-[#fbfbfb] lg:gap-[100px] overflow-x-hidden">

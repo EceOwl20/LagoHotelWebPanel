@@ -691,6 +691,199 @@ test("blog düzenleme kilidi okumayı açık tutup eş zamanlı yazma ve silmeyi
     cookie: adminCookie,
   });
   assert.equal(deleteResponse.status, 200);
+
+  const repeatedDeleteResponse = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "DELETE",
+    cookie: adminCookie,
+  });
+  const repeatedDeletePayload = await repeatedDeleteResponse.json();
+  assert.equal(repeatedDeleteResponse.status, 404);
+  assert.equal(repeatedDeletePayload.error, "Blog yazısı bulunamadı.");
+  assert.equal(Object.hasOwn(repeatedDeletePayload, "success"), false);
+});
+
+test("blog taslağı canlı kopyadan ayrı kaydedilir ve yalnızca yetkili yayınlayabilir", async () => {
+  const slug = "integration-blog-draft-published";
+  const initialPost = {
+    slug,
+    status: "draft",
+    coverImage: "",
+    publishedAt: "2026-09-12T10:00:00.000Z",
+    translations: {
+      tr: {
+        title: "İlk yayın başlığı",
+        excerpt: "İlk yayın özeti",
+        content: "İlk yayın içeriği",
+        seoTitle: "",
+        seoDescription: "",
+      },
+    },
+    contentBlocks: [],
+  };
+
+  const createResponse = await request("/api/admin/blog/posts", {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ post: initialPost }),
+  });
+  const created = await createResponse.json();
+  assert.equal(createResponse.status, 201);
+  assert.equal(created.post.status, "draft");
+
+  const lockEndpoint = `/api/admin/blog/posts/${slug}/lock`;
+  const adminAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "77777777-7777-4777-8777-777777777777",
+    }),
+  });
+  const adminLock = await adminAcquire.json();
+  assert.equal(adminAcquire.status, 200);
+
+  const firstPublish = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({
+      post: created.post,
+      publicationStatus: "published",
+    }),
+  });
+  const firstPublished = await firstPublish.json();
+  assert.equal(firstPublish.status, 200);
+  assert.equal(firstPublished.post.status, "published");
+  assert.equal(firstPublished.post.hasUnpublishedChanges, false);
+
+  const adminRelease = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: adminLock.lockToken }),
+  });
+  assert.equal(adminRelease.status, 200);
+
+  const editorAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "88888888-8888-4888-8888-888888888888",
+    }),
+  });
+  const editorLock = await editorAcquire.json();
+  assert.equal(editorAcquire.status, 200);
+
+  const changedDraft = structuredClone(firstPublished.post);
+  changedDraft.translations.tr.title = "Henüz yayınlanmamış başlık";
+  const editorDraftSave = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": editorLock.lockToken,
+    },
+    body: JSON.stringify({ post: changedDraft }),
+  });
+  const editorDraftPayload = await editorDraftSave.json();
+  assert.equal(editorDraftSave.status, 200);
+  assert.equal(editorDraftPayload.post.status, "published");
+  assert.equal(editorDraftPayload.post.hasUnpublishedChanges, true);
+
+  const storedAfterDraftSave = JSON.parse(
+    await readFile(
+      path.join(temporaryRoot, "content", "blog", "posts", `${slug}.json`),
+      "utf8"
+    )
+  );
+  assert.equal(storedAfterDraftSave.storageVersion, 2);
+  assert.equal(
+    storedAfterDraftSave.draft.translations.tr.title,
+    "Henüz yayınlanmamış başlık"
+  );
+  assert.equal(
+    storedAfterDraftSave.published.translations.tr.title,
+    "İlk yayın başlığı"
+  );
+
+  const editorPublishAttempt = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": editorLock.lockToken,
+    },
+    body: JSON.stringify({
+      post: editorDraftPayload.post,
+      publicationStatus: "published",
+    }),
+  });
+  assert.equal(editorPublishAttempt.status, 403);
+
+  const editorRelease = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: editorLock.lockToken }),
+  });
+  assert.equal(editorRelease.status, 200);
+
+  const adminReacquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "77777777-7777-4777-8777-777777777777",
+    }),
+  });
+  const adminReacquiredLock = await adminReacquire.json();
+  assert.equal(adminReacquire.status, 200);
+
+  const republish = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminReacquiredLock.lockToken,
+    },
+    body: JSON.stringify({
+      post: editorDraftPayload.post,
+      publicationStatus: "published",
+    }),
+  });
+  const republishedPayload = await republish.json();
+  assert.equal(republish.status, 200);
+  assert.equal(republishedPayload.post.hasUnpublishedChanges, false);
+
+  const unpublish = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminReacquiredLock.lockToken,
+    },
+    body: JSON.stringify({
+      post: republishedPayload.post,
+      publicationStatus: "draft",
+    }),
+  });
+  const unpublishedPayload = await unpublish.json();
+  assert.equal(unpublish.status, 200);
+  assert.equal(unpublishedPayload.post.status, "draft");
+
+  const deleteResponse = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "DELETE",
+    cookie: adminCookie,
+  });
+  assert.equal(deleteResponse.status, 200);
 });
 
 test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden ayırır", async () => {

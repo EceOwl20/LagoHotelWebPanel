@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { readBlogPost } from "@/lib/admin/blog";
+import { readPublishedBlogPost } from "@/lib/admin/blog";
 
 function pickTranslation(post, locale) {
   return (
@@ -37,9 +37,9 @@ function splitParagraphs(content = "") {
 
 export async function generateMetadata({ params }) {
   const { locale, slug } = await params;
-  const post = await readBlogPost(slug);
+  const post = await readPublishedBlogPost(slug);
 
-  if (!post || post.status !== "published") {
+  if (!post) {
     return {};
   }
 
@@ -53,9 +53,9 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsDetailPage({ params }) {
   const { locale, slug } = await params;
-  const post = await readBlogPost(slug);
+  const post = await readPublishedBlogPost(slug);
 
-  if (!post || post.status !== "published") {
+  if (!post) {
     notFound();
   }
 
@@ -70,7 +70,7 @@ export default async function NewsDetailPage({ params }) {
           href="/news"
           className="inline-flex rounded-full border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-stone-900 hover:text-white"
         >
-          Tum blog yazilari
+          Tüm blog yazıları
         </Link>
 
         <div className="mt-8 overflow-hidden rounded-[32px] border border-stone-200 bg-white shadow-sm">

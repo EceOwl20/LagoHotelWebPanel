@@ -57,9 +57,11 @@ export async function POST(request) {
 
     const savedPost = await createBlogPost(post);
 
-    for (const locale of CMS_LOCALES) {
-      revalidatePath(`/${locale}/news`);
-      revalidatePath(`/${locale}/news/${savedPost.slug}`);
+    if (savedPost.status === "published") {
+      for (const locale of CMS_LOCALES) {
+        revalidatePath(`/${locale}/news`);
+        revalidatePath(`/${locale}/news/${savedPost.slug}`);
+      }
     }
 
     return NextResponse.json({ post: savedPost }, { status: 201 });

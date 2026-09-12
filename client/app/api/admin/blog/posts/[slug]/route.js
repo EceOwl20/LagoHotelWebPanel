@@ -61,7 +61,7 @@ export async function PUT(request, { params }) {
 
   try {
     const { slug } = await params;
-    const { post } = await request.json();
+    const { post, publicationStatus } = await request.json();
     const existingPost = await readBlogPost(slug);
 
     if (!existingPost) {
@@ -74,15 +74,20 @@ export async function PUT(request, { params }) {
       request.headers.get("x-panel-edit-lock")
     );
 
-    if (post?.status === "published" || existingPost.status === "published") {
+    if (publicationStatus !== undefined) {
       assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
     }
 
-    const savedPost = await saveBlogPost({ ...post, slug });
+    const savedPost = await saveBlogPost(
+      { ...post, slug },
+      { publicationStatus }
+    );
 
-    for (const locale of CMS_LOCALES) {
-      revalidatePath(`/${locale}/news`);
-      revalidatePath(`/${locale}/news/${savedPost.slug}`);
+    if (publicationStatus !== undefined) {
+      for (const locale of CMS_LOCALES) {
+        revalidatePath(`/${locale}/news`);
+        revalidatePath(`/${locale}/news/${savedPost.slug}`);
+      }
     }
 
     return NextResponse.json({ post: savedPost });
