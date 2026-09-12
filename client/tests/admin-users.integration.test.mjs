@@ -94,6 +94,7 @@ before(async () => {
   usersFilePath = path.join(temporaryRoot, "users.json");
   const sourcePagesDirectory = path.join(clientRoot, "content", "pages");
   const temporaryPagesDirectory = path.join(temporaryRoot, "content", "pages");
+  const temporaryMessagesDirectory = path.join(temporaryRoot, "messages");
   const sourcePageFiles = (await readdir(sourcePagesDirectory))
     .filter((fileName) => fileName.endsWith(".json"))
     .sort();
@@ -103,9 +104,18 @@ before(async () => {
     "Entegrasyon testi için sayfa fixture'ı bulunmalı"
   );
   await mkdir(temporaryPagesDirectory, { recursive: true });
+  await mkdir(temporaryMessagesDirectory, { recursive: true });
   await writeFile(
     path.join(temporaryPagesDirectory, sourcePageFiles[0]),
     await readFile(path.join(sourcePagesDirectory, sourcePageFiles[0]))
+  );
+  await Promise.all(
+    ["tr", "en", "de", "ru"].map((locale) =>
+      writeFile(
+        path.join(temporaryMessagesDirectory, `${locale}.json`),
+        JSON.stringify({ HomePage: { title: `Home ${locale}` } })
+      )
+    )
   );
 
   const port = await getFreePort();
@@ -381,6 +391,306 @@ test("editör giriş yapabilir fakat yönetici endpointlerine erişemez", async 
     responses.map((response) => response.status),
     [403, 403, 403, 403, 403, 403, 403, 403, 403, 403]
   );
+});
+
+test("galeri sıralama isteği görsel ekleyemez veya silemez", async () => {
+  const galleryResponse = await request("/api/admin/gallery", {
+    cookie: editorCookie,
+    origin: null,
+  });
+  const galleryPayload = await galleryResponse.json();
+  const otherCategory = galleryPayload.gallery.categories.find(
+    (category) => category.id === "other"
+  );
+  const originalImageIds = otherCategory.images.map((image) => image.id);
+
+  assert.equal(galleryResponse.status, 200);
+  assert.ok(originalImageIds.length > 0);
+
+  const removalResponse = await request("/api/admin/gallery", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      categoryId: "other",
+      imageIds: originalImageIds.slice(1),
+    }),
+  });
+  assert.equal(removalResponse.status, 409);
+
+  const additionResponse = await request("/api/admin/gallery", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      categoryId: "other",
+      imageIds: [...originalImageIds, "forged-image-id"],
+    }),
+  });
+  assert.equal(additionResponse.status, 409);
+
+  const reorderResponse = await request("/api/admin/gallery", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      categoryId: "other",
+      imageIds: [...originalImageIds].reverse(),
+    }),
+  });
+  const reorderPayload = await reorderResponse.json();
+  const savedImageIds = reorderPayload.gallery.categories
+    .find((category) => category.id === "other")
+    .images.map((image) => image.id);
+
+  assert.equal(reorderResponse.status, 200);
+  assert.deepEqual(savedImageIds, [...originalImageIds].reverse());
+});
+
+test("içerik kilidi görüntülemeyi açık tutup ikinci kullanıcının kaydını engeller", async () => {
+  const clientId = "33333333-3333-4333-8333-333333333333";
+  const lockEndpoint = "/api/admin/content-locks/site-page%3Ahomepage";
+  const adminAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "acquire", clientId }),
+  });
+  const adminLock = await adminAcquire.json();
+
+  assert.equal(adminAcquire.status, 200);
+  assert.ok(adminLock.lockToken);
+
+  const editorAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "44444444-4444-4444-8444-444444444444",
+    }),
+  });
+  assert.equal(editorAcquire.status, 409);
+
+  const editorRead = await request(
+    "/api/admin/messages/namespace?namespace=HomePage",
+    { cookie: editorCookie, origin: null }
+  );
+  assert.equal(editorRead.status, 200);
+
+  const blockedSave = await request("/api/admin/messages/namespace", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({
+      namespace: "HomePage",
+      bundle: {
+        tr: { title: "Engellenmeli" },
+        en: {},
+        de: {},
+        ru: {},
+      },
+    }),
+  });
+  assert.equal(blockedSave.status, 409);
+
+  const blockedMediaSave = await request("/api/admin/site-pages/homepage", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+      "x-panel-edit-namespace": "HomePage",
+    },
+    body: JSON.stringify({ content: {} }),
+  });
+  assert.equal(blockedMediaSave.status, 409);
+
+  const ownerSave = await request("/api/admin/messages/namespace", {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({
+      namespace: "HomePage",
+      bundle: {
+        tr: { title: "Kilit sahibi kaydetti" },
+        en: { title: "Home en" },
+        de: { title: "Home de" },
+        ru: { title: "Home ru" },
+      },
+    }),
+  });
+  assert.equal(ownerSave.status, 200);
+
+  const releaseResponse = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "release",
+      lockToken: adminLock.lockToken,
+    }),
+  });
+  assert.equal(releaseResponse.status, 200);
+
+  const editorAcquireAfterRelease = await request(
+    lockEndpoint,
+    {
+      method: "POST",
+      cookie: editorCookie,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "acquire",
+        clientId: "44444444-4444-4444-8444-444444444444",
+      }),
+    }
+  );
+  const editorLock = await editorAcquireAfterRelease.json();
+
+  assert.equal(editorAcquireAfterRelease.status, 200);
+
+  await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "release",
+      lockToken: editorLock.lockToken,
+    }),
+  });
+});
+
+test("blog düzenleme kilidi okumayı açık tutup eş zamanlı yazma ve silmeyi engeller", async () => {
+  const slug = "integration-blog-edit-lock";
+  const post = {
+    slug,
+    status: "draft",
+    coverImage: "",
+    publishedAt: "2026-09-12T09:00:00.000Z",
+    translations: {
+      tr: {
+        title: "Blog kilit testi",
+        excerpt: "",
+        content: "",
+        seoTitle: "",
+        seoDescription: "",
+      },
+    },
+    contentBlocks: [],
+  };
+
+  const createResponse = await request("/api/admin/blog/posts", {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ post }),
+  });
+  assert.equal(createResponse.status, 201);
+
+  const lockEndpoint = `/api/admin/blog/posts/${slug}/lock`;
+  const adminAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "55555555-5555-4555-8555-555555555555",
+    }),
+  });
+  const adminLock = await adminAcquire.json();
+  assert.equal(adminAcquire.status, 200);
+  assert.ok(adminLock.lockToken);
+
+  const editorRead = await request(`/api/admin/blog/posts/${slug}`, {
+    cookie: editorCookie,
+    origin: null,
+  });
+  const editorReadPayload = await editorRead.json();
+  assert.equal(editorRead.status, 200);
+
+  const editorAcquire = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "66666666-6666-4666-8666-666666666666",
+    }),
+  });
+  const blockedLock = await editorAcquire.json();
+  assert.equal(editorAcquire.status, 409);
+  assert.equal(blockedLock.lock.displayName, adminUsername);
+  assert.equal(Object.hasOwn(blockedLock.lock, "token"), false);
+
+  const blockedSave = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({ post: editorReadPayload.post }),
+  });
+  assert.equal(blockedSave.status, 409);
+
+  const ownerPost = structuredClone(editorReadPayload.post);
+  ownerPost.translations.tr.title = "Kilit sahibi güncelledi";
+  const ownerSave = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({ post: ownerPost }),
+  });
+  assert.equal(ownerSave.status, 200);
+
+  const releaseResponse = await request(lockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: adminLock.lockToken }),
+  });
+  assert.equal(releaseResponse.status, 200);
+
+  const editorAcquireAfterRelease = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "66666666-6666-4666-8666-666666666666",
+    }),
+  });
+  const editorLock = await editorAcquireAfterRelease.json();
+  assert.equal(editorAcquireAfterRelease.status, 200);
+
+  const blockedDelete = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "DELETE",
+    cookie: adminCookie,
+  });
+  assert.equal(blockedDelete.status, 409);
+
+  const editorRelease = await request(lockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: editorLock.lockToken }),
+  });
+  assert.equal(editorRelease.status, 200);
+
+  const deleteResponse = await request(`/api/admin/blog/posts/${slug}`, {
+    method: "DELETE",
+    cookie: adminCookie,
+  });
+  assert.equal(deleteResponse.status, 200);
 });
 
 test("dinamik sayfa düzenleme kilidi kullanıcıları ve sekmeleri birbirinden ayırır", async () => {

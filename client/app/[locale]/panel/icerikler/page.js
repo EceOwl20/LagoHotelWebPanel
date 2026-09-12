@@ -23,6 +23,11 @@ import ObjectEditor from "../components/ObjectEditor";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import dynamic from "next/dynamic";
 import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.mjs";
+import PageEditLockNotice from "../sayfalar/components/PageEditLockNotice";
+import useContentEditLock from "./useContentEditLock";
+import { ContentEditLockProvider } from "./ContentEditLockContext";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { usePanelPermission } from "../PanelSessionContext";
 
 function getNamespaceLabel(namespace) {
   if (namespaceLabels[namespace]) {
@@ -488,6 +493,10 @@ export default function PanelContentPage() {
   const [showUnsavedModal, setShowUnsavedModal] = useState(false); //showUnsavedModal
 
   const [messageType, setMessageType] = useState("success");
+  const editLock = useContentEditLock(selectedNamespace);
+  const canOverrideEditLock = usePanelPermission(
+    PANEL_PERMISSIONS.OVERRIDE_EDIT_LOCK
+  );
 
   const editVersionRef = useRef(0);
 
@@ -594,6 +603,8 @@ const visibleGroups = useMemo(
 );
 
 const updateActiveLocaleValue = (updater) => {
+  if (!editLock.editable) return;
+
   editVersionRef.current += 1;
 
   setBundle((currentBundle) => ({
@@ -626,7 +637,7 @@ const handleNamespaceSelect = (nextNamespace) => {
 };
 
 const handleSave = async () => {
-  if (saving || !selectedNamespace || !bundle) {
+  if (saving || !selectedNamespace || !bundle || !editLock.editable) {
     return false;
   }
 
@@ -644,6 +655,7 @@ setMessageType("success");
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-Panel-Edit-Lock": editLock.lockToken,
       },
       body: JSON.stringify({
         namespace: namespaceBeingSaved,
@@ -725,6 +737,17 @@ const handleCloseUnsavedModal = () => {
 
 const SelectedMediaEditor =
   MEDIA_EDITOR_REGISTRY[selectedNamespace] || null;
+
+  const handleLockTakeover = () => {
+    const editorName = editLock.lock?.displayName || "Diğer kullanıcı";
+    const approved = window.confirm(
+      `${editorName} bu içeriği düzenliyor. Kilidi devralırsanız diğer kullanıcının kaydetme yetkisi hemen sona erecek. Devam edilsin mi?`
+    );
+
+    if (approved) {
+      editLock.takeover();
+    }
+  };
 
   return (
     <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
@@ -1049,7 +1072,12 @@ const SelectedMediaEditor =
                 <button
                   type="button"
                   onClick={handleSave}
-                  disabled={saving || !bundle || !hasUnsavedChanges}
+                  disabled={
+                    saving ||
+                    !bundle ||
+                    !hasUnsavedChanges ||
+                    !editLock.editable
+                  }
                   className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400 disabled:shadow-none"
                 >
                   {saving ? (
@@ -1091,14 +1119,36 @@ const SelectedMediaEditor =
             </div>
           ) : bundle ? (
             <div className="space-y-5">
-              <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
+              <PageEditLockNotice
+                status={editLock.status}
+                lock={editLock.lock}
+                error={editLock.error}
+                canOverride={canOverrideEditLock}
+                onRetry={editLock.retry}
+                onTakeover={handleLockTakeover}
+              />
 
-            {SelectedMediaEditor ? (
-  <SelectedMediaEditor
-    namespace={selectedNamespace}
-    activeLocale={activeLocale}
-  />
-) : null}
+              <ContentEditLockProvider
+                value={{
+                  namespace: selectedNamespace,
+                  lockToken: editLock.lockToken,
+                  editable: editLock.editable,
+                }}
+              >
+                <fieldset
+                  disabled={!editLock.editable}
+                  className="space-y-5 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
+
+                  {SelectedMediaEditor ? (
+                    <SelectedMediaEditor
+                      namespace={selectedNamespace}
+                      activeLocale={activeLocale}
+                    />
+                  ) : null}
+                </fieldset>
+              </ContentEditLockProvider>
 
             </div>
           ) : (

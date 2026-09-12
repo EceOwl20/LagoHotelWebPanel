@@ -21,6 +21,11 @@ test("aynı taslaklar arasında fark bildirmez", () => {
       modified: 0,
       orderChanged: false,
     },
+    componentChanges: {
+      added: [],
+      removed: [],
+      modified: [],
+    },
   });
 });
 
@@ -53,6 +58,17 @@ test("dil, ayar ve component farklarını özetler", () => {
     modified: 1,
     orderChanged: true,
   });
+  assert.deepEqual(comparison.componentChanges.added, [
+    {
+      id: "new-section",
+      type: "intro",
+      label: "Giriş metni",
+      position: 4,
+      changeTypes: [],
+    },
+  ]);
+  assert.equal(comparison.componentChanges.modified[0].label, "Giriş metni");
+  assert.deepEqual(comparison.componentChanges.modified[0].changeTypes, ["text"]);
 });
 
 test("ekleme veya silme nedeniyle kayan componentleri sıralama değişikliği saymaz", () => {
@@ -64,4 +80,27 @@ test("ekleme veya silme nedeniyle kayan componentleri sıralama değişikliği s
 
   assert.equal(comparison.components.removed, 1);
   assert.equal(comparison.components.orderChanged, false);
+  assert.equal(comparison.componentChanges.removed[0].label, "Görsel ve metin");
+  assert.equal(comparison.componentChanges.removed[0].position, 2);
+});
+
+test("değişen componentte metin, görsel ve ayar farklarını ayırır", () => {
+  const previousDraft = createDraft();
+  const currentDraft = structuredClone(previousDraft);
+
+  currentDraft.sections[1].image = "/uploads/pages/new.webp";
+  currentDraft.sections[1].translations.tr.title = "Yeni başlık";
+  currentDraft.sections[1].imagePosition = "right";
+
+  const comparison = comparePageDrafts(previousDraft, currentDraft);
+
+  assert.deepEqual(comparison.componentChanges.modified, [
+    {
+      id: currentDraft.sections[1].id,
+      type: "imageText",
+      label: "Görsel ve metin",
+      position: 2,
+      changeTypes: ["image", "settings", "text"],
+    },
+  ]);
 });

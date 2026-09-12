@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import PageImagePicker from "../sayfalar/components/PageImagePicker";
+import { useContentEditLockContext } from "./ContentEditLockContext";
 
 const LOCALES = ["tr", "en", "de", "ru"];
 
@@ -66,6 +67,7 @@ export default function SitePageMediaEditor({
   collections,
   localizedAlt = false,
 }) {
+  const editLock = useContentEditLockContext();
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -197,7 +199,11 @@ export default function SitePageMediaEditor({
     try {
       const response = await fetch(`/api/admin/site-pages/${pageKey}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Panel-Edit-Lock": editLock?.lockToken || "",
+          "X-Panel-Edit-Namespace": editLock?.namespace || "",
+        },
         body: JSON.stringify({ content }),
       });
       const payload = await response.json();
@@ -418,7 +424,7 @@ export default function SitePageMediaEditor({
         <button
           type="button"
           onClick={handleSave}
-          disabled={saving}
+          disabled={saving || !editLock?.editable}
           className="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-medium text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {saving ? "Görseller Kaydediliyor..." : `${pageTitle} Görsellerini Kaydet`}

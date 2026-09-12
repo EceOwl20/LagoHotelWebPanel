@@ -6,6 +6,10 @@ import {
 } from "@/lib/admin/messages";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
+import { assertContentEditLock } from "@/lib/admin/edit-locks";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { getContentEditResourceKey } from "@/lib/admin/content-edit-resources.mjs";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -37,6 +41,7 @@ export async function PUT(request) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
@@ -64,7 +69,21 @@ export async function PUT(request) {
     );
   }
 
-  const updatedBundle = await updateNamespaceBundle(namespace, bundle);
+  let updatedBundle;
+
+  try {
+    assertContentEditLock(
+      getContentEditResourceKey(namespace),
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
+    updatedBundle = await updateNamespaceBundle(namespace, bundle);
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "İçerik kaydedilemedi." },
+      { status: error.status || 500 }
+    );
+  }
 
   for (const locale of CMS_LOCALES) {
     revalidatePath(`/${locale}`, "layout");

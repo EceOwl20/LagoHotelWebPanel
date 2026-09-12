@@ -12,6 +12,13 @@ import {
 } from "@/lib/admin/security";
 import { getRestaurantDetailConfigByPageKey } from "@/lib/admin/restaurant-detail-config.mjs";
 import { getBarCafeDetailConfigByPageKey } from "@/lib/admin/bar-cafe-detail-config.mjs";
+import {
+  getContentEditResourceKey,
+  namespaceOwnsSitePage,
+} from "@/lib/admin/content-edit-resources.mjs";
+import { assertContentEditLock } from "@/lib/admin/edit-locks";
+import { assertPanelPermission } from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 
 const CERTIFICATE_PATHS = [
   "/tr/sertifikalar",
@@ -130,6 +137,7 @@ export async function PUT(request, { params }) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
@@ -155,6 +163,21 @@ export async function PUT(request, { params }) {
     if (!content || typeof content !== "object") {
       return NextResponse.json({ error: "Sayfa görsel verisi zorunludur." }, { status: 400 });
     }
+
+    const namespace = request.headers.get("x-panel-edit-namespace");
+
+    if (!namespaceOwnsSitePage(namespace, pageKey)) {
+      return NextResponse.json(
+        { error: "Bu düzenleme kilidi seçili sayfa görselleriyle eşleşmiyor." },
+        { status: 409 }
+      );
+    }
+
+    assertContentEditLock(
+      getContentEditResourceKey(namespace),
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
 
     const saved = await writeSitePageContent(pageKey, content);
 

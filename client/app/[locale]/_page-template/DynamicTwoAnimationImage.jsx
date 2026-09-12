@@ -8,6 +8,7 @@ export default function DynamicTwoAnimationImage({
   foregroundImage,
   backgroundImage,
   content,
+  preview = false,
 }) {
   const [animate, setAnimate] = useState(false);
   const sectionRef = useRef(null);
@@ -33,7 +34,9 @@ export default function DynamicTwoAnimationImage({
   return (
     <div
       ref={sectionRef}
-      className="flex h-auto w-screen max-w-[1440px] items-center justify-center md:h-[400px] lg:h-[555px]"
+      className={`flex h-auto max-w-[1440px] items-center justify-center md:h-[400px] lg:h-[555px] ${
+        preview ? "w-full" : "w-screen"
+      }`}
     >
       <div className="flex h-full w-[87.79%] flex-col items-center justify-center gap-[30px] md:w-[91.4%] md:flex-row-reverse md:gap-[42px] lg:w-[76.8%] lg:gap-[52px]">
         <div className="flex w-[96%] flex-col items-center justify-center gap-[15px] text-center font-jost text-black md:w-[55%] md:items-start md:gap-[25px] md:text-start lg:w-[56.5%]">

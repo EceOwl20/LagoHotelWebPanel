@@ -722,7 +722,9 @@ export default function PagesAdminPage() {
                   id="restore-page-title"
                   className="mt-1 text-2xl font-semibold text-stone-900"
                 >
-                  Taslak olarak geri yüklensin mi?
+                  {pageToRestore.status === "published"
+                    ? "Yayındaki haliyle geri yüklensin mi?"
+                    : "Taslak olarak geri yüklensin mi?"}
                 </h2>
               </div>
             </div>
@@ -734,11 +736,15 @@ export default function PagesAdminPage() {
                 <span className="font-semibold text-stone-900">
                   {pageToRestore.title}
                 </span>{" "}
-                sayfası aktif sayfa listesine taslak olarak geri dönecek.
+                {pageToRestore.status === "published"
+                  ? "sayfası önceki yayın kopyasıyla birlikte geri dönecek."
+                  : "sayfası aktif sayfa listesine taslak olarak geri dönecek."}
               </p>
               <p className="mt-3 rounded-xl bg-stone-100 p-3 text-xs leading-5 text-stone-600">
-                Sayfa otomatik yayınlanmayacaktır. Aynı ID veya slug kullanımda ise
-                işlem güvenli biçimde engellenecektir.
+                {pageToRestore.status === "published"
+                  ? "Header bağlantısı yeniden gösterilecek. Silinmeden önce kaydedilmiş yayınlanmamış değişiklikler varsa taslakta korunacaktır."
+                  : "Sayfa otomatik yayınlanmayacaktır. Yayınlandığında header bağlantısı görünür."}{" "}
+                Aynı ID veya slug kullanımda ise işlem güvenli biçimde engellenecektir.
               </p>
 
               {restoreError ? (
@@ -780,7 +786,9 @@ export default function PagesAdminPage() {
                     ? "Geri yükleniyor..."
                     : restoreError
                       ? "Tekrar Dene"
-                      : "Taslak Olarak Geri Yükle"}
+                      : pageToRestore.status === "published"
+                        ? "Yayında Geri Yükle"
+                        : "Taslak Olarak Geri Yükle"}
                 </button>
               </div>
             </div>

@@ -91,7 +91,7 @@ function ImagePlaceholder() {
   );
 }
 
-function TwoAnimationImageSection({ section, locale }) {
+function TwoAnimationImageSection({ section, locale, preview = false }) {
   const content = getLocalizedContent(section.translations, locale);
 
   return (
@@ -105,15 +105,17 @@ function TwoAnimationImageSection({ section, locale }) {
         alt: content.foregroundImageAlt || "",
       }}
       content={content}
+      preview={preview}
     />
   );
 }
 
-function SpaInfoSection({ section, locale }) {
+function SpaInfoSection({ section, locale, preview = false }) {
   return (
     <DynamicSpaInfoSection
       section={section}
       content={getLocalizedContent(section.translations, locale)}
+      preview={preview}
     />
   );
 }
@@ -401,7 +403,14 @@ export default function StandardPageTemplate({ page, locale, preview = false }) 
 
         const { Component: SectionComponent } = resolvedRenderer;
 
-        return <SectionComponent key={section.id} section={section} locale={locale} />;
+        return (
+          <SectionComponent
+            key={section.id}
+            section={section}
+            locale={locale}
+            preview={preview}
+          />
+        );
       })}
 
       {!preview && page.showContactSection !== false ? <ContactSection2 /> : null}

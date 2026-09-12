@@ -4,7 +4,7 @@ import {
   addGalleryImage,
   deleteGalleryImage,
   readGallery,
-  writeGallery,
+  reorderGalleryImages,
 } from "@/lib/admin/gallery";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
@@ -35,6 +35,7 @@ export async function POST(request) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
@@ -78,6 +79,7 @@ export async function PUT(request) {
   }
 
   try {
+    assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: error.status || 403 });
@@ -96,19 +98,21 @@ export async function PUT(request) {
     );
   }
 
-  const { gallery } = await request.json();
+  try {
+    const { categoryId, imageIds } = await request.json();
+    const gallery = await reorderGalleryImages({ categoryId, imageIds });
 
-  if (!gallery) {
-    return NextResponse.json({ error: "Galeri verisi zorunludur." }, { status: 400 });
+    for (const locale of CMS_LOCALES) {
+      revalidatePath(`/${locale}/gallery`);
+    }
+
+    return NextResponse.json({ gallery });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Galeri sırası kaydedilemedi." },
+      { status: error.status || 500 }
+    );
   }
-
-  const saved = await writeGallery(gallery);
-
-  for (const locale of CMS_LOCALES) {
-    revalidatePath(`/${locale}/gallery`);
-  }
-
-  return NextResponse.json({ gallery: saved });
 }
 
 export async function DELETE(request) {

@@ -7,7 +7,7 @@ import { BiArea, BiGroup } from "react-icons/bi";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 
-export default function DynamicOtherOptions({ section, locale }) {
+export default function DynamicOtherOptions({ section, locale, preview = false }) {
   const content = getLocalizedContent(section.translations, locale);
   const options = [...(section.options || [])].sort(
     (left, right) => (left.order ?? 0) - (right.order ?? 0)
@@ -41,8 +41,16 @@ export default function DynamicOtherOptions({ section, locale }) {
   }, [emblaApi, updateSelectedIndex]);
 
   return (
-    <section className="flex h-auto w-screen max-w-[1440px] items-center justify-center">
-      <div className="flex w-[87.79%] flex-col items-start justify-center gap-[30px] md:w-[91.4%] lg:min-w-[960px] lg:w-[76.8%] lg:gap-[50px]">
+    <section
+      className={`flex h-auto max-w-[1440px] items-center justify-center ${
+        preview ? "w-full" : "w-screen"
+      }`}
+    >
+      <div
+        className={`flex w-[87.79%] flex-col items-start justify-center gap-[30px] md:w-[91.4%] lg:w-[76.8%] lg:gap-[50px] ${
+          preview ? "lg:min-w-0" : "lg:min-w-[960px]"
+        }`}
+      >
         <div className="flex w-full flex-col items-start justify-center gap-[15px] text-black md:gap-[25px] lg:gap-[35px]">
           {content.eyebrow ? (
             <span className="font-jost text-[12px] font-medium uppercase leading-[14px] tracking-[0.48px]">

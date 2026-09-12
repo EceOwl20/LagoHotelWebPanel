@@ -23,6 +23,40 @@ const localeLabels = {
   ru: "Русский",
 };
 
+const componentChangeLabels = {
+  text: "Metin veya başlık değişti",
+  image: "Görsel değişti",
+  images: "Görsel listesi değişti",
+  collection: "Kart veya liste içeriği değişti",
+  settings: "Component ayarı değişti",
+  content: "Component içeriği değişti",
+};
+
+function getComponentChanges(comparison) {
+  if (!comparison?.componentChanges) return [];
+
+  return [
+    ...comparison.componentChanges.added.map((component) => ({
+      ...component,
+      changeLabel: "Component eklendi",
+      tone: "emerald",
+    })),
+    ...comparison.componentChanges.removed.map((component) => ({
+      ...component,
+      changeLabel: "Component kaldırıldı",
+      tone: "rose",
+    })),
+    ...comparison.componentChanges.modified.map((component) => ({
+      ...component,
+      changeLabel: component.changeTypes
+        .map((changeType) => componentChangeLabels[changeType])
+        .filter(Boolean)
+        .join(" · "),
+      tone: "amber",
+    })),
+  ];
+}
+
 function formatDate(value) {
   if (!value) return "Tarih bulunamadı";
 
@@ -158,6 +192,10 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
 
     return comparePageDrafts(versionDetail.version.draft, currentDraft);
   }, [comparisonVisible, currentDraft, isOpen, versionDetail?.version?.draft]);
+  const componentChanges = useMemo(
+    () => getComponentChanges(comparison),
+    [comparison]
+  );
 
   return (
     <>
@@ -408,6 +446,30 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
                               Karşılaştırma yalnızca seçili sürüm için bu ekranda hesaplanır.
                             </p>
 
+                            {componentChanges.length > 0 ? (
+                              <div className="mt-3 space-y-2">
+                                {componentChanges.map((component, index) => (
+                                  <div
+                                    key={`${component.id}-${component.tone}-${index}`}
+                                    className={`rounded-xl border px-3 py-2.5 ${
+                                      component.tone === "emerald"
+                                        ? "border-emerald-200 bg-emerald-50"
+                                        : component.tone === "rose"
+                                          ? "border-rose-200 bg-rose-50"
+                                          : "border-amber-200 bg-amber-50"
+                                    }`}
+                                  >
+                                    <p className="text-xs font-semibold text-stone-800">
+                                      {component.label} · {component.position}. component
+                                    </p>
+                                    <p className="mt-0.5 text-[11px] leading-4 text-stone-600">
+                                      {component.changeLabel}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}
+
                             {!comparison.isIdentical ? (
                               <div className="mt-3 flex flex-wrap gap-2">
                                 {comparison.changedLocales.length > 0 ? (
@@ -451,10 +513,8 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
 
                     <div className="rounded-3xl border border-stone-200 bg-white p-2 shadow-sm">
                       <div
-                        role="region"
                         aria-label="Geçmiş sürüm sayfa önizlemesi"
-                        tabIndex={0}
-                        className="max-h-[58vh] overflow-y-auto overscroll-contain rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[#63978f]"
+                        className="rounded-2xl"
                       >
                         <div className="pointer-events-none">
                           <StandardPageTemplate

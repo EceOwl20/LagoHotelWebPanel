@@ -13,7 +13,7 @@ import {
   createPageRecord,
   normalizePageRecord,
   publishPageRecord,
-  restorePageRecordAsDraft,
+  restorePageRecord,
   sanitizeAdminPageInput,
   unpublishPageRecord,
 } from "@/lib/pages/page-versions.mjs";
@@ -454,11 +454,14 @@ async function restorePageDraftUnlocked(id) {
     throw new PageDraftError("Çöp kutusunda bu sayfa bulunamadı.", 404);
   }
 
-  const restoredRecord = restorePageRecordAsDraft(
+  const restoredRecord = restorePageRecord(
     trashedRecord,
     new Date().toISOString()
   );
   await assertValidDraft(restoredRecord.draft);
+  if (restoredRecord.published) {
+    await assertValidDraft(restoredRecord.published);
+  }
 
   try {
     await restoreJsonTrashEntry({

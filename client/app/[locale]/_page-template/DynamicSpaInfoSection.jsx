@@ -47,14 +47,18 @@ function OverlayContent({ eyebrow, title, text, items = [], position = "bottom" 
   );
 }
 
-export default function DynamicSpaInfoSection({ section, content }) {
+export default function DynamicSpaInfoSection({ section, content, preview = false }) {
   const listItems = String(content.rightItems || "")
     .split(/\r?\n/)
     .map((item) => item.trim())
     .filter(Boolean);
 
   return (
-    <section className="flex h-auto w-screen max-w-[1440px] items-end justify-center">
+    <section
+      className={`flex h-auto max-w-[1440px] items-end justify-center ${
+        preview ? "w-full" : "w-screen"
+      }`}
+    >
       <div className="flex w-[87.79%] flex-col items-end justify-center gap-[25px] md:w-[91.4%] md:flex-row md:gap-[2%] lg:w-[76.8%]">
         <div className="flex w-full flex-col items-start justify-center gap-[30px] md:w-[53%] lg:gap-[50px]">
           <div className="flex w-full flex-col items-start justify-center gap-[15px] text-start font-jost text-black md:gap-[25px] lg:gap-[35px]">

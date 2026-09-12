@@ -9,8 +9,8 @@ function isCurrentEffect(generationRef, generation) {
   return generationRef.current === generation;
 }
 
-async function postLockAction(pageId, body, options = {}) {
-  const response = await fetch(`/api/admin/pages/${pageId}/lock`, {
+async function postLockAction(endpoint, body, options = {}) {
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -21,12 +21,14 @@ async function postLockAction(pageId, body, options = {}) {
   return { response, payload };
 }
 
-export default function usePageEditLock(pageId) {
+export function useEditLock(resourceId, endpoint) {
   const clientIdRef = useRef(null);
   const lockTokenRef = useRef("");
+  const lockResourceIdRef = useRef("");
   const generationRef = useRef(0);
+  const activeResourceIdRef = useRef(resourceId);
   const [lockState, setLockState] = useState(() => ({
-    status: pageId ? "acquiring" : "not-required",
+    status: resourceId ? "acquiring" : "not-required",
     lock: null,
     error: "",
   }));
@@ -34,9 +36,10 @@ export default function usePageEditLock(pageId) {
   if (!clientIdRef.current) {
     clientIdRef.current = crypto.randomUUID();
   }
+  activeResourceIdRef.current = resourceId;
 
   const acquire = useCallback(async (action = "acquire") => {
-    if (!pageId) return false;
+    if (!resourceId) return false;
 
     setLockState((current) => ({
       ...current,
@@ -44,13 +47,14 @@ export default function usePageEditLock(pageId) {
       error: "",
     }));
 
-    const { response, payload } = await postLockAction(pageId, {
+    const { response, payload } = await postLockAction(endpoint, {
       action,
       clientId: clientIdRef.current,
     });
 
     if (!response.ok) {
       lockTokenRef.current = "";
+      lockResourceIdRef.current = "";
       setLockState({
         status: response.status === 409 ? "blocked" : "error",
         lock: payload.lock || null,
@@ -60,29 +64,31 @@ export default function usePageEditLock(pageId) {
     }
 
     lockTokenRef.current = payload.lockToken;
+    lockResourceIdRef.current = resourceId;
     setLockState({ status: "owned", lock: payload.lock, error: "" });
     return true;
-  }, [pageId]);
+  }, [endpoint, resourceId]);
 
   useEffect(() => {
-    if (!pageId) {
+    if (!resourceId) {
       setLockState({ status: "not-required", lock: null, error: "" });
       return undefined;
     }
 
     const generation = ++generationRef.current;
     let disposed = false;
+    let effectLockToken = "";
 
     const start = async () => {
-      const { response, payload } = await postLockAction(pageId, {
+      const { response, payload } = await postLockAction(endpoint, {
         action: "acquire",
         clientId: clientIdRef.current,
       });
 
       if (disposed) {
-        if (response.ok && isCurrentEffect(generationRef, generation)) {
+        if (response.ok && activeResourceIdRef.current !== resourceId) {
           await postLockAction(
-            pageId,
+            endpoint,
             { action: "release", lockToken: payload.lockToken },
             { keepalive: true }
           ).catch(() => undefined);
@@ -99,7 +105,9 @@ export default function usePageEditLock(pageId) {
         return;
       }
 
+      effectLockToken = payload.lockToken;
       lockTokenRef.current = payload.lockToken;
+      lockResourceIdRef.current = resourceId;
       setLockState({ status: "owned", lock: payload.lock, error: "" });
     };
 
@@ -118,23 +126,30 @@ export default function usePageEditLock(pageId) {
       disposed = true;
 
       setTimeout(() => {
-        if (!isCurrentEffect(generationRef, generation)) return;
-        const lockToken = lockTokenRef.current;
-        lockTokenRef.current = "";
+        const sameResourceWasRestarted =
+          !isCurrentEffect(generationRef, generation) &&
+          activeResourceIdRef.current === resourceId;
+        if (sameResourceWasRestarted) return;
+
+        const lockToken = effectLockToken || lockTokenRef.current;
+        if (lockTokenRef.current === lockToken) {
+          lockTokenRef.current = "";
+          lockResourceIdRef.current = "";
+        }
 
         if (lockToken) {
           postLockAction(
-            pageId,
+            endpoint,
             { action: "release", lockToken },
             { keepalive: true }
           ).catch(() => undefined);
         }
       }, 0);
     };
-  }, [pageId]);
+  }, [endpoint, resourceId]);
 
   useEffect(() => {
-    if (!pageId || lockState.status !== "owned") return undefined;
+    if (!resourceId || lockState.status !== "owned") return undefined;
 
     let heartbeatInFlight = false;
     const interval = setInterval(async () => {
@@ -142,13 +157,14 @@ export default function usePageEditLock(pageId) {
       heartbeatInFlight = true;
 
       try {
-        const { response, payload } = await postLockAction(pageId, {
+        const { response, payload } = await postLockAction(endpoint, {
           action: "heartbeat",
           lockToken: lockTokenRef.current,
         });
 
         if (!response.ok) {
           lockTokenRef.current = "";
+          lockResourceIdRef.current = "";
           setLockState({
             status: response.status === 409 ? "blocked" : "error",
             lock: payload.lock || null,
@@ -159,6 +175,7 @@ export default function usePageEditLock(pageId) {
         }
       } catch (error) {
         lockTokenRef.current = "";
+        lockResourceIdRef.current = "";
         setLockState({
           status: "error",
           lock: null,
@@ -170,23 +187,30 @@ export default function usePageEditLock(pageId) {
     }, HEARTBEAT_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [lockState.status, pageId]);
+  }, [endpoint, lockState.status, resourceId]);
 
   useEffect(() => {
-    if (!pageId || lockState.status !== "blocked") return undefined;
+    if (!resourceId || lockState.status !== "blocked") return undefined;
 
     const interval = setInterval(() => {
       acquire("acquire").catch(() => undefined);
     }, BLOCKED_RETRY_INTERVAL_MS);
 
     return () => clearInterval(interval);
-  }, [acquire, lockState.status, pageId]);
+  }, [acquire, lockState.status, resourceId]);
 
   return {
     ...lockState,
-    editable: !pageId || lockState.status === "owned",
+    editable:
+      !resourceId ||
+      (lockState.status === "owned" && lockResourceIdRef.current === resourceId),
     lockToken: lockTokenRef.current,
     retry: () => acquire("acquire"),
     takeover: () => acquire("takeover"),
   };
+}
+
+export default function usePageEditLock(pageId) {
+  const endpoint = pageId ? `/api/admin/pages/${pageId}/lock` : "";
+  return useEditLock(pageId, endpoint);
 }

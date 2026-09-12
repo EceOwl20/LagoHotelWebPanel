@@ -6,6 +6,11 @@ import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
+  assertBlogEditLock,
+  assertBlogNotLockedByAnother,
+  clearBlogEditLock,
+} from "@/lib/admin/edit-locks";
+import {
   assertSameOrigin,
   consumeRateLimit,
   getClientIp,
@@ -63,6 +68,12 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Blog yazısı bulunamadı." }, { status: 404 });
     }
 
+    assertBlogEditLock(
+      slug,
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
+
     if (post?.status === "published" || existingPost.status === "published") {
       assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
     }
@@ -110,13 +121,28 @@ export async function DELETE(request, { params }) {
     );
   }
 
-  const { slug } = await params;
-  const deletionResult = await deleteBlogPost(slug);
+  try {
+    const { slug } = await params;
+    const existingPost = await readBlogPost(slug);
 
-  for (const locale of CMS_LOCALES) {
-    revalidatePath(`/${locale}/news`);
-    revalidatePath(`/${locale}/news/${slug}`);
+    if (!existingPost) {
+      return NextResponse.json({ error: "Blog yazısı bulunamadı." }, { status: 404 });
+    }
+
+    assertBlogNotLockedByAnother(slug, session);
+    const deletionResult = await deleteBlogPost(slug);
+    clearBlogEditLock(slug);
+
+    for (const locale of CMS_LOCALES) {
+      revalidatePath(`/${locale}/news`);
+      revalidatePath(`/${locale}/news/${slug}`);
+    }
+
+    return NextResponse.json({ success: true, ...deletionResult });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Blog yazısı silinemedi." },
+      { status: error.status || 500 }
+    );
   }
-
-  return NextResponse.json({ success: true, ...deletionResult });
 }

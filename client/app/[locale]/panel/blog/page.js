@@ -20,6 +20,8 @@ import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
 import { findBlogPostToSelect } from "@/lib/admin/blog-selection.mjs";
 import PageImagePicker from "../sayfalar/components/PageImagePicker";
+import PageEditLockNotice from "../sayfalar/components/PageEditLockNotice";
+import useBlogEditLock from "./useBlogEditLock";
 
 function createEmptyTranslations() {
   return CMS_LOCALES.reduce((accumulator, locale) => {
@@ -80,6 +82,9 @@ function getPostTitle(post) {
 export default function BlogAdminPage() {
   const canPublish = usePanelPermission(PANEL_PERMISSIONS.PUBLISH_CONTENT);
   const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
+  const canOverrideEditLock = usePanelPermission(
+    PANEL_PERMISSIONS.OVERRIDE_EDIT_LOCK
+  );
   const [posts, setPosts] = useState([]);
   const [selectedSlug, setSelectedSlug] = useState(null);
   const [draft, setDraft] = useState(createEmptyPost());
@@ -88,6 +93,8 @@ export default function BlogAdminPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const editLock = useBlogEditLock(selectedSlug);
+  const isEditBlocked = Boolean(selectedSlug) && !editLock.editable;
   const publishedCount = posts.filter((post) => post.status === "published").length;
   const draftCount = posts.length - publishedCount;
 
@@ -212,6 +219,11 @@ export default function BlogAdminPage() {
   };
 
   const handleSave = async () => {
+    if (isEditBlocked) {
+      setError("Bu blog yazısı başka bir kullanıcı tarafından düzenleniyor.");
+      return;
+    }
+
     setSaving(true);
     setError("");
     setMessage("");
@@ -227,6 +239,9 @@ export default function BlogAdminPage() {
         method: selectedSlug ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(selectedSlug
+            ? { "X-Panel-Edit-Lock": editLock.lockToken }
+            : {}),
         },
         body: JSON.stringify({
           post: {
@@ -263,6 +278,11 @@ export default function BlogAdminPage() {
   };
 
   const handleDelete = async () => {
+    if (isEditBlocked) {
+      setError("Düzenleme kilidi sizde olmayan bir blog yazısı silinemez.");
+      return;
+    }
+
     if (
       !selectedSlug ||
       !window.confirm(
@@ -304,6 +324,21 @@ export default function BlogAdminPage() {
     setActiveLocale("tr");
     setMessage("");
     setError("");
+  };
+
+  const handleLockTakeover = async () => {
+    const confirmed = window.confirm(
+      "Bu blog yazısının düzenleme kilidini devralmak istediğinize emin misiniz? Diğer kullanıcının henüz kaydetmediği değişiklikler kaybolabilir."
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    const acquired = await editLock.takeover();
+
+    if (!acquired) {
+      setError("Blog yazısının düzenleme kilidi devralınamadı.");
+    }
   };
 
   return (
@@ -444,6 +479,16 @@ export default function BlogAdminPage() {
             </div>
           ) : null}
 
+          <PageEditLockNotice
+            status={editLock.status}
+            lock={editLock.lock}
+            error={editLock.error}
+            canOverride={canOverrideEditLock}
+            onRetry={editLock.retry}
+            onTakeover={handleLockTakeover}
+          />
+
+          <fieldset disabled={isEditBlocked} className="min-w-0 disabled:opacity-70">
           <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
             <div className="flex items-center gap-3 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:px-6">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#edf5f3] text-[#507f78]">
@@ -523,6 +568,7 @@ export default function BlogAdminPage() {
             </div>
             </div>
           </section>
+          </fieldset>
 
           <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
             <div className="flex flex-col gap-4 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -554,7 +600,10 @@ export default function BlogAdminPage() {
               </div>
             </div>
 
-          <div className="grid gap-5 p-5 sm:p-6">
+          <fieldset
+            disabled={isEditBlocked}
+            className="grid min-w-0 gap-5 p-5 disabled:opacity-70 sm:p-6"
+          >
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-stone-700">Başlık</span>
               <input
@@ -610,9 +659,10 @@ export default function BlogAdminPage() {
                 />
               </label>
             </div>
-          </div>
+          </fieldset>
           </section>
 
+          <fieldset disabled={isEditBlocked} className="min-w-0 disabled:opacity-70">
           <section className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
             <div className="flex flex-col gap-4 border-b border-stone-200 bg-stone-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <div className="flex items-center gap-3">
@@ -765,6 +815,7 @@ export default function BlogAdminPage() {
               )}
             </div>
           </section>
+          </fieldset>
 
           <section className="flex flex-col gap-4 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -775,7 +826,11 @@ export default function BlogAdminPage() {
             <button
               type="button"
               onClick={handleSave}
-              disabled={saving || (!canPublish && draft.status === "published")}
+              disabled={
+                saving ||
+                isEditBlocked ||
+                (!canPublish && draft.status === "published")
+              }
               className="inline-flex items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {saving ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : <FiSave className="h-4 w-4" />}
@@ -786,7 +841,8 @@ export default function BlogAdminPage() {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
+                disabled={isEditBlocked}
+                className="inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <FiTrash2 className="h-4 w-4" />
                 Yazıyı Sil

@@ -183,13 +183,13 @@ export default function GalleryAdminPage() {
     [activeCategory, gallery]
   );
 
-  const persistGallery = async (nextGallery) => {
+  const persistGalleryOrder = async (categoryId, imageIds) => {
     const response = await fetch("/api/admin/gallery", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gallery: nextGallery }),
+      body: JSON.stringify({ categoryId, imageIds }),
     });
 
     const payload = await response.json();
@@ -323,19 +323,11 @@ export default function GalleryAdminPage() {
     setMessage("");
 
     try {
-      const nextGallery = {
-        ...gallery,
-        categories: gallery.categories.map((category) =>
-          category.id === activeCategory
-            ? {
-                ...category,
-                images: moveImage(category.images, index, direction),
-              }
-            : category
-        ),
-      };
-
-      await persistGallery(nextGallery);
+      const reorderedImages = moveImage(currentCategory.images, index, direction);
+      await persistGalleryOrder(
+        activeCategory,
+        reorderedImages.map((image) => image.id)
+      );
     } catch (err) {
       setError(err.message);
     }

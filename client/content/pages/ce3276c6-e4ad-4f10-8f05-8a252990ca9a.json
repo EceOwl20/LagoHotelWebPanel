@@ -1,0 +1,744 @@
+{
+  "storageVersion": 2,
+  "id": "ce3276c6-e4ad-4f10-8f05-8a252990ca9a",
+  "createdAt": "2026-09-12T09:07:36.195Z",
+  "updatedAt": "2026-09-12T09:09:07.477Z",
+  "publishedAt": "2026-09-12T09:08:13.303Z",
+  "history": [
+    {
+      "versionId": "ee16afe5-ab40-4b78-accd-95a69daebe38",
+      "createdAt": "2026-09-12T09:08:13.303Z",
+      "action": "draft-save",
+      "createdBy": {
+        "id": "environment-admin",
+        "username": "admin",
+        "displayName": "admin",
+        "role": "admin"
+      },
+      "wasPublished": false,
+      "draft": {
+        "schemaVersion": 1,
+        "template": "standard",
+        "slugs": {
+          "tr": "owlsayfasi",
+          "en": "owlsayfasien",
+          "de": "owlsayfaside",
+          "ru": "owlsayfasiru"
+        },
+        "status": "draft",
+        "showContactSection": true,
+        "hero": {
+          "image": "",
+          "overlay": true,
+          "translations": {
+            "tr": {
+              "eyebrow": "Lago Hotel",
+              "title": "Yeni Sayfa",
+              "imageAlt": ""
+            },
+            "en": {
+              "eyebrow": "Lago Hotel",
+              "title": "New Page",
+              "imageAlt": ""
+            },
+            "de": {
+              "eyebrow": "Lago Hotel",
+              "title": "Neue Seite",
+              "imageAlt": ""
+            },
+            "ru": {
+              "eyebrow": "Lago Hotel",
+              "title": "Новая страница",
+              "imageAlt": ""
+            }
+          }
+        },
+        "navigation": {
+          "visible": true,
+          "order": 100,
+          "translations": {
+            "tr": {
+              "label": "owlsayfasi"
+            },
+            "en": {
+              "label": "owlsayfasien"
+            },
+            "de": {
+              "label": "owlsayfaside"
+            },
+            "ru": {
+              "label": "owlsayfasiru"
+            }
+          }
+        },
+        "seo": {
+          "tr": {
+            "title": "",
+            "description": ""
+          },
+          "en": {
+            "title": "",
+            "description": ""
+          },
+          "de": {
+            "title": "",
+            "description": ""
+          },
+          "ru": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "sections": [
+          {
+            "id": "intro-e004c832-06e4-4438-b184-4037ddba40cf",
+            "type": "intro",
+            "enabled": true,
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "card-collection-85580de8-174a-458d-9724-0d2d2260c907",
+            "type": "cardCollection",
+            "enabled": true,
+            "displayMode": "grid",
+            "cards": [
+              {
+                "id": "card-5ce33dda-a57d-46e4-8d9d-69b5d3191386",
+                "image": "",
+                "order": 0,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-7a8fd417-9e09-42ca-82de-ce7b78e8d532",
+                "image": "",
+                "order": 1,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              },
+              {
+                "id": "card-8fc03108-b7da-4f21-80ad-6160479a838e",
+                "image": "",
+                "order": 2,
+                "translations": {
+                  "tr": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "en": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "de": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  },
+                  "ru": {
+                    "title": "",
+                    "text": "",
+                    "imageAlt": "",
+                    "buttonText": "",
+                    "buttonHref": ""
+                  }
+                }
+              }
+            ],
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          }
+        ],
+        "createdAt": "2026-09-12T09:07:36.195Z",
+        "updatedAt": "2026-09-12T09:07:36.195Z",
+        "id": "ce3276c6-e4ad-4f10-8f05-8a252990ca9a"
+      }
+    }
+  ],
+  "draft": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "owlsayfasi",
+      "en": "owlsayfasien",
+      "de": "owlsayfaside",
+      "ru": "owlsayfasiru"
+    },
+    "status": "draft",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "owlsayfasi",
+          "imageAlt": ""
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "owlsayfasi"
+        },
+        "en": {
+          "label": "owlsayfasien"
+        },
+        "de": {
+          "label": "owlsayfaside"
+        },
+        "ru": {
+          "label": "owlsayfasiru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-e004c832-06e4-4438-b184-4037ddba40cf",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "card-collection-85580de8-174a-458d-9724-0d2d2260c907",
+        "type": "cardCollection",
+        "enabled": true,
+        "displayMode": "grid",
+        "cards": [
+          {
+            "id": "card-5ce33dda-a57d-46e4-8d9d-69b5d3191386",
+            "image": "",
+            "order": 0,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-7a8fd417-9e09-42ca-82de-ce7b78e8d532",
+            "image": "",
+            "order": 1,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-8fc03108-b7da-4f21-80ad-6160479a838e",
+            "image": "",
+            "order": 2,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          }
+        ],
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-12T09:07:36.195Z",
+    "updatedAt": "2026-09-12T09:09:07.477Z",
+    "id": "ce3276c6-e4ad-4f10-8f05-8a252990ca9a"
+  },
+  "published": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "owlsayfasi",
+      "en": "owlsayfasien",
+      "de": "owlsayfaside",
+      "ru": "owlsayfasiru"
+    },
+    "status": "published",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "owlsayfasi",
+          "imageAlt": ""
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "owlsayfasi"
+        },
+        "en": {
+          "label": "owlsayfasien"
+        },
+        "de": {
+          "label": "owlsayfaside"
+        },
+        "ru": {
+          "label": "owlsayfasiru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-e004c832-06e4-4438-b184-4037ddba40cf",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "card-collection-85580de8-174a-458d-9724-0d2d2260c907",
+        "type": "cardCollection",
+        "enabled": true,
+        "displayMode": "grid",
+        "cards": [
+          {
+            "id": "card-5ce33dda-a57d-46e4-8d9d-69b5d3191386",
+            "image": "",
+            "order": 0,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-7a8fd417-9e09-42ca-82de-ce7b78e8d532",
+            "image": "",
+            "order": 1,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "card-8fc03108-b7da-4f21-80ad-6160479a838e",
+            "image": "",
+            "order": 2,
+            "translations": {
+              "tr": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          }
+        ],
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-12T09:07:36.195Z",
+    "updatedAt": "2026-09-12T09:08:13.303Z",
+    "id": "ce3276c6-e4ad-4f10-8f05-8a252990ca9a"
+  }
+}

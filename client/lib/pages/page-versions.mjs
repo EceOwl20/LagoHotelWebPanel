@@ -143,11 +143,19 @@ export function unpublishPageRecord(record, updatedAt) {
   };
 }
 
-export function restorePageRecordAsDraft(record, restoredAt) {
+export function restorePageRecord(record, restoredAt) {
+  const restoredPublishedPage = record.published
+    ? {
+        ...clonePage(record.published),
+        id: record.id,
+        status: "published",
+      }
+    : null;
+
   return {
     ...clonePage(record),
     updatedAt: restoredAt,
-    publishedAt: null,
+    publishedAt: restoredPublishedPage ? record.publishedAt || restoredAt : null,
     draft: {
       ...clonePage(record.draft),
       id: record.id,
@@ -155,6 +163,6 @@ export function restorePageRecordAsDraft(record, restoredAt) {
       createdAt: record.createdAt,
       updatedAt: restoredAt,
     },
-    published: null,
+    published: restoredPublishedPage,
   };
 }

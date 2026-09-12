@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { restorePageDraft } from "@/lib/admin/pages";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
 import { getAdminSession } from "@/lib/admin/session";
 import {
   assertSameOrigin,
@@ -45,6 +47,20 @@ export async function POST(request, { params }) {
   try {
     const { id } = await params;
     const page = await restorePageDraft(id);
+
+    PAGE_LOCALES.forEach((locale) => {
+      const affectedSlugs = new Set([
+        page.slugs?.[locale],
+        page.publishedSlugs?.[locale],
+      ]);
+
+      affectedSlugs.forEach((slug) => {
+        if (slug) revalidatePath(`/${locale}/${slug}`);
+      });
+
+      revalidatePath(`/${locale}`, "layout");
+    });
+
     return NextResponse.json({ page });
   } catch (error) {
     return NextResponse.json(

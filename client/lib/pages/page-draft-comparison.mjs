@@ -1,4 +1,5 @@
 import { PAGE_LOCALES } from "./schema.mjs";
+import { getBlockDefinition } from "./block-definitions.mjs";
 
 function serialize(value) {
   return JSON.stringify(value ?? null);
@@ -81,6 +82,68 @@ function createGlobalSettingsSnapshot(draft) {
   };
 }
 
+function getFieldValue(section, field) {
+  if (!field.localized) return section?.[field.name] ?? null;
+
+  return Object.fromEntries(
+    PAGE_LOCALES.map((locale) => [
+      locale,
+      section?.translations?.[locale]?.[field.name] ?? null,
+    ])
+  );
+}
+
+function getFieldChangeType(fieldType) {
+  if (["text", "textarea"].includes(fieldType)) return "text";
+  if (fieldType === "image") return "image";
+  if (fieldType === "imageArray") return "images";
+  if (["cardArray", "otherOptionArray"].includes(fieldType)) return "collection";
+  return "settings";
+}
+
+function getSectionChangeTypes(previousSection, currentSection) {
+  const definition = getBlockDefinition(currentSection?.type || previousSection?.type);
+  const fields = Array.isArray(definition?.fields) ? definition.fields : [];
+  const changeTypes = new Set();
+  const knownKeys = new Set(["id", "type", "translations"]);
+
+  fields.forEach((field) => {
+    knownKeys.add(field.name);
+
+    if (
+      serialize(getFieldValue(previousSection, field)) !==
+      serialize(getFieldValue(currentSection, field))
+    ) {
+      changeTypes.add(getFieldChangeType(field.type));
+    }
+  });
+
+  const getOtherSettings = (section) =>
+    Object.fromEntries(
+      Object.entries(section || {}).filter(([key]) => !knownKeys.has(key))
+    );
+
+  if (
+    serialize(getOtherSettings(previousSection)) !==
+    serialize(getOtherSettings(currentSection))
+  ) {
+    changeTypes.add("settings");
+  }
+
+  if (changeTypes.size === 0) changeTypes.add("content");
+  return [...changeTypes];
+}
+
+function createSectionChange(section, index, changeTypes = []) {
+  return {
+    id: section.id,
+    type: section.type,
+    label: getBlockDefinition(section.type)?.label || section.type || "Component",
+    position: index + 1,
+    changeTypes,
+  };
+}
+
 export function comparePageDrafts(previousDraft, currentDraft) {
   const previousSections = Array.isArray(previousDraft?.sections)
     ? previousDraft.sections
@@ -116,6 +179,22 @@ export function comparePageDrafts(previousDraft, currentDraft) {
   const settingsChanged =
     serialize(createGlobalSettingsSnapshot(previousDraft)) !==
     serialize(createGlobalSettingsSnapshot(currentDraft));
+  const componentChanges = {
+    added: added.map((section) =>
+      createSectionChange(section, currentSections.indexOf(section))
+    ),
+    removed: removed.map((section) =>
+      createSectionChange(section, previousSections.indexOf(section))
+    ),
+    modified: modified.map((section) => {
+      const previousSection = previousById.get(section.id);
+      return createSectionChange(
+        section,
+        currentSections.indexOf(section),
+        getSectionChangeTypes(previousSection, section)
+      );
+    }),
+  };
 
   return {
     isIdentical:
@@ -133,5 +212,6 @@ export function comparePageDrafts(previousDraft, currentDraft) {
       modified: modified.length,
       orderChanged,
     },
+    componentChanges,
   };
 }

@@ -65,9 +65,52 @@ async function writeGalleryUnlocked(gallery) {
   return normalized;
 }
 
-export function writeGallery(gallery) {
+async function reorderGalleryImagesUnlocked({ categoryId, imageIds }) {
+  if (!GALLERY_CATEGORY_ORDER.includes(categoryId)) {
+    throw new GalleryContentError("Sıralanacak galeri kategorisi bulunamadı.", 404);
+  }
+
+  if (
+    !Array.isArray(imageIds) ||
+    imageIds.some((imageId) => typeof imageId !== "string")
+  ) {
+    throw new GalleryContentError("Görsel sırası geçerli bir kimlik listesi olmalıdır.");
+  }
+
+  if (new Set(imageIds).size !== imageIds.length) {
+    throw new GalleryContentError("Görsel sırası tekrarlanan kimlik içeremez.");
+  }
+
+  const gallery = await readGallery();
+  const category = gallery.categories.find((item) => item.id === categoryId);
+  const currentImageIds = category.images.map((image) => image.id);
+  const currentImageIdSet = new Set(currentImageIds);
+  const hasSameImages =
+    imageIds.length === currentImageIds.length &&
+    imageIds.every((imageId) => currentImageIdSet.has(imageId));
+
+  if (!hasSameImages) {
+    throw new GalleryContentError(
+      "Galeri siz düzenlerken değişti. Güncel listeyi yenileyip tekrar deneyin.",
+      409
+    );
+  }
+
+  const imageById = new Map(category.images.map((image) => [image.id, image]));
+  const reorderedImages = imageIds.map((imageId, order) => ({
+    ...imageById.get(imageId),
+    order,
+  }));
+  const categories = gallery.categories.map((item) =>
+    item.id === categoryId ? { ...item, images: reorderedImages } : item
+  );
+
+  return writeGalleryUnlocked({ ...gallery, categories });
+}
+
+export function reorderGalleryImages(input) {
   return enqueueFileOperation(path.dirname(galleryFilePath), () =>
-    writeGalleryUnlocked(gallery)
+    reorderGalleryImagesUnlocked(input)
   );
 }
 

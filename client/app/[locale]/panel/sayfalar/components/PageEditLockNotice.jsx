@@ -29,7 +29,7 @@ export default function PageEditLockNotice({
   if (status === "blocked") {
     return (
       <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-sm text-amber-950">
-        <p className="font-semibold">Bu sayfa şu anda düzenleniyor.</p>
+        <p className="font-semibold">Bu içerik şu anda düzenleniyor.</p>
         <p className="mt-1 leading-6">
           {lock?.displayName || "Başka bir kullanıcı"} düzenlemeyi tamamlayana kadar
           içerik salt okunur gösteriliyor. Kilit durumu otomatik kontrol edilir.
