@@ -89,6 +89,31 @@ async function login(username, password) {
   return { response, payload, cookie };
 }
 
+async function acquireGalleryCategoryLock(categoryId, cookie, clientId) {
+  const response = await request(`/api/admin/gallery/${categoryId}/lock`, {
+    method: "POST",
+    cookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "acquire", clientId }),
+  });
+  const payload = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.ok(payload.lockToken);
+  return payload.lockToken;
+}
+
+async function releaseGalleryCategoryLock(categoryId, cookie, lockToken) {
+  const response = await request(`/api/admin/gallery/${categoryId}/lock`, {
+    method: "POST",
+    cookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken }),
+  });
+
+  assert.equal(response.status, 200);
+}
+
 before(async () => {
   temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "lago-panel-users-"));
   usersFilePath = path.join(temporaryRoot, "users.json");
@@ -133,6 +158,7 @@ before(async () => {
         ADMIN_SESSION_SECRET: "integration-test-session-secret-change-before-production",
         PANEL_USERS_FILE_PATH: usersFilePath,
         PANEL_DATA_ROOT: temporaryRoot,
+        PANEL_UPLOADS_ROOT: path.join(temporaryRoot, "uploads"),
       },
       stdio: ["ignore", "pipe", "pipe"],
     }
@@ -193,11 +219,19 @@ test("sistem yöneticisi admin rolüyle giriş yapar", async () => {
 
 test("kategorisiz galeri görseli Diğer kategorisine atomik olarak eklenir", async () => {
   const src = "/uploads/gallery/other/integration-gallery-image.webp";
+  const lockToken = await acquireGalleryCategoryLock(
+    "other",
+    adminCookie,
+    "11111111-1111-4111-8111-111111111111"
+  );
   const createImage = () =>
     request("/api/admin/gallery", {
       method: "POST",
       cookie: adminCookie,
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        "x-panel-edit-lock": lockToken,
+      },
       body: JSON.stringify({ categoryId: "", src }),
     });
 
@@ -221,6 +255,8 @@ test("kategorisiz galeri görseli Diğer kategorisine atomik olarak eklenir", as
 
   assert.equal(retryResponse.status, 201);
   assert.equal(matchingImages.length, 1);
+
+  await releaseGalleryCategoryLock("other", adminCookie, lockToken);
 });
 
 test("farklı origin üzerinden kullanıcı oluşturma isteği 403 döner", async () => {
@@ -407,10 +443,28 @@ test("galeri sıralama isteği görsel ekleyemez veya silemez", async () => {
   assert.equal(galleryResponse.status, 200);
   assert.ok(originalImageIds.length > 0);
 
-  const removalResponse = await request("/api/admin/gallery", {
+  const unlockedResponse = await request("/api/admin/gallery", {
     method: "PUT",
     cookie: editorCookie,
     headers: { "content-type": "application/json" },
+    body: JSON.stringify({ categoryId: "other", imageIds: originalImageIds }),
+  });
+  assert.equal(unlockedResponse.status, 409);
+
+  const lockToken = await acquireGalleryCategoryLock(
+    "other",
+    editorCookie,
+    "22222222-2222-4222-8222-222222222222"
+  );
+  const lockedHeaders = {
+    "content-type": "application/json",
+    "x-panel-edit-lock": lockToken,
+  };
+
+  const removalResponse = await request("/api/admin/gallery", {
+    method: "PUT",
+    cookie: editorCookie,
+    headers: lockedHeaders,
     body: JSON.stringify({
       categoryId: "other",
       imageIds: originalImageIds.slice(1),
@@ -421,7 +475,7 @@ test("galeri sıralama isteği görsel ekleyemez veya silemez", async () => {
   const additionResponse = await request("/api/admin/gallery", {
     method: "PUT",
     cookie: editorCookie,
-    headers: { "content-type": "application/json" },
+    headers: lockedHeaders,
     body: JSON.stringify({
       categoryId: "other",
       imageIds: [...originalImageIds, "forged-image-id"],
@@ -432,7 +486,7 @@ test("galeri sıralama isteği görsel ekleyemez veya silemez", async () => {
   const reorderResponse = await request("/api/admin/gallery", {
     method: "PUT",
     cookie: editorCookie,
-    headers: { "content-type": "application/json" },
+    headers: lockedHeaders,
     body: JSON.stringify({
       categoryId: "other",
       imageIds: [...originalImageIds].reverse(),
@@ -445,6 +499,165 @@ test("galeri sıralama isteği görsel ekleyemez veya silemez", async () => {
 
   assert.equal(reorderResponse.status, 200);
   assert.deepEqual(savedImageIds, [...originalImageIds].reverse());
+
+  await releaseGalleryCategoryLock("other", editorCookie, lockToken);
+});
+
+test("galeri kategori kilitleri kullanıcıları ayırırken farklı kategorileri engellemez", async () => {
+  const generalLockEndpoint = "/api/admin/gallery/general/lock";
+  const roomsLockEndpoint = "/api/admin/gallery/rooms/lock";
+
+  const invalidCategoryResponse = await request(
+    "/api/admin/gallery/unknown-category/lock",
+    {
+      method: "POST",
+      cookie: adminCookie,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        action: "acquire",
+        clientId: "99999999-9999-4999-8999-999999999999",
+      }),
+    }
+  );
+  assert.equal(invalidCategoryResponse.status, 404);
+
+  const adminAcquire = await request(generalLockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "99999999-9999-4999-8999-999999999999",
+    }),
+  });
+  const adminLock = await adminAcquire.json();
+  assert.equal(adminAcquire.status, 200);
+  assert.ok(adminLock.lockToken);
+
+  const missingTokenAdd = await request("/api/admin/gallery", {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      categoryId: "general",
+      src: "/uploads/gallery/general/missing-token.webp",
+    }),
+  });
+  assert.equal(missingTokenAdd.status, 409);
+
+  const wrongOwnerAdd = await request("/api/admin/gallery", {
+    method: "POST",
+    cookie: editorCookie,
+    headers: {
+      "content-type": "application/json",
+      "x-panel-edit-lock": adminLock.lockToken,
+    },
+    body: JSON.stringify({
+      categoryId: "general",
+      src: "/uploads/gallery/general/wrong-owner.webp",
+    }),
+  });
+  assert.equal(wrongOwnerAdd.status, 409);
+
+  const wrongTokenDelete = await request(
+    "/api/admin/gallery?categoryId=general&imageId=missing-image",
+    {
+      method: "DELETE",
+      cookie: adminCookie,
+      headers: { "x-panel-edit-lock": "wrong-lock-token" },
+    }
+  );
+  assert.equal(wrongTokenDelete.status, 409);
+
+  const createGalleryUpload = (lockToken) => {
+    const formData = new FormData();
+    formData.append(
+      "file",
+      new Blob(
+        [Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])],
+        { type: "image/png" }
+      ),
+      "gallery-lock-test.png"
+    );
+    formData.append("folder", "gallery/general");
+
+    return request("/api/admin/upload", {
+      method: "POST",
+      cookie: adminCookie,
+      headers: lockToken ? { "x-panel-edit-lock": lockToken } : undefined,
+      body: formData,
+    });
+  };
+
+  const missingTokenUpload = await createGalleryUpload("");
+  assert.equal(missingTokenUpload.status, 409);
+
+  const validTokenUpload = await createGalleryUpload(adminLock.lockToken);
+  const validTokenUploadPayload = await validTokenUpload.json();
+  assert.equal(validTokenUpload.status, 200);
+  assert.match(validTokenUploadPayload.url, /^\/uploads\/gallery\/general\//);
+
+  const persistentUploadResponse = await request(validTokenUploadPayload.url, {
+    origin: null,
+  });
+  assert.equal(persistentUploadResponse.status, 200);
+  assert.equal((await persistentUploadResponse.arrayBuffer()).byteLength, 8);
+
+  const validTokenDelete = await request(
+    "/api/admin/gallery?categoryId=general&imageId=missing-image",
+    {
+      method: "DELETE",
+      cookie: adminCookie,
+      headers: { "x-panel-edit-lock": adminLock.lockToken },
+    }
+  );
+  assert.equal(validTokenDelete.status, 404);
+
+  const blockedEditorAcquire = await request(generalLockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    }),
+  });
+  const blockedLock = await blockedEditorAcquire.json();
+  assert.equal(blockedEditorAcquire.status, 409);
+  assert.equal(blockedLock.lock.displayName, adminUsername);
+  assert.equal(Object.hasOwn(blockedLock.lock, "token"), false);
+
+  const editorOtherCategoryAcquire = await request(roomsLockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "acquire",
+      clientId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    }),
+  });
+  const editorRoomsLock = await editorOtherCategoryAcquire.json();
+  assert.equal(editorOtherCategoryAcquire.status, 200);
+  assert.ok(editorRoomsLock.lockToken);
+
+  const adminRelease = await request(generalLockEndpoint, {
+    method: "POST",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ action: "release", lockToken: adminLock.lockToken }),
+  });
+  assert.equal(adminRelease.status, 200);
+
+  const editorRelease = await request(roomsLockEndpoint, {
+    method: "POST",
+    cookie: editorCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      action: "release",
+      lockToken: editorRoomsLock.lockToken,
+    }),
+  });
+  assert.equal(editorRelease.status, 200);
 });
 
 test("içerik kilidi görüntülemeyi açık tutup ikinci kullanıcının kaydını engeller", async () => {

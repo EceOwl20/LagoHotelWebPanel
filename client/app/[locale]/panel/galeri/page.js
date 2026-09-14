@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
+import PageEditLockNotice from "../sayfalar/components/PageEditLockNotice";
+import useGalleryCategoryEditLock from "../components/useGalleryCategoryEditLock";
 
 import {
   FiAlertTriangle,
@@ -82,6 +84,9 @@ function SmoothGalleryImage({ src, children }) {
 
 export default function GalleryAdminPage() {
   const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
+  const canOverrideEditLock = usePanelPermission(
+    PANEL_PERMISSIONS.OVERRIDE_EDIT_LOCK
+  );
   const [gallery, setGallery] = useState(null);
   const [activeCategory, setActiveCategory] = useState("general");
   const [uploadCategory, setUploadCategory] = useState("general");
@@ -96,6 +101,10 @@ export default function GalleryAdminPage() {
   const cancelDeleteButtonRef = useRef(null);
   const deleteTriggerRef = useRef(null);
   const deletingRef = useRef(false);
+  const editLock = useGalleryCategoryEditLock(
+    gallery ? activeCategory : ""
+  );
+  const isCategoryReadOnly = Boolean(gallery) && !editLock.editable;
 
   const loadGallery = async () => {
     const response = await fetch("/api/admin/gallery", { cache: "no-store" });
@@ -183,11 +192,35 @@ export default function GalleryAdminPage() {
     [activeCategory, gallery]
   );
 
+  const selectCategory = (categoryId) => {
+    setActiveCategory(categoryId);
+    setUploadCategory(categoryId);
+    setMessage("");
+    setError("");
+    setBlockingUsages([]);
+  };
+
+  const handleLockTakeover = async () => {
+    const confirmed = window.confirm(
+      "Bu galeri kategorisinin düzenleme kilidini devralmak istediğinize emin misiniz? Diğer kullanıcının devam eden işlemi yarıda kalabilir."
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    const acquired = await editLock.takeover();
+
+    if (!acquired) {
+      setError("Galeri kategorisinin düzenleme kilidi devralınamadı.");
+    }
+  };
+
   const persistGalleryOrder = async (categoryId, imageIds) => {
     const response = await fetch("/api/admin/gallery", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-Panel-Edit-Lock": editLock.lockToken,
       },
       body: JSON.stringify({ categoryId, imageIds }),
     });
@@ -195,6 +228,9 @@ export default function GalleryAdminPage() {
     const payload = await response.json();
 
     if (!response.ok) {
+      if (response.status === 409) {
+        await editLock.retry().catch(() => undefined);
+      }
       throw new Error(payload.error || "Galeri kaydedilemedi.");
     }
 
@@ -205,7 +241,8 @@ export default function GalleryAdminPage() {
   const handleUpload = async (event) => {
     const file = event.target.files?.[0];
 
-    if (!file || !gallery) {
+    if (!file || !gallery || isCategoryReadOnly) {
+      event.target.value = "";
       return;
     }
 
@@ -226,22 +263,32 @@ export default function GalleryAdminPage() {
 
       const uploadResponse = await fetch("/api/admin/upload", {
         method: "POST",
+        headers: { "X-Panel-Edit-Lock": editLock.lockToken },
         body: formData,
       });
       const uploadPayload = await uploadResponse.json();
 
       if (!uploadResponse.ok) {
+        if (uploadResponse.status === 409) {
+          await editLock.retry().catch(() => undefined);
+        }
         throw new Error(uploadPayload.error || "Dosya yuklenemedi.");
       }
 
       const galleryResponse = await fetch("/api/admin/gallery", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-Panel-Edit-Lock": editLock.lockToken,
+        },
         body: JSON.stringify({ categoryId: targetCategory, src: uploadPayload.url }),
       });
       const galleryPayload = await galleryResponse.json();
 
       if (!galleryResponse.ok) {
+        if (galleryResponse.status === 409) {
+          await editLock.retry().catch(() => undefined);
+        }
         throw new Error(galleryPayload.error || "Görsel galeriye eklenemedi.");
       }
 
@@ -260,6 +307,11 @@ export default function GalleryAdminPage() {
   };
 
   const handleDelete = (imageId) => {
+    if (isCategoryReadOnly) {
+      setError("Bu galeri kategorisi şu anda düzenlenemez.");
+      return;
+    }
+
     const targetImage = currentCategory?.images.find(
       (image) => image.id === imageId
     );
@@ -277,7 +329,11 @@ export default function GalleryAdminPage() {
   };
 
   const confirmDelete = async () => {
-    if (!pendingDelete || deleting) {
+    if (!pendingDelete || deleting || isCategoryReadOnly) {
+      if (isCategoryReadOnly) {
+        setPendingDelete(null);
+        setError("Bu galeri kategorisi şu anda düzenlenemez.");
+      }
       return;
     }
 
@@ -292,12 +348,16 @@ export default function GalleryAdminPage() {
         `/api/admin/gallery?categoryId=${pendingDelete.categoryId}&imageId=${pendingDelete.imageId}`,
         {
           method: "DELETE",
+          headers: { "X-Panel-Edit-Lock": editLock.lockToken },
         }
       );
 
       const payload = await response.json();
 
       if (!response.ok) {
+        if (response.status === 409) {
+          await editLock.retry().catch(() => undefined);
+        }
         setBlockingUsages(payload.usages || []);
         throw new Error(payload.error || "Görsel silinemedi.");
       }
@@ -315,7 +375,10 @@ export default function GalleryAdminPage() {
   };
 
   const handleMove = async (index, direction) => {
-    if (!gallery || !currentCategory) {
+    if (!gallery || !currentCategory || isCategoryReadOnly) {
+      if (isCategoryReadOnly) {
+        setError("Bu galeri kategorisi şu anda düzenlenemez.");
+      }
       return;
     }
 
@@ -402,12 +465,10 @@ export default function GalleryAdminPage() {
             <button
               key={category.id}
               type="button"
-              onClick={() => {
-                setActiveCategory(category.id);
-                setUploadCategory(category.id);
-              }}
+              onClick={() => selectCategory(category.id)}
+              disabled={uploading}
               aria-pressed={isActive}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+              className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60 ${
                 isActive
                   ? "bg-stone-900 text-white shadow-sm"
                   : "text-stone-600 hover:bg-stone-100 hover:text-stone-900"
@@ -466,7 +527,7 @@ export default function GalleryAdminPage() {
               Görsel kategorisi
               <select
                 value={uploadCategory}
-                onChange={(event) => setUploadCategory(event.target.value)}
+                onChange={(event) => selectCategory(event.target.value)}
                 disabled={uploading}
                 className="rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm font-normal text-stone-700 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10 disabled:opacity-60"
               >
@@ -480,19 +541,25 @@ export default function GalleryAdminPage() {
 
             <label
               className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition ${
-                uploading
+                uploading || isCategoryReadOnly
                   ? "cursor-not-allowed bg-stone-400"
                   : "cursor-pointer bg-stone-900 hover:-translate-y-0.5 hover:bg-[#507f78] hover:shadow-md"
               }`}
             >
               <FiUploadCloud className="h-4 w-4" aria-hidden="true" />
-              <span>{uploading ? "Görsel yükleniyor..." : "Yeni görsel yükle"}</span>
+              <span>
+                {uploading
+                  ? "Görsel yükleniyor..."
+                  : isCategoryReadOnly
+                    ? "Kategori salt okunur"
+                    : "Yeni görsel yükle"}
+              </span>
               <input
                 type="file"
                 accept={IMAGE_UPLOAD_ACCEPT}
                 className="hidden"
                 onChange={handleUpload}
-                disabled={uploading}
+                disabled={uploading || isCategoryReadOnly}
               />
             </label>
           </div>
@@ -500,6 +567,17 @@ export default function GalleryAdminPage() {
       </div>
 
       <div className="p-5 sm:p-6">
+        <div className="mb-5">
+          <PageEditLockNotice
+            status={editLock.status}
+            lock={editLock.lock}
+            error={editLock.error}
+            canOverride={canOverrideEditLock}
+            onRetry={editLock.retry}
+            onTakeover={handleLockTakeover}
+          />
+        </div>
+
         {/* Bildirimler */}
         {message ? (
           <div
@@ -609,7 +687,7 @@ export default function GalleryAdminPage() {
                         <button
                           type="button"
                           onClick={() => handleMove(index, -1)}
-                          disabled={isFirst}
+                          disabled={isFirst || isCategoryReadOnly}
                           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-xs font-medium text-stone-600 transition hover:border-[#63978f]/30 hover:bg-[#63978f]/10 hover:text-[#507f78] disabled:cursor-not-allowed disabled:opacity-40"
                           aria-label={`${index + 1}. görseli yukarı taşı`}
                         >
@@ -620,7 +698,7 @@ export default function GalleryAdminPage() {
                         <button
                           type="button"
                           onClick={() => handleMove(index, 1)}
-                          disabled={isLast}
+                          disabled={isLast || isCategoryReadOnly}
                           className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-xs font-medium text-stone-600 transition hover:border-[#63978f]/30 hover:bg-[#63978f]/10 hover:text-[#507f78] disabled:cursor-not-allowed disabled:opacity-40"
                           aria-label={`${index + 1}. görseli aşağı taşı`}
                         >
@@ -635,8 +713,9 @@ export default function GalleryAdminPage() {
                           <button
                             type="button"
                             onClick={() => handleDelete(image.id)}
+                            disabled={isCategoryReadOnly}
                             data-gallery-delete-button
-                            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-medium text-rose-700 transition hover:border-rose-300 hover:bg-rose-100"
+                            className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-medium text-rose-700 transition hover:border-rose-300 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-40"
                             aria-label={`${index + 1}. görseli sil`}
                           >
                             <FiTrash2
@@ -771,7 +850,7 @@ export default function GalleryAdminPage() {
               <button
                 type="button"
                 onClick={confirmDelete}
-                disabled={deleting}
+                disabled={deleting || isCategoryReadOnly}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <FiTrash2 className="h-4 w-4" aria-hidden="true" />

@@ -52,10 +52,13 @@ Production sunucusunda `PANEL_DATA_ROOT` mutlak bir dizin olarak tanımlandığ�
 yönlendirir. Göreceli yollar çalışma dizinine göre farklı sonuç üretebileceği için
 bilinçli olarak reddedilir.
 
-Bu ilk aşamada `public/uploads` taşınmaz. Dışarıdaki bir upload klasörü Next.js
-tarafından kendiliğinden `/uploads/...` adresinde yayınlanmayacağı için önce Nginx
-eşlemesi veya güvenli bir dosya sunma endpoint'i hazırlanmalıdır. Böylece kalıcı JSON
-yapısını devreye alırken mevcut görsel URL'leri bozulmaz.
+Yüklenen görseller ayrı ve isteğe bağlı `PANEL_UPLOADS_ROOT` değişkeniyle release
+dışına taşınabilir. Bu değişken tanımlanmadığında geliştirme ve eski kurulum davranışı
+değişmez; görseller `public/uploads` altında kalır. Production'da örneğin
+`PANEL_UPLOADS_ROOT=/var/lib/lago-panel/uploads` verildiğinde yükleme, silme, medya
+kütüphanesi taraması ve güvenli `/uploads/...` dosya endpoint'i bu kalıcı dizini
+kullanır. JSON içindeki `/uploads/...` adresleri değişmediği için sayfa içeriklerini
+güncellemek gerekmez.
 
 Kalıcı dizin ilk kez devreye alınmadan önce mevcut `content` ve `messages` klasörleri
 aynı alt klasör yapısıyla hedefe kopyalanmalı, ardından sunucu kullanıcısına yalnızca
@@ -81,6 +84,67 @@ başarıyla kopyalandıktan sonra `content` ve `messages` adlarıyla yerlerine g
 Mevcut hedef içeriğin üzerine yazmaz. Kopyalama doğrulandıktan sonra aynı
 `PANEL_DATA_ROOT` değeri build ve çalışan sunucu sürecine kalıcı ortam değişkeni olarak
 verilmelidir.
+
+### Kalıcı uploads dizinine ilk geçiş
+
+Geçiş, mevcut canlı release içindeki `public/uploads` klasörü hâlâ dururken yapılır.
+Önce hedef klasör oluşturulur. Aşağıdaki kullanıcı ve grup adları örnektir; sunucudaki
+Node.js ve Nginx kullanıcılarına göre uyarlanmalıdır:
+
+```bash
+sudo install -d -o lago -g www-data -m 0750 /var/lib/lago-panel/uploads
+```
+
+Aşağıdaki hazırlama komutu yalnızca planı, dosya sayısını ve toplam boyutu gösterir;
+dosya yazmaz:
+
+```bash
+cd /srv/lago-panel/current/client
+PANEL_UPLOADS_ROOT=/var/lib/lago-panel/uploads npm run panel:uploads:prepare
+```
+
+Kaynak ve hedef doğrulandıktan sonra açık uygulama parametresiyle kopyalama başlatılır:
+
+```bash
+PANEL_UPLOADS_ROOT=/var/lib/lago-panel/uploads npm run panel:uploads:prepare -- --apply
+```
+
+Araç hedefin release dışında ve boş olmasını zorunlu tutar. Dosyaları önce geçici bir
+klasöre kopyalar, dosya sayısı ile toplam bayt miktarını kaynakla karşılaştırır ve
+ancak bundan sonra kalıcı konuma geçirir. Mevcut hedef dosyalarının üzerine yazmaz.
+
+Kopyalama tamamlandıktan sonra `.env.production` veya process manager ortamına şu
+değer eklenir:
+
+```dotenv
+PANEL_DATA_ROOT=/var/lib/lago-panel
+PANEL_UPLOADS_ROOT=/var/lib/lago-panel/uploads
+```
+
+Uygulamadaki dinamik `/uploads/[...segments]` endpoint'i kalıcı dizini güvenli şekilde
+sunabildiği için Nginx eşlemesi olmadan da adresler çalışır. Büyük görselleri Node.js'e
+uğratmadan daha verimli sunmak için Nginx sunucu bloğuna aşağıdaki eşleme eklenebilir:
+
+```nginx
+location ^~ /uploads/ {
+    alias /var/lib/lago-panel/uploads/;
+    access_log off;
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header X-Content-Type-Options "nosniff" always;
+}
+```
+
+Nginx yapılandırması önce test edilir, sonra yeniden yüklenir:
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Son olarak Node.js süreci yeni ortam değişkeniyle yeniden başlatılır. Mevcut bir
+görsel URL'si ve panelden yapılan yeni bir test yüklemesi doğrulanmadan eski release
+veya kaynak `public/uploads` klasörü kaldırılmamalıdır.
 
 ## Production session secret
 

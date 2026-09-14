@@ -13,6 +13,7 @@
     "test": "npm run test:pages && npm run test:admin && npm run test:integration",
     "admin:hash": "node scripts/generate-admin-password-hash.mjs",
     "panel:data:prepare": "node scripts/prepare-panel-data-root.mjs",
+    "panel:uploads:prepare": "node scripts/prepare-panel-uploads-root.mjs",
     "panel:trash:cleanup": "node scripts/cleanup-panel-trash.mjs"
   },
   "dependencies": {

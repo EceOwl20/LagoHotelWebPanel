@@ -12,14 +12,19 @@ function resolveOptionalAbsolutePath(value, variableName) {
   return path.normalize(normalizedValue);
 }
 
-export function resolvePanelDataPaths({ appRoot, dataRoot }) {
+export function resolvePanelDataPaths({ appRoot, dataRoot, uploadsRoot }) {
   const resolvedAppRoot = path.resolve(appRoot);
   const resolvedDataRoot = resolveOptionalAbsolutePath(dataRoot, "PANEL_DATA_ROOT");
+  const resolvedUploadsRoot = resolveOptionalAbsolutePath(
+    uploadsRoot,
+    "PANEL_UPLOADS_ROOT"
+  );
 
   return Object.freeze({
     appRoot: resolvedAppRoot,
     dataRoot: resolvedDataRoot,
     usesPersistentDataRoot: Boolean(resolvedDataRoot),
+    usesPersistentUploadsRoot: Boolean(resolvedUploadsRoot),
     contentRoot: resolvedDataRoot
       ? path.join(resolvedDataRoot, "content")
       : path.join(resolvedAppRoot, "content"),
@@ -30,6 +35,7 @@ export function resolvePanelDataPaths({ appRoot, dataRoot }) {
       ? path.join(resolvedDataRoot, "trash")
       : path.join(resolvedAppRoot, "trash"),
     publicRoot: path.join(resolvedAppRoot, "public"),
-    uploadsRoot: path.join(resolvedAppRoot, "public", "uploads"),
+    uploadsRoot:
+      resolvedUploadsRoot || path.join(resolvedAppRoot, "public", "uploads"),
   });
 }

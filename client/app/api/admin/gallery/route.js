@@ -6,10 +6,11 @@ import {
   readGallery,
   reorderGalleryImages,
 } from "@/lib/admin/gallery";
-import { CMS_LOCALES } from "@/lib/admin/constants";
+import { CMS_LOCALES, GALLERY_CATEGORY_ORDER } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import { assertGalleryCategoryEditLock } from "@/lib/admin/edit-locks";
 import {
   assertSameOrigin,
   consumeRateLimit,
@@ -56,7 +57,15 @@ export async function POST(request) {
 
   try {
     const { categoryId, src } = await request.json();
-    const result = await addGalleryImage({ categoryId, src });
+    const resolvedCategoryId = GALLERY_CATEGORY_ORDER.includes(categoryId)
+      ? categoryId
+      : "other";
+    assertGalleryCategoryEditLock(
+      resolvedCategoryId,
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
+    const result = await addGalleryImage({ categoryId: resolvedCategoryId, src });
 
     for (const locale of CMS_LOCALES) {
       revalidatePath(`/${locale}/gallery`);
@@ -100,6 +109,19 @@ export async function PUT(request) {
 
   try {
     const { categoryId, imageIds } = await request.json();
+
+    if (!GALLERY_CATEGORY_ORDER.includes(categoryId)) {
+      return NextResponse.json(
+        { error: "Sıralanacak galeri kategorisi bulunamadı." },
+        { status: 404 }
+      );
+    }
+
+    assertGalleryCategoryEditLock(
+      categoryId,
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
     const gallery = await reorderGalleryImages({ categoryId, imageIds });
 
     for (const locale of CMS_LOCALES) {
@@ -152,9 +174,21 @@ export async function DELETE(request) {
     );
   }
 
+  if (!GALLERY_CATEGORY_ORDER.includes(categoryId)) {
+    return NextResponse.json(
+      { error: "Galeri kategorisi bulunamadı." },
+      { status: 404 }
+    );
+  }
+
   let gallery;
 
   try {
+    assertGalleryCategoryEditLock(
+      categoryId,
+      session,
+      request.headers.get("x-panel-edit-lock")
+    );
     gallery = await deleteGalleryImage(categoryId, imageId);
   } catch (error) {
     return NextResponse.json(

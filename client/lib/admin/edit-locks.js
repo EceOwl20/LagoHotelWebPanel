@@ -14,6 +14,10 @@ function getBlogResourceKey(slug) {
   return `blog:${slug}`;
 }
 
+function getGalleryCategoryResourceKey(categoryId) {
+  return `gallery-category:${categoryId}`;
+}
+
 export function acquirePageEditLock(pageId, session, options) {
   return editLockStore.acquire(getPageResourceKey(pageId), session, options);
 }
@@ -73,6 +77,42 @@ export function clearBlogEditLock(slug) {
 }
 
 export function serializeBlogEditLock(lock, session) {
+  return toPublicEditLock(lock, session.userId);
+}
+
+export function acquireGalleryCategoryEditLock(categoryId, session, options) {
+  return editLockStore.acquire(
+    getGalleryCategoryResourceKey(categoryId),
+    session,
+    options
+  );
+}
+
+export function heartbeatGalleryCategoryEditLock(categoryId, session, token) {
+  return editLockStore.heartbeat(
+    getGalleryCategoryResourceKey(categoryId),
+    session.userId,
+    token
+  );
+}
+
+export function assertGalleryCategoryEditLock(categoryId, session, token) {
+  return editLockStore.assertOwned(
+    getGalleryCategoryResourceKey(categoryId),
+    session.userId,
+    token
+  );
+}
+
+export function releaseGalleryCategoryEditLock(categoryId, session, token) {
+  return editLockStore.release(
+    getGalleryCategoryResourceKey(categoryId),
+    session.userId,
+    token
+  );
+}
+
+export function serializeGalleryCategoryEditLock(lock, session) {
   return toPublicEditLock(lock, session.userId);
 }
 

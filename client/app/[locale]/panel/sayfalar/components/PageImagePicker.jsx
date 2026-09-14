@@ -4,6 +4,7 @@ import Image from "next/image";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 import { useEffect, useMemo, useState } from "react";
 import { FiImage, FiUploadCloud } from "react-icons/fi";
+import useGalleryCategoryEditLock from "../../components/useGalleryCategoryEditLock";
 
 const PICKER_PAGE_SIZE = 80;
 
@@ -73,6 +74,11 @@ export default function PageImagePicker({
   const [uploading, setUploading] = useState(false);
   const [galleryUploadCategory, setGalleryUploadCategory] = useState("other");
   const [error, setError] = useState("");
+  const galleryEditLock = useGalleryCategoryEditLock(
+    isOpen && librarySource === "gallery" ? galleryUploadCategory : ""
+  );
+  const galleryUploadReadOnly =
+    librarySource === "gallery" && !galleryEditLock.editable;
 
   useEffect(() => {
     if (!isOpen || library || libraryRequested) {
@@ -145,7 +151,8 @@ export default function PageImagePicker({
   const handleUpload = async (event) => {
     const file = event.target.files?.[0];
 
-    if (!file) {
+    if (!file || galleryUploadReadOnly) {
+      event.target.value = "";
       return;
     }
 
@@ -163,23 +170,36 @@ export default function PageImagePicker({
 
       const response = await fetch("/api/admin/upload", {
         method: "POST",
+        headers:
+          librarySource === "gallery"
+            ? { "X-Panel-Edit-Lock": galleryEditLock.lockToken }
+            : undefined,
         body: formData,
       });
       const payload = await response.json();
 
       if (!response.ok) {
+        if (response.status === 409 && librarySource === "gallery") {
+          await galleryEditLock.retry().catch(() => undefined);
+        }
         throw new Error(payload.error || "Görsel yüklenemedi.");
       }
 
       if (librarySource === "gallery") {
         const galleryResponse = await fetch("/api/admin/gallery", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-Panel-Edit-Lock": galleryEditLock.lockToken,
+          },
           body: JSON.stringify({ categoryId: targetCategory, src: payload.url }),
         });
         const galleryPayload = await galleryResponse.json();
 
         if (!galleryResponse.ok) {
+          if (galleryResponse.status === 409) {
+            await galleryEditLock.retry().catch(() => undefined);
+          }
           throw new Error(galleryPayload.error || "Görsel galeriye eklenemedi.");
         }
       }
@@ -306,13 +326,23 @@ export default function PageImagePicker({
                     </select>
                   </label>
                 ) : null}
-                <label className="cursor-pointer rounded-xl bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800">
-                  {uploading ? "Yükleniyor..." : "Yeni Görsel Yükle"}
+                <label
+                  className={`rounded-xl px-4 py-2 text-sm font-medium text-white ${
+                    uploading || galleryUploadReadOnly
+                      ? "cursor-not-allowed bg-stone-400"
+                      : "cursor-pointer bg-emerald-700 hover:bg-emerald-800"
+                  }`}
+                >
+                  {uploading
+                    ? "Yükleniyor..."
+                    : galleryUploadReadOnly
+                      ? "Kategori salt okunur"
+                      : "Yeni Görsel Yükle"}
                   <input
                     type="file"
                     accept={IMAGE_UPLOAD_ACCEPT}
                     onChange={handleUpload}
-                    disabled={uploading}
+                    disabled={uploading || galleryUploadReadOnly}
                     className="hidden"
                   />
                 </label>
@@ -356,6 +386,24 @@ export default function PageImagePicker({
             </div>
 
             <div className="overflow-y-auto p-5">
+              {librarySource === "gallery" && galleryEditLock.status === "blocked" ? (
+                <div className="mb-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+                  <p className="font-semibold">Bu kategori şu anda düzenleniyor.</p>
+                  <p className="mt-1 leading-5">
+                    {galleryEditLock.lock?.displayName || "Başka bir kullanıcı"} işlemi
+                    tamamlayana kadar yeni görsel yüklenemez. Mevcut görselleri seçmeye
+                    devam edebilirsiniz.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={galleryEditLock.retry}
+                    className="mt-3 rounded-lg border border-amber-400 bg-white px-3 py-2 text-xs font-semibold hover:bg-amber-100"
+                  >
+                    Şimdi Kontrol Et
+                  </button>
+                </div>
+              ) : null}
+
               {error ? (
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
                   <span>{error}</span>

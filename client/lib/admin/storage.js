@@ -10,10 +10,13 @@ import { isSafeUploadUrl } from "./media-references.mjs";
 const panelDataPaths = resolvePanelDataPaths({
   appRoot: process.cwd(),
   dataRoot: process.env.PANEL_DATA_ROOT,
+  uploadsRoot: process.env.PANEL_UPLOADS_ROOT,
 });
 
 export const panelDataRoot = panelDataPaths.dataRoot;
 export const usesPersistentPanelDataRoot = panelDataPaths.usesPersistentDataRoot;
+export const usesPersistentUploadsRoot =
+  panelDataPaths.usesPersistentUploadsRoot;
 export const contentRoot = panelDataPaths.contentRoot;
 export const messagesRoot = panelDataPaths.messagesRoot;
 export const trashRoot = panelDataPaths.trashRoot;
@@ -86,8 +89,9 @@ export function getUploadFilePath(relativeUrl) {
     throw new Error("Geçersiz upload dosya yolu.");
   }
 
-  const resolvedPath = path.resolve(publicRoot, relativeUrl.slice(1));
   const resolvedUploadsRoot = path.resolve(uploadsRoot);
+  const relativeUploadPath = relativeUrl.slice("/uploads/".length);
+  const resolvedPath = path.resolve(resolvedUploadsRoot, relativeUploadPath);
 
   if (
     resolvedPath !== resolvedUploadsRoot &&

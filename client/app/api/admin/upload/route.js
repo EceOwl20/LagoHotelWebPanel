@@ -14,6 +14,8 @@ import {
   validateImageUpload,
 } from "@/lib/admin/image-upload-policy.mjs";
 import { invalidateMediaLibrary } from "@/lib/admin/media-library";
+import { GALLERY_CATEGORY_ORDER } from "@/lib/admin/constants";
+import { assertGalleryCategoryEditLock } from "@/lib/admin/edit-locks";
 
 const ALLOWED_ROOT_FOLDERS = new Set(["gallery", "blog", "misc", "pages"]);
 const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
@@ -95,6 +97,30 @@ export async function POST(request) {
       { error: "Bu yukleme klasoru izinli degil." },
       { status: 400 }
     );
+  }
+
+  if (rootFolder === "gallery") {
+    const galleryCategoryId = folder.split("/")[1] || "";
+
+    if (!GALLERY_CATEGORY_ORDER.includes(galleryCategoryId)) {
+      return NextResponse.json(
+        { error: "Geçerli bir galeri kategorisi zorunludur." },
+        { status: 400 }
+      );
+    }
+
+    try {
+      assertGalleryCategoryEditLock(
+        galleryCategoryId,
+        session,
+        request.headers.get("x-panel-edit-lock")
+      );
+    } catch (error) {
+      return NextResponse.json(
+        { error: error.message || "Galeri düzenleme kilidi doğrulanamadı." },
+        { status: error.status || 500 }
+      );
+    }
   }
 
   const targetDirectory = path.join(uploadsRoot, folder);
