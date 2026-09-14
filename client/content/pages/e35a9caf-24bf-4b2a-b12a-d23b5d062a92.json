@@ -1,0 +1,585 @@
+{
+  "storageVersion": 2,
+  "id": "e35a9caf-24bf-4b2a-b12a-d23b5d062a92",
+  "createdAt": "2026-09-14T10:27:27.144Z",
+  "updatedAt": "2026-09-14T10:27:51.337Z",
+  "publishedAt": "2026-09-14T10:27:51.337Z",
+  "history": [
+    {
+      "versionId": "95f89466-7dc0-412a-a71d-faff06d53b39",
+      "createdAt": "2026-09-14T10:27:51.337Z",
+      "action": "draft-save",
+      "createdBy": {
+        "id": "environment-admin",
+        "username": "admin",
+        "displayName": "admin",
+        "role": "admin"
+      },
+      "wasPublished": false,
+      "draft": {
+        "schemaVersion": 1,
+        "template": "standard",
+        "slugs": {
+          "tr": "hello",
+          "en": "helloen",
+          "de": "hellode",
+          "ru": "helloru"
+        },
+        "status": "draft",
+        "showContactSection": true,
+        "hero": {
+          "image": "",
+          "overlay": true,
+          "translations": {
+            "tr": {
+              "eyebrow": "Lago Hotel",
+              "title": "Yeni Sayfa",
+              "imageAlt": ""
+            },
+            "en": {
+              "eyebrow": "Lago Hotel",
+              "title": "New Page",
+              "imageAlt": ""
+            },
+            "de": {
+              "eyebrow": "Lago Hotel",
+              "title": "Neue Seite",
+              "imageAlt": ""
+            },
+            "ru": {
+              "eyebrow": "Lago Hotel",
+              "title": "Новая страница",
+              "imageAlt": ""
+            }
+          }
+        },
+        "navigation": {
+          "visible": true,
+          "order": 100,
+          "translations": {
+            "tr": {
+              "label": "Yeni Sayfa"
+            },
+            "en": {
+              "label": "New Page"
+            },
+            "de": {
+              "label": "Neue Seite"
+            },
+            "ru": {
+              "label": "Новая страница"
+            }
+          }
+        },
+        "seo": {
+          "tr": {
+            "title": "",
+            "description": ""
+          },
+          "en": {
+            "title": "",
+            "description": ""
+          },
+          "de": {
+            "title": "",
+            "description": ""
+          },
+          "ru": {
+            "title": "",
+            "description": ""
+          }
+        },
+        "sections": [
+          {
+            "id": "intro-d82ea598-f0ad-4745-b153-54b93c5eaa18",
+            "type": "intro",
+            "enabled": true,
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": ""
+              }
+            }
+          },
+          {
+            "id": "image-text-482940b4-4c79-450b-bc23-f8e2a7f0efc4",
+            "type": "imageText",
+            "enabled": true,
+            "image": "",
+            "imagePosition": "left",
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          },
+          {
+            "id": "image-text-3db308f7-cde7-4ef3-972e-d5c29fe5fc2d",
+            "type": "imageText",
+            "enabled": true,
+            "image": "",
+            "imagePosition": "right",
+            "translations": {
+              "tr": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "en": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "de": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              },
+              "ru": {
+                "eyebrow": "",
+                "title": "",
+                "text": "",
+                "imageAlt": "",
+                "buttonText": "",
+                "buttonHref": ""
+              }
+            }
+          }
+        ],
+        "createdAt": "2026-09-14T10:27:27.144Z",
+        "updatedAt": "2026-09-14T10:27:27.144Z",
+        "id": "e35a9caf-24bf-4b2a-b12a-d23b5d062a92"
+      }
+    }
+  ],
+  "draft": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "hello",
+      "en": "helloen",
+      "de": "hellode",
+      "ru": "helloru"
+    },
+    "status": "draft",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "Yeni Sayfa",
+          "imageAlt": ""
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "hello"
+        },
+        "en": {
+          "label": "helloen"
+        },
+        "de": {
+          "label": "hellode"
+        },
+        "ru": {
+          "label": "helloru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-d82ea598-f0ad-4745-b153-54b93c5eaa18",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-482940b4-4c79-450b-bc23-f8e2a7f0efc4",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "left",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-3db308f7-cde7-4ef3-972e-d5c29fe5fc2d",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "right",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-14T10:27:27.144Z",
+    "updatedAt": "2026-09-14T10:27:51.337Z",
+    "id": "e35a9caf-24bf-4b2a-b12a-d23b5d062a92"
+  },
+  "published": {
+    "schemaVersion": 1,
+    "template": "standard",
+    "slugs": {
+      "tr": "hello",
+      "en": "helloen",
+      "de": "hellode",
+      "ru": "helloru"
+    },
+    "status": "published",
+    "showContactSection": true,
+    "hero": {
+      "image": "",
+      "overlay": true,
+      "translations": {
+        "tr": {
+          "eyebrow": "Lago Hotel",
+          "title": "Yeni Sayfa",
+          "imageAlt": ""
+        },
+        "en": {
+          "eyebrow": "Lago Hotel",
+          "title": "New Page",
+          "imageAlt": ""
+        },
+        "de": {
+          "eyebrow": "Lago Hotel",
+          "title": "Neue Seite",
+          "imageAlt": ""
+        },
+        "ru": {
+          "eyebrow": "Lago Hotel",
+          "title": "Новая страница",
+          "imageAlt": ""
+        }
+      }
+    },
+    "navigation": {
+      "visible": true,
+      "order": 100,
+      "translations": {
+        "tr": {
+          "label": "hello"
+        },
+        "en": {
+          "label": "helloen"
+        },
+        "de": {
+          "label": "hellode"
+        },
+        "ru": {
+          "label": "helloru"
+        }
+      }
+    },
+    "seo": {
+      "tr": {
+        "title": "",
+        "description": ""
+      },
+      "en": {
+        "title": "",
+        "description": ""
+      },
+      "de": {
+        "title": "",
+        "description": ""
+      },
+      "ru": {
+        "title": "",
+        "description": ""
+      }
+    },
+    "sections": [
+      {
+        "id": "intro-d82ea598-f0ad-4745-b153-54b93c5eaa18",
+        "type": "intro",
+        "enabled": true,
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-482940b4-4c79-450b-bc23-f8e2a7f0efc4",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "left",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      },
+      {
+        "id": "image-text-3db308f7-cde7-4ef3-972e-d5c29fe5fc2d",
+        "type": "imageText",
+        "enabled": true,
+        "image": "",
+        "imagePosition": "right",
+        "translations": {
+          "tr": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "en": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "de": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          },
+          "ru": {
+            "eyebrow": "",
+            "title": "",
+            "text": "",
+            "imageAlt": "",
+            "buttonText": "",
+            "buttonHref": ""
+          }
+        }
+      }
+    ],
+    "createdAt": "2026-09-14T10:27:27.144Z",
+    "updatedAt": "2026-09-14T10:27:51.337Z",
+    "id": "e35a9caf-24bf-4b2a-b12a-d23b5d062a92"
+  }
+}
