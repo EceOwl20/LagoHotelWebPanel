@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  AZURA_ACCOMMODATION_KEYS,
   AZURA_CAROUSEL_KEYS,
   getAzuraHomepageSectionConnection,
   isValidAzuraHomepageSection,
@@ -32,12 +33,27 @@ const carousel = {
     }])),
   })),
 };
+const accommodation = {
+  translations: Object.fromEntries(["tr", "en", "de", "ru"].map((locale) => [locale, {
+    subtitle: `Konaklama ${locale}`, title: `Odalar ${locale}`, buttonText: `Keşfet ${locale}`,
+  }])),
+  cards: AZURA_ACCOMMODATION_KEYS.map((key) => ({
+    key,
+    image: `/uploads/pages/homepage/accommodation-${key}.png`,
+    translations: Object.fromEntries(["tr", "en", "de", "ru"].map((locale) => [locale, {
+      title: `${key} ${locale}`, description: `Oda açıklaması ${locale}`,
+      area: "30 m²", view: `Deniz manzarası ${locale}`, alt: `${key} oda ${locale}`,
+    }])),
+  })),
+};
 
 test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
   assert.equal(getAzuraHomepageSectionConnection("essentials", env).url,
     "http://localhost:3001/api/azura/homepage/sections/essentials");
   assert.equal(getAzuraHomepageSectionConnection("carousel", env).url,
     "http://localhost:3001/api/azura/homepage/sections/carousel");
+  assert.equal(getAzuraHomepageSectionConnection("accommodation", env).url,
+    "http://localhost:3001/api/azura/homepage/sections/accommodation");
   assert.throws(() => getAzuraHomepageSectionConnection("../experience", env),
     (error) => error.status === 404);
   assert.throws(() => getAzuraHomepageSectionConnection("homepage", env),
@@ -46,6 +62,40 @@ test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
     ...env,
     AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience",
   }));
+});
+
+test("oda kartları tam üç sabit kartı, görseli ve dört dil alanını ister", () => {
+  assert.equal(isValidAzuraHomepageSection("accommodation", accommodation), true);
+  const altered = (update) => {
+    const value = structuredClone(accommodation);
+    update(value);
+    return isValidAzuraHomepageSection("accommodation", value);
+  };
+  assert.equal(altered((value) => value.cards.pop()), false);
+  assert.equal(altered((value) => { [value.cards[0], value.cards[1]] = [value.cards[1], value.cards[0]]; }), false);
+  assert.equal(altered((value) => { value.cards[0].link = "/rooms/other"; }), false);
+  assert.equal(altered((value) => { value.cards[0].image = "/uploads/pages/homepage/../bad.png"; }), false);
+  assert.equal(altered((value) => { delete value.translations.ru; }), false);
+  assert.equal(altered((value) => { value.translations.en.subtitle = "x".repeat(201); }), false);
+  assert.equal(altered((value) => { value.cards[1].translations.de.description = "x".repeat(2001); }), false);
+  assert.equal(altered((value) => { value.cards[2].translations.tr.alt = "bad\nalt"; }), false);
+});
+
+test("oda kartları PUT isteği Azura'ya yalnızca section ve If-Match ile gönderilir", async () => {
+  let request;
+  const result = await requestAzuraHomepageSection("PUT", "accommodation", accommodation, {
+    env,
+    revision,
+    fetchImpl: async (url, options) => {
+      request = { url, options };
+      return { ok: true, json: async () => ({ section: accommodation, revision: "c".repeat(64) }) };
+    },
+  });
+  assert.equal(request.url, "http://localhost:3001/api/azura/homepage/sections/accommodation");
+  assert.equal(request.options.headers.Authorization, "Bearer test-secret");
+  assert.equal(request.options.headers["If-Match"], `"${revision}"`);
+  assert.deepEqual(JSON.parse(request.options.body), { section: accommodation });
+  assert.equal(result.revision, "c".repeat(64));
 });
 
 test("kaydırıcı tam beş sabit kartı, görseli ve dört dil metnini ister", () => {

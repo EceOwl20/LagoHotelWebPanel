@@ -8,7 +8,8 @@ import {
   AZURA_CAROUSEL_KEYS,
   isValidAzuraHomepageSection,
 } from "@/lib/admin/azura-homepage-section.mjs";
-import AzuraImagePicker from "../experience/AzuraImagePicker";
+import PageImagePicker from "../../sayfalar/components/PageImagePicker";
+import ObjectEditor from "../../components/ObjectEditor";
 
 const API_PATH = "/api/admin/azura/homepage/sections/carousel";
 const IMAGES_PATH = "/api/admin/azura/homepage/images";
@@ -19,7 +20,6 @@ const slideLabels = {
   experiences: ["Deneyimler", "/entertainment"],
   kids: ["Çocuklar", "/kidsclub"],
 };
-const localeLabels = { tr: "Türkçe", en: "İngilizce", de: "Almanca", ru: "Rusça" };
 
 export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
@@ -91,12 +91,12 @@ export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
     changeSlide(key, (slide) => ({ ...slide, image }));
   }
 
-  function changeTranslation(key, field, value) {
+  function changeTranslation(key, locale, updater) {
     changeSlide(key, (slide) => ({
       ...slide,
       translations: {
         ...slide.translations,
-        [activeLocale]: { ...slide.translations[activeLocale], [field]: value },
+        [locale]: updater(slide.translations[locale]),
       },
     }));
   }
@@ -200,37 +200,26 @@ export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
                 <fieldset key={slide.key} className="min-w-0 space-y-4 rounded-2xl border border-stone-200 bg-stone-50 p-4 sm:p-5">
                   <legend className="px-1 text-sm font-semibold text-stone-900">{AZURA_CAROUSEL_KEYS.indexOf(slide.key) + 1}. {label}</legend>
                   <p className="text-xs text-stone-500">Sabit bağlantı: {link}</p>
-                  <AzuraImagePicker
+                  <PageImagePicker
                     label={`${label} görseli`}
                     value={slide.image}
-                    images={images}
-                    loading={mediaLoading}
-                    error={mediaError}
+                    externalAssets={images}
+                    externalPreviewUrl={images.find((item) => item.image === slide.image)?.previewUrl}
+                    externalUpload={(file) => uploadImage(slide.key, file)}
+                    externalLoading={mediaLoading}
+                    externalError={mediaError}
                     disabled={!canEdit || saving || Boolean(uploadingKey)}
-                    uploading={uploadingKey === slide.key}
+                    uploadAccept="image/jpeg,image/png,image/webp"
+                    allowClear={false}
                     onChange={(image) => changeImage(slide.key, image)}
-                    onUpload={(file) => uploadImage(slide.key, file)}
                   />
-                  <label className="block space-y-2 text-sm font-medium text-stone-700">
-                    <span>{localeLabels[activeLocale]} kart başlığı</span>
-                    <input
-                      value={slide.translations[activeLocale].title}
-                      onChange={(event) => changeTranslation(slide.key, "title", event.target.value)}
-                      disabled={!canEdit || saving || Boolean(uploadingKey)}
-                      maxLength={200}
-                      className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] disabled:bg-stone-100"
+                  <fieldset disabled={!canEdit || saving || Boolean(uploadingKey)} className="disabled:opacity-70">
+                    <ObjectEditor
+                      value={slide.translations[activeLocale]}
+                      onChange={(updater) => changeTranslation(slide.key, activeLocale, updater)}
+                      fieldLimits={{ title: 200, alt: 300 }}
                     />
-                  </label>
-                  <label className="block space-y-2 text-sm font-medium text-stone-700">
-                    <span>{localeLabels[activeLocale]} görsel alt açıklaması</span>
-                    <input
-                      value={slide.translations[activeLocale].alt}
-                      onChange={(event) => changeTranslation(slide.key, "alt", event.target.value)}
-                      disabled={!canEdit || saving || Boolean(uploadingKey)}
-                      maxLength={300}
-                      className="w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] disabled:bg-stone-100"
-                    />
-                  </label>
+                  </fieldset>
                 </fieldset>
               );
             })}

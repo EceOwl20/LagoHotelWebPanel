@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FiCheck, FiSave } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
+import ObjectEditor from "../../components/ObjectEditor";
 import {
   AZURA_HOMEPAGE_SECTION_FIELDS,
   isValidAzuraHomepageSection,
@@ -20,12 +21,6 @@ const sectionDefinitions = {
   essentials: {
     title: "Olanaklar",
     description: "Azura anasayfasındaki altı hizmet maddesinin başlık ve açıklamaları.",
-    intro: [
-      ["subtitle", "Üst başlık"],
-      ["title", "Ana başlık"],
-    ],
-    items: [1, 2, 3, 4, 5, 6],
-    end: [["buttonText", "Düğme metni"]],
   },
 };
 
@@ -86,12 +81,12 @@ export default function AzuraHomepageSectionEditor({ sectionKey, activeLocale, o
 
   if (!config) return null;
 
-  function change(field, value) {
+  function change(updater) {
     setError("");
     setSuccess("");
     setSection((current) => ({
       ...current,
-      [activeLocale]: { ...current[activeLocale], [field]: value },
+      [activeLocale]: updater(current[activeLocale]),
     }));
   }
 
@@ -137,22 +132,6 @@ export default function AzuraHomepageSectionEditor({ sectionKey, activeLocale, o
     }
   }
 
-  function fieldInput(field, label, multiline = false) {
-    const shared = {
-      value: section[activeLocale][field],
-      onChange: (event) => change(field, event.target.value),
-      disabled: !canEdit || saving,
-      maxLength: AZURA_HOMEPAGE_SECTION_FIELDS[sectionKey][field],
-      className: "w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] focus:bg-white disabled:bg-stone-100",
-    };
-    return (
-      <label key={field} className="block space-y-2 text-sm font-medium text-stone-700">
-        <span>{label}</span>
-        {multiline ? <textarea {...shared} rows={4} /> : <input {...shared} />}
-      </label>
-    );
-  }
-
   return (
     <form onSubmit={save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -171,19 +150,9 @@ export default function AzuraHomepageSectionEditor({ sectionKey, activeLocale, o
       {success && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{success}</p>}
       {section && (
         <>
-          <div className="grid gap-4 md:grid-cols-2">
-            {config.intro.map(([field, label]) => fieldInput(field, label))}
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {config.items.map((number) => (
-              <fieldset key={number} className="space-y-4 rounded-2xl border border-stone-200 bg-stone-50 p-4 sm:p-5">
-                <legend className="px-1 text-sm font-semibold text-stone-900">{number}. olanak</legend>
-                {fieldInput(`title${number}`, "Başlık")}
-                {fieldInput(`text${number}`, "Açıklama", true)}
-              </fieldset>
-            ))}
-          </div>
-          <div className="max-w-xl">{config.end.map(([field, label]) => fieldInput(field, label))}</div>
+          <fieldset disabled={!canEdit || saving} className="disabled:opacity-70">
+            <ObjectEditor value={section[activeLocale]} onChange={change} fieldLimits={AZURA_HOMEPAGE_SECTION_FIELDS[sectionKey]} />
+          </fieldset>
           <p className="text-xs text-stone-500">Açıklamalarda Enter ile satır sonu eklemeyin; Azura API’si bunu kabul etmez.</p>
           <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
             <button type="submit" disabled={!canEdit || !changed || saving} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400">

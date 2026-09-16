@@ -63,6 +63,13 @@ export default function PageImagePicker({
   uploadFolder = "pages",
   librarySource = "media",
   compact = false,
+  externalAssets,
+  externalUpload,
+  externalPreviewUrl,
+  externalLoading = false,
+  externalError = "",
+  disabled = false,
+  uploadAccept = IMAGE_UPLOAD_ACCEPT,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [library, setLibrary] = useState(null);
@@ -79,9 +86,22 @@ export default function PageImagePicker({
   );
   const galleryUploadReadOnly =
     librarySource === "gallery" && !galleryEditLock.editable;
+  const isExternal = Array.isArray(externalAssets);
+  const externalLibrary = useMemo(() => isExternal ? {
+    assets: externalAssets.map((asset) => ({
+      id: asset.image,
+      url: asset.image,
+      previewUrl: asset.previewUrl,
+      name: asset.image.split("/").pop(),
+      folder: "Azura",
+      extension: asset.image.split(".").pop()?.toLowerCase() || "",
+    })),
+    folders: ["Azura"],
+  } : null, [externalAssets, isExternal]);
+  const activeLibrary = isExternal ? externalLibrary : library;
 
   useEffect(() => {
-    if (!isOpen || library || libraryRequested) {
+    if (!isOpen || isExternal || library || libraryRequested) {
       return;
     }
 
@@ -123,7 +143,7 @@ export default function PageImagePicker({
     };
 
     loadLibrary();
-  }, [isOpen, library, libraryRequested, librarySource, uploadFolder]);
+  }, [isOpen, isExternal, library, libraryRequested, librarySource, uploadFolder]);
 
   useEffect(() => {
     setVisibleCount(PICKER_PAGE_SIZE);
@@ -132,7 +152,7 @@ export default function PageImagePicker({
   const filteredAssets = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("tr");
 
-    return (library?.assets || []).filter((asset) => {
+    return (activeLibrary?.assets || []).filter((asset) => {
       if (activeFolder !== "all" && asset.folder !== activeFolder) return false;
       if (!normalizedQuery) return true;
 
@@ -140,9 +160,10 @@ export default function PageImagePicker({
         .toLocaleLowerCase("tr")
         .includes(normalizedQuery);
     });
-  }, [activeFolder, library, query]);
+  }, [activeFolder, activeLibrary, query]);
 
   const selectImage = (src) => {
+    if (disabled) return;
     onChange(src);
     setError("");
     setIsOpen(false);
@@ -151,7 +172,7 @@ export default function PageImagePicker({
   const handleUpload = async (event) => {
     const file = event.target.files?.[0];
 
-    if (!file || galleryUploadReadOnly) {
+    if (!file || galleryUploadReadOnly || disabled) {
       event.target.value = "";
       return;
     }
@@ -160,6 +181,11 @@ export default function PageImagePicker({
     setError("");
 
     try {
+      if (isExternal) {
+        const uploadedUrl = await externalUpload(file);
+        if (uploadedUrl) setIsOpen(false);
+        return;
+      }
       const formData = new FormData();
       formData.append("file", file);
       const targetCategory = galleryUploadCategory || "other";
@@ -222,14 +248,7 @@ export default function PageImagePicker({
         <div className="max-w-2xl overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
           <div className={`flex flex-col ${compact ? "" : "sm:flex-row"}`}>
             <div className={`relative aspect-[4/3] w-full shrink-0 bg-[linear-gradient(45deg,#f5f5f4_25%,transparent_25%),linear-gradient(-45deg,#f5f5f4_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#f5f5f4_75%),linear-gradient(-45deg,transparent_75%,#f5f5f4_75%)] bg-[length:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] ${compact ? "" : "sm:w-56"}`}>
-              <Image
-                src={value}
-                alt="Seçili görsel önizlemesi"
-                fill
-                unoptimized={isGif(value)}
-                sizes="224px"
-                className="object-contain"
-              />
+              {isExternal ? <div role="img" aria-label="Seçili görsel önizlemesi" className="absolute inset-0 bg-contain bg-center bg-no-repeat" style={externalPreviewUrl ? { backgroundImage: `url("${externalPreviewUrl}")` } : undefined} /> : <Image src={value} alt="Seçili görsel önizlemesi" fill unoptimized={isGif(value)} sizes="224px" className="object-contain" />}
               <span className="absolute bottom-2 left-2 rounded-lg bg-stone-950/75 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-white backdrop-blur-sm">
                 Panel önizlemesi
               </span>
@@ -248,6 +267,7 @@ export default function PageImagePicker({
                   <button
                     type="button"
                     onClick={() => onChange("")}
+                    disabled={disabled}
                     className="rounded-lg border border-rose-200 px-3 py-2 text-xs font-medium text-rose-700 hover:bg-rose-50"
                   >
                     Görseli Kaldır
@@ -256,6 +276,7 @@ export default function PageImagePicker({
                 <button
                   type="button"
                   onClick={() => setIsOpen(true)}
+                  disabled={disabled}
                   className="rounded-lg bg-[#2f423f] px-3 py-2 text-xs font-medium text-white transition hover:bg-[#3c5551]"
                 >
                   Görseli Değiştir
@@ -273,7 +294,9 @@ export default function PageImagePicker({
             <div>
               <p className="text-sm font-medium text-stone-700">Henüz görsel seçilmedi</p>
               <p className="mt-0.5 text-xs text-stone-500">
-                {librarySource === "gallery"
+                {isExternal
+                  ? "Azura medya kütüphanesinden seçin veya bilgisayarınızdan yükleyin."
+                  : librarySource === "gallery"
                   ? "Galeriden seçin veya bilgisayarınızdan yükleyin."
                   : "Medya kütüphanesinden seçin veya yükleyin."}
               </p>
@@ -282,6 +305,7 @@ export default function PageImagePicker({
           <button
             type="button"
             onClick={() => setIsOpen(true)}
+            disabled={disabled}
             className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-2.5 text-xs font-medium text-white transition hover:bg-[#3c5551]"
           >
             <FiUploadCloud className="h-4 w-4" />
@@ -303,7 +327,9 @@ export default function PageImagePicker({
               <div>
                 <h3 className="text-xl font-semibold text-stone-900">{label}</h3>
                 <p className="mt-1 text-sm text-stone-500">
-                  {librarySource === "gallery"
+                  {isExternal
+                    ? "Azura görsellerinden seçim yapabilir veya yeni bir görsel yükleyebilirsiniz."
+                    : librarySource === "gallery"
                     ? "Galeriden seçim yapabilir veya bilgisayarından yeni bir görsel yükleyebilirsin."
                     : "Medya Kütüphanesinden seçim yapabilir veya yeni bir görsel yükleyebilirsin."}
                 </p>
@@ -328,21 +354,21 @@ export default function PageImagePicker({
                 ) : null}
                 <label
                   className={`rounded-xl px-4 py-2 text-sm font-medium text-white ${
-                    uploading || galleryUploadReadOnly
+                    uploading || galleryUploadReadOnly || disabled
                       ? "cursor-not-allowed bg-stone-400"
                       : "cursor-pointer bg-emerald-700 hover:bg-emerald-800"
                   }`}
                 >
                   {uploading
                     ? "Yükleniyor..."
-                    : galleryUploadReadOnly
+                    : galleryUploadReadOnly || disabled
                       ? "Kategori salt okunur"
                       : "Yeni Görsel Yükle"}
                   <input
                     type="file"
-                    accept={IMAGE_UPLOAD_ACCEPT}
+                    accept={uploadAccept}
                     onChange={handleUpload}
-                    disabled={uploading || galleryUploadReadOnly}
+                    disabled={uploading || galleryUploadReadOnly || disabled}
                     className="hidden"
                   />
                 </label>
@@ -376,7 +402,7 @@ export default function PageImagePicker({
                   className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-sm text-stone-900 outline-none focus:border-stone-600 focus:bg-white"
                 >
                   <option value="all">Tüm klasörler</option>
-                  {(library?.folders || []).map((folder) => (
+                  {(activeLibrary?.folders || []).map((folder) => (
                     <option key={folder || "root"} value={folder}>
                       {folder || "Ana uploads klasörü"}
                     </option>
@@ -404,10 +430,10 @@ export default function PageImagePicker({
                 </div>
               ) : null}
 
-              {error ? (
+              {error || externalError ? (
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-                  <span>{error}</span>
-                  {!library ? (
+                  <span>{error || externalError}</span>
+                  {!activeLibrary ? (
                     <button
                       type="button"
                       onClick={() => setLibraryRequested(false)}
@@ -419,9 +445,11 @@ export default function PageImagePicker({
                 </div>
               ) : null}
 
-              {loadingLibrary ? (
+              {loadingLibrary || (isExternal && externalLoading) ? (
                 <p className="text-sm text-stone-500">
-                  {librarySource === "gallery"
+                  {isExternal
+                    ? "Azura medya kütüphanesi yükleniyor..."
+                    : librarySource === "gallery"
                     ? "Galeri görselleri yükleniyor..."
                     : "Medya Kütüphanesi yükleniyor..."}
                 </p>
@@ -436,6 +464,7 @@ export default function PageImagePicker({
                       key={asset.id}
                       type="button"
                       onClick={() => selectImage(asset.url)}
+                      disabled={disabled}
                       className={`group overflow-hidden rounded-xl border-2 text-left transition ${
                         value === asset.url
                           ? "border-emerald-600 ring-2 ring-emerald-200"
@@ -443,14 +472,7 @@ export default function PageImagePicker({
                       }`}
                     >
                       <div className="relative aspect-[4/3] bg-stone-100">
-                        <Image
-                          src={asset.url}
-                          alt=""
-                          fill
-                          unoptimized
-                          sizes="(min-width: 1024px) 25vw, 50vw"
-                          className="object-cover transition group-hover:scale-[1.02]"
-                        />
+                        {isExternal ? <div role="img" aria-label={asset.name} className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url("${asset.previewUrl}")` }} /> : <Image src={asset.url} alt="" fill unoptimized sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover transition group-hover:scale-[1.02]" />}
                       </div>
                       <div className="space-y-1 px-3 py-2">
                         <div className="truncate text-xs font-medium text-stone-700">

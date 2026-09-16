@@ -68,7 +68,7 @@ function FieldHeading({ label }) {
   );
 }
 
-function EditorNode({ label, value, path, onChange }) {
+function EditorNode({ label, value, path, onChange, fieldLimits }) {
   if (typeof value === "string") {
     const isLongText =
       value.length > 80 ||
@@ -84,6 +84,7 @@ function EditorNode({ label, value, path, onChange }) {
           <textarea
             value={value}
             onChange={(event) => onChange(path, event.target.value)}
+            maxLength={fieldLimits?.[path.join(".")]}
             rows={5}
             className="min-h-[118px] resize-y rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm leading-6 text-stone-900 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
           />
@@ -92,6 +93,7 @@ function EditorNode({ label, value, path, onChange }) {
             type="text"
             value={value}
             onChange={(event) => onChange(path, event.target.value)}
+            maxLength={fieldLimits?.[path.join(".")]}
             className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10"
           />
         )}
@@ -111,6 +113,7 @@ function EditorNode({ label, value, path, onChange }) {
               value={item}
               path={[...path, index]}
               onChange={onChange}
+              fieldLimits={fieldLimits}
             />
           ))}
         </div>
@@ -132,6 +135,7 @@ function EditorNode({ label, value, path, onChange }) {
               value={childValue}
               path={[...path, key]}
               onChange={onChange}
+              fieldLimits={fieldLimits}
             />
           ))}
         </div>
@@ -166,7 +170,7 @@ function SectionHeading({ label, detail }) {
   );
 }
 
-export default function ObjectEditor({ value, onChange }) {
+export default function ObjectEditor({ value, onChange, fieldLimits }) {
   const handleChange = (path, nextValue) => {
     onChange((currentValue) => updateValueAtPath(currentValue, path, nextValue));
   };
@@ -191,6 +195,7 @@ export default function ObjectEditor({ value, onChange }) {
                 value={childValue}
                 path={[key]}
                 onChange={handleChange}
+                fieldLimits={fieldLimits}
               />
             ))}
           </div>
@@ -204,6 +209,7 @@ export default function ObjectEditor({ value, onChange }) {
           value={childValue}
           path={[key]}
           onChange={handleChange}
+          fieldLimits={fieldLimits}
         />
       ))}
     </div>

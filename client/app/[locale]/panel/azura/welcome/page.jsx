@@ -5,6 +5,7 @@ import { FiCheck, FiSave } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { isValidWelcomeText } from "@/lib/admin/azura-welcome-text.mjs";
+import ObjectEditor from "../../components/ObjectEditor";
 
 const locales = [
   ["tr", "Türkçe"],
@@ -13,12 +14,12 @@ const locales = [
   ["ru", "Rusça"],
 ];
 const fields = [
-  ["subtitle", "Üst başlık", 200, false],
-  ["title", "Ana başlık", 250, false],
-  ["text", "Paragraf", 2000, true],
-  ["buttonText", "Hakkımızda düğmesi", 120, false],
+  ["subtitle", "Üst başlık", 200],
+  ["title", "Ana başlık", 250],
+  ["text", "Paragraf", 2000],
+  ["buttonText", "Hakkımızda düğmesi", 120],
 ];
-
+const fieldLimits = Object.fromEntries(fields.map(([field, , maxLength]) => [field, maxLength]));
 function validateDraft(value) {
   for (const [locale, localeLabel] of locales) {
     if (!value?.[locale]) return `${localeLabel} metinleri eksik.`;
@@ -78,12 +79,12 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
       JSON.stringify(welcomeText[locale]) !== JSON.stringify(original[locale]))
   ]));
 
-  function changeText(locale, field, value) {
+  function changeText(updater) {
     setError("");
     setSuccess("");
     setWelcomeText((current) => ({
       ...current,
-      [locale]: { ...current[locale], [field]: value },
+      [activeLocale]: updater(current[activeLocale]),
     }));
   }
 
@@ -175,31 +176,13 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
         {success && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{success}</p>}
         {welcomeText && (
           <>
-            <div className="grid gap-4 md:grid-cols-2">
-              {fields.map(([field, label, maxLength, multiline]) => (
-                <label key={field} className={`block space-y-2 text-sm font-medium text-stone-700 ${multiline ? "md:col-span-2" : ""}`}>
-                  <span>{label}</span>
-                  {multiline ? (
-                    <textarea
-                      value={welcomeText[activeLocale][field]}
-                      onChange={(event) => changeText(activeLocale, field, event.target.value)}
-                      disabled={!canEdit || saving}
-                      maxLength={maxLength}
-                      rows={4}
-                      className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] focus:bg-white disabled:bg-stone-100"
-                    />
-                  ) : (
-                    <input
-                      value={welcomeText[activeLocale][field]}
-                      onChange={(event) => changeText(activeLocale, field, event.target.value)}
-                      disabled={!canEdit || saving}
-                      maxLength={maxLength}
-                      className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] focus:bg-white disabled:bg-stone-100"
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
+            <fieldset disabled={!canEdit || saving} className="disabled:opacity-70">
+              <ObjectEditor
+                value={welcomeText[activeLocale]}
+                onChange={changeText}
+                fieldLimits={fieldLimits}
+              />
+            </fieldset>
             <p className="text-xs text-stone-500">Paragrafta Enter ile satır sonu eklemeyin; Azura metin API’si bunu kabul etmez.</p>
             <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
               <button

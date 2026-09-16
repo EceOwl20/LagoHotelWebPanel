@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { FiFileText, FiGrid, FiImage, FiLayers } from "react-icons/fi";
 import AzuraWelcomePage from "../welcome/page";
 import AzuraExperiencePage from "../experience/page";
 import AzuraHomepageSectionEditor from "./AzuraHomepageSectionEditor";
 import AzuraCarouselEditor from "./AzuraCarouselEditor";
+import AzuraAccommodationEditor from "./AzuraAccommodationEditor";
 import { ContentWorkspaceHeader, ContentWorkspaceNavigation, ContentWorkspaceToolbar } from "../../components/ContentWorkspace";
 
 const locales = [
@@ -14,31 +14,24 @@ const locales = [
   ["de", "Almanca"],
   ["ru", "Rusça"],
 ];
-const sections = [
-  { id: "welcome", title: "Karşılama", description: "Videonun altındaki giriş metni", icon: FiFileText },
-  { id: "carousel", title: "Keşif kaydırıcısı", description: "Beş görsel kart ve başlıkları", icon: FiLayers },
-  { id: "experience", title: "Tanıtım", description: "Animasyonlu görseller ve yazılar", icon: FiImage },
-  { id: "essentials", title: "Olanaklar", description: "Altı hizmet maddesi", icon: FiGrid },
-];
 const localeLabels = Object.fromEntries(locales.map(([locale, label]) => [locale, label]));
 
 export default function AzuraContentsPage() {
-  const [activeSection, setActiveSection] = useState("welcome");
   const [activeLocale, setActiveLocale] = useState("tr");
   const [query, setQuery] = useState("");
-  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, essentials: false });
+  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, accommodation: false, essentials: false });
   const markWelcomeDirty = useCallback((dirty) => setDirtySections((current) =>
     current.welcome === dirty ? current : { ...current, welcome: dirty }), []);
   const markExperienceDirty = useCallback((dirty) => setDirtySections((current) =>
     current.experience === dirty ? current : { ...current, experience: dirty }), []);
   const markCarouselDirty = useCallback((dirty) => setDirtySections((current) =>
     current.carousel === dirty ? current : { ...current, carousel: dirty }), []);
+  const markAccommodationDirty = useCallback((dirty) => setDirtySections((current) =>
+    current.accommodation === dirty ? current : { ...current, accommodation: dirty }), []);
   const markEssentialsDirty = useCallback((dirty) => setDirtySections((current) =>
     current.essentials === dirty ? current : { ...current, essentials: dirty }), []);
   const dirtyCount = Object.values(dirtySections).filter(Boolean).length;
-  const visibleSections = sections.filter(({ title, description }) =>
-    `${title} ${description}`.toLocaleLowerCase("tr").includes(query.toLocaleLowerCase("tr"))
-  );
+  const showHomepage = "ana sayfa anasayfa homepage".includes(query.trim().toLocaleLowerCase("tr"));
 
   useEffect(() => {
     if (!dirtyCount) return undefined;
@@ -51,55 +44,51 @@ export default function AzuraContentsPage() {
     <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
       <ContentWorkspaceHeader
         eyebrow="Azura Deluxe Hotel / İçerik yönetimi"
-        description="Anasayfanın bölümlerini dört dilde tek çalışma alanından düzenleyin. Her bölümün kaydı ayrıdır; Lago içerikleri değişmez."
-        count={sections.length}
-        countLabel="bölüm"
+        description="Anasayfanın metin ve görsellerini dört dilde tek çalışma alanında düzenleyin. Lago içerikleri değişmez."
+        count={1}
+        countLabel="sayfa"
         dirty={dirtyCount > 0}
       />
 
       <div className="grid items-start gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
         <ContentWorkspaceNavigation
-          groups={visibleSections.length ? [{
+          groups={showHomepage ? [{
             id: "home",
             label: "Ana sayfa",
-            items: visibleSections.map(({ id, title, description, icon }) => ({
-              id,
-              label: title,
-              code: description,
-              type: "Bölüm",
-              icon,
-              dirty: dirtySections[id],
-            })),
+            items: [{ id: "homepage", label: "Ana sayfa", code: "HomePage", type: "Sayfa", main: true, dirty: dirtyCount > 0 }],
           }] : []}
-          selectedId={activeSection}
-          onSelect={setActiveSection}
+          selectedId="homepage"
+          onSelect={() => document.getElementById("azura-homepage-editor")?.scrollIntoView({ behavior: "smooth" })}
           query={query}
           onQueryChange={setQuery}
-          footer="Bölüm değiştirmek taslağı silmez; sayfadan ayrılmadan önce her bölümü ayrıca kaydedin."
+          footer="Anasayfanın tüm içerikleri sağda birlikte görünür. Her kayıt düğmesi yalnızca kendi alanını kaydeder."
         />
 
-        <div className="min-w-0 space-y-5">
+        <div id="azura-homepage-editor" className="min-w-0 space-y-5">
           <ContentWorkspaceToolbar
-            title={sections.find(({ id }) => id === activeSection)?.title}
-            code="Azura / Ana sayfa"
-            dirty={dirtySections[activeSection]}
+            title="Ana sayfa"
+            code="Azura / HomePage"
+            dirty={dirtyCount > 0}
             locales={locales.map(([locale]) => locale)}
             localeLabels={localeLabels}
             activeLocale={activeLocale}
             onLocaleChange={setActiveLocale}
           >
-            <p className="mt-3 text-xs leading-5 text-stone-500">Seçili dil düzenlenir; kayıt dört dilin tamamını doğrular. Kaydetme düğmesi seçili bölümün altındadır.</p>
+            <p className="mt-3 text-xs leading-5 text-stone-500">Tüm alanlar aşağıda bir arada. Seçili dil düzenlenir; her alanın kaydı dört dili birlikte doğrular. Azura API’leri ayrı olduğu için kayıt düğmeleri alanların altında bulunur.</p>
           </ContentWorkspaceToolbar>
-          <section aria-label="Karşılama" className={activeSection === "welcome" ? "" : "hidden"}>
+          <section aria-label="Karşılama">
             <AzuraWelcomePage embedded activeLocale={activeLocale} onDirtyChange={markWelcomeDirty} />
           </section>
-          <section aria-label="Keşif kaydırıcısı" className={activeSection === "carousel" ? "" : "hidden"}>
+          <section aria-label="Keşif kaydırıcısı">
             <AzuraCarouselEditor activeLocale={activeLocale} onDirtyChange={markCarouselDirty} />
           </section>
-          <section aria-label="Tanıtım" className={activeSection === "experience" ? "" : "hidden"}>
+          <section aria-label="Tanıtım">
             <AzuraExperiencePage embedded activeLocale={activeLocale} onDirtyChange={markExperienceDirty} />
           </section>
-          <section aria-label="Olanaklar" className={activeSection === "essentials" ? "" : "hidden"}>
+          <section aria-label="Oda kartları">
+            <AzuraAccommodationEditor activeLocale={activeLocale} onDirtyChange={markAccommodationDirty} />
+          </section>
+          <section aria-label="Olanaklar">
             <AzuraHomepageSectionEditor sectionKey="essentials" activeLocale={activeLocale} onDirtyChange={markEssentialsDirty} />
           </section>
         </div>

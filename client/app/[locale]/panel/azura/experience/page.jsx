@@ -5,7 +5,8 @@ import { FiCheck, FiSave } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { isValidExperience } from "@/lib/admin/azura-experience.mjs";
-import AzuraImagePicker from "./AzuraImagePicker";
+import PageImagePicker from "../../sayfalar/components/PageImagePicker";
+import ObjectEditor from "../../components/ObjectEditor";
 
 const locales = [
   ["tr", "Türkçe"],
@@ -24,6 +25,7 @@ const textFields = [
   ["text2", "İkinci paragraf", 2000, true],
   ["buttonText", "Galeri düğmesi", 120, false],
 ];
+const textFieldLimits = Object.fromEntries(textFields.map(([field, , maxLength]) => [field, maxLength]));
 function validateTextDraft(value) {
   for (const [locale, localeLabel] of locales) {
     if (!value?.[locale]) return `${localeLabel} metinleri eksik.`;
@@ -187,12 +189,12 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
     }));
   }
 
-  function changeText(locale, field, value) {
+  function changeText(updater) {
     setTextSuccess("");
     setTextError("");
     setExperienceText((current) => ({
       ...current,
-      [locale]: { ...current[locale], [field]: value },
+      [activeLocale]: updater(current[activeLocale]),
     }));
   }
 
@@ -325,16 +327,18 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
                     <h3 className="font-semibold text-stone-900">{label}</h3>
                     <p className="mt-1 text-xs text-stone-500">{key === "background" ? "Animasyonun arkasındaki görsel" : "Animasyonun önündeki görsel"}</p>
                   </div>
-                  <AzuraImagePicker
+                  <PageImagePicker
                     label={label}
                     value={experience[key].image}
-                    images={availableImages}
-                    loading={mediaLoading}
-                    error={mediaError}
+                    externalAssets={availableImages}
+                    externalPreviewUrl={availableImages.find((item) => item.image === experience[key].image)?.previewUrl}
+                    externalUpload={(file) => uploadImage(key, file)}
+                    externalLoading={mediaLoading}
+                    externalError={mediaError}
                     disabled={!canEdit || saving || textSaving || Boolean(uploadingKey)}
-                    uploading={uploadingKey === key}
+                    uploadAccept="image/jpeg,image/png,image/webp"
+                    allowClear={false}
                     onChange={(image) => changeImage(key, image)}
-                    onUpload={(file) => uploadImage(key, file)}
                   />
                   <label className="block space-y-2 text-sm font-medium text-stone-700">
                     <span>{locales.find(([locale]) => locale === activeLocale)?.[1]} alt açıklaması</span>
@@ -392,31 +396,9 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
         {textSuccess && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{textSuccess}</p>}
         {experienceText && (
           <>
-            <div className="grid gap-4 md:grid-cols-2">
-              {textFields.map(([field, label, maxLength, multiline]) => (
-                <label key={field} className={`block space-y-2 text-sm font-medium text-stone-700 ${multiline ? "md:col-span-2" : ""}`}>
-                  <span>{label}</span>
-                  {multiline ? (
-                    <textarea
-                      value={experienceText[activeLocale][field]}
-                      onChange={(event) => changeText(activeLocale, field, event.target.value)}
-                      disabled={!canEdit || saving || textSaving}
-                      maxLength={maxLength}
-                      rows={4}
-                      className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] focus:bg-white disabled:bg-stone-100"
-                    />
-                  ) : (
-                    <input
-                      value={experienceText[activeLocale][field]}
-                      onChange={(event) => changeText(activeLocale, field, event.target.value)}
-                      disabled={!canEdit || saving || textSaving}
-                      maxLength={maxLength}
-                      className="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none focus:border-[#63978f] focus:bg-white disabled:bg-stone-100"
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
+            <fieldset disabled={!canEdit || saving || textSaving} className="disabled:opacity-70">
+              <ObjectEditor value={experienceText[activeLocale]} onChange={changeText} fieldLimits={textFieldLimits} />
+            </fieldset>
             <p className="text-xs text-stone-500">Paragraflarda Enter ile satır sonu eklemeyin; Azura metin API’si bunu kabul etmez.</p>
             <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
               <button
