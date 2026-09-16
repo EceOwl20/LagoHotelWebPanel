@@ -222,6 +222,11 @@ test("oturumsuz Azura bölüm API isteği 401 döner", async () => {
   assert.equal(response.status, 401);
 });
 
+test("oturumsuz Azura genel medya isteği 401 döner", async () => {
+  const response = await request("/api/admin/azura/homepage/images", { origin: null });
+  assert.equal(response.status, 401);
+});
+
 test("hatalı giriş cookie üretmeden 401 döner", async () => {
   const result = await login(adminUsername, "wrong-password");
   assert.equal(result.response.status, 401);

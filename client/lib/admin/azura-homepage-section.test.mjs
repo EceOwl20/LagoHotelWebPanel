@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  AZURA_CAROUSEL_KEYS,
   getAzuraHomepageSectionConnection,
   isValidAzuraHomepageSection,
   requestAzuraHomepageSection,
@@ -21,10 +22,22 @@ const fields = {
   buttonText: "Keşfet",
 };
 const section = Object.fromEntries(["tr", "en", "de", "ru"].map((locale) => [locale, { ...fields }]));
+const carousel = {
+  slides: AZURA_CAROUSEL_KEYS.map((key) => ({
+    key,
+    image: `/uploads/pages/homepage/carousel-${key}.jpg`,
+    translations: Object.fromEntries(["tr", "en", "de", "ru"].map((locale) => [locale, {
+      title: `${key} ${locale}`,
+      alt: `${key} görseli ${locale}`,
+    }])),
+  })),
+};
 
 test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
   assert.equal(getAzuraHomepageSectionConnection("essentials", env).url,
     "http://localhost:3001/api/azura/homepage/sections/essentials");
+  assert.equal(getAzuraHomepageSectionConnection("carousel", env).url,
+    "http://localhost:3001/api/azura/homepage/sections/carousel");
   assert.throws(() => getAzuraHomepageSectionConnection("../experience", env),
     (error) => error.status === 404);
   assert.throws(() => getAzuraHomepageSectionConnection("homepage", env),
@@ -33,6 +46,46 @@ test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
     ...env,
     AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience",
   }));
+});
+
+test("kaydırıcı tam beş sabit kartı, görseli ve dört dil metnini ister", () => {
+  assert.equal(isValidAzuraHomepageSection("carousel", carousel), true);
+  assert.equal(isValidAzuraHomepageSection("carousel", { slides: carousel.slides.slice(0, 4) }), false);
+  assert.equal(isValidAzuraHomepageSection("carousel", {
+    slides: [carousel.slides[1], carousel.slides[0], ...carousel.slides.slice(2)],
+  }), false);
+  assert.equal(isValidAzuraHomepageSection("carousel", {
+    slides: [{ ...carousel.slides[0], link: "/rooms" }, ...carousel.slides.slice(1)],
+  }), false);
+  assert.equal(isValidAzuraHomepageSection("carousel", {
+    slides: [{ ...carousel.slides[0], image: "/uploads/pages/homepage/../bad.jpg" }, ...carousel.slides.slice(1)],
+  }), false);
+  assert.equal(isValidAzuraHomepageSection("carousel", {
+    slides: [{
+      ...carousel.slides[0],
+      translations: {
+        ...carousel.slides[0].translations,
+        en: { title: "a".repeat(201), alt: "Alt" },
+      },
+    }, ...carousel.slides.slice(1)],
+  }), false);
+});
+
+test("kaydırıcı PUT yalnızca section ve revision bilgisini iletir", async () => {
+  let request;
+  const nextRevision = "c".repeat(64);
+  const result = await requestAzuraHomepageSection("PUT", "carousel", carousel, {
+    env,
+    revision,
+    fetchImpl: async (url, options) => {
+      request = { url, options };
+      return { ok: true, json: async () => ({ section: carousel, revision: nextRevision }) };
+    },
+  });
+  assert.deepEqual(result, { section: carousel, revision: nextRevision });
+  assert.equal(request.url, getAzuraHomepageSectionConnection("carousel", env).url);
+  assert.equal(request.options.headers["If-Match"], `"${revision}"`);
+  assert.deepEqual(JSON.parse(request.options.body), { section: carousel });
 });
 
 test("olanaklar şeması dört dilde tam 15 alan ve Azura sınırlarını ister", () => {

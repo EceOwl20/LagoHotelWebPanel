@@ -21,9 +21,25 @@ const image = {
 test("görsel endpoint'i doğrulanan Azura adresinden türetilir", () => {
   assert.equal(getAzuraImagesConnection(env).url,
     "http://localhost:3000/api/azura/homepage/experience/images");
+  assert.equal(getAzuraImagesConnection(env, "homepage").url,
+    "http://localhost:3000/api/azura/homepage/images");
+  assert.throws(() => getAzuraImagesConnection(env, "unknown"));
   assert.throws(() => getAzuraImagesConnection({
     ...env, AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience",
   }));
+});
+
+test("genel anasayfa medya isteği deneyim adresini kullanmaz", async () => {
+  const listed = { ...image, modifiedAt: "2026-09-15T12:00:00.000Z" };
+  await requestAzuraImages("GET", undefined, {
+    env,
+    scope: "homepage",
+    fetchImpl: async (url, options) => {
+      assert.equal(url, "http://localhost:3000/api/azura/homepage/images");
+      assert.equal(options.headers.Authorization, "Bearer test-secret");
+      return { ok: true, json: async () => ({ images: [listed] }) };
+    },
+  });
 });
 
 test("Azura görsel yanıtı ve güvenli önizleme yolu doğrulanır", () => {

@@ -5,10 +5,15 @@ const MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const TIMEOUT_MS = 30000;
 
-export function getAzuraImagesConnection(env = process.env) {
+export function getAzuraImagesConnection(env = process.env, scope = "experience") {
+  if (!["experience", "homepage"].includes(scope)) {
+    throw new AzuraConnectionError("Azura görsel kapsamı geçersiz.", 400);
+  }
   const { url, token } = getAzuraConnection(env);
   const imagesUrl = new URL(url);
-  imagesUrl.pathname += "/images";
+  imagesUrl.pathname = scope === "homepage"
+    ? "/api/azura/homepage/images"
+    : "/api/azura/homepage/experience/images";
   return { url: imagesUrl.toString(), origin: imagesUrl.origin, token };
 }
 
@@ -37,8 +42,9 @@ function withPreview(record, origin) {
 export async function requestAzuraImages(method, file, {
   env = process.env,
   fetchImpl = fetch,
+  scope = "experience",
 } = {}) {
-  const { url, origin, token } = getAzuraImagesConnection(env);
+  const { url, origin, token } = getAzuraImagesConnection(env, scope);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 

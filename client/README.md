@@ -10,7 +10,7 @@ Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura şimdili
 menüleri ve Lago taslak bildirimleri gösterilmez. Bu seçim erişim yetkisi
 değildir; kullanıcı rolleri ve API izin kontrolleri mevcut şekilde uygulanır.
 
-Azura "Sayfa İçerikleri" ekranı karşılama, animasyonlu tanıtım ve altı maddeli
+Azura "Sayfa İçerikleri" ekranı karşılama, beş kartlı keşif kaydırıcısı, animasyonlu tanıtım ve altı maddeli
 olanaklar bölümlerini tek anasayfa altında toplar. Bölümler ayrı revision'larla
 kaydedilir. Eski `/[locale]/panel/azura/welcome` ve
 `/[locale]/panel/azura/experience` pilot adresleri doğrulama süresince
@@ -27,8 +27,16 @@ Bu uç da revision/`If-Match` ile eski sekmenin kaydını `409` olarak reddeder.
 
 Olanaklar bölümü Lago'da `/api/admin/azura/homepage/sections/essentials`
 üzerinden Azura'nın aynı bölüm API'sine bağlanır. Servis URL'si mevcut
-`AZURA_EXPERIENCE_API_URL` değişkeninden türetilir. İzin listesinde şu an
-yalnızca `essentials` vardır; yazma dört dildeki 15 alanı ve revision'ı doğrular.
+`AZURA_EXPERIENCE_API_URL` değişkeninden türetilir. Bölüm izin listesinde
+`essentials` ve `carousel` vardır; olanaklar yazması dört dildeki 15 alanı ve
+revision'ı doğrular.
+
+Keşif kaydırıcısı aynı bölüm API'sinin `carousel` anahtarını kullanır. Beş
+kartın sırası ve bağlantıları sabittir; görsel, dört dilde başlık ve alt açıklama
+panelden düzenlenir. Lago'nun `/api/admin/azura/homepage/images` adresi Azura'nın
+genel `/api/azura/homepage/images` adresine bağlanır. Eski experience medya
+adresi uyumluluk için çalışmaya devam eder. Yükleme görseli yalnızca seçer;
+yayınlamak için kaydırıcı bölümü ayrıca kaydedilmelidir.
 
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:

@@ -20,7 +20,7 @@ Tarayıcı Azura servis tokenını veya Azura yazma API'sini doğrudan kullanmaz
 | --- | --- | --- | --- |
 | Karşılama metni | `HomePage` kök metinleri | `homepage.json.welcomeText` | Ortak dört alanlı form; Azura'nın mevcut revision'lı API'si kullanılabilir. |
 | Animasyonlu tanıtım | `HomePage.TwoAnimationSection` + `homepage.json.experience` | `homepage.json.experienceText` + `experience` | Ortak görsel/metin formları; iki otelin mevcut alan adları adaptörde eşlenir. |
-| Keşif kaydırıcısı | `homepage.json.carousel`: 7 görsel alanı | `Homepage.EmblaCarousel`: 5 metin ve statik import görsel | Ortak kart editörü; otel konfigürasyonu 7/5 kartı belirler. Azura medya alanları ve okuma/yazma API'si gerekir. |
+| Keşif kaydırıcısı | `homepage.json.carousel`: 7 görsel alanı | `homepage.json.sections.carousel`: 5 kart, görsel ve dört dil başlık/alt metin | Ortak kart editörü; otel konfigürasyonu 7/5 kartı belirler. Azura'nın genel medya ve bölüm API'si kullanılır. |
 | Konaklama kartları | 3 kart: Family Swim-up, Swim-up, Superior | 3 kart: Deluxe, Fantasy, Family | Aynı form şablonu; kart kimlikleri, bağlantıları ve medya ayrı. Azura statik görsellerini veri kaynağına taşımak gerekir. |
 | Olanaklar | `HomePage.Essentials`, 6 madde | `Homepage.Essentials`, 6 madde | Aynı alan grubu; mesaj anahtarları/adlandırma adaptörde ayrılır. |
 | Hero ve alt banner | Lago medya JSON'unda banner ve site videosu | Azura'da mobil/masaüstü video ve alt banner görseli statik | Video için ayrı güvenli yükleme sözleşmesi gerekir; ilk ortak medya sürümüne zorla eklenmez. |
@@ -57,7 +57,7 @@ sayılarının aynı olduğu anlamına gelmez.
    tanımlanır. Mevcut `welcomeText`, `experienceText`, `experience` ve
    bunların API'leri korunur; geçişte veri kaybı olmaz.
 2. Lago'da yalnızca Azura anasayfası için ortak "Sayfa İçerikleri" görünümü
-   açılır. İlk sürümde karşılama, tanıtım ve olanaklar alanları aynı arayüzden
+   açılır. İlk sürümde karşılama, keşif kaydırıcısı, tanıtım ve olanaklar alanları aynı arayüzden
    yönetilir; kalan alanlar Azura API'si hazır oldukça eklenir.
 3. Yerelde dört dil, medya yükleme, iki sekmede çakışma, Lago/Azura içerik
    izolasyonu ve yeniden başlatma sonrası kalıcılık doğrulanır.

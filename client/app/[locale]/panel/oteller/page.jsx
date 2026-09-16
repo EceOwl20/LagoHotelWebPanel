@@ -20,7 +20,7 @@ const hotels = [
     id: "azura",
     name: "Azura Deluxe Hotel",
     eyebrow: "PİLOT BAĞLANTI",
-    description: "Şimdilik anasayfadaki karşılama, tanıtım ve olanaklar bölümleri yönetilebilir.",
+    description: "Şimdilik anasayfadaki karşılama, keşif, tanıtım ve olanaklar bölümleri yönetilebilir.",
     href: "/panel/azura/icerikler",
     initial: "A",
     accent: "bg-[#356b70]",

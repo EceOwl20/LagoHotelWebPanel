@@ -2,6 +2,10 @@ import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs
 import { isValidAzuraRevision } from "./azura-revision.mjs";
 
 const LOCALES = ["tr", "en", "de", "ru"];
+export const AZURA_CAROUSEL_KEYS = Object.freeze([
+  "accommodation", "restaurants", "beachPools", "experiences", "kids",
+]);
+const IMAGE_PATH = /^\/uploads\/pages\/homepage\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i;
 export const AZURA_HOMEPAGE_SECTION_FIELDS = Object.freeze({
   essentials: Object.freeze({
     subtitle: 200,
@@ -29,7 +33,30 @@ function exactKeys(value, keys) {
     keys.every((key) => Object.hasOwn(value, key));
 }
 
+export function isSupportedAzuraHomepageSectionKey(sectionKey) {
+  return sectionKey === "carousel" || Object.hasOwn(AZURA_HOMEPAGE_SECTION_FIELDS, sectionKey);
+}
+
 export function isValidAzuraHomepageSection(sectionKey, section) {
+  if (sectionKey === "carousel") {
+    return exactKeys(section, ["slides"]) &&
+      Array.isArray(section.slides) && section.slides.length === AZURA_CAROUSEL_KEYS.length &&
+      section.slides.every((slide, index) =>
+        exactKeys(slide, ["key", "image", "translations"]) &&
+        slide.key === AZURA_CAROUSEL_KEYS[index] &&
+        typeof slide.image === "string" && IMAGE_PATH.test(slide.image) &&
+        !slide.image.includes("..") &&
+        exactKeys(slide.translations, LOCALES) &&
+        LOCALES.every((locale) =>
+          exactKeys(slide.translations[locale], ["title", "alt"]) &&
+          [["title", 200], ["alt", 300]].every(([field, limit]) => {
+            const value = slide.translations[locale][field];
+            return typeof value === "string" && Boolean(value.trim()) &&
+              value.length <= limit && !/[\u0000-\u001f\u007f]/.test(value);
+          })
+        )
+      );
+  }
   const fields = AZURA_HOMEPAGE_SECTION_FIELDS[sectionKey];
   if (!fields || !exactKeys(section, LOCALES)) return false;
   return LOCALES.every((locale) =>
@@ -43,7 +70,7 @@ export function isValidAzuraHomepageSection(sectionKey, section) {
 }
 
 export function getAzuraHomepageSectionConnection(sectionKey, env = process.env) {
-  if (!Object.hasOwn(AZURA_HOMEPAGE_SECTION_FIELDS, sectionKey)) {
+  if (!isSupportedAzuraHomepageSectionKey(sectionKey)) {
     throw new AzuraConnectionError("Azura anasayfa bölümü bulunamadı.", 404);
   }
   const { url, token } = getAzuraConnection(env);

@@ -4,9 +4,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return getAzuraImages("experience");
+  return getAzuraImages("homepage");
 }
 
 export async function POST(request) {
-  return postAzuraImage(request, "experience");
+  return postAzuraImage(request, "homepage");
 }

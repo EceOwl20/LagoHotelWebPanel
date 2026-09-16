@@ -4,8 +4,8 @@ import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import {
-  AZURA_HOMEPAGE_SECTION_FIELDS,
   isValidAzuraHomepageSection,
+  isSupportedAzuraHomepageSectionKey,
   requestAzuraHomepageSection,
 } from "@/lib/admin/azura-homepage-section.mjs";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
@@ -70,7 +70,7 @@ export async function PUT(request, { params }) {
     return failure(error);
   }
   const { sectionKey } = await params;
-  if (!Object.hasOwn(AZURA_HOMEPAGE_SECTION_FIELDS, sectionKey)) {
+  if (!isSupportedAzuraHomepageSectionKey(sectionKey)) {
     return json({ error: "Azura anasayfa bölümü bulunamadı." }, 404);
   }
   const rateLimit = consumeRateLimit({
