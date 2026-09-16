@@ -20,7 +20,7 @@ export default function LoginForm() {
       const response = await fetch("/api/admin/session", { cache: "no-store" });
 
       if (!isCancelled && response.ok) {
-        router.replace(`/${params.locale}/panel/dashboard`);
+        router.replace(`/${params.locale}/panel/oteller`);
       }
     };
 
@@ -72,7 +72,7 @@ export default function LoginForm() {
         throw new Error(data.error || "Giriş başarısız");
       }
 
-      router.replace(`/${params.locale}/panel/dashboard`);
+      router.replace(`/${params.locale}/panel/oteller`);
       router.refresh();
     } catch (err) {
       setError(err.message);
@@ -89,11 +89,11 @@ export default function LoginForm() {
       >
         <div className="space-y-2 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-stone-500">
-            Lago Hotel
+            Lago & Azura
           </p>
-          <h1 className="text-3xl font-semibold text-stone-900">Panel Girisi</h1>
+          <h1 className="text-3xl font-semibold text-stone-900">Panel Girişi</h1>
           <p className="text-sm text-stone-500">
-            Sayfa iceriklerini, galeriyi ve blog yazilarini yonetmek icin giris yapin.
+            İçerik yönetimi için giriş yapın; ardından yöneteceğiniz oteli seçin.
           </p>
         </div>
 

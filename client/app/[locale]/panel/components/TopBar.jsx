@@ -11,6 +11,7 @@ import {
   FiLogOut,
   FiPackage,
   FiPlus,
+  FiRefreshCw,
   FiSearch,
   FiUsers,
 } from "react-icons/fi";
@@ -25,7 +26,9 @@ const pageLabels = [
   { match: "/panel/medya", section: "Medya", title: "Medya kütüphanesi" },
   { match: "/panel/galeri", section: "Medya", title: "Galeri" },
   { match: "/panel/blog", section: "İçerik", title: "Blog" },
-  { match: "/panel/azura/experience", section: "Azura Pilot", title: "Tanıtım görselleri" },
+  { match: "/panel/azura/icerikler", section: "Azura Deluxe Hotel", title: "Sayfa içerikleri" },
+  { match: "/panel/azura/welcome", section: "Azura Deluxe Hotel", title: "Karşılama metni" },
+  { match: "/panel/azura/experience", section: "Azura Deluxe Hotel", title: "Tanıtım alanı" },
   { match: "/panel/kullanicilar", section: "Yetkilendirme", title: "Kullanıcılar" },
 ];
 
@@ -56,6 +59,7 @@ function getInitials(user) {
 
 export default function TopBar({ user }) {
   const pathname = usePathname();
+  const isAzura = pathname.startsWith("/panel/azura/");
   const router = useRouter();
   const headerRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(null);
@@ -110,7 +114,7 @@ export default function TopBar({ user }) {
       }
     };
     const openSearchWithShortcut = (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      if (!isAzura && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setOpenMenu("search");
       }
@@ -125,9 +129,10 @@ export default function TopBar({ user }) {
       document.removeEventListener("keydown", closeOnEscape);
       document.removeEventListener("keydown", openSearchWithShortcut);
     };
-  }, []);
+  }, [isAzura]);
 
   useEffect(() => {
+    if (isAzura) return undefined;
     loadDraftSummary();
 
     const refreshOnFocus = () => loadDraftSummary({ silent: true });
@@ -139,7 +144,9 @@ export default function TopBar({ user }) {
       window.removeEventListener("focus", refreshOnFocus);
       window.removeEventListener("admin-pages-updated", refreshOnPageChange);
     };
-  }, [loadDraftSummary]);
+  }, [isAzura, loadDraftSummary]);
+
+  useEffect(() => { setOpenMenu(null); }, [pathname]);
 
   const handleLogout = async () => {
     if (loggingOut) return;
@@ -180,6 +187,12 @@ export default function TopBar({ user }) {
       </div>
 
       <div className="flex items-center gap-1.5 sm:gap-2">
+        {isAzura ? (
+          <Link href="/panel/oteller" className="rounded-xl border border-stone-200 px-3 py-2 text-xs font-semibold text-stone-700 transition hover:bg-stone-50">
+            Otel değiştir
+          </Link>
+        ) : (
+        <>
         <button
           type="button"
           aria-label="Ara"
@@ -306,6 +319,9 @@ export default function TopBar({ user }) {
           ) : null}
         </div>
 
+        </>
+        )}
+
         <div className="mx-1 hidden h-7 w-px bg-stone-200 sm:block" />
 
         <div className="relative">
@@ -328,10 +344,13 @@ export default function TopBar({ user }) {
                 <p className="mt-1 truncate text-xs text-stone-500">@{user?.username || "admin"}</p>
               </div>
               <div className="py-2">
-                <Link href="/panel/dashboard" role="menuitem" onClick={() => setOpenMenu(null)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-stone-700 transition hover:bg-stone-100">
-                  <FiGrid className="h-4 w-4 text-stone-400" />Dashboard
+                <Link href="/panel/oteller" role="menuitem" onClick={() => setOpenMenu(null)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-stone-700 transition hover:bg-stone-100">
+                  <FiRefreshCw className="h-4 w-4 text-stone-400" />Otel değiştir
                 </Link>
-                {user?.role === "admin" ? (
+                {!isAzura && <Link href="/panel/dashboard" role="menuitem" onClick={() => setOpenMenu(null)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-stone-700 transition hover:bg-stone-100">
+                  <FiGrid className="h-4 w-4 text-stone-400" />Dashboard
+                </Link>}
+                {!isAzura && user?.role === "admin" ? (
                   <Link href="/panel/kullanicilar" role="menuitem" onClick={() => setOpenMenu(null)} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-stone-700 transition hover:bg-stone-100">
                     <FiUsers className="h-4 w-4 text-stone-400" />Kullanıcılar
                   </Link>
@@ -347,7 +366,7 @@ export default function TopBar({ user }) {
           ) : null}
         </div>
       </div>
-      {openMenu === "search" ? <PanelSearch onClose={() => setOpenMenu(null)} /> : null}
+      {!isAzura && openMenu === "search" ? <PanelSearch onClose={() => setOpenMenu(null)} /> : null}
     </header>
   );
 }

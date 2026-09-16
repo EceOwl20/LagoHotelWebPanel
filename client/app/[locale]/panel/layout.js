@@ -16,10 +16,12 @@ export default function PanelLayout({ children }) {
     user: null,
   });
 
-  const hideSidebar = pathname.includes("/panel/login");
+  const isLoginPage = pathname.includes("/panel/login");
+  const isHotelPicker = pathname.endsWith("/panel/oteller");
+  const showPanelChrome = !isLoginPage && !isHotelPicker;
 
   useEffect(() => {
-    if (hideSidebar) {
+    if (isLoginPage) {
       setAuthState({ loading: false, authenticated: false, user: null });
       return;
     }
@@ -58,9 +60,9 @@ export default function PanelLayout({ children }) {
     return () => {
       isCancelled = true;
     };
-  }, [hideSidebar, params.locale, router]);
+  }, [isLoginPage, params.locale, router]);
 
-  if (!hideSidebar && authState.loading) {
+  if (!isLoginPage && authState.loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-stone-100">
         <div className="rounded-2xl border border-stone-200 bg-white px-6 py-5 text-sm text-stone-600 shadow-sm">
@@ -70,20 +72,20 @@ export default function PanelLayout({ children }) {
     );
   }
 
-  if (!hideSidebar && !authState.authenticated) {
+  if (!isLoginPage && !authState.authenticated) {
     return null;
   }
 
   return (
     <div className="min-h-screen bg-stone-100 md:flex">
       <PanelSessionProvider user={authState.user}>
-        {!hideSidebar && (
+        {showPanelChrome && (
           <>
             <Sidebar user={authState.user} />
             <TopBar user={authState.user} />
           </>
         )}
-        <main className={`flex-1 p-4 md:p-8 ${hideSidebar ? "w-full" : "pt-20 md:ml-72 md:pt-24"}`}>
+        <main className={`flex-1 p-4 md:p-8 ${showPanelChrome ? "pt-20 md:ml-72 md:pt-24" : "w-full"}`}>
           {children}
         </main>
       </PanelSessionProvider>

@@ -36,7 +36,7 @@ function getFreePort() {
   return new Promise((resolve, reject) => {
     const server = net.createServer();
     server.once("error", reject);
-    server.listen(0, "127.0.0.1", () => {
+    server.listen(0, "localhost", () => {
       const address = server.address();
       server.close((error) => error ? reject(error) : resolve(address.port));
     });
@@ -119,6 +119,8 @@ before(async () => {
   usersFilePath = path.join(temporaryRoot, "users.json");
   const sourcePagesDirectory = path.join(clientRoot, "content", "pages");
   const temporaryPagesDirectory = path.join(temporaryRoot, "content", "pages");
+  const sourceSitePagesDirectory = path.join(clientRoot, "content", "site-pages");
+  const temporarySitePagesDirectory = path.join(temporaryRoot, "content", "site-pages");
   const temporaryMessagesDirectory = path.join(temporaryRoot, "messages");
   const sourcePageFiles = (await readdir(sourcePagesDirectory))
     .filter((fileName) => fileName.endsWith(".json"))
@@ -129,11 +131,18 @@ before(async () => {
     "Entegrasyon testi için sayfa fixture'ı bulunmalı"
   );
   await mkdir(temporaryPagesDirectory, { recursive: true });
+  await mkdir(temporarySitePagesDirectory, { recursive: true });
   await mkdir(temporaryMessagesDirectory, { recursive: true });
   await writeFile(
     path.join(temporaryPagesDirectory, sourcePageFiles[0]),
     await readFile(path.join(sourcePagesDirectory, sourcePageFiles[0]))
   );
+  await Promise.all(["homepage", "contactsection2"].map(async (pageKey) =>
+    writeFile(
+      path.join(temporarySitePagesDirectory, `${pageKey}.json`),
+      await readFile(path.join(sourceSitePagesDirectory, `${pageKey}.json`))
+    )
+  ));
   await Promise.all(
     ["tr", "en", "de", "ru"].map((locale) =>
       writeFile(
@@ -144,10 +153,10 @@ before(async () => {
   );
 
   const port = await getFreePort();
-  serverOrigin = `http://127.0.0.1:${port}`;
+  serverOrigin = `http://localhost:${port}`;
   serverProcess = spawn(
     process.execPath,
-    [nextBin, "dev", "--hostname", "127.0.0.1", "--port", String(port)],
+    [nextBin, "dev", "--hostname", "localhost", "--port", String(port)],
     {
       cwd: clientRoot,
       env: {
@@ -203,6 +212,16 @@ test("oturumsuz taslak bildirim özeti isteği 401 döner", async () => {
   assert.equal(response.status, 401);
 });
 
+test("oturumsuz Azura karşılama API isteği 401 döner", async () => {
+  const response = await request("/api/admin/azura/welcome/text", { origin: null });
+  assert.equal(response.status, 401);
+});
+
+test("oturumsuz Azura bölüm API isteği 401 döner", async () => {
+  const response = await request("/api/admin/azura/homepage/sections/essentials", { origin: null });
+  assert.equal(response.status, 401);
+});
+
 test("hatalı giriş cookie üretmeden 401 döner", async () => {
   const result = await login(adminUsername, "wrong-password");
   assert.equal(result.response.status, 401);
@@ -215,6 +234,52 @@ test("sistem yöneticisi admin rolüyle giriş yapar", async () => {
   assert.equal(result.payload.user.role, "admin");
   assert.ok(result.cookie.startsWith("lago_admin_session="));
   adminCookie = result.cookie;
+});
+
+test("panel girişi otel seçimine yönlenir ve seçim oturum ister", async () => {
+  const withoutSession = await request("/tr/panel/oteller", { origin: null });
+  assert.equal(withoutSession.status, 307);
+  assert.match(withoutSession.headers.get("location") || "", /\/tr\/panel\/login$/);
+
+  const panelRoot = await request("/tr/panel", { cookie: adminCookie, origin: null });
+  assert.equal(panelRoot.status, 200);
+  assert.match(await panelRoot.text(), /\/tr\/panel\/oteller/);
+
+  const hotelPicker = await request("/tr/panel/oteller", { cookie: adminCookie, origin: null });
+  assert.equal(hotelPicker.status, 200);
+  const azuraPage = await request("/tr/panel/azura/experience", { cookie: adminCookie, origin: null });
+  assert.equal(azuraPage.status, 200);
+  const welcomePage = await request("/tr/panel/azura/welcome", { cookie: adminCookie, origin: null });
+  assert.equal(welcomePage.status, 200);
+  const unifiedPage = await request("/tr/panel/azura/icerikler", { cookie: adminCookie, origin: null });
+  assert.equal(unifiedPage.status, 200);
+});
+
+test("Azura karşılama kaydı revision olmadan reddedilir", async () => {
+  const response = await request("/api/admin/azura/welcome/text", {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ welcomeText: {} }),
+  });
+  assert.equal(response.status, 400);
+});
+
+test("Azura bölüm kaydı bilinmeyen anahtar ve eksik revision ile reddedilir", async () => {
+  const unknown = await request("/api/admin/azura/homepage/sections/unknown", {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ section: {}, revision: "a".repeat(64) }),
+  });
+  assert.equal(unknown.status, 404);
+  const missingRevision = await request("/api/admin/azura/homepage/sections/essentials", {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ section: {} }),
+  });
+  assert.equal(missingRevision.status, 400);
 });
 
 test("kategorisiz galeri görseli Diğer kategorisine atomik olarak eklenir", async () => {

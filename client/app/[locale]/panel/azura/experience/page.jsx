@@ -39,7 +39,7 @@ function validateTextDraft(value) {
   return "";
 }
 
-export default function AzuraExperiencePage() {
+export default function AzuraExperiencePage({ embedded = false, activeLocale: selectedLocale, onDirtyChange }) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [experience, setExperience] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -60,7 +60,8 @@ export default function AzuraExperiencePage() {
   const [mediaError, setMediaError] = useState("");
   const [mediaSuccess, setMediaSuccess] = useState("");
   const [uploadingKey, setUploadingKey] = useState("");
-  const [activeLocale, setActiveLocale] = useState("tr");
+  const [localLocale, setLocalLocale] = useState("tr");
+  const activeLocale = selectedLocale || localLocale;
 
   useEffect(() => {
     let cancelled = false;
@@ -118,6 +119,9 @@ export default function AzuraExperiencePage() {
     JSON.stringify(experience) !== JSON.stringify(original);
   const textChanged = experienceText && originalText &&
     JSON.stringify(experienceText) !== JSON.stringify(originalText);
+  useEffect(() => {
+    onDirtyChange?.(Boolean(changed || textChanged));
+  }, [changed, textChanged, onDirtyChange]);
   const localeChanged = Object.fromEntries(locales.map(([locale]) => [locale,
     Boolean((experienceText && originalText &&
       JSON.stringify(experienceText[locale]) !== JSON.stringify(originalText[locale])) ||
@@ -264,7 +268,7 @@ export default function AzuraExperiencePage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 pb-10">
-      <header className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+      {!embedded && <header className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#507f78]">Azura Deluxe Hotel / Anasayfa</p>
         <h1 className="mt-2 text-2xl font-semibold text-stone-900 sm:text-3xl">Animasyonlu tanıtım alanı</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-500">
@@ -278,7 +282,7 @@ export default function AzuraExperiencePage() {
                 <button
                   key={locale}
                   type="button"
-                  onClick={() => setActiveLocale(locale)}
+                  onClick={() => setLocalLocale(locale)}
                   title={localeLabel}
                   aria-pressed={activeLocale === locale}
                   className={`relative rounded-lg px-3 py-2 text-xs font-semibold uppercase transition sm:px-4 ${activeLocale === locale ? "bg-[#2f423f] text-white shadow-sm" : "text-stone-600 hover:bg-white hover:text-[#2f423f]"}`}
@@ -291,7 +295,7 @@ export default function AzuraExperiencePage() {
           </div>
           <p className="text-xs text-stone-500">Görseller tüm dillerde ortak; alt açıklama ve yazılar seçili dil için düzenlenir.</p>
         </div>
-      </header>
+      </header>}
 
       {!canEdit && <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Bu alanı görüntüleyebilirsiniz; düzenleme yetkiniz yok.</p>}
 

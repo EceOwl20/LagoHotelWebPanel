@@ -4,9 +4,34 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### Azura anasayfa pilot bağlantısı
 
+Panel girişinden sonra `/[locale]/panel/oteller` ekranında Lago veya Azura seçilir.
+Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura şimdilik yalnızca
+`/[locale]/panel/azura/icerikler` altında anasayfa içeriklerini kullanır. Azura ekranında Lago içerik
+menüleri ve Lago taslak bildirimleri gösterilmez. Bu seçim erişim yetkisi
+değildir; kullanıcı rolleri ve API izin kontrolleri mevcut şekilde uygulanır.
+
+Azura "Sayfa İçerikleri" ekranı karşılama, animasyonlu tanıtım ve altı maddeli
+olanaklar bölümlerini tek anasayfa altında toplar. Bölümler ayrı revision'larla
+kaydedilir. Eski `/[locale]/panel/azura/welcome` ve
+`/[locale]/panel/azura/experience` pilot adresleri doğrulama süresince
+erişilebilir kalır.
+
 Lago panelindeki `/tr/panel/azura/experience` ekranı yalnızca Azura'nın iki
-tanıtım görselini, dört dilde alt metinlerini ve tanıtım yazılarını yönetir. Azura API adresi ve
-servis tokenı yalnızca Lago sunucusunun ortam değişkenlerinde tanımlanmalıdır:
+tanıtım görselini, dört dilde alt metinlerini ve tanıtım yazılarını yönetir.
+
+`/tr/panel/azura/welcome` ekranı videonun altındaki karşılama bölümünün dört dilde
+üst başlığını, ana başlığını, paragrafını ve düğme metnini ayrı olarak yönetir.
+Lago sunucusu mevcut `AZURA_EXPERIENCE_API_URL` adresinden Azura'nın
+`/api/azura/homepage/welcome/text` adresini türetir; ek ortam değişkeni gerekmez.
+Bu uç da revision/`If-Match` ile eski sekmenin kaydını `409` olarak reddeder.
+
+Olanaklar bölümü Lago'da `/api/admin/azura/homepage/sections/essentials`
+üzerinden Azura'nın aynı bölüm API'sine bağlanır. Servis URL'si mevcut
+`AZURA_EXPERIENCE_API_URL` değişkeninden türetilir. İzin listesinde şu an
+yalnızca `essentials` vardır; yazma dört dildeki 15 alanı ve revision'ı doğrular.
+
+Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
+değişkenlerinde tanımlanmalıdır:
 
 ```env
 AZURA_EXPERIENCE_API_URL=http://localhost:3000/api/azura/homepage/experience

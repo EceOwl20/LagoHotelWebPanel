@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import logo from "../../GeneralComponents/Header/Icons/Asset2.svg"
 import Image from "next/image";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiRefreshCw } from "react-icons/fi";
 import { FiTable } from "react-icons/fi";
 import { FiFile } from "react-icons/fi";
 import { FiLayers } from "react-icons/fi";
@@ -23,13 +23,18 @@ const navigationItems = [
   { href: "/panel/medya", label: "Medya Kutuphanesi", icon: FiImage },
   { href: "/panel/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/blog", label: "Blog", icon: FiPackage },
-  { href: "/panel/azura/experience", label: "Azura Tanıtım (Pilot)", icon: FiImage },
   { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
+];
+const azuraNavigationItems = [
+  { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
 ];
 
 export default function SideBar({ user }) {
   const router = useRouter();
   const params = useParams();
+  const pathname = usePathname();
+  const isAzura = pathname.includes("/panel/azura/");
+  const hotelName = isAzura ? "Azura Deluxe Hotel" : "Lago Hotel";
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
 
@@ -67,13 +72,17 @@ export default function SideBar({ user }) {
       <div className="space-y-8">
         <div className="space-y-2">
          <div className="flex flex-col gap-2">
-           <Image
-                          src={logo}
-                          alt="Logo"
-                          className="object-contain w-[62px] h-[46px] items-center justify-center"
-                        />
+           {isAzura ? (
+             <span className="flex h-[46px] w-[62px] items-center justify-center rounded-xl bg-[#356b70] text-2xl font-semibold text-white" aria-hidden="true">A</span>
+           ) : (
+             <Image
+               src={logo}
+               alt="Lago Hotel logosu"
+               className="h-[46px] w-[62px] object-contain"
+             />
+           )}
           <div className="text-xs uppercase tracking-[0.3em] text-stone-400">
-            Lago Panel
+            {hotelName}
           </div>
          </div>
           <div className="text-2xl font-semibold">Icerik Yonetimi</div>
@@ -83,14 +92,17 @@ export default function SideBar({ user }) {
         </div>
 
         <nav className="space-y-2">
-  {navigationItems.filter((item) => !item.adminOnly || user?.role === "admin").map((item) => {
+  {(isAzura ? azuraNavigationItems : navigationItems)
+    .filter((item) => !item.adminOnly || user?.role === "admin").map((item) => {
     const Icon = item.icon;
+    const selected = pathname.endsWith(item.href);
 
     return (
       <Link
         key={item.href}
         href={item.href}
-        className="group flex items-center gap-3 rounded-xl border border-stone-800 px-4 py-3 text-sm transition hover:border-stone-600 hover:bg-stone-900"
+        aria-current={selected ? "page" : undefined}
+        className={`group flex items-center gap-3 rounded-xl border px-4 py-3 text-sm transition ${selected ? "border-[#63978f] bg-[#2f423f] text-white" : "border-stone-800 hover:border-stone-600 hover:bg-stone-900"}`}
       >
         <Icon
           className="h-5 w-5 shrink-0 text-stone-400 transition group-hover:text-stone-100"
@@ -105,6 +117,12 @@ export default function SideBar({ user }) {
       </div>
 
       <div className="space-y-3">
+        <Link
+          href="/panel/oteller"
+          className="flex items-center gap-2 rounded-xl border border-stone-700 px-3 py-2.5 text-sm text-stone-200 transition hover:border-stone-500 hover:bg-stone-900"
+        >
+          <FiRefreshCw className="h-4 w-4" /> Otel değiştir
+        </Link>
         {logoutError ? (
           <p role="alert" className="text-xs leading-5 text-rose-200">
             {logoutError}
