@@ -2,6 +2,30 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Azura anasayfa pilot bağlantısı
+
+Lago panelindeki `/tr/panel/azura/experience` ekranı yalnızca Azura'nın iki
+tanıtım görselini, dört dilde alt metinlerini ve tanıtım yazılarını yönetir. Azura API adresi ve
+servis tokenı yalnızca Lago sunucusunun ortam değişkenlerinde tanımlanmalıdır:
+
+```env
+AZURA_EXPERIENCE_API_URL=http://localhost:3000/api/azura/homepage/experience
+AZURA_SERVICE_TOKEN=<Azura sunucusundaki servis tokenı ile aynı değer>
+```
+
+Yerel portu Azura sunucusunun gerçekten dinlediği porta göre ayarlayın. Metin API
+adresi bu URL'ye `/text` eklenerek otomatik türetilir; ayrı ortam değişkeni gerekmez.
+Canlı bağlantıda HTTPS API adresi kullanın. Servis tokenını `NEXT_PUBLIC_`
+değişkenine veya kaynak koduna koymayın. Görsel listesi ve yükleme API adresi
+bu URL'ye `/images` eklenerek otomatik türetilir. Lago paneli JPEG, PNG ve WebP
+görsellerini Azura'nın kalıcı uploads dizinine yükler (en fazla 8 MiB). Yükleme
+görseli yalnızca seçer; anasayfada yayınlamak için görsel alanını ayrıca kaydedin.
+Azura GET yanıtı `revision` (64 karakterlik küçük harf SHA-256 hex) döndürdüğünde
+panel bunu görsel ve metin alanları için ayrı saklar; kayıtta Azura'ya
+`If-Match: "<revision>"` gönderir. Eski API yanıtında `revision` yoksa pilot
+geçici olarak sürümsüz çalışmaya devam eder. Azura `409` döndürürse panel eski
+veriyle kaydetmez ve kullanıcıya değişikliklerini koruyarak yenilemesini söyler.
+
 First, run the development server:
 
 ```bash

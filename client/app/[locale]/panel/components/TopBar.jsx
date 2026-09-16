@@ -25,6 +25,7 @@ const pageLabels = [
   { match: "/panel/medya", section: "Medya", title: "Medya kütüphanesi" },
   { match: "/panel/galeri", section: "Medya", title: "Galeri" },
   { match: "/panel/blog", section: "İçerik", title: "Blog" },
+  { match: "/panel/azura/experience", section: "Azura Pilot", title: "Tanıtım görselleri" },
   { match: "/panel/kullanicilar", section: "Yetkilendirme", title: "Kullanıcılar" },
 ];
 

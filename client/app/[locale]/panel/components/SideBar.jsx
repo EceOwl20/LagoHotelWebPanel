@@ -23,6 +23,7 @@ const navigationItems = [
   { href: "/panel/medya", label: "Medya Kutuphanesi", icon: FiImage },
   { href: "/panel/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/blog", label: "Blog", icon: FiPackage },
+  { href: "/panel/azura/experience", label: "Azura Tanıtım (Pilot)", icon: FiImage },
   { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
 ];
 
