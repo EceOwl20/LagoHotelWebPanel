@@ -8,6 +8,7 @@ export const AZURA_CAROUSEL_KEYS = Object.freeze([
 export const AZURA_ACCOMMODATION_KEYS = Object.freeze(["deluxe", "fantasy", "family"]);
 export const AZURA_ACCOMMODATION_TEXT_FIELDS = Object.freeze({ subtitle: 200, title: 250, buttonText: 120 });
 export const AZURA_ACCOMMODATION_CARD_FIELDS = Object.freeze({ title: 250, description: 2000, area: 120, view: 120, alt: 300 });
+export const AZURA_BACKGROUND_TEXT_FIELDS = Object.freeze({ subtitle: 200, title: 250, text: 2000, buttonText: 120 });
 const IMAGE_PATH = /^\/uploads\/pages\/homepage\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i;
 export const AZURA_HOMEPAGE_SECTION_FIELDS = Object.freeze({
   essentials: Object.freeze({
@@ -48,11 +49,17 @@ function validLocalizedFields(value, fields) {
 }
 
 export function isSupportedAzuraHomepageSectionKey(sectionKey) {
-  return sectionKey === "carousel" || sectionKey === "accommodation" ||
+  return sectionKey === "carousel" || sectionKey === "accommodation" || sectionKey === "background" ||
     Object.hasOwn(AZURA_HOMEPAGE_SECTION_FIELDS, sectionKey);
 }
 
 export function isValidAzuraHomepageSection(sectionKey, section) {
+  if (sectionKey === "background") {
+    return exactKeys(section, ["image", "translations"]) &&
+      typeof section.image === "string" && IMAGE_PATH.test(section.image) &&
+      !section.image.includes("..") &&
+      validLocalizedFields(section.translations, AZURA_BACKGROUND_TEXT_FIELDS);
+  }
   if (sectionKey === "accommodation") {
     return exactKeys(section, ["translations", "cards"]) &&
       validLocalizedFields(section.translations, AZURA_ACCOMMODATION_TEXT_FIELDS) &&

@@ -227,6 +227,11 @@ test("oturumsuz Azura genel medya isteği 401 döner", async () => {
   assert.equal(response.status, 401);
 });
 
+test("oturumsuz Azura ortak iletişim isteği 401 döner", async () => {
+  const response = await request("/api/admin/azura/shared/contact/details", { origin: null });
+  assert.equal(response.status, 401);
+});
+
 test("hatalı giriş cookie üretmeden 401 döner", async () => {
   const result = await login(adminUsername, "wrong-password");
   assert.equal(result.response.status, 401);
@@ -285,6 +290,16 @@ test("Azura bölüm kaydı bilinmeyen anahtar ve eksik revision ile reddedilir",
     body: JSON.stringify({ section: {} }),
   });
   assert.equal(missingRevision.status, 400);
+});
+
+test("Azura ortak iletişim kaydı eksik revision ile reddedilir", async () => {
+  const response = await request("/api/admin/azura/shared/contact/details", {
+    method: "PUT",
+    cookie: adminCookie,
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ details: {} }),
+  });
+  assert.equal(response.status, 400);
 });
 
 test("kategorisiz galeri görseli Diğer kategorisine atomik olarak eklenir", async () => {

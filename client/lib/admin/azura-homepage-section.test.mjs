@@ -46,6 +46,15 @@ const accommodation = {
     }])),
   })),
 };
+const background = {
+  image: "/uploads/pages/homepage/background-green-and-blue.png",
+  translations: Object.fromEntries(["tr", "en", "de", "ru"].map((locale) => [locale, {
+    subtitle: `Tanıtım ${locale}`,
+    title: `Azura ${locale}`,
+    text: `Kıyı deneyimi ${locale}`,
+    buttonText: `Daha fazlası ${locale}`,
+  }])),
+};
 
 test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
   assert.equal(getAzuraHomepageSectionConnection("essentials", env).url,
@@ -54,6 +63,8 @@ test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
     "http://localhost:3001/api/azura/homepage/sections/carousel");
   assert.equal(getAzuraHomepageSectionConnection("accommodation", env).url,
     "http://localhost:3001/api/azura/homepage/sections/accommodation");
+  assert.equal(getAzuraHomepageSectionConnection("background", env).url,
+    "http://localhost:3001/api/azura/homepage/sections/background");
   assert.throws(() => getAzuraHomepageSectionConnection("../experience", env),
     (error) => error.status === 404);
   assert.throws(() => getAzuraHomepageSectionConnection("homepage", env),
@@ -62,6 +73,40 @@ test("yalnızca izin verilen anasayfa bölüm adresi türetilir", () => {
     ...env,
     AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience",
   }));
+});
+
+test("arka plan bölümü tek görsel ve dört dilde dört metin ister", () => {
+  assert.equal(isValidAzuraHomepageSection("background", background), true);
+  const altered = (update) => {
+    const value = structuredClone(background);
+    update(value);
+    return isValidAzuraHomepageSection("background", value);
+  };
+  assert.equal(altered((value) => { value.image = "/uploads/pages/homepage/../bad.png"; }), false);
+  assert.equal(altered((value) => { value.alt = "Unused"; }), false);
+  assert.equal(altered((value) => { delete value.translations.ru; }), false);
+  assert.equal(altered((value) => { delete value.translations.en.text; }), false);
+  assert.equal(altered((value) => { value.translations.tr.title = " "; }), false);
+  assert.equal(altered((value) => { value.translations.de.text = "x".repeat(2001); }), false);
+  assert.equal(altered((value) => { value.translations.ru.buttonText = "bad\ntext"; }), false);
+});
+
+test("arka plan PUT yalnızca section verisini ve If-Match revision'ı iletir", async () => {
+  let request;
+  const nextRevision = "d".repeat(64);
+  const result = await requestAzuraHomepageSection("PUT", "background", background, {
+    env,
+    revision,
+    fetchImpl: async (url, options) => {
+      request = { url, options };
+      return { ok: true, json: async () => ({ section: background, revision: nextRevision }) };
+    },
+  });
+  assert.deepEqual(result, { section: background, revision: nextRevision });
+  assert.equal(request.url, getAzuraHomepageSectionConnection("background", env).url);
+  assert.equal(request.options.headers.Authorization, "Bearer test-secret");
+  assert.equal(request.options.headers["If-Match"], `"${revision}"`);
+  assert.deepEqual(JSON.parse(request.options.body), { section: background });
 });
 
 test("oda kartları tam üç sabit kartı, görseli ve dört dil alanını ister", () => {
