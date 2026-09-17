@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { FiCheck, FiSave } from "react-icons/fi";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { FiCheck } from "react-icons/fi";
 import ObjectEditor from "../../components/ObjectEditor";
 import PageImagePicker from "../../sayfalar/components/PageImagePicker";
 import { usePanelPermission } from "../../PanelSessionContext";
@@ -20,7 +20,7 @@ const CARD_LABELS = {
   family: ["Aile odası", "/rooms/familyroom"],
 };
 
-export default function AzuraAccommodationEditor({ activeLocale, onDirtyChange }) {
+const AzuraAccommodationEditor = forwardRef(function AzuraAccommodationEditor({ activeLocale, onDirtyChange }, ref) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [section, setSection] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -141,12 +141,16 @@ export default function AzuraAccommodationEditor({ activeLocale, onDirtyChange }
   }
 
   async function save(event) {
-    event.preventDefault();
-    if (!canEdit || !changed || saving || uploadingKey) return;
+    event?.preventDefault();
+    if (!changed) return "skipped";
+    if (!canEdit || saving || uploadingKey) {
+      setError("Görsel yüklemesi veya başka bir kayıt sürüyor. İşlem bitince yeniden deneyin.");
+      return "failed";
+    }
     if (!isValidAzuraHomepageSection("accommodation", section)) {
       setError("Üç oda kartının görseli ve dört dildeki tüm metinleri geçerli olmalıdır.");
       setSuccess("");
-      return;
+      return "failed";
     }
     setSaving(true);
     setError("");
@@ -172,15 +176,19 @@ export default function AzuraAccommodationEditor({ activeLocale, onDirtyChange }
       setOriginal(checkData.section);
       setRevision(checkData.revision);
       setSuccess("Azura oda kartları kaydedildi. Anasayfada değişikliği kontrol edin.");
+      return "saved";
     } catch (cause) {
       setError(cause.message);
+      return "failed";
     } finally {
       setSaving(false);
     }
   }
 
+  useImperativeHandle(ref, () => ({ save }));
+
   return (
-    <form onSubmit={save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+    <form onSubmit={(event) => event.preventDefault()} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Anasayfa bölümü</p>
@@ -229,13 +237,10 @@ export default function AzuraAccommodationEditor({ activeLocale, onDirtyChange }
             </fieldset>;
           })}
         </div>
-        <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
-          <button type="submit" disabled={!canEdit || !changed || saving || Boolean(uploadingKey)} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400">
-            <FiSave className="h-4 w-4" />{saving ? "Kaydediliyor..." : "Üç oda kartını Azura’ya kaydet"}
-          </button>
-          {changed ? <p className="text-xs font-medium text-amber-700">Kaydedilmemiş oda kartı değişiklikleri var.</p> : null}
-        </div>
+        {changed ? <p className="text-xs font-medium text-amber-700">Kaydedilmemiş oda kartı değişiklikleri var.</p> : null}
       </> : null}
     </form>
   );
-}
+});
+
+export default AzuraAccommodationEditor;

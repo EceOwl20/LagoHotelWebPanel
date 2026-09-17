@@ -59,7 +59,7 @@ export async function postAzuraImage(request, scope) {
   }
 
   const rateLimit = consumeRateLimit({
-    key: `admin-upload:azura-homepage:${getClientIp(request)}`,
+    key: `admin-upload:azura-${scope}:${getClientIp(request)}`,
     limit: 10,
     windowMs: 60 * 1000,
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { FiCheck, FiSave } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
@@ -35,7 +35,7 @@ function validateDraft(value) {
   return "";
 }
 
-export default function AzuraWelcomePage({ embedded = false, activeLocale: selectedLocale, onDirtyChange }) {
+const AzuraWelcomePage = forwardRef(function AzuraWelcomePage({ embedded = false, activeLocale: selectedLocale, onDirtyChange }, ref) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [welcomeText, setWelcomeText] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -89,13 +89,14 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
   }
 
   async function save(event) {
-    event.preventDefault();
-    if (!canEdit || !changed || saving) return;
+    event?.preventDefault();
+    if (!changed) return "skipped";
+    if (!canEdit || saving) return "failed";
     const validationError = validateDraft(welcomeText);
     if (validationError || !isValidWelcomeText(welcomeText)) {
       setError(validationError || "Azura karşılama metinleri geçersiz.");
       setSuccess("");
-      return;
+      return "failed";
     }
     setSaving(true);
     setError("");
@@ -123,12 +124,16 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
       setOriginal(checkData.welcomeText);
       setRevision(checkData.revision);
       setSuccess("Karşılama metinleri kaydedildi. Azura anasayfasında değişikliği kontrol edin.");
+      return "saved";
     } catch (cause) {
       setError(cause.message);
+      return "failed";
     } finally {
       setSaving(false);
     }
   }
+
+  useImperativeHandle(ref, () => ({ save }));
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 pb-10">
@@ -160,7 +165,7 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
 
       {!canEdit && <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Bu alanı görüntüleyebilirsiniz; düzenleme yetkiniz yok.</p>}
 
-      <form onSubmit={save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+      <form onSubmit={embedded ? (event) => event.preventDefault() : save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Sayfa metinleri</p>
@@ -184,7 +189,7 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
               />
             </fieldset>
             <p className="text-xs text-stone-500">Paragrafta Enter ile satır sonu eklemeyin; Azura metin API’si bunu kabul etmez.</p>
-            <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
+            {!embedded && <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
               <button
                 type="submit"
                 disabled={!canEdit || !changed || saving}
@@ -194,10 +199,12 @@ export default function AzuraWelcomePage({ embedded = false, activeLocale: selec
                 {saving ? "Kaydediliyor..." : "Tüm dillerin metinlerini kaydet"}
               </button>
               {changed && <p className="text-xs font-medium text-amber-700">Kaydedilmemiş metin değişiklikleri var.</p>}
-            </div>
+            </div>}
           </>
         )}
       </form>
     </div>
   );
-}
+});
+
+export default AzuraWelcomePage;

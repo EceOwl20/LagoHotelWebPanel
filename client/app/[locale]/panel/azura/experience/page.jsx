@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { FiCheck, FiSave } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
@@ -41,7 +41,7 @@ function validateTextDraft(value) {
   return "";
 }
 
-export default function AzuraExperiencePage({ embedded = false, activeLocale: selectedLocale, onDirtyChange }) {
+const AzuraExperiencePage = forwardRef(function AzuraExperiencePage({ embedded = false, activeLocale: selectedLocale, onDirtyChange }, ref) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [experience, setExperience] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -165,7 +165,7 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
       if (!response.ok) throw new Error(data.error || "Azura görsel yüklemesi başarısız oldu.");
       setAvailableImages((current) => [data, ...current.filter((item) => item.image !== data.image)]);
       changeImage(key, data.image);
-      setMediaSuccess("Görsel Azura’ya yüklendi ve seçildi. Anasayfada kullanmak için aşağıdaki ‘Azura’ya kaydet’ düğmesine de basın.");
+      setMediaSuccess("Görsel Azura’ya yüklendi ve seçildi. Anasayfada kullanmak için kaydedin.");
       return data.image;
     } catch (cause) {
       setMediaError(cause.message);
@@ -199,12 +199,16 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
   }
 
   async function save(event) {
-    event.preventDefault();
-    if (!canEdit || !changed || saving || textSaving || uploadingKey) return;
+    event?.preventDefault();
+    if (!changed) return "skipped";
+    if (!canEdit || saving || textSaving || uploadingKey) {
+      setError("Görsel yüklemesi veya başka bir kayıt sürüyor. İşlem bitince yeniden deneyin.");
+      return "failed";
+    }
     if (!isValidExperience(experience)) {
       setError("Görsel yolu veya dört dilden birinin alt açıklaması geçersiz. Görsel yolu Azura uploads dizininde olmalı; alt açıklamalar boş olmamalıdır.");
       setSuccess("");
-      return;
+      return "failed";
     }
     setSaving(true);
     setError("");
@@ -222,21 +226,27 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
       setOriginal(data.experience);
       setRevision(data.revision ?? null);
       setSuccess("Azura tanıtım alanı kaydedildi. Azura anasayfasında değişikliği kontrol edin.");
+      return "saved";
     } catch (cause) {
       setError(cause.message);
+      return "failed";
     } finally {
       setSaving(false);
     }
   }
 
-  async function saveText(event) {
-    event.preventDefault();
-    if (!canEdit || !textChanged || textSaving || saving) return;
+  async function saveText(event, fromHomepageSave = false) {
+    event?.preventDefault();
+    if (!textChanged) return "skipped";
+    if (!canEdit || textSaving || (saving && !fromHomepageSave)) {
+      setTextError("Başka bir kayıt sürüyor. İşlem bitince yeniden deneyin.");
+      return "failed";
+    }
     const validationError = validateTextDraft(experienceText);
     if (validationError) {
       setTextSuccess("");
       setTextError(validationError);
-      return;
+      return "failed";
     }
     setTextSaving(true);
     setTextError("");
@@ -261,12 +271,16 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
       setOriginalText(checkData.experienceText);
       setTextRevision(checkData.revision ?? null);
       setTextSuccess("Azura tanıtım metinleri kaydedildi. Azura anasayfasında değişikliği kontrol edin.");
+      return "saved";
     } catch (cause) {
       setTextError(cause.message);
+      return "failed";
     } finally {
       setTextSaving(false);
     }
   }
+
+  useImperativeHandle(ref, () => ({ saveImages: save, saveText }));
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 pb-10">
@@ -301,12 +315,12 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
 
       {!canEdit && <p className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Bu alanı görüntüleyebilirsiniz; düzenleme yetkiniz yok.</p>}
 
-      <form onSubmit={save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+      <form onSubmit={embedded ? (event) => event.preventDefault() : save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Sayfa görselleri</p>
             <h2 className="mt-1 text-xl font-semibold text-stone-900">Görseller ve alt açıklamalar</h2>
-            <p className="mt-2 text-sm leading-6 text-stone-500">Azura medya kütüphanesinden seçin veya yeni bir görsel yükleyin. Seçimden sonra bu bölümü kaydedin.</p>
+            <p className="mt-2 text-sm leading-6 text-stone-500">Azura medya kütüphanesinden seçin veya yeni bir görsel yükleyin. Seçimden sonra anasayfayı kaydedin.</p>
           </div>
           {experience && <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${changed ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>
             {changed ? "Kaydedilmedi" : <><FiCheck className="h-3.5 w-3.5" /> Güncel</>}
@@ -365,7 +379,7 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
                 </section>
               ))}
             </div>
-            <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
+            {!embedded && <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
               <button
                 type="submit"
                 disabled={!canEdit || !changed || saving || textSaving || Boolean(uploadingKey)}
@@ -375,12 +389,12 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
                 {saving ? "Kaydediliyor..." : "Azura görsellerini kaydet"}
               </button>
               <p className="text-xs text-stone-500">Seçim ve alt açıklamalar dört dil için birlikte kaydedilir.</p>
-            </div>
+            </div>}
           </>
         )}
       </form>
 
-      <form onSubmit={saveText} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+      <form onSubmit={embedded ? (event) => event.preventDefault() : saveText} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Sayfa metinleri</p>
@@ -400,7 +414,7 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
               <ObjectEditor value={experienceText[activeLocale]} onChange={changeText} fieldLimits={textFieldLimits} />
             </fieldset>
             <p className="text-xs text-stone-500">Paragraflarda Enter ile satır sonu eklemeyin; Azura metin API’si bunu kabul etmez.</p>
-            <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
+            {!embedded && <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
               <button
                 type="submit"
                 disabled={!canEdit || !textChanged || saving || textSaving}
@@ -410,10 +424,12 @@ export default function AzuraExperiencePage({ embedded = false, activeLocale: se
                 {textSaving ? "Kaydediliyor..." : "Tüm dillerin metinlerini kaydet"}
               </button>
               {textChanged && <p className="text-xs font-medium text-amber-700">Kaydedilmemiş metin değişiklikleri var.</p>}
-            </div>
+            </div>}
           </>
         )}
       </form>
     </div>
   );
-}
+});
+
+export default AzuraExperiencePage;

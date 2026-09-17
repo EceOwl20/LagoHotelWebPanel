@@ -5,8 +5,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### Azura anasayfa pilot bağlantısı
 
 Panel girişinden sonra `/[locale]/panel/oteller` ekranında Lago veya Azura seçilir.
-Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura şimdilik yalnızca
-`/[locale]/panel/azura/icerikler` altında anasayfa içeriklerini kullanır. Azura ekranında Lago içerik
+Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura
+`/[locale]/panel/azura/icerikler` altında anasayfa, oda sayfası ve ortak iletişim içeriklerini kullanır. Azura ekranında Lago içerik
 menüleri ve Lago taslak bildirimleri gösterilmez. Bu seçim erişim yetkisi
 değildir; kullanıcı rolleri ve API izin kontrolleri mevcut şekilde uygulanır.
 
@@ -37,6 +37,21 @@ panelden düzenlenir. Lago'nun `/api/admin/azura/homepage/images` adresi Azura'n
 genel `/api/azura/homepage/images` adresine bağlanır. Eski experience medya
 adresi uyumluluk için çalışmaya devam eder. Yükleme görseli yalnızca seçer;
 yayınlamak için kaydırıcı bölümü ayrıca kaydedilmelidir.
+
+Her iki otelin **Sayfa İçerikleri → Odalar** formu aynı metin ve medya alan
+bileşenlerini kullanır. Lago'nun altı, Azura'nın üç sabit oda kartı gösterilir;
+otel verileri birbirinden ayrı kalır. Azura formu banner, giriş, üç kart ve
+parallax metinleri ile hero/kart/parallax görsellerini tek revision ile
+`/api/admin/azura/rooms/page-content` üzerinden kaydeder. Proxy, Azura'nın
+`GET/PUT /api/azura/rooms/page-content` adresine Bearer tokenı ve `If-Match`
+ile bağlanır. `409` durumunda taslak korunur. Görsel listeleme/yükleme
+`/api/admin/azura/rooms/images` üzerinden sürer; yükleme tek başına sayfayı
+yayınlamaz. Eski kart API'si Azura'da uyumluluk için kalır, yeni form onu
+kullanmaz. Lago mevcut yerel mesaj ve site-pages API'lerine, içerik düzenleme
+kilidiyle yazmaya devam eder. Metin ve medya iki ayrı yerel dosya olduğundan
+Lago kaydı kısmen başarılı olursa panel bunu bildirir ve kalan taslağı tutar.
+Azura bağlantı adresi mevcut `AZURA_EXPERIENCE_API_URL` kaynağından türetilir;
+ek Lago ortam değişkeni gerekmez.
 
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:

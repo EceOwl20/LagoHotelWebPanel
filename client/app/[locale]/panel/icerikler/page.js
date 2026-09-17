@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   FiAlertCircle,
   FiCheckCircle,
@@ -18,6 +18,7 @@ import { ContentEditLockProvider } from "./ContentEditLockContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
 import { ContentWorkspaceHeader, ContentWorkspaceNavigation, ContentWorkspaceToolbar } from "../components/ContentWorkspace";
+import LagoRoomsEditor from "./LagoRoomsEditor";
 
 function getNamespaceLabel(namespace) {
   if (namespaceLabels[namespace]) {
@@ -434,6 +435,14 @@ export default function PanelContentPage() {
   );
 
   const editVersionRef = useRef(0);
+  const roomsRef = useRef(null);
+  const markRoomsDirty = useCallback((dirty) => {
+    setHasUnsavedChanges(dirty);
+    if (dirty) {
+      setMessage("");
+      setError("");
+    }
+  }, []);
 
   useEffect(() => {
     const loadNamespaces = async () => {
@@ -574,6 +583,25 @@ const handleNamespaceSelect = (nextNamespace) => {
 const handleSave = async () => {
   if (saving || !selectedNamespace || !bundle || !editLock.editable) {
     return false;
+  }
+
+  if (selectedNamespace === "Accommodation") {
+    setSaving(true);
+    setError("");
+    setMessage("");
+    try {
+      const result = await roomsRef.current?.save();
+      if (result === "saved" || result === "skipped") {
+        setHasUnsavedChanges(false);
+        setMessageType("success");
+        setMessage("Lago oda sayfası kaydedildi.");
+        return true;
+      }
+      setError("Oda sayfası kaydedilemedi. Formun üzerindeki hata mesajını kontrol edin.");
+      return false;
+    } finally {
+      setSaving(false);
+    }
   }
 
   const namespaceBeingSaved = selectedNamespace;
@@ -767,19 +795,25 @@ const SelectedMediaEditor =
                   editable: editLock.editable,
                 }}
               >
-                <fieldset
-                  disabled={!editLock.editable}
-                  className="space-y-5 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
+                {selectedNamespace === "Accommodation" ? (
+                  <LagoRoomsEditor ref={roomsRef} activeLocale={activeLocale}
+                    lockToken={editLock.lockToken} editable={editLock.editable}
+                    onDirtyChange={markRoomsDirty} />
+                ) : (
+                  <fieldset
+                    disabled={!editLock.editable}
+                    className="space-y-5 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    <ObjectEditor value={activeValue} onChange={updateActiveLocaleValue} />
 
-                  {SelectedMediaEditor ? (
-                    <SelectedMediaEditor
-                      namespace={selectedNamespace}
-                      activeLocale={activeLocale}
-                    />
-                  ) : null}
-                </fieldset>
+                    {SelectedMediaEditor ? (
+                      <SelectedMediaEditor
+                        namespace={selectedNamespace}
+                        activeLocale={activeLocale}
+                      />
+                    ) : null}
+                  </fieldset>
+                )}
               </ContentEditLockProvider>
 
             </div>

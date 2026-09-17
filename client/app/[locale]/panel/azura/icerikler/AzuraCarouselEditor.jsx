@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { FiCheck, FiSave } from "react-icons/fi";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { FiCheck } from "react-icons/fi";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import {
@@ -21,7 +21,7 @@ const slideLabels = {
   kids: ["Çocuklar", "/kidsclub"],
 };
 
-export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
+const AzuraCarouselEditor = forwardRef(function AzuraCarouselEditor({ activeLocale, onDirtyChange }, ref) {
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [section, setSection] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -133,12 +133,16 @@ export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
   }
 
   async function save(event) {
-    event.preventDefault();
-    if (!canEdit || !changed || saving || uploadingKey) return;
+    event?.preventDefault();
+    if (!changed) return "skipped";
+    if (!canEdit || saving || uploadingKey) {
+      setError("Görsel yüklemesi veya başka bir kayıt sürüyor. İşlem bitince yeniden deneyin.");
+      return "failed";
+    }
     if (!isValidAzuraHomepageSection("carousel", section)) {
       setError("Beş kartın görsel yolu ve dört dilde başlık ile alt açıklaması dolu ve geçerli olmalıdır.");
       setSuccess("");
-      return;
+      return "failed";
     }
     setSaving(true);
     setError("");
@@ -165,15 +169,19 @@ export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
       setOriginal(checkData.section);
       setRevision(checkData.revision);
       setSuccess("Azura keşif kaydırıcısı kaydedildi. Anasayfada değişikliği kontrol edin.");
+      return "saved";
     } catch (cause) {
       setError(cause.message);
+      return "failed";
     } finally {
       setSaving(false);
     }
   }
 
+  useImperativeHandle(ref, () => ({ save }));
+
   return (
-    <form onSubmit={save} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
+    <form onSubmit={(event) => event.preventDefault()} noValidate className="space-y-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">Anasayfa bölümü</p>
@@ -224,14 +232,11 @@ export default function AzuraCarouselEditor({ activeLocale, onDirtyChange }) {
               );
             })}
           </div>
-          <div className="flex flex-wrap items-center gap-3 border-t border-stone-200 pt-5">
-            <button type="submit" disabled={!canEdit || !changed || saving || Boolean(uploadingKey)} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400">
-              <FiSave className="h-4 w-4" />{saving ? "Kaydediliyor..." : "Beş kartı Azura’ya kaydet"}
-            </button>
-            {changed && <p className="text-xs font-medium text-amber-700">Kaydedilmemiş kaydırıcı değişiklikleri var.</p>}
-          </div>
+          {changed && <p className="text-xs font-medium text-amber-700">Kaydedilmemiş kaydırıcı değişiklikleri var.</p>}
         </>
       )}
     </form>
   );
-}
+});
+
+export default AzuraCarouselEditor;

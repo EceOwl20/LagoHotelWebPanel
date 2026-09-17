@@ -146,17 +146,17 @@
     "experiences": "Deneyimler"
   },
   "Accommodation": {
-    "header": " Oda Türleri",
+    "header": " Oda Türleri lago",
     "buttonText1": "Superıor Oda",
-    "buttonText2": "Aile Odası",
+    "buttonText2": "Aile Odası lago",
     "buttonText3": " swım-up  Oda",
     "buttonText4": "Aile Swım-up Odası",
     "buttonText5": "Dubleks Aile Odası",
     "buttonText6": "Tıny Villa",
-    "buttonText7": "Engelli Odası",
+    "buttonText7": "Engelli Odası lago",
     "subtitle": "  Sizin ve Aileniz İçin Konforlu Bir Konaklama",
     "title": "Şık konaklama seçeneklerimizi keşfedin ve size en uygun ortamı bulun.",
-    "text": " Lago Hotel’de deniz veya kara manzaralı konforlu odalar sunuyoruz. Her ihtiyaca hitap eden şık Swim-up odalar ve geniş Aile Suitleri arasından seçim yapabilirsiniz. Modern tasarımı lüks konforla buluşturan Lago Hotel, unutulmaz bir tatil için doğru adres.",
+    "text": " Lago Hotel’de deniz veya kara manzaralı konforlu odalar sunuyoruz. Her ihtiyaca hitap eden şık Swim-up odalar ve geniş Aile Suitleri arasından seçim yapabilirsiniz. Modern tasarımı lüks konforla buluşturan Lago Hotel, unutulmaz bir tatil için doğru adres. lago",
     "checkin": "CHECK-IN: 14:00",
     "checkout": "CHECK-OUT: 12:00",
     "RoomSection1": {
@@ -168,7 +168,7 @@
     },
     "RoomSection2": {
       "title": "Aile Odası",
-      "subtitle": "  Ana binada bulunan Aile Odası (38-41 m²), ara kapılı iki yatak odası (bir çift kişilik yatak, iki tek kişilik yatak), ortak banyo ve balkona sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk.",
+      "subtitle": "  Ana binada bulunan Aile Odası (38-41 m²), ara kapılı iki yatak odası (bir çift kişilik yatak, iki tek kişilik yatak), ortak banyo ve balkona sahiptir. Maksimum kapasite: 4 yetişkin + 1 çocuk. lago",
       "m": "38-41 m²",
       "view": "Kara/Deniz Manzarası",
       "buttonText": "Keşfet"
@@ -176,12 +176,12 @@
     "RoomSection3": {
       "title": "Swim-up Oda",
       "subtitle": "  Ana binada bulunan bu şık oda tipi, 40-43 m² büyüklüğünde olup kara veya deniz manzarası sunmaktadır. Odalarda bir çift kişilik yatak, bir tek kişilik yatak ve konforlu bir oturma alanı veya sofa mevcuttur. Hem deniz hem de kara manzaralı odalar havuza erişim imkânı ve terasa sahipken, deniz manzaralı Swim-up odalar ayrıca özel bir havuz sunmaktadır.",
-      "m": "40-43 m²",
+      "m": "40-43 m² lago",
       "view": "Kara/Deniz Manzarası",
       "buttonText": "Keşfet"
     },
     "RoomSection4": {
-      "title": "Aile Swim-up Odası",
+      "title": "Aile Swim-up Odası lago",
       "subtitle": " Ana binamızda bulunan, kara veya deniz manzarasına sahip geniş Family Swim-Up odalarımız 50-55 m² büyüklüğündedir. Birbirine bağlantılı iki ayrı yatak odasına sahip olan bu odalarda; bir adet çift kişilik yatak (2 yetişkin), iki kişilik yatağa dönüşebilen lüks koltuk (2 yetişkin), bir banyo ve konforlu bir oturma alanı bulunmaktadır. Ayrıca odaların özel terasından havuza doğrudan erişim imkânıyla benzersiz bir swim-up deneyimi sunulmaktadır.",
       "m": "50-55 m²",
       "view": "Kara/Deniz Manzarası",
