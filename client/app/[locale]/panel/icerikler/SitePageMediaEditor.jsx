@@ -66,15 +66,27 @@ export default function SitePageMediaEditor({
   imageSections = [],
   collections,
   localizedAlt = false,
+  value,
+  onChange,
+  externalAssets,
+  externalUpload,
+  externalLoading = false,
+  externalError = "",
+  onMediaError,
+  disabled = false,
 }) {
   const editLock = useContentEditLockContext();
-  const [content, setContent] = useState(null);
+  const [localContent, setLocalContent] = useState(null);
+  const controlled = typeof onChange === "function";
+  const content = controlled ? value : localContent;
+  const setContent = controlled ? onChange : setLocalContent;
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    if (controlled) return undefined;
     let cancelled = false;
 
     const loadContent = async () => {
@@ -92,7 +104,7 @@ export default function SitePageMediaEditor({
         }
 
         if (!cancelled) {
-          setContent(payload.content);
+          setLocalContent(payload.content);
         }
       } catch (loadError) {
         if (!cancelled) {
@@ -110,7 +122,37 @@ export default function SitePageMediaEditor({
     return () => {
       cancelled = true;
     };
-  }, [pageKey, pageTitle]);
+  }, [pageKey, pageTitle, controlled]);
+
+  function pickerProps(currentPath, update) {
+    if (!Array.isArray(externalAssets)) return { disabled };
+    function select(nextPath, uploaded) {
+      const asset = uploaded || externalAssets.find((item) => item.image === nextPath);
+      if (!asset || !Number.isInteger(asset.width) || !Number.isInteger(asset.height)) {
+        onMediaError?.("Görselin ölçüleri bulunamadı; görsel listesini yeniden yükleyin.");
+        return false;
+      }
+      onMediaError?.("");
+      update(asset);
+      return true;
+    }
+    return {
+      disabled, externalAssets, externalLoading, externalError,
+      externalPreviewUrl: externalAssets.find((item) => item.image === currentPath)?.previewUrl,
+      uploadAccept: "image/jpeg,image/png,image/webp",
+      onChange: (nextPath) => select(nextPath),
+      externalUpload: externalUpload ? async (file) => {
+        const asset = await externalUpload(file);
+        return asset && select(asset.image, asset) ? asset.image : null;
+      } : undefined,
+    };
+  }
+
+  function singlePickerProps(field, record) {
+    return pickerProps(record.image, (asset) => updateValue(field.path, (current) => ({
+      ...current, image: asset.image, width: asset.width, height: asset.height,
+    })));
+  }
 
   const updateValue = (path, updater) => {
     setContent((current) => {
@@ -221,7 +263,7 @@ export default function SitePageMediaEditor({
     }
   };
 
-  if (loading) {
+  if (!controlled && loading) {
     return (
       <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 text-sm text-stone-500">
         {pageTitle} görselleri yükleniyor...
@@ -281,6 +323,7 @@ export default function SitePageMediaEditor({
                         onChange={(image) => updateSingleImage(field, image)}
                         allowClear={false}
                         uploadFolder={uploadFolder}
+                        {...singlePickerProps(field, value)}
                       />
                       {localizedAlt ? (
                         <AltField
@@ -309,6 +352,7 @@ export default function SitePageMediaEditor({
                 onChange={(image) => updateSingleImage(field, image)}
                 allowClear={false}
                 uploadFolder={uploadFolder}
+                {...singlePickerProps(field, value)}
               />
               {localizedAlt ? (
                 <AltField
@@ -346,7 +390,7 @@ export default function SitePageMediaEditor({
                   >
                     <PageImagePicker
                       label={`${field.itemLabel} ${index + 1}`}
-                      value={image.src}
+                      value={image[field.imageKey || "src"]}
                       onChange={(src) =>
                         updateCollectionImage(field, image.id, (current) => ({
                           ...current,
@@ -355,6 +399,11 @@ export default function SitePageMediaEditor({
                       }
                       allowClear={false}
                       uploadFolder={uploadFolder}
+                      {...pickerProps(image[field.imageKey || "src"], (asset) =>
+                        updateCollectionImage(field, image.id, (current) => ({
+                          ...current, [field.imageKey || "src"]: asset.image,
+                          width: asset.width, height: asset.height,
+                        })))}
                     />
                     {localizedAlt ? (
                       <AltField
@@ -374,7 +423,7 @@ export default function SitePageMediaEditor({
                         }
                       />
                     ) : null}
-                    <div className="flex flex-wrap gap-2">
+                    {!field.fixed ? <div className="flex flex-wrap gap-2">
                       <button
                         type="button"
                         onClick={() => moveCollectionImage(field, index, -1)}
@@ -398,7 +447,7 @@ export default function SitePageMediaEditor({
                       >
                         Görseli Çıkar
                       </button>
-                    </div>
+                    </div> : null}
                   </div>
                 ))}
               </div>
@@ -408,19 +457,19 @@ export default function SitePageMediaEditor({
               </p>
             )}
 
-            <PageImagePicker
+            {!field.fixed ? <PageImagePicker
               label={`${field.label} alanına yeni görsel ekle`}
               value=""
               onChange={(src) => addCollectionImage(field, src)}
               allowClear={false}
               uploadFolder={uploadFolder}
               hint="Medya Kütüphanesinden seçilen veya yeni yüklenen görsel listenin sonuna eklenir."
-            />
+            /> : null}
           </div>
         );
       })}
 
-      <div className="flex flex-wrap items-center gap-3">
+      {!controlled ? <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={handleSave}
@@ -431,7 +480,7 @@ export default function SitePageMediaEditor({
         </button>
         {message ? <span className="text-sm text-emerald-700">{message}</span> : null}
         {error ? <span className="text-sm text-rose-700">{error}</span> : null}
-      </div>
+      </div> : null}
     </section>
   );
 }

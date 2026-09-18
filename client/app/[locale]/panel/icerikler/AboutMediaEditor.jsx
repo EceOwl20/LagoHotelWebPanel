@@ -49,7 +49,14 @@ const collections = [
   },
 ];
 
-export default function AboutMediaEditor({ activeLocale }) {
+export default function AboutMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
+  const azura = hotel === "azura";
+  const sections = azura ? imageSections.filter((section) => section.id !== "discovery-carousel")
+    .map((section) => section.id === "mission-vision" ? {
+      ...section,
+      description: "Misyon ve vizyon metinlerinin görselleri.",
+      fields: section.fields.filter((field) => field.path.at(-1) !== "document"),
+    } : section) : imageSections;
   return (
     <SitePageMediaEditor
       pageKey="about"
@@ -57,9 +64,11 @@ export default function AboutMediaEditor({ activeLocale }) {
       activeLocale={activeLocale}
       uploadFolder="pages/about"
       singleImages={[]}
-      imageSections={imageSections}
-      collections={collections}
+      imageSections={sections}
+      collections={azura ? [{ path: ["moments"], label: "Otel fotoğrafları",
+        itemLabel: "Galeri görseli", imageKey: "image", fixed: true }] : collections}
       localizedAlt
+      {...editorProps}
     />
   );
 }

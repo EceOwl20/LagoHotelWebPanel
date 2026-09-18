@@ -66,6 +66,21 @@ seçimde gerçek genişlik ve yükseklik de medya verisine yazılır. Görsel y�
 tek başına sayfayı yayınlamaz. Bağlantı adresi mevcut
 `AZURA_EXPERIENCE_API_URL` kaynağından türetilir; ek ortam değişkeni gerekmez.
 
+Her iki otelin **Sayfa İçerikleri → Hakkımızda** ekranı `AboutPageFields` ve
+`AboutMediaEditor` formunu kullanır. Lago'nun belge görseli, keşif kartları ve
+galeri ekleme/çıkarma/sıralama işlevleri korunur. Azura'da yalnızca banner,
+konum, dört sabit galeri görseli ve misyon/vizyon gösterilir (toplam sekiz
+görsel). Üstteki kaydet düğmesi seçili otelin dört dilini ve medyasını kaydeder.
+Lago mevcut yerel About mesaj/medya API'lerini ve düzenleme kilidini kullanır;
+iki dosya ayrı kaydedildiğinden kısmi başarı hata mesajında belirtilir.
+Azura'nın `/api/admin/azura/about/page-content` proxy'si `GET/PUT
+/api/azura/about/page-content` adresine servis tokenı ve tırnaklı `If-Match`
+ile bağlanır. Başarılı kayıttan sonra GET ile yeniden okunur; çakışmada taslak
+korunur. `/api/admin/azura/about/images` görsel listesini ve tek dosyalı
+yüklemeyi iletir. Seçimde gerçek ölçüler de kaydedilir; yükleme tek başına
+sayfayı yayınlamaz. Ek ortam değişkeni gerekmez. İçerik gövdesi 128 KiB,
+görsel JPEG/PNG/WebP ve en fazla 8 MiB/16 milyon piksel ile sınırlıdır.
+
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:
 
