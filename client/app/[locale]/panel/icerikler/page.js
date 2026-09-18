@@ -19,6 +19,7 @@ import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
 import { ContentWorkspaceHeader, ContentWorkspaceNavigation, ContentWorkspaceToolbar } from "../components/ContentWorkspace";
 import LagoRoomsEditor from "./LagoRoomsEditor";
+import LagoRestaurantsEditor from "./LagoRestaurantsEditor";
 
 function getNamespaceLabel(namespace) {
   if (namespaceLabels[namespace]) {
@@ -308,10 +309,6 @@ const FamilySwimupRoomMediaEditor = dynamicEditor(
   () => import("./FamilySwimupRoomMediaEditor")
 );
 
-const RestaurantsMediaEditor = dynamicEditor(
-  () => import("./RestaurantsMediaEditor")
-);
-
 const SharedRoomMediaEditor = dynamicEditor(
   () => import("./SharedRoomMediaEditor")
 );
@@ -392,7 +389,6 @@ const MEDIA_EDITOR_REGISTRY = {
   Certificates: CertificateMediaEditor,
   Spa: SpaWellnessMediaEditor,
   Accommodation: RoomsMediaEditor,
-  Restaurants: RestaurantsMediaEditor,
   BarAndCafes: BarCafesMediaEditor,
   BeachPools: BeachPoolsMediaEditor,
   KidsClub: KidsClubMediaEditor,
@@ -436,7 +432,15 @@ export default function PanelContentPage() {
 
   const editVersionRef = useRef(0);
   const roomsRef = useRef(null);
+  const restaurantsRef = useRef(null);
   const markRoomsDirty = useCallback((dirty) => {
+    setHasUnsavedChanges(dirty);
+    if (dirty) {
+      setMessage("");
+      setError("");
+    }
+  }, []);
+  const markRestaurantsDirty = useCallback((dirty) => {
     setHasUnsavedChanges(dirty);
     if (dirty) {
       setMessage("");
@@ -598,6 +602,25 @@ const handleSave = async () => {
         return true;
       }
       setError("Oda sayfası kaydedilemedi. Formun üzerindeki hata mesajını kontrol edin.");
+      return false;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (selectedNamespace === "Restaurants") {
+    setSaving(true);
+    setError("");
+    setMessage("");
+    try {
+      const result = await restaurantsRef.current?.save();
+      if (result === "saved" || result === "skipped") {
+        setHasUnsavedChanges(false);
+        setMessageType("success");
+        setMessage("Lago restoran sayfası kaydedildi.");
+        return true;
+      }
+      setError("Restoran sayfası kaydedilemedi. Formun üzerindeki hata mesajını kontrol edin.");
       return false;
     } finally {
       setSaving(false);
@@ -799,6 +822,10 @@ const SelectedMediaEditor =
                   <LagoRoomsEditor ref={roomsRef} activeLocale={activeLocale}
                     lockToken={editLock.lockToken} editable={editLock.editable}
                     onDirtyChange={markRoomsDirty} />
+                ) : selectedNamespace === "Restaurants" ? (
+                  <LagoRestaurantsEditor ref={restaurantsRef} activeLocale={activeLocale}
+                    lockToken={editLock.lockToken} editable={editLock.editable}
+                    onDirtyChange={markRestaurantsDirty} />
                 ) : (
                   <fieldset
                     disabled={!editLock.editable}

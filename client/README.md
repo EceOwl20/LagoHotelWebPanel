@@ -2,11 +2,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-### Azura anasayfa pilot bağlantısı
+### İki otelli içerik paneli
 
 Panel girişinden sonra `/[locale]/panel/oteller` ekranında Lago veya Azura seçilir.
 Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura
-`/[locale]/panel/azura/icerikler` altında anasayfa, oda sayfası ve ortak iletişim içeriklerini kullanır. Azura ekranında Lago içerik
+`/[locale]/panel/azura/icerikler` altında anasayfa, oda, restoran ve ortak iletişim içeriklerini kullanır. Azura ekranında Lago içerik
 menüleri ve Lago taslak bildirimleri gösterilmez. Bu seçim erişim yetkisi
 değildir; kullanıcı rolleri ve API izin kontrolleri mevcut şekilde uygulanır.
 
@@ -52,6 +52,19 @@ kilidiyle yazmaya devam eder. Metin ve medya iki ayrı yerel dosya olduğundan
 Lago kaydı kısmen başarılı olursa panel bunu bildirir ve kalan taslağı tutar.
 Azura bağlantı adresi mevcut `AZURA_EXPERIENCE_API_URL` kaynağından türetilir;
 ek Lago ortam değişkeni gerekmez.
+
+Her iki otelin **Sayfa İçerikleri → Restoranlar** formu aynı metin ve görsel
+alan bileşenlerini kullanır. Lago'nun mevcut yerel `Restaurants` mesajları ve
+`restaurants` medya JSON'u içerik kilidiyle kaydedilir; iki yerel kayıt
+adımından biri başarısız olursa kalan taslak korunur. Azura'nın yedi bölümü,
+iki sabit üçlü kart grubu ve 13 görseli `/api/admin/azura/restaurants/page-content`
+üzerinden tek revision ile kaydedilir. Bu adres, Azura'nın
+`GET/PUT /api/azura/restaurants/page-content` API'sine Bearer tokenı ve
+`If-Match` ile bağlanır; `409` durumunda taslak kaybolmaz. Görseller
+`/api/admin/azura/restaurants/images` üzerinden listelenir ve yüklenir;
+seçimde gerçek genişlik ve yükseklik de medya verisine yazılır. Görsel yükleme
+tek başına sayfayı yayınlamaz. Bağlantı adresi mevcut
+`AZURA_EXPERIENCE_API_URL` kaynağından türetilir; ek ortam değişkeni gerekmez.
 
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:

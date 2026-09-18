@@ -25,6 +25,8 @@ test("görsel endpoint'i doğrulanan Azura adresinden türetilir", () => {
     "http://localhost:3000/api/azura/homepage/images");
   assert.equal(getAzuraImagesConnection(env, "rooms").url,
     "http://localhost:3000/api/azura/rooms/images");
+  assert.equal(getAzuraImagesConnection(env, "restaurants").url,
+    "http://localhost:3000/api/azura/restaurants/images");
   assert.throws(() => getAzuraImagesConnection(env, "unknown"));
   assert.throws(() => getAzuraImagesConnection({
     ...env, AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience",
@@ -53,6 +55,31 @@ test("Azura görsel yanıtı ve güvenli önizleme yolu doğrulanır", () => {
   const roomImage = { ...image, image: "/uploads/pages/rooms/deluxe-primary.png" };
   assert.equal(isValidAzuraImage(roomImage, false, "rooms"), true);
   assert.equal(isValidAzuraImage(image, false, "rooms"), false);
+  const restaurantImage = { ...image, image: "/uploads/pages/restaurants/hero-banner.jpg" };
+  assert.equal(isValidAzuraImage(restaurantImage, false, "restaurants"), true);
+  assert.equal(isValidAzuraImage(roomImage, false, "restaurants"), false);
+});
+
+test("restoran görselleri yalnızca restoran endpoint'inden listelenir ve yüklenir", async () => {
+  const restaurantImage = { ...image, image: "/uploads/pages/restaurants/hero-banner.jpg" };
+  const listed = { ...restaurantImage, modifiedAt: "2026-09-18T12:00:00.000Z" };
+  const images = await requestAzuraImages("GET", undefined, {
+    env, scope: "restaurants",
+    fetchImpl: async (url, options) => {
+      assert.equal(url, "http://localhost:3000/api/azura/restaurants/images");
+      assert.equal(options.headers.Authorization, "Bearer test-secret");
+      return { ok: true, json: async () => ({ images: [listed] }) };
+    },
+  });
+  assert.equal(images[0].previewUrl, `http://localhost:3000${restaurantImage.image}`);
+  await requestAzuraImages("POST", new File(["image"], "restaurant.jpg", { type: "image/jpeg" }), {
+    env, scope: "restaurants",
+    fetchImpl: async (url, options) => {
+      assert.equal(url, "http://localhost:3000/api/azura/restaurants/images");
+      assert.equal(options.headers.Authorization, "Bearer test-secret");
+      return { ok: true, json: async () => restaurantImage };
+    },
+  });
 });
 
 test("oda görsel listesi ve yüklemesi doğru Azura endpoint'ine gider", async () => {

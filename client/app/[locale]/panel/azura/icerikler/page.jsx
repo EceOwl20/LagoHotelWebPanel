@@ -10,6 +10,7 @@ import AzuraAccommodationEditor from "./AzuraAccommodationEditor";
 import AzuraBackgroundEditor from "./AzuraBackgroundEditor";
 import AzuraContactDetailsEditor from "./AzuraContactDetailsEditor";
 import AzuraRoomsEditor from "./AzuraRoomsEditor";
+import AzuraRestaurantsEditor from "./AzuraRestaurantsEditor";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { saveAzuraHomepageSteps } from "@/lib/admin/azura-homepage-save.mjs";
@@ -32,14 +33,17 @@ export default function AzuraContentsPage() {
   const essentialsRef = useRef(null);
   const backgroundRef = useRef(null);
   const roomsRef = useRef(null);
+  const restaurantsRef = useRef(null);
   const [selectedId, setSelectedId] = useState("homepage");
   const [activeLocale, setActiveLocale] = useState("tr");
   const [query, setQuery] = useState("");
   const [savingHomepage, setSavingHomepage] = useState(false);
   const [savingRooms, setSavingRooms] = useState(false);
+  const [savingRestaurants, setSavingRestaurants] = useState(false);
   const [saveNotice, setSaveNotice] = useState(null);
   const [roomsNotice, setRoomsNotice] = useState(null);
-  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, accommodation: false, essentials: false, background: false, contact: false, rooms: false });
+  const [restaurantsNotice, setRestaurantsNotice] = useState(null);
+  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, accommodation: false, essentials: false, background: false, contact: false, rooms: false, restaurants: false });
   const markWelcomeDirty = useCallback((dirty) => {
     if (dirty) setSaveNotice(null);
     setDirtySections((current) => current.welcome === dirty ? current : { ...current, welcome: dirty });
@@ -70,12 +74,33 @@ export default function AzuraContentsPage() {
     if (dirty) setRoomsNotice(null);
     setDirtySections((current) => current.rooms === dirty ? current : { ...current, rooms: dirty });
   }, []);
+  const markRestaurantsDirty = useCallback((dirty) => {
+    if (dirty) setRestaurantsNotice(null);
+    setDirtySections((current) => current.restaurants === dirty ? current : { ...current, restaurants: dirty });
+  }, []);
   const dirtyCount = Object.values(dirtySections).filter(Boolean).length;
-  const homepageDirty = Object.entries(dirtySections).some(([key, dirty]) => key !== "contact" && key !== "rooms" && dirty);
+  const homepageDirty = Object.entries(dirtySections).some(([key, dirty]) => !["contact", "rooms", "restaurants"].includes(key) && dirty);
   const normalizedQuery = query.trim().toLocaleLowerCase("tr");
   const showHomepage = "ana sayfa anasayfa homepage".includes(normalizedQuery);
   const showContact = "genel alanlar iletişim iletişim bilgileri contact".includes(normalizedQuery);
   const showRooms = "odalar oda sayfası accommodation rooms".includes(normalizedQuery);
+  const showRestaurants = "restoranlar restoran sayfası restaurants".includes(normalizedQuery);
+
+  async function saveRestaurants() {
+    if (!canEdit || !dirtySections.restaurants || savingRestaurants) return;
+    setSavingRestaurants(true);
+    setRestaurantsNotice(null);
+    try {
+      const result = await restaurantsRef.current?.save() ?? "failed";
+      if (result === "saved") {
+        setRestaurantsNotice({ kind: "success", text: "Azura restoran sayfası kaydedildi. Değişiklikleri Azura sitesinde kontrol edin." });
+      } else if (result === "failed") {
+        setRestaurantsNotice({ kind: "error", text: "Restoran sayfası kaydedilemedi. Aşağıdaki hata mesajını kontrol edin." });
+      }
+    } finally {
+      setSavingRestaurants(false);
+    }
+  }
 
   async function saveRooms() {
     if (!canEdit || !dirtySections.rooms || savingRooms) return;
@@ -133,8 +158,8 @@ export default function AzuraContentsPage() {
     <div className="mx-auto max-w-[1600px] space-y-6 pb-10">
       <ContentWorkspaceHeader
         eyebrow="Azura Deluxe Hotel / İçerik yönetimi"
-        description="Azura anasayfasını, oda sayfasını ve ortak iletişim bilgilerini dört dilde düzenleyin. Lago içerikleri değişmez."
-        count={3}
+        description="Azura anasayfasını, oda ve restoran sayfalarını ve ortak iletişim bilgilerini dört dilde düzenleyin. Lago içerikleri değişmez."
+        count={4}
         countLabel="içerik"
         dirty={dirtyCount > 0}
       />
@@ -157,6 +182,11 @@ export default function AzuraContentsPage() {
               label: "Odalar",
               items: [{ id: "rooms", label: "Oda sayfası", code: "Rooms", type: "Sayfa", main: true, dirty: dirtySections.rooms }],
             }] : []),
+            ...(showRestaurants ? [{
+              id: "restaurants",
+              label: "Yeme & içme",
+              items: [{ id: "restaurants", label: "Restoranlar", code: "Restaurants", type: "Sayfa", main: true, dirty: dirtySections.restaurants }],
+            }] : []),
           ]}
           selectedId={selectedId}
           onSelect={(id) => {
@@ -165,14 +195,14 @@ export default function AzuraContentsPage() {
           }}
           query={query}
           onQueryChange={setQuery}
-          footer="Bölüm değiştirmek taslakları silmez. Ana sayfa ve oda sayfası kendi üst düğmeleriyle; genel iletişim alanı kendi düğmesiyle kaydedilir."
+          footer="Bölüm değiştirmek taslakları silmez. Ana sayfa, oda ve restoran sayfaları kendi üst düğmeleriyle; genel iletişim alanı kendi düğmesiyle kaydedilir."
         />
 
         <div id="azura-content-editor" className="min-w-0 space-y-5">
           <ContentWorkspaceToolbar
-            title={selectedId === "contact" ? "İletişim bilgileri" : selectedId === "rooms" ? "Oda sayfası" : "Ana sayfa"}
-            code={selectedId === "contact" ? "Azura / ContactSection" : selectedId === "rooms" ? "Azura / Rooms" : "Azura / HomePage"}
-            dirty={selectedId === "contact" ? dirtySections.contact : selectedId === "rooms" ? dirtySections.rooms : homepageDirty}
+            title={selectedId === "contact" ? "İletişim bilgileri" : selectedId === "rooms" ? "Oda sayfası" : selectedId === "restaurants" ? "Restoranlar" : "Ana sayfa"}
+            code={selectedId === "contact" ? "Azura / ContactSection" : selectedId === "rooms" ? "Azura / Rooms" : selectedId === "restaurants" ? "Azura / Restaurants" : "Azura / HomePage"}
+            dirty={selectedId === "contact" ? dirtySections.contact : selectedId === "rooms" ? dirtySections.rooms : selectedId === "restaurants" ? dirtySections.restaurants : homepageDirty}
             locales={locales.map(([locale]) => locale)}
             localeLabels={localeLabels}
             activeLocale={activeLocale}
@@ -191,12 +221,20 @@ export default function AzuraContentsPage() {
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400"
             >
               <FiSave className="h-4 w-4" />{savingRooms ? "Kaydediliyor..." : "Oda sayfasını kaydet"}
+            </button> : selectedId === "restaurants" ? <button
+              type="button"
+              onClick={saveRestaurants}
+              disabled={!canEdit || !dirtySections.restaurants || savingRestaurants}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3c5551] disabled:cursor-not-allowed disabled:bg-stone-200 disabled:text-stone-400"
+            >
+              <FiSave className="h-4 w-4" />{savingRestaurants ? "Kaydediliyor..." : "Restoranları kaydet"}
             </button> : null}
           >
-            <p className="mt-3 text-xs leading-5 text-stone-500">{selectedId === "contact" ? "İletişim verisi anasayfa içeriğinden ayrı saklanır. Şimdilik anasayfadaki ContactSection bileşenini yönetir." : selectedId === "rooms" ? "Üstteki düğme banner, giriş, üç oda kartı ve parallax alanlarını dört dil için birlikte kaydeder. Lago’nun altı kartı değişmez." : "Üstteki düğme değişen alanları sırayla kaydeder ve dört dili birlikte doğrular. Azura API’leri ayrı olduğu için bu işlem tek parça değildir."}</p>
+            <p className="mt-3 text-xs leading-5 text-stone-500">{selectedId === "contact" ? "İletişim verisi anasayfa içeriğinden ayrı saklanır. Şimdilik anasayfadaki ContactSection bileşenini yönetir." : selectedId === "rooms" ? "Üstteki düğme banner, giriş, üç oda kartı ve parallax alanlarını dört dil için birlikte kaydeder. Lago’nun altı kartı değişmez." : selectedId === "restaurants" ? "Üstteki düğme restoran sayfasının dört dildeki metinlerini ve 13 görselini birlikte kaydeder. Lago içerikleri değişmez." : "Üstteki düğme değişen alanları sırayla kaydeder ve dört dili birlikte doğrular. Azura API’leri ayrı olduğu için bu işlem tek parça değildir."}</p>
           </ContentWorkspaceToolbar>
           {selectedId === "homepage" && saveNotice ? <p role={saveNotice.kind === "error" ? "alert" : "status"} className={`rounded-xl border p-4 text-sm ${saveNotice.kind === "error" ? "border-rose-200 bg-rose-50 text-rose-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{saveNotice.text}</p> : null}
           {selectedId === "rooms" && roomsNotice ? <p role={roomsNotice.kind === "error" ? "alert" : "status"} className={`rounded-xl border p-4 text-sm ${roomsNotice.kind === "error" ? "border-rose-200 bg-rose-50 text-rose-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{roomsNotice.text}</p> : null}
+          {selectedId === "restaurants" && restaurantsNotice ? <p role={restaurantsNotice.kind === "error" ? "alert" : "status"} className={`rounded-xl border p-4 text-sm ${restaurantsNotice.kind === "error" ? "border-rose-200 bg-rose-50 text-rose-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}>{restaurantsNotice.text}</p> : null}
           <div inert={savingHomepage} aria-busy={savingHomepage} className={selectedId === "homepage" ? "space-y-5" : "hidden"}>
           <section id="azura-homepage-welcome" aria-label="Karşılama" className="scroll-mt-32">
             <AzuraWelcomePage ref={welcomeRef} embedded activeLocale={activeLocale} onDirtyChange={markWelcomeDirty} />
@@ -219,6 +257,9 @@ export default function AzuraContentsPage() {
           </div>
           <section aria-label="Azura oda sayfası" inert={savingRooms} aria-busy={savingRooms} className={selectedId === "rooms" ? "" : "hidden"}>
             <AzuraRoomsEditor ref={roomsRef} activeLocale={activeLocale} onDirtyChange={markRoomsDirty} />
+          </section>
+          <section aria-label="Azura restoran sayfası" inert={savingRestaurants} aria-busy={savingRestaurants} className={selectedId === "restaurants" ? "" : "hidden"}>
+            <AzuraRestaurantsEditor ref={restaurantsRef} activeLocale={activeLocale} onDirtyChange={markRestaurantsDirty} />
           </section>
           <section aria-label="Genel iletişim bilgileri" className={selectedId === "contact" ? "" : "hidden"}>
             <AzuraContactDetailsEditor activeLocale={activeLocale} onDirtyChange={markContactDirty} />
