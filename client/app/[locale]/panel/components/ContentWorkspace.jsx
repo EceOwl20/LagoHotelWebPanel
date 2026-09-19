@@ -20,9 +20,9 @@ const groupVisuals = {
   general: { icon: FiSettings, iconClass: "bg-[#edf5f3] text-[#507f78]", itemIconClass: "bg-[#dcece9]/80 text-[#507f78]", headerClass: "bg-[#edf5f3]/60", borderClass: "border-[#63978f]/20", accentClass: "bg-[#63978f]" },
   home: { icon: FiHome, iconClass: "bg-amber-100 text-amber-700", itemIconClass: "bg-amber-100/80 text-amber-700", headerClass: "bg-amber-50/60", borderClass: "border-amber-200/70", accentClass: "bg-amber-400" },
   rooms: { icon: FiGrid, iconClass: "bg-sky-100 text-sky-700", itemIconClass: "bg-sky-100/80 text-sky-700", headerClass: "bg-sky-50/60", borderClass: "border-sky-200/70", accentClass: "bg-sky-400" },
-  food: { icon: FiCoffee, iconClass: "bg-orange-100 text-orange-700", itemIconClass: "bg-orange-100/80 text-orange-700", headerClass: "bg-orange-50/60", borderClass: "border-orange-200/70", accentClass: "bg-orange-400" },
+  food: { icon: FiCoffee, iconClass: "bg-orange-100 text-orange-700", itemIconClass: "bg-orange-100/80 text-orange-700", headerClass: "bg-orange-50/60", borderClass: "border-orange-200/70", accentClass: "bg-orange-500" },
   pages: { icon: FiCompass, iconClass: "bg-violet-100 text-violet-700", itemIconClass: "bg-violet-100/80 text-violet-700", headerClass: "bg-violet-50/60", borderClass: "border-violet-200/70", accentClass: "bg-violet-400" },
-  other: { icon: FiLayers, iconClass: "bg-green-100 text-green-700", itemIconClass: "bg-violet-100/80 text-green-700", headerClass: "bg-green-50/60", borderClass: "border-green-200/70", accentClass: "bg-green-600" },
+  other: { icon: FiLayers, iconClass: "bg-stone-100 text-stone-700", itemIconClass: "bg-stone-100/80 text-stone-700", headerClass: "bg-stone-50/60", borderClass: "border-stone-200/70", accentClass: "bg-stone-600" },
 };
 
 export function ContentWorkspaceHeader({ eyebrow = "İçerik yönetimi / Sayfa içerikleri", title = "İçerik düzenleyici", description, count, countLabel = "içerik grubu", loading = false, dirty = false }) {

@@ -211,7 +211,7 @@ export default function AzuraContentsPage() {
               items: [{ id: "rooms", label: "Oda sayfası", code: "Rooms", type: "Sayfa", main: true, dirty: dirtySections.rooms }],
             }] : []),
             ...(showSpa ? [{
-              id: "spa", label: "Spa & Wellness",
+              id: "pages", label: "Spa & Wellness",
               items: [{ id: "spa", label: "Spa & Wellness", code: "Spa", type: "Sayfa", main: true, dirty: dirtySections.spa }],
             }] : []),
             ...(showAbout ? [{
@@ -219,7 +219,7 @@ export default function AzuraContentsPage() {
               items: [{ id: "about", label: "Hakkımızda", code: "About", type: "Sayfa", main: true, dirty: dirtySections.about }],
             }] : []),
             ...(showRestaurants ? [{
-              id: "restaurants",
+              id: "food",
               label: "Yeme & içme",
               items: [{ id: "restaurants", label: "Restoranlar", code: "Restaurants", type: "Sayfa", main: true, dirty: dirtySections.restaurants }],
             }] : []),
