@@ -81,6 +81,21 @@ yüklemeyi iletir. Seçimde gerçek ölçüler de kaydedilir; yükleme tek baş�
 sayfayı yayınlamaz. Ek ortam değişkeni gerekmez. İçerik gövdesi 128 KiB,
 görsel JPEG/PNG/WebP ve en fazla 8 MiB/16 milyon piksel ile sınırlıdır.
 
+Her iki otelin **Sayfa İçerikleri → Spa & Wellness** ekranı `SpaPageFields`
+ve mevcut `SpaWellnessMediaEditor` formunu kullanır. Lago'nun `Spa` mesajları,
+`spawellness` medyası ve koleksiyon ekleme/çıkarma/sıralama davranışı korunur.
+Azura'da beş sabit galeri, dört sabit masaj kartı ve beş tekil görsel alanı
+vardır. Masaj başlıkları ve görselleri aynı sabit kimlikle eşleşir. Üstteki
+tek kaydet düğmesi dört dili ve medyayı kaydeder. Lago iki yerel API'yi
+düzenleme kilidiyle kullanır; kısmi kayıt halinde kalan taslak korunur.
+Azura `/api/admin/azura/spawellness/page-content` üzerinden kendi
+`GET/PUT /api/azura/spawellness/page-content` API'sine bağlanır; sunucuda
+Bearer tokenı ve tırnaklı `If-Match` eklenir. Kayıt sonrası GET ile doğrulama
+yapılır, `409` durumunda taslak tutulur. Görsel listeleme ve yükleme
+`/api/admin/azura/spawellness/images` üzerinden yapılır; seçimde gerçek
+ölçüler kaydedilir. İçerik sınırı 128 KiB, görsel sınırı JPEG/PNG/WebP için
+8 MiB ve 16 milyon pikseldir. Mevcut Azura ortam değişkenleri kullanılır.
+
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:
 

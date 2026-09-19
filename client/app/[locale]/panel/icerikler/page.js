@@ -21,6 +21,7 @@ import { ContentWorkspaceHeader, ContentWorkspaceNavigation, ContentWorkspaceToo
 import LagoRoomsEditor from "./LagoRoomsEditor";
 import LagoRestaurantsEditor from "./LagoRestaurantsEditor";
 import LagoAboutEditor from "./LagoAboutEditor";
+import LagoSpaEditor from "./LagoSpaEditor";
 
 function getNamespaceLabel(namespace) {
   if (namespaceLabels[namespace]) {
@@ -435,6 +436,7 @@ export default function PanelContentPage() {
   const roomsRef = useRef(null);
   const restaurantsRef = useRef(null);
   const aboutRef = useRef(null);
+  const spaRef = useRef(null);
   const markRoomsDirty = useCallback((dirty) => {
     setHasUnsavedChanges(dirty);
     if (dirty) {
@@ -608,6 +610,24 @@ const handleSave = async () => {
     } finally {
       setSaving(false);
     }
+  }
+
+  if (selectedNamespace === "Spa") {
+    setSaving(true); setError(""); setMessage("");
+    try {
+      const result = await spaRef.current?.save();
+      if (result === "pending") {
+        setMessage("İlk değişiklikler kaydedildi; yeni değişiklikler kaydedilmeyi bekliyor.");
+        return false;
+      }
+      if (result === "saved" || result === "skipped") {
+        setHasUnsavedChanges(false); setMessageType("success");
+        setMessage("Lago Spa & Wellness sayfası kaydedildi.");
+        return true;
+      }
+      setError("Spa & Wellness sayfası kaydedilemedi. Formun üzerindeki hata mesajını kontrol edin.");
+      return false;
+    } finally { setSaving(false); }
   }
 
   if (selectedNamespace === "About") {
@@ -842,6 +862,10 @@ const SelectedMediaEditor =
                   <LagoRoomsEditor ref={roomsRef} activeLocale={activeLocale}
                     lockToken={editLock.lockToken} editable={editLock.editable}
                     onDirtyChange={markRoomsDirty} />
+                ) : selectedNamespace === "Spa" ? (
+                  <LagoSpaEditor ref={spaRef} activeLocale={activeLocale}
+                    lockToken={editLock.lockToken} editable={editLock.editable}
+                    onDirtyChange={markRestaurantsDirty} />
                 ) : selectedNamespace === "About" ? (
                   <LagoAboutEditor ref={aboutRef} activeLocale={activeLocale}
                     lockToken={editLock.lockToken} editable={editLock.editable}

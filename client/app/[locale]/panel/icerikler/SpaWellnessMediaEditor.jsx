@@ -23,7 +23,7 @@ const collections = [
   },
 ];
 
-export default function SpaWellnessMediaEditor({ activeLocale }) {
+export default function SpaWellnessMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
       pageKey="spawellness"
@@ -31,8 +31,11 @@ export default function SpaWellnessMediaEditor({ activeLocale }) {
       activeLocale={activeLocale}
       uploadFolder="pages/spawellness"
       singleImages={singleImages}
-      collections={collections}
+      collections={hotel === "azura" ? collections.map((collection) => ({
+        ...collection, imageKey: "image", fixed: true,
+      })) : collections}
       localizedAlt
+      {...editorProps}
     />
   );
 }
