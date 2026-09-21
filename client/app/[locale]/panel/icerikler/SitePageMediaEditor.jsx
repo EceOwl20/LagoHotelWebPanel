@@ -73,6 +73,7 @@ export default function SitePageMediaEditor({
   externalLoading = false,
   externalError = "",
   onMediaError,
+  externalAssetFilter,
   disabled = false,
 }) {
   const editLock = useContentEditLockContext();
@@ -124,11 +125,14 @@ export default function SitePageMediaEditor({
     };
   }, [pageKey, pageTitle, controlled]);
 
-  function pickerProps(currentPath, update) {
+  function pickerProps(currentPath, update, field) {
     if (!Array.isArray(externalAssets)) return { disabled };
+    const availableAssets = externalAssetFilter
+      ? externalAssets.filter((asset) => externalAssetFilter(field, asset)) : externalAssets;
     function select(nextPath, uploaded) {
-      const asset = uploaded || externalAssets.find((item) => item.image === nextPath);
-      if (!asset || !Number.isInteger(asset.width) || !Number.isInteger(asset.height)) {
+      const asset = uploaded || availableAssets.find((item) => item.image === nextPath);
+      if (!asset || (externalAssetFilter && !externalAssetFilter(field, asset)) ||
+          !Number.isInteger(asset.width) || !Number.isInteger(asset.height)) {
         onMediaError?.("Görselin ölçüleri bulunamadı; görsel listesini yeniden yükleyin.");
         return false;
       }
@@ -137,8 +141,8 @@ export default function SitePageMediaEditor({
       return true;
     }
     return {
-      disabled, externalAssets, externalLoading, externalError,
-      externalPreviewUrl: externalAssets.find((item) => item.image === currentPath)?.previewUrl,
+      disabled, externalAssets: availableAssets, externalLoading, externalError,
+      externalPreviewUrl: availableAssets.find((item) => item.image === currentPath)?.previewUrl,
       uploadAccept: "image/jpeg,image/png,image/webp",
       onChange: (nextPath) => select(nextPath),
       externalUpload: externalUpload ? async (file) => {
@@ -151,7 +155,7 @@ export default function SitePageMediaEditor({
   function singlePickerProps(field, record) {
     return pickerProps(record.image, (asset) => updateValue(field.path, (current) => ({
       ...current, image: asset.image, width: asset.width, height: asset.height,
-    })));
+    })), field);
   }
 
   const updateValue = (path, updater) => {
@@ -403,7 +407,7 @@ export default function SitePageMediaEditor({
                         updateCollectionImage(field, image.id, (current) => ({
                           ...current, [field.imageKey || "src"]: asset.image,
                           width: asset.width, height: asset.height,
-                        })))}
+                        })), field)}
                     />
                     {localizedAlt ? (
                       <AltField

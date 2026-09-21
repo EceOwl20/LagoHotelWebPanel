@@ -96,6 +96,32 @@ yapılır, `409` durumunda taslak tutulur. Görsel listeleme ve yükleme
 ölçüler kaydedilir. İçerik sınırı 128 KiB, görsel sınırı JPEG/PNG/WebP için
 8 MiB ve 16 milyon pikseldir. Mevcut Azura ortam değişkenleri kullanılır.
 
+**Oda detayları** `RoomDetailPageFields` formunu ve oda yapılandırmalarını
+paylaşır. Lago'nun mevcut yedi oda detayının metinleri ve oda medyası üstteki
+tek düğmeyle, mevcut düzenleme kilidi üzerinden kaydedilir. Parallax ve üç
+öneri görseli mevcut `RoomsParallax` / Ortak Oda Alanları ekranında kalır;
+Lago'nun sabit tur URL'leri değiştirilmez. Her oda yerel mesaj ve medya API'sini
+kullanır; kısmi kayıtta hata gösterilir ve kalan taslak korunur.
+
+Azura'da ilk etkin oda `deluxe` olup Odalar → Deluxe Oda altında bulunur.
+`/api/admin/azura/room-details/[roomKey]/page-content` yalnızca izin listesindeki
+odaları kabul eder; şu anda Family/Fantasy için yönetim bağlantısı açılmaz.
+GET `{bundle:{translations,tours},media,revision}` döndürür. Panel PUT'ta
+revision'ı gönderir; sunucu bunu tırnaklı `If-Match` başlığına taşır ve yalnızca
+`{bundle,media}` gövdesini Azura'ya iletir. Dört dil, dokuz galeri görseli,
+üç Kuula turu ve Family → Fantasy sırasındaki iki öneri korunur. Background
+alanı vardır; parallax alanı yoktur. Kayıt GET ile yeniden doğrulanır;
+`409` taslağı silmez. Token yalnızca Lago sunucusunda kullanılır.
+
+`/api/admin/azura/room-details/[roomKey]/images` listeleme/yükleme proxy'sidir.
+Deluxe yüklemeleri `/uploads/pages/deluxeroom/` altında yapılır. Listelenen
+`/uploads/pages/room-options/` görselleri yalnızca öneri alanlarında seçilebilir;
+kapak, galeri ve background seçicilerinde gösterilmez. Ortak dizine yükleme
+yanıtı reddedilir. Yeni yükleme, içerik kaydedilene kadar sayfayı değiştirmez.
+İçerik 128 KiB, düz metinler 4000, alt metinler 300, tur URL'leri 1500 karakter;
+JPEG/PNG/WebP görseller 8 MiB ve 16 milyon piksel ile sınırlandırılır.
+Mevcut Azura ortam değişkenleri kullanılır, ek değişken gerekmez.
+
 Azura API adresi ve servis tokenı yalnızca Lago sunucusunun ortam
 değişkenlerinde tanımlanmalıdır:
 

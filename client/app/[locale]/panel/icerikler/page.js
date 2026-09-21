@@ -22,6 +22,8 @@ import LagoRoomsEditor from "./LagoRoomsEditor";
 import LagoRestaurantsEditor from "./LagoRestaurantsEditor";
 import LagoAboutEditor from "./LagoAboutEditor";
 import LagoSpaEditor from "./LagoSpaEditor";
+import LagoRoomDetailEditor from "./LagoRoomDetailEditor";
+import { LAGO_ROOM_DETAIL_CONFIGS } from "@/lib/admin/room-detail-model.mjs";
 
 function getNamespaceLabel(namespace) {
   if (namespaceLabels[namespace]) {
@@ -437,6 +439,8 @@ export default function PanelContentPage() {
   const restaurantsRef = useRef(null);
   const aboutRef = useRef(null);
   const spaRef = useRef(null);
+  const roomDetailRef = useRef(null);
+  const roomDetailConfig = Object.hasOwn(LAGO_ROOM_DETAIL_CONFIGS, selectedNamespace) ? LAGO_ROOM_DETAIL_CONFIGS[selectedNamespace] : null;
   const markRoomsDirty = useCallback((dirty) => {
     setHasUnsavedChanges(dirty);
     if (dirty) {
@@ -610,6 +614,24 @@ const handleSave = async () => {
     } finally {
       setSaving(false);
     }
+  }
+
+  if (roomDetailConfig) {
+    setSaving(true); setError(""); setMessage("");
+    try {
+      const result = await roomDetailRef.current?.save();
+      if (result === "pending") {
+        setMessage("İlk değişiklikler kaydedildi; yeni değişiklikler kaydedilmeyi bekliyor.");
+        return false;
+      }
+      if (result === "saved" || result === "skipped") {
+        setHasUnsavedChanges(false); setMessageType("success");
+        setMessage("Lago oda detayı sayfası kaydedildi.");
+        return true;
+      }
+      setError("oda detayı sayfası kaydedilemedi. Formun üzerindeki hata mesajını kontrol edin.");
+      return false;
+    } finally { setSaving(false); }
   }
 
   if (selectedNamespace === "Spa") {
@@ -862,6 +884,10 @@ const SelectedMediaEditor =
                   <LagoRoomsEditor ref={roomsRef} activeLocale={activeLocale}
                     lockToken={editLock.lockToken} editable={editLock.editable}
                     onDirtyChange={markRoomsDirty} />
+                ) : roomDetailConfig ? (
+                  <LagoRoomDetailEditor key={selectedNamespace} ref={roomDetailRef} config={roomDetailConfig} activeLocale={activeLocale}
+                    lockToken={editLock.lockToken} editable={editLock.editable}
+                    onDirtyChange={markRestaurantsDirty} />
                 ) : selectedNamespace === "Spa" ? (
                   <LagoSpaEditor ref={spaRef} activeLocale={activeLocale}
                     lockToken={editLock.lockToken} editable={editLock.editable}

@@ -1,6 +1,7 @@
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
 
 const IMAGE_PATH = Object.freeze({
+  "room-detail-deluxe": /^\/uploads\/pages\/(?:deluxeroom|room-options)\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   spawellness: /^\/uploads\/pages\/spawellness\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   about: /^\/uploads\/pages\/about\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   experience: /^\/uploads\/pages\/homepage\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
@@ -13,7 +14,7 @@ const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const TIMEOUT_MS = 30000;
 
 export function getAzuraImagesConnection(env = process.env, scope = "experience") {
-  if (!["experience", "homepage", "rooms", "restaurants", "about", "spawellness"].includes(scope)) {
+  if (!["experience", "homepage", "rooms", "restaurants", "about", "spawellness", "room-detail-deluxe"].includes(scope)) {
     throw new AzuraConnectionError("Azura görsel kapsamı geçersiz.", 400);
   }
   const { url, token } = getAzuraConnection(env);
@@ -23,6 +24,7 @@ export function getAzuraImagesConnection(env = process.env, scope = "experience"
     : scope === "restaurants" ? "/api/azura/restaurants/images"
     : scope === "about" ? "/api/azura/about/images"
     : scope === "spawellness" ? "/api/azura/spawellness/images"
+    : scope === "room-detail-deluxe" ? "/api/azura/room-details/deluxe/images"
     : "/api/azura/homepage/experience/images";
   return { url: imagesUrl.toString(), origin: imagesUrl.origin, token };
 }
@@ -35,6 +37,8 @@ export function isValidAzuraImage(record, listed = false, scope = "experience") 
   if (Object.keys(record).length !== keys.length || !keys.every((key) => Object.hasOwn(record, key))) {
     return false;
   }
+  if (scope === "room-detail-deluxe" && !listed &&
+      (typeof record.image !== "string" || !record.image.startsWith("/uploads/pages/deluxeroom/"))) return false;
   if (typeof record.image !== "string" || !IMAGE_PATH[scope]?.test(record.image) || record.image.includes("..") ||
       !MIME_TYPES.includes(record.mimeType) ||
       !Number.isInteger(record.size) || record.size < 1 || record.size > MAX_IMAGE_BYTES ||
