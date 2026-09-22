@@ -175,3 +175,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Azura Family oda detayı
+
+Family, Deluxe ile aynı `AzuraRoomDetailEditor` ve Lago ile aynı
+`RoomDetailPageFields` formunu kullanır. Oda farklılıkları
+`lib/admin/room-detail-model.mjs` içinde tanımlıdır: 12 galeri, iki tur
+(`land`, `sea`), iki öneri (`deluxe`, `fantasy`) ve arka planda `list1/list2`.
+Parallax eklenmez. Odalar arasında geçiş taslakları korur; üstteki kayıt
+düğmesi yalnızca seçili odanın dört dilini ve medyasını kaydeder.
+
+Mevcut dinamik panel proxy rotaları Family için de kullanılır:
+`/api/admin/azura/room-details/family/page-content` ve `/images`.
+Sunucu mevcut `AZURA_EXPERIENCE_API_URL` üzerinden Azura adresini türetir;
+`AZURA_SERVICE_TOKEN` yalnızca sunucuda kullanılır. Yeni ortam değişkeni gerekmez.
+İçerik PUT isteğinde revision, Azura'ya tırnaklı `If-Match` olarak aktarılır.
+409 hatası taslağı silmez. Medya yüklemeleri yalnızca `familyroom` dizinine;
+ortak `room-options` görsellerinin seçimi yalnızca öneri alanlarına izinlidir.
+Deluxe özel medya dizini Family'de kullanılamaz. Fantasy yönetimi kapalıdır.

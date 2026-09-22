@@ -96,7 +96,7 @@ const AzuraRoomDetailEditor = forwardRef(function AzuraRoomDetailEditor({ roomKe
       return "failed";
     }
     if (!isValidAzuraRoomDetailPage(roomKey, draft.bundle, draft.media)) {
-      setError("Dört dilin tüm oda detayı metinleri ve 13 görselin yol, ölçü ve alt açıklamaları geçerli olmalıdır.");
+      setError(`Dört dilin tüm oda detayı metinleri ve ${2 + config.galleryIds.length + config.optionIds.length} görselin yol, ölçü ve alt açıklamaları geçerli olmalıdır.`);
       return "failed";
     }
     const version = editVersion.current;

@@ -16,7 +16,7 @@ export default function RoomDetailPageFields({
     ...(config.background ? [{ path: ["background"], label: "Tanıtım arka planı" }] : [])];
   const collections = [{ path: ["gallery"], label: `${config.label} galerisi`, itemLabel: "Galeri görseli",
     ...(azura ? { imageKey: "image", fixed: true } : {}) },
-    ...(azura ? [{ path: ["otherOptions"], label: "Diğer oda seçenekleri — Family / Fantasy",
+    ...(azura ? [{ path: ["otherOptions"], label: `Diğer oda seçenekleri — ${config.optionIds.map((id) => id[0].toUpperCase() + id.slice(1)).join(" / ")}`,
       itemLabel: "Öneri görseli", imageKey: "image", fixed: true }] : [])];
   return <fieldset disabled={disabled} className="space-y-5 disabled:opacity-70">
     <ObjectEditor value={translations[activeLocale] || {}} onChange={(updater) => onBundleChange((current) =>

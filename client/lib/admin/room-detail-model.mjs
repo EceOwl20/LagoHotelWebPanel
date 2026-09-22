@@ -16,9 +16,18 @@ export const AZURA_ROOM_DETAIL_CONFIGS = Object.freeze({
   deluxe: Object.freeze({
     hotel: "azura", roomKey: "deluxe", pageKey: "deluxeroom", label: "Deluxe Oda", background: true,
     imagesScope: "room-detail-deluxe",
+    backgroundFields: Object.freeze(["subtitle", "title", "text"]),
     galleryIds: Object.freeze(Array.from({ length: 9 }, (_, i) => `deluxe-gallery-${i + 1}`)),
     tourIds: Object.freeze(["land", "sea", "partialSea"]),
     optionIds: Object.freeze(["family", "fantasy"]),
+  }),
+  family: Object.freeze({
+    hotel: "azura", roomKey: "family", pageKey: "familyroom", label: "Family Oda", background: true,
+    imagesScope: "room-detail-family",
+    backgroundFields: Object.freeze(["subtitle", "title", "text", "list1", "list2"]),
+    galleryIds: Object.freeze(Array.from({ length: 12 }, (_, i) => `family-gallery-${i + 1}`)),
+    tourIds: Object.freeze(["land", "sea"]),
+    optionIds: Object.freeze(["deluxe", "fantasy"]),
   }),
 });
 
