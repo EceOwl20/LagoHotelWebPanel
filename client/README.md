@@ -105,7 +105,7 @@ kullanır; kısmi kayıtta hata gösterilir ve kalan taslak korunur.
 
 Azura'da ilk etkin oda `deluxe` olup Odalar → Deluxe Oda altında bulunur.
 `/api/admin/azura/room-details/[roomKey]/page-content` yalnızca izin listesindeki
-odaları kabul eder; şu anda Family/Fantasy için yönetim bağlantısı açılmaz.
+odaları kabul eder; Deluxe, Family ve Fantasy yönetim bağlantıları etkindir.
 GET `{bundle:{translations,tours},media,revision}` döndürür. Panel PUT'ta
 revision'ı gönderir; sunucu bunu tırnaklı `If-Match` başlığına taşır ve yalnızca
 `{bundle,media}` gövdesini Azura'ya iletir. Dört dil, dokuz galeri görseli,
@@ -191,4 +191,20 @@ Sunucu mevcut `AZURA_EXPERIENCE_API_URL` üzerinden Azura adresini türetir;
 İçerik PUT isteğinde revision, Azura'ya tırnaklı `If-Match` olarak aktarılır.
 409 hatası taslağı silmez. Medya yüklemeleri yalnızca `familyroom` dizinine;
 ortak `room-options` görsellerinin seçimi yalnızca öneri alanlarına izinlidir.
-Deluxe özel medya dizini Family'de kullanılamaz. Fantasy yönetimi kapalıdır.
+Deluxe özel medya dizini Family'de kullanılamaz.
+
+### Azura Fantasy oda detayı
+
+Fantasy de aynı oda editörü, dinamik panel proxy rotaları ve üst kayıt
+düğmesiyle yönetilir. Ayrı form veya route kopyası yoktur. Oda yapılandırması
+11 galeri görselini, tek `sea` turunu, `deluxe → family` önerilerini ve
+`couples/kingBed/jacuzziTerrace` olanak alanlarını tanımlar. Arka planda
+`list1/list2` korunur; parallax eklenmez. Deluxe/Family olanakları değişmez.
+
+`/api/admin/azura/room-details/fantasy/page-content` mevcut servis bağlantısıyla
+Azura'nın aynı adlı içerik API'sine gider; revision tırnaklı `If-Match` olarak
+aktarılır. `/images` yüklemeleri yalnızca `/uploads/pages/fantasyroom/` içindir.
+Ortak `room-options` dosyaları yalnızca öneri alanlarında seçilir; diğer
+odaların özel dizinleri kabul edilmez. Yeni ortam değişkeni gerekmez.
+Menü, oda ref'leri ve taslak durumu yapılandırmadan üretilir; kaydetme yalnızca
+seçili odayı etkiler. Bilinmeyen oda kimlikleri kapalı kalır.

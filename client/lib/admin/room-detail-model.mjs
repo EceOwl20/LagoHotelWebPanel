@@ -16,6 +16,7 @@ export const AZURA_ROOM_DETAIL_CONFIGS = Object.freeze({
   deluxe: Object.freeze({
     hotel: "azura", roomKey: "deluxe", pageKey: "deluxeroom", label: "Deluxe Oda", background: true,
     imagesScope: "room-detail-deluxe",
+    amenityIds: Object.freeze(["doubleBed", "singleBed", "sofa"]),
     backgroundFields: Object.freeze(["subtitle", "title", "text"]),
     galleryIds: Object.freeze(Array.from({ length: 9 }, (_, i) => `deluxe-gallery-${i + 1}`)),
     tourIds: Object.freeze(["land", "sea", "partialSea"]),
@@ -24,10 +25,20 @@ export const AZURA_ROOM_DETAIL_CONFIGS = Object.freeze({
   family: Object.freeze({
     hotel: "azura", roomKey: "family", pageKey: "familyroom", label: "Family Oda", background: true,
     imagesScope: "room-detail-family",
+    amenityIds: Object.freeze(["doubleBed", "singleBed", "sofa"]),
     backgroundFields: Object.freeze(["subtitle", "title", "text", "list1", "list2"]),
     galleryIds: Object.freeze(Array.from({ length: 12 }, (_, i) => `family-gallery-${i + 1}`)),
     tourIds: Object.freeze(["land", "sea"]),
     optionIds: Object.freeze(["deluxe", "fantasy"]),
+  }),
+  fantasy: Object.freeze({
+    hotel: "azura", roomKey: "fantasy", pageKey: "fantasyroom", label: "Fantasy Oda", background: true,
+    imagesScope: "room-detail-fantasy",
+    amenityIds: Object.freeze(["couples", "kingBed", "jacuzziTerrace"]),
+    backgroundFields: Object.freeze(["subtitle", "title", "text", "list1", "list2"]),
+    galleryIds: Object.freeze(Array.from({ length: 11 }, (_, i) => `fantasy-gallery-${i + 1}`)),
+    tourIds: Object.freeze(["sea"]),
+    optionIds: Object.freeze(["deluxe", "family"]),
   }),
 });
 

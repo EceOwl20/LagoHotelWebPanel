@@ -52,7 +52,7 @@ export function isValidAzuraRoomDetailPage(roomKey, bundle, media) {
     const t = bundle.translations[locale];
     return keys(t, [...banner, "RoomInfo", "BackgroundSection", "RoomTour", "OtherOptions"]) && banner.every((key) => text(t[key])) &&
       keys(t.RoomInfo, [...info, "amenities", "features"]) && info.every((key) => text(t.RoomInfo[key])) &&
-      fields(t.RoomInfo.amenities, ["doubleBed", "singleBed", "sofa"]) && fields(t.RoomInfo.features, ROOM_FEATURE_IDS) &&
+      fields(t.RoomInfo.amenities, config.amenityIds) && fields(t.RoomInfo.features, ROOM_FEATURE_IDS) &&
       fields(t.BackgroundSection, config.backgroundFields) && keys(t.RoomTour, config.tourIds) && config.tourIds.every((id) => fields(t.RoomTour[id], GROUP)) &&
       keys(t.OtherOptions, ["span", "title", "buttonText", "cards"]) && ["span", "title", "buttonText"].every((key) => text(t.OtherOptions[key])) &&
       keys(t.OtherOptions.cards, config.optionIds) && config.optionIds.every((id) => fields(t.OtherOptions.cards[id], ["subtitle", "title", "m", "capacity", "text"]));

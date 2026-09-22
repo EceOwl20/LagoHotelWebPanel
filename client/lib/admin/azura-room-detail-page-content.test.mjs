@@ -25,6 +25,85 @@ media.otherOptions.images[1].image = "/uploads/pages/room-options/fantasy-previe
 const env = { AZURA_EXPERIENCE_API_URL: "http://localhost:3001/api/azura/homepage/experience", AZURA_SERVICE_TOKEN: "test-token" };
 const revision = "a".repeat(64);
 
+function fantasyFixture() {
+  const c = azuraRoomDetailConfig("fantasy");
+  const b = structuredClone(bundle);
+  for (const t of Object.values(b.translations)) {
+    t.RoomInfo.amenities = fields(c.amenityIds);
+    t.BackgroundSection = fields(c.backgroundFields);
+    t.RoomTour = { sea: group() };
+    t.OtherOptions.cards = Object.fromEntries(c.optionIds.map((id) =>
+      [id, fields(["subtitle", "title", "m", "capacity", "text"])]));
+  }
+  b.tours = [{ id: "sea", order: 0, url: bundle.tours[0].url }];
+  const img = (name) => ({ ...image(name), image: `/uploads/pages/fantasyroom/${name}.jpg` });
+  const list = (ids) => ({ images: ids.map((id, order) => ({ ...img(id), id, order })) });
+  return { bundle: b, media: { hero: img("hero"), background: img("background"),
+    gallery: list(c.galleryIds), otherOptions: list(c.optionIds) } };
+}
+
+test("Fantasy: 11 galeri, tek tur, ayrı olanaklar ve iki öneri kesin doğrulanır", () => {
+  const f = fantasyFixture();
+  assert.equal(isValidAzuraRoomDetailPage("fantasy", f.bundle, f.media), true);
+  for (const key of ["deluxe", "family"]) assert.equal(isValidAzuraRoomDetailPage(key, f.bundle, f.media), false);
+  for (const edit of [
+    (p) => { p.bundle.translations.tr.RoomInfo.amenities = fields(["doubleBed", "singleBed", "sofa"]); },
+    (p) => { delete p.bundle.translations.ru.BackgroundSection.list2; },
+    (p) => { p.bundle.tours[0].order = 1; },
+    (p) => { p.bundle.tours[0].id = "land"; },
+    (p) => { p.media.gallery.images.pop(); },
+    (p) => { p.media.otherOptions.images.reverse(); },
+    (p) => { p.media.hero.image = "/uploads/pages/familyroom/hero.jpg"; },
+    (p) => { p.media.gallery.images[0].image = "/uploads/pages/deluxeroom/hero.jpg"; },
+    (p) => { p.media.hero.image = "/uploads/pages/room-options/family-preview.webp"; },
+    (p) => { p.media.parallax = p.media.hero; },
+  ]) {
+    const copy = structuredClone(f); edit(copy);
+    assert.equal(isValidAzuraRoomDetailPage("fantasy", copy.bundle, copy.media), false);
+  }
+  f.media.otherOptions.images[1].image = "/uploads/pages/room-options/family-preview.webp";
+  assert.equal(isValidAzuraRoomDetailPage("fantasy", f.bundle, f.media), true);
+});
+
+test("Fantasy proxy GET/PUT endpoint, token, revision ve 409 davranışı", async () => {
+  const f = fantasyFixture(), payload = { ...f, revision };
+  const fetchImpl = async (url, options) => {
+    assert.equal(url, "http://localhost:3001/api/azura/room-details/fantasy/page-content");
+    assert.equal(options.headers.Authorization, "Bearer test-token");
+    if (options.method === "PUT") {
+      assert.equal(options.headers["If-Match"], `"${revision}"`);
+      assert.deepEqual(JSON.parse(options.body), f);
+    }
+    return { ok: true, json: async () => payload };
+  };
+  assert.deepEqual(await requestAzuraRoomDetailPage("fantasy", "GET", undefined, undefined, { env, fetchImpl }), payload);
+  assert.deepEqual(await requestAzuraRoomDetailPage("fantasy", "PUT", f.bundle, f.media, { env, fetchImpl, revision }), payload);
+  await assert.rejects(requestAzuraRoomDetailPage("fantasy", "PUT", f.bundle, f.media, { env, fetchImpl }), (e) => e.status === 400);
+  await assert.rejects(requestAzuraRoomDetailPage("fantasy", "PUT", f.bundle, f.media, { env, revision,
+    fetchImpl: async () => ({ ok: false, status: 409, json: async () => ({ error: "Eski sürüm" }) }) }), (e) => e.status === 409);
+});
+
+test("Fantasy medya kapsamı ortak önerileri listeler, yalnızca Fantasy'ye yükler", async () => {
+  const c = azuraRoomDetailConfig("fantasy"), scope = c.imagesScope;
+  const uploaded = { image: "/uploads/pages/fantasyroom/new.jpg", mimeType: "image/jpeg", size: 123, width: 800, height: 600 };
+  const shared = { ...uploaded, image: "/uploads/pages/room-options/family-preview.webp", mimeType: "image/webp" };
+  const listed = { ...shared, modifiedAt: "2026-09-22T00:00:00Z" };
+  assert.equal(isValidAzuraImage(uploaded, false, scope), true);
+  assert.equal(isValidAzuraImage(shared, false, scope), false);
+  assert.equal(isValidAzuraImage(listed, true, scope), true);
+  for (const folder of ["familyroom", "deluxeroom"]) {
+    assert.equal(isValidAzuraImage({ ...listed, image: `/uploads/pages/${folder}/hero.jpg` }, true, scope), false);
+  }
+  assert.equal(canSelectRoomDetailImage(c, { path: ["hero"] }, shared), false);
+  assert.equal(canSelectRoomDetailImage(c, { path: ["otherOptions"] }, shared), true);
+  const fetchImpl = async (url, options) => {
+    assert.equal(url, "http://localhost:3001/api/azura/room-details/fantasy/images");
+    return { ok: true, json: async () => options.method === "GET" ? { images: [listed] } : uploaded };
+  };
+  assert.equal((await requestAzuraImages("GET", undefined, { env, scope, fetchImpl })).length, 1);
+  await requestAzuraImages("POST", new File(["image"], "new.jpg", { type: "image/jpeg" }), { env, scope, fetchImpl });
+});
+
 function familyFixture() {
   const family = azuraRoomDetailConfig("family");
   const b = structuredClone(bundle);
@@ -103,7 +182,7 @@ test("Family medya kapsamı Deluxe dosyalarını ve ortak dizine yüklemeyi redd
 
 test("Deluxe kesin şeması ve yalnızca etkin oda izin listesi", () => {
   assert.equal(isValidAzuraRoomDetailPage("deluxe", bundle, media), true);
-  for (const key of ["fantasy", "../deluxe", "__proto__", "toString"]) {
+  for (const key of ["unknown", "../deluxe", "__proto__", "toString"]) {
     assert.equal(azuraRoomDetailConfig(key), null);
     assert.equal(isValidAzuraRoomDetailPage(key, bundle, media), false);
     assert.throws(() => getAzuraRoomDetailConnection(key, env), (error) => error.status === 404);
@@ -168,7 +247,7 @@ test("Oda GET/PUT yalnızca doğru endpoint, token ve If-Match ile iletilir", as
   assert.deepEqual(await requestAzuraRoomDetailPage("deluxe", "GET", undefined, undefined, { env, fetchImpl }), payload);
   assert.deepEqual(await requestAzuraRoomDetailPage("deluxe", "PUT", bundle, media, { env, fetchImpl, revision }), payload);
   await assert.rejects(requestAzuraRoomDetailPage("deluxe", "PUT", bundle, media, { env, fetchImpl }), (error) => error.status === 400);
-  await assert.rejects(requestAzuraRoomDetailPage("fantasy", "GET", undefined, undefined, { env, fetchImpl }), (error) => error.status === 404);
+  await assert.rejects(requestAzuraRoomDetailPage("unknown", "GET", undefined, undefined, { env, fetchImpl }), (error) => error.status === 404);
 });
 
 test("409 veya bozuk API yanıtı başarı sayılmaz", async () => {

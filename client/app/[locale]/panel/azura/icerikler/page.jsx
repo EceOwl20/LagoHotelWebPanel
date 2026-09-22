@@ -53,7 +53,7 @@ export default function AzuraContentsPage() {
   const [saveNotice, setSaveNotice] = useState(null);
   const [roomsNotice, setRoomsNotice] = useState(null);
   const [restaurantsNotice, setRestaurantsNotice] = useState(null);
-  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, accommodation: false, essentials: false, background: false, contact: false, rooms: false, restaurants: false, about: false, spa: false, deluxe: false, family: false });
+  const [dirtySections, setDirtySections] = useState({ welcome: false, carousel: false, experience: false, accommodation: false, essentials: false, background: false, contact: false, rooms: false, restaurants: false, about: false, spa: false, ...Object.fromEntries(Object.keys(AZURA_ROOM_DETAIL_CONFIGS).map((key) => [key, false])) });
   const markWelcomeDirty = useCallback((dirty) => {
     if (dirty) setSaveNotice(null);
     setDirtySections((current) => current.welcome === dirty ? current : { ...current, welcome: dirty });
