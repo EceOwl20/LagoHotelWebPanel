@@ -231,3 +231,28 @@ Spor/Spa taslakları ayrı tutulur ve üst kayıt düğmesi seçili sayfayı kay
 Spor görselleri yalnızca `/uploads/pages/spor/` içinden seçilir; gerçek ölçüler
 korunur. 8 MiB ve 16 milyon piksel sınırı geçerlidir. Küçültülmüş
 `treadmills-4800x3200.jpg` bu sınıra uygundur; dosyaya özel istisna yoktur.
+# Azura Beach & Pools
+
+Azura Plaj ve Havuzlar, Lago'nun mevcut `BeachPoolsMediaEditor` görsel formunu
+otel seçeneğiyle kullanır. Lago'nun 29 medya alanı ve dokuz havuzu korunur.
+Azura'da tek hero, iki tanıtım, dört aktivite ve beş havuzun normal/hover
+çiftleri olmak üzere 17 kayıt vardır. 11 normal görselde dört dilde alt
+açıklama düzenlenir; CSS hero/hover kayıtlarına alt metin eklenmez.
+
+Metinler mevcut ObjectEditor ile düzenlenir. Uzak sayfa editörünün yükleme,
+taslak, revision, doğrulama ve kayıt sonrası okuma akışı Spa/Spor ile paylaşılır.
+Üstteki tek kaydet düğmesi dört dilin metinlerini ve medyayı birlikte gönderir.
+409 taslağı silmez; diğer sayfalara geçmek taslağı korur.
+
+Panel endpoint'leri:
+- GET/PUT `/api/admin/azura/beachpools/page-content`
+- GET/POST `/api/admin/azura/beachpools/images`
+
+Mevcut servis bağlantısı ve tokenı kullanılır; yeni ortam değişkeni gerekmez.
+Ortak içerik route yardımcısı oturum, yetki, aynı kaynak, hız ve 128 KiB gövde
+kontrollerini korur. Yüklemeler yalnızca `/uploads/pages/beachpools/` kapsamındadır.
+Aktivitelerin id/order alanları görselde, havuzların id/order alanları üst
+kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
+
+Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
+özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.

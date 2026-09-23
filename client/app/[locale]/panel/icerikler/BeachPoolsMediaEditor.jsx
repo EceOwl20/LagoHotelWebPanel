@@ -1,6 +1,7 @@
 "use client";
 
 import SitePageMediaEditor from "./SitePageMediaEditor";
+import { AZURA_BEACH_IMAGES } from "@/lib/admin/azura-beachpools-model.mjs";
 
 const singleImages = [
   { path: ["hero", "desktopBackground"], label: "Masaüstü hero arka planı" },
@@ -34,16 +35,17 @@ const singleImages = [
   { path: ["pools", "megaAqua", "hover"], label: "Mega Aquapark hover görseli" },
 ];
 
-export default function BeachPoolsMediaEditor({ activeLocale }) {
+export default function BeachPoolsMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
       pageKey="beachpools"
       pageTitle="Plaj ve Havuzlar"
       activeLocale={activeLocale}
       uploadFolder="pages/beachpools"
-      singleImages={singleImages}
+      singleImages={hotel === "azura" ? AZURA_BEACH_IMAGES : singleImages}
       collections={[]}
       localizedAlt
+      {...editorProps}
     />
   );
 }

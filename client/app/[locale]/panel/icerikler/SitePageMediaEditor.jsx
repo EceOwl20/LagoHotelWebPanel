@@ -329,7 +329,7 @@ export default function SitePageMediaEditor({
                         uploadFolder={uploadFolder}
                         {...singlePickerProps(field, value)}
                       />
-                      {localizedAlt ? (
+                      {localizedAlt && field.localizedAlt !== false ? (
                         <AltField
                           locale={activeLocale}
                           value={value.translations?.[activeLocale]?.alt}
@@ -358,7 +358,7 @@ export default function SitePageMediaEditor({
                 uploadFolder={uploadFolder}
                 {...singlePickerProps(field, value)}
               />
-              {localizedAlt ? (
+              {localizedAlt && field.localizedAlt !== false ? (
                 <AltField
                   locale={activeLocale}
                   value={value.translations?.[activeLocale]?.alt}
