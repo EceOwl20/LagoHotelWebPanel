@@ -208,3 +208,26 @@ Ortak `room-options` dosyaları yalnızca öneri alanlarında seçilir; diğer
 odaların özel dizinleri kabul edilmez. Yeni ortam değişkeni gerekmez.
 Menü, oda ref'leri ve taslak durumu yapılandırmadan üretilir; kaydetme yalnızca
 seçili odayı etkiler. Bilinmeyen oda kimlikleri kapalı kalır.
+# Azura Spor içerik yönetimi
+
+Spor, mevcut `AzuraSpaEditor`, `SpaPageFields` ve `SpaWellnessMediaEditor`
+bileşenlerini `pageKey="spor"` ile kullanır. Ayrı form kopyası yoktur.
+Azura Spor'da dört liste maddesi, üç sabit galeri öğesi ve toplam sekiz medya
+alanı vardır; masaj bölümü gösterilmez ve API doğrulamasında kabul edilmez.
+`types.fitness` ve `types.personalTrainer` alanları Spor'a özeldir.
+Lago Spa ve Azura Spa varsayılan yapılarını korur.
+
+Panel endpoint'leri:
+- GET/PUT `/api/admin/azura/spor/page-content`
+- GET/POST `/api/admin/azura/spor/images`
+
+Spa/Spor içerik route'ları ortak `azura-spa-page-route.js` yardımcılarını
+kullanır: oturum, içerik yetkisi, aynı kaynak kontrolü, hız ve 128 KiB gövde
+sınırı korunur. Servis tokenı tarayıcıya gönderilmez. Mevcut
+`AZURA_EXPERIENCE_API_URL` ve `AZURA_SERVICE_TOKEN` yeterlidir.
+İçerik revision'ı Azura'ya tırnaklı If-Match ile aktarılır; 409 taslağı silmez.
+Spor/Spa taslakları ayrı tutulur ve üst kayıt düğmesi seçili sayfayı kaydeder.
+
+Spor görselleri yalnızca `/uploads/pages/spor/` içinden seçilir; gerçek ölçüler
+korunur. 8 MiB ve 16 milyon piksel sınırı geçerlidir. Küçültülmüş
+`treadmills-4800x3200.jpg` bu sınıra uygundur; dosyaya özel istisna yoktur.

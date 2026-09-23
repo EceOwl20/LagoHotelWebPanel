@@ -3,7 +3,7 @@ import { isValidAzuraRevision } from "./azura-revision.mjs";
 
 const LOCALES = ["tr", "en", "de", "ru"];
 const TIMEOUT_MS = 8000;
-const IMAGE_PATH = /^\/uploads\/pages\/spawellness\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i;
+const IMAGE_PATH = /^\/uploads\/pages\/(?:spawellness|spor)\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i;
 function exactKeys(value, keys) {
   return Boolean(value && typeof value === "object" && !Array.isArray(value) &&
     Object.keys(value).length === keys.length && keys.every((key) => Object.hasOwn(value, key)));
@@ -15,9 +15,9 @@ function text(value, limit = 4000) {
 function fields(value, keys) {
   return exactKeys(value, keys) && keys.every((key) => text(value[key]));
 }
-function image(record, moment = false) {
+function image(record, moment = false, pageKey = "spawellness") {
   return exactKeys(record, [...(moment ? ["id", "order"] : []), "image", "width", "height", "translations"]) &&
-    typeof record.image === "string" && IMAGE_PATH.test(record.image) && !record.image.includes("..") &&
+    typeof record.image === "string" && IMAGE_PATH.test(record.image) && record.image.startsWith(`/uploads/pages/${pageKey}/`) && !record.image.includes("..") &&
     Number.isInteger(record.width) && Number.isInteger(record.height) && record.width > 0 && record.height > 0 &&
     record.width * record.height <= 16_000_000 && exactKeys(record.translations, LOCALES) &&
     LOCALES.every((locale) => exactKeys(record.translations[locale], ["alt"]) && text(record.translations[locale].alt, 300));
@@ -26,11 +26,30 @@ export const SPA_GALLERY_IDS = Object.freeze(Array.from({ length: 5 }, (_, i) =>
 export const SPA_MASSAGE_IDS = Object.freeze(["aromatic", "oriental", "classic", "facial"].map((key) => `spa-massage-${key}`));
 const GROUP = ["subtitle", "title", "text"];
 const SECTIONS = ["hero", "info", "gallery", "massage", "types"];
-function collection(value, ids) {
-  return exactKeys(value, ["images"]) && Array.isArray(value.images) && value.images.length === ids.length &&
-    value.images.every((record, index) => image(record, true) && record.id === ids[index] && record.order === index);
+export const SPOR_GALLERY_IDS = Object.freeze(Array.from({ length: 3 }, (_, i) => `spor-gallery-${i + 1}`));
+export function isValidAzuraSporPage(bundle, media) {
+  const sections = ["hero", "info", "gallery", "types"];
+  if (!exactKeys(bundle, LOCALES) || !exactKeys(media, sections)) return false;
+  if (!LOCALES.every((locale) => {
+    const t = bundle[locale];
+    return exactKeys(t, sections) && fields(t.hero, GROUP) &&
+      exactKeys(t.info, ["intro", "wellness", "sauna"]) && fields(t.info.intro, GROUP) && fields(t.info.sauna, GROUP) &&
+      fields(t.info.wellness, [...GROUP, "list1", "list2", "list3", "list4"]) &&
+      fields(t.gallery, GROUP) && exactKeys(t.types, ["fitness", "personalTrainer"]) &&
+      fields(t.types.fitness, GROUP) && fields(t.types.personalTrainer, ["title", "text"]);
+  })) return false;
+  return image(media.hero, false, "spor") && exactKeys(media.info, ["wellness", "sauna"]) &&
+    image(media.info.wellness, false, "spor") && image(media.info.sauna, false, "spor") &&
+    collection(media.gallery, SPOR_GALLERY_IDS, "spor") && exactKeys(media.types, ["fitness", "personalTrainer"]) &&
+    image(media.types.fitness, false, "spor") && image(media.types.personalTrainer, false, "spor");
 }
-export function isValidAzuraSpaPage(bundle, media) {
+function collection(value, ids, pageKey = "spawellness") {
+  return exactKeys(value, ["images"]) && Array.isArray(value.images) && value.images.length === ids.length &&
+    value.images.every((record, index) => image(record, true, pageKey) && record.id === ids[index] && record.order === index);
+}
+export function isValidAzuraSpaPage(bundle, media, pageKey = "spawellness") {
+  if (pageKey === "spor") return isValidAzuraSporPage(bundle, media);
+  if (pageKey !== "spawellness") return false;
   if (!exactKeys(bundle, LOCALES) || !exactKeys(media, SECTIONS)) return false;
   if (!LOCALES.every((locale) => {
     const t = bundle[locale];
@@ -47,23 +66,24 @@ export function isValidAzuraSpaPage(bundle, media) {
     exactKeys(media.types, ["indoor", "turkishBath"]) && image(media.types.indoor) && image(media.types.turkishBath);
 }
 
-export function getAzuraSpaPageConnection(env = process.env) {
+export function getAzuraSpaPageConnection(env = process.env, pageKey = "spawellness") {
+  if (!["spawellness", "spor"].includes(pageKey)) throw new AzuraConnectionError("Etkin olmayan sayfa.", 404);
   const { url, token } = getAzuraConnection(env);
   const pageUrl = new URL(url);
-  pageUrl.pathname = "/api/azura/spawellness/page-content";
+  pageUrl.pathname = `/api/azura/${pageKey}/page-content`;
   return { url: pageUrl.toString(), token };
 }
 
 export async function requestAzuraSpaPage(method, bundle, media, {
-  env = process.env, fetchImpl = fetch, revision,
+  env = process.env, fetchImpl = fetch, revision, pageKey = "spawellness",
 } = {}) {
   if (method !== "GET" && method !== "PUT") {
-    throw new AzuraConnectionError("Azura Spa & Wellness sayfası isteği geçersiz.", 400);
+    throw new AzuraConnectionError("Azura sayfası isteği geçersiz.", 400);
   }
-  if (method === "PUT" && (!isValidAzuraRevision(revision) || !isValidAzuraSpaPage(bundle, media))) {
-    throw new AzuraConnectionError("Azura Spa & Wellness sayfası içeriği veya sürümü geçersiz.", 400);
+  if (method === "PUT" && (!isValidAzuraRevision(revision) || !isValidAzuraSpaPage(bundle, media, pageKey))) {
+    throw new AzuraConnectionError("Azura sayfası içeriği veya sürümü geçersiz.", 400);
   }
-  const { url, token } = getAzuraSpaPageConnection(env);
+  const { url, token } = getAzuraSpaPageConnection(env, pageKey);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
@@ -79,21 +99,21 @@ export async function requestAzuraSpaPage(method, bundle, media, {
     });
     let payload;
     try { payload = await response.json(); }
-    catch { throw new AzuraConnectionError("Azura Spa & Wellness API’si geçerli bir yanıt vermedi."); }
+    catch { throw new AzuraConnectionError("Azura sayfa API’si geçerli bir yanıt vermedi."); }
     if (!response.ok) {
       const message = typeof payload?.error === "string" && payload.error.length < 300
-        ? payload.error : "Azura Spa & Wellness API isteği başarısız oldu.";
+        ? payload.error : "Azura sayfa API isteği başarısız oldu.";
       throw new AzuraConnectionError(message, response.status);
     }
     if (!exactKeys(payload, ["bundle", "media", "revision"]) ||
-        !isValidAzuraSpaPage(payload.bundle, payload.media) || !isValidAzuraRevision(payload.revision)) {
-      throw new AzuraConnectionError("Azura Spa & Wellness API’si beklenen içerik veya sürümü döndürmedi.");
+        !isValidAzuraSpaPage(payload.bundle, payload.media, pageKey) || !isValidAzuraRevision(payload.revision)) {
+      throw new AzuraConnectionError("Azura sayfa API’si beklenen içerik veya sürümü döndürmedi.");
     }
     return payload;
   } catch (error) {
     if (error instanceof AzuraConnectionError) throw error;
-    if (error.name === "AbortError") throw new AzuraConnectionError("Azura Spa & Wellness API’si yanıt süresini aştı.", 504);
-    throw new AzuraConnectionError("Azura Spa & Wellness API bağlantısı kurulamadı.");
+    if (error.name === "AbortError") throw new AzuraConnectionError("Azura sayfa API’si yanıt süresini aştı.", 504);
+    throw new AzuraConnectionError("Azura sayfa API bağlantısı kurulamadı.");
   } finally {
     clearTimeout(timeout);
   }

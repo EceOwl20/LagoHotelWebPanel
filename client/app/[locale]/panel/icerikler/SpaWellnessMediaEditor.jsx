@@ -23,15 +23,24 @@ const collections = [
   },
 ];
 
-export default function SpaWellnessMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
+export default function SpaWellnessMediaEditor({ activeLocale, hotel = "lago", pageKey = "spawellness", ...editorProps }) {
+  const sport = hotel === "azura" && pageKey === "spor";
+  const singles = sport ? [
+    { path: ["hero"], label: "Spor kapak görseli" },
+    { path: ["info", "wellness"], label: "Spor bilgi alanı büyük görseli" },
+    { path: ["info", "sauna"], label: "Spor bilgi alanı ikinci görseli" },
+    { path: ["types", "fitness"], label: "Fitness görseli" },
+    { path: ["types", "personalTrainer"], label: "Kişisel antrenör görseli" },
+  ] : singleImages;
+  const groups = sport ? [{ path: ["gallery"], label: "Spor galerisi", itemLabel: "Galeri görseli" }] : collections;
   return (
     <SitePageMediaEditor
-      pageKey="spawellness"
-      pageTitle="Spa Wellness"
+      pageKey={sport ? "spor" : "spawellness"}
+      pageTitle={sport ? "Spor" : "Spa Wellness"}
       activeLocale={activeLocale}
-      uploadFolder="pages/spawellness"
-      singleImages={singleImages}
-      collections={hotel === "azura" ? collections.map((collection) => ({
+      uploadFolder={sport ? "pages/spor" : "pages/spawellness"}
+      singleImages={singles}
+      collections={hotel === "azura" ? groups.map((collection) => ({
         ...collection, imageKey: "image", fixed: true,
       })) : collections}
       localizedAlt
