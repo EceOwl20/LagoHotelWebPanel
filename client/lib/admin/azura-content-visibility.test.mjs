@@ -37,6 +37,7 @@ function renderTree(selectedId) {
 }
 
 const sections = {
+  kidsclub: "Azura Çocuk Kulübü sayfası",
   beachpools: "Azura Plaj ve Havuzlar sayfası",
   spor: "Azura Spor sayfası",
   spa: "Azura Spa sayfası",

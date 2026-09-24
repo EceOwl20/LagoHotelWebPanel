@@ -42,7 +42,7 @@ async function readLimitedJson(request) {
 }
 
 export function createAzuraSpaPageHandlers(pageKey) {
-  if (!["spawellness", "spor", "beachpools"].includes(pageKey)) throw new Error("Unsupported page");
+  if (!["spawellness", "spor", "beachpools", "kidsclub"].includes(pageKey)) throw new Error("Unsupported page");
   async function GET() {
     const session = await getAdminSession();
     if (!session) return json({ error: "Yetkisiz işlem." }, 401);

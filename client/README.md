@@ -256,3 +256,26 @@ kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
 
 Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
 özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.
+
+# Azura Kids Club
+
+Mevcut KidsClubMediaEditor otel yapılandırmasıyla kullanılır; Lago'nun kulüp,
+restoran, panda ve dokuz etkinlik alanları değişmez. Azura formu beş etkinlik,
+üç havuz ve sabit sıralı üç galeri öğesiyle 14 medya kaydını düzenler.
+CSS hero alt metni içermez; diğer 13 kayıtta dört dilin alt metinleri vardır.
+Kimlik ve sıralar korunur; görsel seçiminde yol ile gerçek ölçüler güncellenir.
+
+Panel endpoint'leri:
+
+- GET/PUT `/api/admin/azura/kidsclub/page-content`
+- GET/POST `/api/admin/azura/kidsclub/images`
+
+Mevcut Azura servis adresi ve sunucu tokenı kullanılır; yeni ortam değişkeni
+gerekmez. Metinler ObjectEditor, kayıt/yükleme akışı ortak uzak sayfa editörü
+üzerinden yönetilir. Sabit üst bardaki tek kayıt dört dil ve medyayı gönderir.
+Revision If-Match olarak iletilir; 409 taslağı korur. Yalnızca activity4 ve
+activity5 repeatTitle alanlarında tam boş string kabul edilir.
+
+Ortak route kontrolleri oturum, düzenleme yetkisi, aynı kaynak, hız sınırı
+ve 128 KiB içerik sınırını uygular. Görseller yalnızca kidsclub dizininde,
+JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel sınırlarıyla işlenir.

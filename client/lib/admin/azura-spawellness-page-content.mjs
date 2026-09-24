@@ -1,6 +1,7 @@
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
 import { isValidAzuraRevision } from "./azura-revision.mjs";
 import { isValidAzuraBeachPage } from "./azura-beachpools-page-content.mjs";
+import { isValidAzuraKidsPage } from "./azura-kidsclub-page-content.mjs";
 
 const LOCALES = ["tr", "en", "de", "ru"];
 const TIMEOUT_MS = 8000;
@@ -49,6 +50,7 @@ function collection(value, ids, pageKey = "spawellness") {
     value.images.every((record, index) => image(record, true, pageKey) && record.id === ids[index] && record.order === index);
 }
 export function isValidAzuraSpaPage(bundle, media, pageKey = "spawellness") {
+  if (pageKey === "kidsclub") return isValidAzuraKidsPage(bundle, media);
   if (pageKey === "beachpools") return isValidAzuraBeachPage(bundle, media);
   if (pageKey === "spor") return isValidAzuraSporPage(bundle, media);
   if (pageKey !== "spawellness") return false;
@@ -69,7 +71,7 @@ export function isValidAzuraSpaPage(bundle, media, pageKey = "spawellness") {
 }
 
 export function getAzuraSpaPageConnection(env = process.env, pageKey = "spawellness") {
-  if (!["spawellness", "spor", "beachpools"].includes(pageKey)) throw new AzuraConnectionError("Etkin olmayan sayfa.", 404);
+  if (!["spawellness", "spor", "beachpools", "kidsclub"].includes(pageKey)) throw new AzuraConnectionError("Etkin olmayan sayfa.", 404);
   const { url, token } = getAzuraConnection(env);
   const pageUrl = new URL(url);
   pageUrl.pathname = `/api/azura/${pageKey}/page-content`;

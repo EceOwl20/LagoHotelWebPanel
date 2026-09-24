@@ -1,6 +1,7 @@
 "use client";
 
 import SitePageMediaEditor from "./SitePageMediaEditor";
+import { AZURA_KIDS_IMAGES } from "@/lib/admin/azura-kidsclub-model.mjs";
 
 const singleImages = [
   { path: ["hero"], label: "Çocuk Kulübü hero görseli" },
@@ -36,16 +37,19 @@ const collections = [
   },
 ];
 
-export default function KidsClubMediaEditor({ activeLocale }) {
+export default function KidsClubMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
       pageKey="kidsclub"
       pageTitle="Çocuk Kulübü"
       activeLocale={activeLocale}
       uploadFolder="pages/kidsclub"
-      singleImages={singleImages}
-      collections={collections}
+      singleImages={hotel === "azura" ? AZURA_KIDS_IMAGES : singleImages}
+      collections={hotel === "azura" ? [{
+        path: ["moments"], label: "Çocuk Kulübü galerisi", itemLabel: "Galeri görseli", imageKey: "image", fixed: true,
+      }] : collections}
       localizedAlt
+      {...editorProps}
     />
   );
 }
