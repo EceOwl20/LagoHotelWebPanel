@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { SPA_GALLERY_IDS, SPA_MASSAGE_IDS, SPOR_GALLERY_IDS, getAzuraSpaPageConnection, isValidAzuraSpaPage, requestAzuraSpaPage } from "./azura-spawellness-page-content.mjs";
+import { SPA_GALLERY_IDS, SPA_MASSAGE_IDS } from "./azura-spawellness-page-content.mjs";
+import { SPOR_GALLERY_IDS } from "./azura-spor-page-content.mjs";
+import { getAzuraPageContentConnection, isValidAzuraPageContent, requestAzuraPageContent } from "./azura-page-content.mjs";
 import { getAzuraImagesConnection, isValidAzuraImage, requestAzuraImages } from "./azura-experience-images.mjs";
 
 const locales = ["tr", "en", "de", "ru"];
@@ -36,10 +38,10 @@ function sporFixture() {
 
 test("Spor kesin şema: dört liste maddesi, üç galeri, sekiz görsel ve masaj yok", () => {
   const f = sporFixture();
-  assert.equal(isValidAzuraSpaPage(f.bundle, f.media, "spor"), true);
-  assert.equal(isValidAzuraSpaPage(f.bundle, f.media), false);
-  assert.equal(isValidAzuraSpaPage(bundle, media, "spor"), false);
-  assert.equal(isValidAzuraSpaPage(bundle, media, "unknown"), false);
+  assert.equal(isValidAzuraPageContent(f.bundle, f.media, "spor"), true);
+  assert.equal(isValidAzuraPageContent(f.bundle, f.media), false);
+  assert.equal(isValidAzuraPageContent(bundle, media, "spor"), false);
+  assert.equal(isValidAzuraPageContent(bundle, media, "unknown"), false);
   for (const edit of [
     (p) => { p.bundle.tr.massage = {}; },
     (p) => { p.media.massage = {}; },
@@ -54,11 +56,11 @@ test("Spor kesin şema: dört liste maddesi, üç galeri, sekiz görsel ve masaj
     (p) => { delete p.bundle.de; },
   ]) {
     const copy = structuredClone(f); edit(copy);
-    assert.equal(isValidAzuraSpaPage(copy.bundle, copy.media, "spor"), false);
+    assert.equal(isValidAzuraPageContent(copy.bundle, copy.media, "spor"), false);
   }
   f.media.gallery.images[2].width = 4800;
   f.media.gallery.images[2].height = 3200;
-  assert.equal(isValidAzuraSpaPage(f.bundle, f.media, "spor"), true);
+  assert.equal(isValidAzuraPageContent(f.bundle, f.media, "spor"), true);
 });
 
 test("Spor proxy yalnızca kendi endpoint'ine token ve If-Match gönderir", async () => {
@@ -72,17 +74,17 @@ test("Spor proxy yalnızca kendi endpoint'ine token ve If-Match gönderir", asyn
     }
     return { ok: true, json: async () => payload };
   } };
-  assert.deepEqual(await requestAzuraSpaPage("GET", undefined, undefined, options), payload);
-  assert.deepEqual(await requestAzuraSpaPage("PUT", f.bundle, f.media, options), payload);
-  await assert.rejects(requestAzuraSpaPage("PUT", f.bundle, f.media, { ...options, revision: undefined }), (e) => e.status === 400);
-  assert.throws(() => getAzuraSpaPageConnection(env, "../spor"), (e) => e.status === 404);
+  assert.deepEqual(await requestAzuraPageContent("GET", undefined, undefined, options), payload);
+  assert.deepEqual(await requestAzuraPageContent("PUT", f.bundle, f.media, options), payload);
+  await assert.rejects(requestAzuraPageContent("PUT", f.bundle, f.media, { ...options, revision: undefined }), (e) => e.status === 400);
+  assert.throws(() => getAzuraPageContentConnection(env, "../spor"), (e) => e.status === 404);
 });
 
 test("Spor 409 ve hatalı yanıtları başarı kabul etmez", async () => {
   const f = sporFixture();
-  await assert.rejects(requestAzuraSpaPage("PUT", f.bundle, f.media, { env, pageKey: "spor", revision,
+  await assert.rejects(requestAzuraPageContent("PUT", f.bundle, f.media, { env, pageKey: "spor", revision,
     fetchImpl: async () => ({ ok: false, status: 409, json: async () => ({ error: "Eski sürüm" }) }) }), (e) => e.status === 409);
-  await assert.rejects(requestAzuraSpaPage("GET", undefined, undefined, { env, pageKey: "spor",
+  await assert.rejects(requestAzuraPageContent("GET", undefined, undefined, { env, pageKey: "spor",
     fetchImpl: async () => ({ ok: true, json: async () => ({ bundle, media, revision }) }) }), /beklenen içerik/);
 });
 
@@ -104,7 +106,7 @@ test("Spor medya listesi ve yüklemesi başka sayfa yollarını kabul etmez", as
 });
 
 test("Spa dört dil, yedi liste maddesi ve 14 görselle doğrulanır", () => {
-  assert.equal(isValidAzuraSpaPage(bundle, media), true);
+  assert.equal(isValidAzuraPageContent(bundle, media), true);
   for (const change of [
     (b) => { delete b.ru; },
     (b) => { delete b.tr.info.wellness.list7; },
@@ -112,29 +114,29 @@ test("Spa dört dil, yedi liste maddesi ve 14 görselle doğrulanır", () => {
     (b) => { b.tr.massage.time = "x".repeat(4001); },
     (b) => { b.tr.hero.text += "\n"; },
     (b) => { b.tr.types.extra = {}; },
-  ]) { const copy = structuredClone(bundle); change(copy); assert.equal(isValidAzuraSpaPage(copy, media), false); }
-  assert.equal(isValidAzuraSpaPage(bundle, { ...media, hero: { ...media.hero, image: "/uploads/pages/about/hero.jpg" } }), false);
-  assert.equal(isValidAzuraSpaPage(bundle, { ...media, hero: { ...media.hero, width: 0 } }), false);
+  ]) { const copy = structuredClone(bundle); change(copy); assert.equal(isValidAzuraPageContent(copy, media), false); }
+  assert.equal(isValidAzuraPageContent(bundle, { ...media, hero: { ...media.hero, image: "/uploads/pages/about/hero.jpg" } }), false);
+  assert.equal(isValidAzuraPageContent(bundle, { ...media, hero: { ...media.hero, width: 0 } }), false);
 });
 
 test("Spa galeri ve masaj kimlikleri/sıraları başlık eşleşmesini korur", () => {
   for (const key of ["gallery", "massage"]) {
     const copy = structuredClone(media);
     copy[key].images.reverse();
-    assert.equal(isValidAzuraSpaPage(bundle, copy), false);
+    assert.equal(isValidAzuraPageContent(bundle, copy), false);
     copy[key].images.pop();
-    assert.equal(isValidAzuraSpaPage(bundle, copy), false);
+    assert.equal(isValidAzuraPageContent(bundle, copy), false);
   }
   const copy = structuredClone(bundle);
   delete copy.tr.massage.cards[SPA_MASSAGE_IDS[0]];
   copy.tr.massage.cards.other = { title: "Yanlış kimlik" };
-  assert.equal(isValidAzuraSpaPage(copy, media), false);
+  assert.equal(isValidAzuraPageContent(copy, media), false);
 });
 
 test("Spa adresleri yalnızca doğrulanmış Azura bağlantısından türetilir", () => {
-  assert.equal(getAzuraSpaPageConnection(env).url, "http://localhost:3001/api/azura/spawellness/page-content");
+  assert.equal(getAzuraPageContentConnection(env).url, "http://localhost:3001/api/azura/spawellness/page-content");
   assert.equal(getAzuraImagesConnection(env, "spawellness").url, "http://localhost:3001/api/azura/spawellness/images");
-  assert.throws(() => getAzuraSpaPageConnection({ ...env, AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience" }));
+  assert.throws(() => getAzuraPageContentConnection({ ...env, AZURA_EXPERIENCE_API_URL: "http://evil.test/api/azura/homepage/experience" }));
 });
 
 test("Spa GET ve PUT doğru Bearer/If-Match ve yalnızca bundle/media ile iletilir", async () => {
@@ -148,16 +150,16 @@ test("Spa GET ve PUT doğru Bearer/If-Match ve yalnızca bundle/media ile iletil
     }
     return { ok: true, json: async () => payload };
   };
-  assert.deepEqual(await requestAzuraSpaPage("GET", undefined, undefined, { env, fetchImpl }), payload);
-  assert.deepEqual(await requestAzuraSpaPage("PUT", bundle, media, { env, fetchImpl, revision }), payload);
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, { env, fetchImpl }), /sürümü geçersiz/);
+  assert.deepEqual(await requestAzuraPageContent("GET", undefined, undefined, { env, fetchImpl }), payload);
+  assert.deepEqual(await requestAzuraPageContent("PUT", bundle, media, { env, fetchImpl, revision }), payload);
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, { env, fetchImpl }), /sürümü geçersiz/);
 });
 
 test("Spa bozuk yanıtı ve 409 çakışması başarı sayılmaz", async () => {
-  await assert.rejects(requestAzuraSpaPage("GET", undefined, undefined, {
+  await assert.rejects(requestAzuraPageContent("GET", undefined, undefined, {
     env, fetchImpl: async () => ({ ok: true, json: async () => ({ bundle, media, revision: "bad" }) }),
   }), /beklenen içerik/);
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, {
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, {
     env, revision, fetchImpl: async () => ({ ok: false, status: 409, json: async () => ({ error: "Eski sürüm." }) }),
   }), (error) => error.status === 409);
 });

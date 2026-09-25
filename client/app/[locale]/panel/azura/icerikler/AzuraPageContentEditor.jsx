@@ -1,4 +1,5 @@
 "use client";
+import BarCafesPageFields from "../../icerikler/BarCafesPageFields";
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import KidsClubPageFields from "../../icerikler/KidsClubPageFields";
@@ -6,15 +7,15 @@ import SpaPageFields from "../../icerikler/SpaPageFields";
 import BeachPoolsPageFields from "../../icerikler/BeachPoolsPageFields";
 import { usePanelPermission } from "../../PanelSessionContext";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
-import { isValidAzuraSpaPage } from "@/lib/admin/azura-spawellness-page-content.mjs";
+import { isValidAzuraPageContent } from "@/lib/admin/azura-page-content.mjs";
 
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
-const AzuraSpaEditor = forwardRef(function AzuraSpaEditor({ activeLocale, onDirtyChange, pageKey = "spawellness" }, ref) {
+const AzuraPageContentEditor = forwardRef(function AzuraPageContentEditor({ activeLocale, onDirtyChange, pageKey = "spawellness" }, ref) {
   const API = `/api/admin/azura/${pageKey}/page-content`;
   const IMAGES = `/api/admin/azura/${pageKey}/images`;
-  const Fields = pageKey === "kidsclub" ? KidsClubPageFields : pageKey === "beachpools" ? BeachPoolsPageFields : SpaPageFields;
-  const label = pageKey === "kidsclub" ? "Çocuk Kulübü" : pageKey === "beachpools" ? "Plaj ve Havuzlar" : pageKey === "spor" ? "Spor" : "Spa & Wellness";
+  const Fields = pageKey === "bars" ? BarCafesPageFields : pageKey === "kidsclub" ? KidsClubPageFields : pageKey === "beachpools" ? BeachPoolsPageFields : SpaPageFields;
+  const label = pageKey === "bars" ? "Barlar" : pageKey === "kidsclub" ? "Çocuk Kulübü" : pageKey === "beachpools" ? "Plaj ve Havuzlar" : pageKey === "spor" ? "Spor" : "Spa & Wellness";
   const canEdit = usePanelPermission(PANEL_PERMISSIONS.EDIT_CONTENT);
   const [draft, setDraft] = useState(null);
   const [original, setOriginal] = useState(null);
@@ -36,7 +37,7 @@ const AzuraSpaEditor = forwardRef(function AzuraSpaEditor({ activeLocale, onDirt
         const response = await fetch(API, { cache: "no-store" });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "Azura sayfası alınamadı.");
-        if (!isValidAzuraSpaPage(data.bundle, data.media, pageKey)) {
+        if (!isValidAzuraPageContent(data.bundle, data.media, pageKey)) {
           throw new Error("Azura sayfası beklenen biçimde değil.");
         }
         if (!cancelled) {
@@ -96,7 +97,7 @@ const AzuraSpaEditor = forwardRef(function AzuraSpaEditor({ activeLocale, onDirt
       setError("Görsel yüklemesi veya başka bir kayıt sürüyor. İşlem bitince yeniden deneyin.");
       return "failed";
     }
-    if (!isValidAzuraSpaPage(draft.bundle, draft.media, pageKey)) {
+    if (!isValidAzuraPageContent(draft.bundle, draft.media, pageKey)) {
       setError("Dört dilin tüm metinleri ve görsellerin yol, ölçü ve alt açıklamaları geçerli olmalıdır.");
       return "failed";
     }
@@ -132,7 +133,7 @@ const AzuraSpaEditor = forwardRef(function AzuraSpaEditor({ activeLocale, onDirt
     <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
       <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-400">{label} sayfası</p>
       <h2 className="mt-1 text-xl font-semibold text-stone-900">Azura {label} içerikleri</h2>
-      <p className="mt-2 text-sm leading-6 text-stone-500">{pageKey === "kidsclub" ? "Çocuk kulübü metinlerini, beş etkinliği, üç havuzu ve üç galeri görselini düzenleyin." : pageKey === "beachpools" ? "Plaj metinlerini, dört aktiviteyi ve beş havuzun normal/hover görsellerini düzenleyin. Video dosyası değişmez." : pageKey === "spor" ? "Spor tanıtımlarını ve üç galeri görselini düzenleyin." : "Spa tanıtımlarını, beş galeri görselini ve dört masaj kartını düzenleyin."}</p>
+      <p className="mt-2 text-sm leading-6 text-stone-500">{pageKey === "bars" ? "Barlar sayfasının metinlerini ve dört bar kartını düzenleyin. Restoranlar ve kafeler bu sayfaya dahil değildir." : pageKey === "kidsclub" ? "Çocuk kulübü metinlerini, beş etkinliği, üç havuzu ve üç galeri görselini düzenleyin." : pageKey === "beachpools" ? "Plaj metinlerini, dört aktiviteyi ve beş havuzun normal/hover görsellerini düzenleyin. Video dosyası değişmez." : pageKey === "spor" ? "Spor tanıtımlarını ve üç galeri görselini düzenleyin." : "Spa tanıtımlarını, beş galeri görselini ve dört masaj kartını düzenleyin."}</p>
       {loading ? <p className="mt-4 text-sm text-stone-500">Azura sayfası yükleniyor...</p> : null}
       {mediaLoading ? <p className="mt-4 text-sm text-stone-500">Azura sayfa görselleri yükleniyor...</p> : null}
       {error ? <p role="alert" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">{error}</p> : null}
@@ -149,4 +150,4 @@ const AzuraSpaEditor = forwardRef(function AzuraSpaEditor({ activeLocale, onDirt
   </div>;
 });
 
-export default AzuraSpaEditor;
+export default AzuraPageContentEditor;

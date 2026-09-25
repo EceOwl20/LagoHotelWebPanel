@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { KIDS_ACTIVITY_IDS, KIDS_POOL_IDS, KIDS_MOMENT_IDS, AZURA_KIDS_IMAGES } from "./azura-kidsclub-model.mjs";
 import { isValidAzuraKidsPage } from "./azura-kidsclub-page-content.mjs";
-import { requestAzuraSpaPage } from "./azura-spawellness-page-content.mjs";
+import { requestAzuraPageContent } from "./azura-page-content.mjs";
 import { requestAzuraImages, isValidAzuraImage } from "./azura-experience-images.mjs";
 
 const locales = ["tr", "en", "de", "ru"];
@@ -68,10 +68,10 @@ test("Kids proxy forwards server authorization and quoted revision with exact PU
     }
     return { ok: true, json: async () => payload };
   } };
-  assert.deepEqual(await requestAzuraSpaPage("GET", undefined, undefined, options), payload);
-  assert.deepEqual(await requestAzuraSpaPage("PUT", bundle, media, options), payload);
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, { ...options, revision: undefined }), (e) => e.status === 400);
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, { ...options,
+  assert.deepEqual(await requestAzuraPageContent("GET", undefined, undefined, options), payload);
+  assert.deepEqual(await requestAzuraPageContent("PUT", bundle, media, options), payload);
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, { ...options, revision: undefined }), (e) => e.status === 400);
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, { ...options,
     fetchImpl: async () => ({ ok: false, status: 409, json: async () => ({ error: "Conflict" }) }) }), (e) => e.status === 409);
 });
 

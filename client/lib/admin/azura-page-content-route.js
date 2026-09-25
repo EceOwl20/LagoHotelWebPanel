@@ -4,7 +4,7 @@ import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
-import { isValidAzuraSpaPage, requestAzuraSpaPage } from "@/lib/admin/azura-spawellness-page-content.mjs";
+import { isValidAzuraPageContent, requestAzuraPageContent } from "@/lib/admin/azura-page-content.mjs";
 
 const MAX_BODY_BYTES = 128 * 1024;
 
@@ -41,14 +41,14 @@ async function readLimitedJson(request) {
   }
 }
 
-export function createAzuraSpaPageHandlers(pageKey) {
-  if (!["spawellness", "spor", "beachpools", "kidsclub"].includes(pageKey)) throw new Error("Unsupported page");
+export function createAzuraPageContentHandlers(pageKey) {
+  if (!["spawellness", "spor", "beachpools", "kidsclub", "bars"].includes(pageKey)) throw new Error("Unsupported page");
   async function GET() {
     const session = await getAdminSession();
     if (!session) return json({ error: "Yetkisiz işlem." }, 401);
     try {
       assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
-      return json(await requestAzuraSpaPage("GET", undefined, undefined, { pageKey }));
+      return json(await requestAzuraPageContent("GET", undefined, undefined, { pageKey }));
     } catch (error) { return failure(error); }
   }
 
@@ -74,10 +74,10 @@ export function createAzuraSpaPageHandlers(pageKey) {
       if (!body || typeof body !== "object" || Array.isArray(body) ||
           Object.keys(body).length !== 3 || !Object.hasOwn(body, "bundle") ||
           !Object.hasOwn(body, "media") || !Object.hasOwn(body, "revision") ||
-          !isValidAzuraRevision(body.revision) || !isValidAzuraSpaPage(body.bundle, body.media, pageKey)) {
+          !isValidAzuraRevision(body.revision) || !isValidAzuraPageContent(body.bundle, body.media, pageKey)) {
         return json({ error: "Azura sayfası içeriği veya sürümü geçersiz." }, 400);
       }
-      return json(await requestAzuraSpaPage("PUT", body.bundle, body.media, { revision: body.revision, pageKey }));
+      return json(await requestAzuraPageContent("PUT", body.bundle, body.media, { revision: body.revision, pageKey }));
     } catch (error) { return failure(error); }
   }
 

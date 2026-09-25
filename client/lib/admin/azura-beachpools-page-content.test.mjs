@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { BEACH_ACTIVITY_IDS, BEACH_POOL_IDS, AZURA_BEACH_IMAGES } from "./azura-beachpools-model.mjs";
 import { isValidAzuraBeachPage } from "./azura-beachpools-page-content.mjs";
-import { requestAzuraSpaPage } from "./azura-spawellness-page-content.mjs";
+import { requestAzuraPageContent } from "./azura-page-content.mjs";
 import { requestAzuraImages, isValidAzuraImage } from "./azura-experience-images.mjs";
 
 const locales = ["tr", "en", "de", "ru"];
@@ -74,15 +74,15 @@ test("Beach GET/PUT doğru hedef, servis yetkisi ve revision kullanır", async (
     }
     return { ok: true, json: async () => payload };
   } };
-  assert.deepEqual(await requestAzuraSpaPage("GET", undefined, undefined, options), payload);
-  assert.deepEqual(await requestAzuraSpaPage("PUT", bundle, media, options), payload);
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, { ...options, revision: undefined }), (e) => e.status === 400);
+  assert.deepEqual(await requestAzuraPageContent("GET", undefined, undefined, options), payload);
+  assert.deepEqual(await requestAzuraPageContent("PUT", bundle, media, options), payload);
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, { ...options, revision: undefined }), (e) => e.status === 400);
 });
 
 test("Beach eski sürümü ve bozuk yanıtı başarı kabul etmez", async () => {
-  await assert.rejects(requestAzuraSpaPage("PUT", bundle, media, { env, pageKey: "beachpools", revision,
+  await assert.rejects(requestAzuraPageContent("PUT", bundle, media, { env, pageKey: "beachpools", revision,
     fetchImpl: async () => ({ ok: false, status: 409, json: async () => ({ error: "Eski sürüm" }) }) }), (e) => e.status === 409);
-  await assert.rejects(requestAzuraSpaPage("GET", undefined, undefined, { env, pageKey: "beachpools",
+  await assert.rejects(requestAzuraPageContent("GET", undefined, undefined, { env, pageKey: "beachpools",
     fetchImpl: async () => ({ ok: true, json: async () => ({ bundle, media, revision: "bad" }) }) }), /beklenen içerik/);
 });
 

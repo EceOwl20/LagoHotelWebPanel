@@ -210,7 +210,7 @@ Menü, oda ref'leri ve taslak durumu yapılandırmadan üretilir; kaydetme yaln�
 seçili odayı etkiler. Bilinmeyen oda kimlikleri kapalı kalır.
 # Azura Spor içerik yönetimi
 
-Spor, mevcut `AzuraSpaEditor`, `SpaPageFields` ve `SpaWellnessMediaEditor`
+Spor, mevcut `AzuraPageContentEditor`, `SpaPageFields` ve `SpaWellnessMediaEditor`
 bileşenlerini `pageKey="spor"` ile kullanır. Ayrı form kopyası yoktur.
 Azura Spor'da dört liste maddesi, üç sabit galeri öğesi ve toplam sekiz medya
 alanı vardır; masaj bölümü gösterilmez ve API doğrulamasında kabul edilmez.
@@ -221,7 +221,7 @@ Panel endpoint'leri:
 - GET/PUT `/api/admin/azura/spor/page-content`
 - GET/POST `/api/admin/azura/spor/images`
 
-Spa/Spor içerik route'ları ortak `azura-spa-page-route.js` yardımcılarını
+Spa/Spor içerik route'ları ortak `azura-page-content-route.js` yardımcılarını
 kullanır: oturum, içerik yetkisi, aynı kaynak kontrolü, hız ve 128 KiB gövde
 sınırı korunur. Servis tokenı tarayıcıya gönderilmez. Mevcut
 `AZURA_EXPERIENCE_API_URL` ve `AZURA_SERVICE_TOKEN` yeterlidir.
@@ -256,6 +256,37 @@ kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
 
 Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
 özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.
+
+# Azura Barlar
+
+Ortak sayfa altyapısının isimleri görevlerine göre ayrılmıştır:
+
+- `AzuraPageContentEditor.jsx`: Spa, Spor, Plaj/Havuz, Kids Club ve Barlar
+  için ortak yükleme, taslak, görsel ve kayıt akışı.
+- `azura-page-content.mjs`: sayfa doğrulayıcısını seçme ve Azura API iletişimi.
+- `azura-page-content-route.js`: panel oturumu, yetki ve güvenli GET/PUT işlemleri.
+- `azura-spawellness-page-content.mjs` ve `azura-spor-page-content.mjs`:
+  yalnızca ilgili sayfanın veri doğrulaması.
+- `azura-spa-spor-validation.mjs`: Spa/Spor şemalarının paylaştığı doğrulama yardımcıları.
+
+Bu adlandırma düzenlemesi API adreslerini, JSON sözleşmelerini veya içerikleri değiştirmez.
+
+Azura Barlar, mevcut BarCafesMediaEditor formunu otel yapılandırmasıyla kullanır.
+Lago'nun kafe ve carousel alanları korunur; Azura yalnızca lobbyPiano, chacha,
+pier ve lyricSnack kartlarını gösterir. Azura navigasyonunda Restoranlar ve
+Kafeler ayrı, Barlar ayrı sayfadır; içerikler kategoriler arasında taşınmaz.
+
+Panel GET/PUT `/api/admin/azura/bars/page-content` ve GET/POST
+`/api/admin/azura/bars/images` üzerinden mevcut sunucu bağlantısını kullanır.
+Yeni ortam değişkeni gerekmez; servis tokenı tarayıcıya gönderilmez.
+Dört dil ve dokuz medya alanı üst bardaki tek düğmeyle kaydedilir.
+Hero, bölüm arka planı ve discover alt metin içermez; diğer altı kayıt içerir.
+Kart id/order değerleri korunur, görsel seçiminde gerçek ölçüler güncellenir.
+
+Ortak oturum/yetki, aynı kaynak, hız sınırı, 128 KiB gövde kontrolü ve
+revision/If-Match akışı kullanılır. 409 taslağı korur. Görseller yalnızca
+/uploads/pages/bars/ kapsamında JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel
+sınırlarıyla işlenir. Başlangıç metinleri ve site bileşenleri değiştirilmez.
 
 # Azura Kids Club
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { AZURA_BAR_IMAGES } from "@/lib/admin/azura-bars-model.mjs";
 import SitePageMediaEditor from "./SitePageMediaEditor";
 
 const singleImages = [
@@ -27,15 +28,16 @@ const collections = [
   },
 ];
 
-export default function BarCafesMediaEditor({ activeLocale }) {
+export default function BarCafesMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
-      pageKey="barcafes"
-      pageTitle="Bar ve Kafeler Ana Sayfası"
+      pageKey={hotel === "azura" ? "bars" : "barcafes"}
+      pageTitle={hotel === "azura" ? "Barlar" : "Bar ve Kafeler Ana Sayfası"}
       activeLocale={activeLocale}
-      uploadFolder="pages/barcafes"
-      singleImages={singleImages}
-      collections={collections}
+      uploadFolder={hotel === "azura" ? "pages/bars" : "pages/barcafes"}
+      singleImages={hotel === "azura" ? AZURA_BAR_IMAGES : singleImages}
+      collections={hotel === "azura" ? [] : collections}
+      {...editorProps}
       localizedAlt
     />
   );

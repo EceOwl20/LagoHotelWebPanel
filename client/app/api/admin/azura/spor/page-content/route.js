@@ -1,6 +1,6 @@
-import { createAzuraSpaPageHandlers } from "@/lib/admin/azura-spa-page-route";
+import { createAzuraPageContentHandlers } from "@/lib/admin/azura-page-content-route";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-const handlers = createAzuraSpaPageHandlers("spor");
+const handlers = createAzuraPageContentHandlers("spor");
 export const GET = handlers.GET;
 export const PUT = handlers.PUT;
