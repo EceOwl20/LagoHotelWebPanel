@@ -26,14 +26,13 @@ function getAtPath(source, path) {
 function setAtPath(source, path, value) {
   const [key, ...rest] = path;
 
-  if (!key) {
+  if (key === undefined) {
     return value;
   }
 
-  return {
-    ...source,
-    [key]: rest.length > 0 ? setAtPath(source?.[key] || {}, rest, value) : value,
-  };
+  const copy = Array.isArray(source) ? [...source] : { ...source };
+  copy[key] = rest.length > 0 ? setAtPath(source?.[key] || {}, rest, value) : value;
+  return copy;
 }
 
 function normalizeOrder(images) {

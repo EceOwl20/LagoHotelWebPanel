@@ -1,5 +1,6 @@
 "use client";
 
+import { AZURA_ENTERTAINMENT_IMAGES } from "@/lib/admin/azura-entertainment-model.mjs";
 import SitePageMediaEditor from "./SitePageMediaEditor";
 
 const singleImages = [
@@ -23,15 +24,16 @@ const collections = [
   },
 ];
 
-export default function EntertainmentMediaEditor({ activeLocale }) {
+export default function EntertainmentMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
       pageKey="entertainment"
       pageTitle="Eğlence"
       activeLocale={activeLocale}
       uploadFolder="pages/entertainment"
-      singleImages={singleImages}
-      collections={collections}
+      singleImages={hotel === "azura" ? AZURA_ENTERTAINMENT_IMAGES : singleImages}
+      collections={hotel === "azura" ? [] : collections}
+      {...editorProps}
       localizedAlt
     />
   );

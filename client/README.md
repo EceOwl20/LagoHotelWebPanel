@@ -257,6 +257,22 @@ kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
 Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
 özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.
 
+# Azura Entertainment
+
+Azura Eğlence sayfası mevcut EntertainmentMediaEditor formunu otel
+yapılandırmasıyla kullanır. Lago'nun yedi kartı ve galerisi korunur.
+Azura'da hero, iki etkinlik ve dokuz kart olmak üzere 12 medya kaydı vardır;
+hero alt açıklaması içermez, diğer 11 kayıt dört dilde alt açıklama içerir.
+activities ve gridSection dizileri görsel/alt değişiminde dizi olarak kalır;
+kimlikler, sıralar ve diğer diller korunur.
+
+GET/PUT `/api/admin/azura/entertainment/page-content` ve GET/POST
+`/api/admin/azura/entertainment/images` mevcut Azura servis bağlantısını
+kullanır; yeni ortam değişkeni gerekmez. Ortak sayfa editörü dört dil ve
+medyayı tek üst-bar düğmesiyle kaydeder, If-Match ile çakışma kontrolü yapar.
+409 taslağı korur. Ortak oturum, yetki, aynı kaynak, hız ve boyut kontrolleri
+korunur. Kategori ve site bağlantıları panelden değiştirilmez.
+
 # Azura Barlar
 
 Ortak sayfa altyapısının isimleri görevlerine göre ayrılmıştır:

@@ -1,3 +1,4 @@
+import { isValidAzuraEntertainmentPage } from "./azura-entertainment-page-content.mjs";
 import { isValidAzuraBarsPage } from "./azura-bars-page-content.mjs";
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
 import { isValidAzuraRevision } from "./azura-revision.mjs";
@@ -15,13 +16,14 @@ const validators = Object.freeze({
   beachpools: isValidAzuraBeachPage,
   kidsclub: isValidAzuraKidsPage,
   bars: isValidAzuraBarsPage,
+  entertainment: isValidAzuraEntertainmentPage,
 });
 export function isValidAzuraPageContent(bundle, media, pageKey = "spawellness") {
   return Object.hasOwn(validators, pageKey) && validators[pageKey](bundle, media);
 }
 
 export function getAzuraPageContentConnection(env = process.env, pageKey = "spawellness") {
-  if (!["spawellness", "spor", "beachpools", "kidsclub", "bars"].includes(pageKey)) throw new AzuraConnectionError("Etkin olmayan sayfa.", 404);
+  if (!["spawellness", "spor", "beachpools", "kidsclub", "bars", "entertainment"].includes(pageKey)) throw new AzuraConnectionError("Etkin olmayan sayfa.", 404);
   const { url, token } = getAzuraConnection(env);
   const pageUrl = new URL(url);
   pageUrl.pathname = `/api/azura/${pageKey}/page-content`;
