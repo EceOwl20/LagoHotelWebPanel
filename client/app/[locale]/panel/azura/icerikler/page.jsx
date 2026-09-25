@@ -118,11 +118,86 @@ export default function AzuraContentsPage() {
   const dirtyCount = Object.values(dirtySections).filter(Boolean).length;
   const homepageDirty = Object.entries(dirtySections).some(([key, dirty]) => !["contact", "rooms", "restaurants", "about", "spa", "spor", "beachpools", "kidsclub", "bars", "entertainment", ...Object.keys(AZURA_ROOM_DETAIL_CONFIGS)].includes(key) && dirty);
   const normalizedQuery = query.trim().toLocaleLowerCase("tr");
-  const showHomepage = "ana sayfa anasayfa homepage".includes(normalizedQuery);
-  const showContact = "genel alanlar iletişim iletişim bilgileri contact".includes(normalizedQuery);
-  const showRooms = "odalar oda sayfası accommodation rooms".includes(normalizedQuery);
-  const showRestaurants = "restoranlar restoran sayfası restaurants".includes(normalizedQuery);
 
+ const matchesSearch = (...terms) => {
+  if (!normalizedQuery) return true;
+
+  return terms.some((term) =>
+    term.toLocaleLowerCase("tr").includes(normalizedQuery)
+  );
+};
+
+const showHomepage = matchesSearch(
+  "Ana sayfa",
+  "Anasayfa",
+  "Homepage"
+);
+
+const showContact = matchesSearch(
+  "Genel alanlar",
+  "İletişim bilgileri",
+  "Contact"
+);
+
+const showRooms = matchesSearch(
+  "Odalar",
+  "Oda liste sayfası",
+  "Accommodation",
+  "Rooms"
+);
+
+const showRestaurants = matchesSearch(
+  "Yemek ve İçecek",
+  "Restoranlar ve Kafeler",
+  "Restaurants"
+);
+
+const showBars = matchesSearch(
+  "Yemek ve İçecek",
+  "Barlar",
+  "Bars"
+);
+
+const showAbout = matchesSearch(
+  "Sayfalar",
+  "Hakkımızda",
+  "About"
+);
+
+const showSpa = matchesSearch(
+  "Sayfalar",
+  "Spa & Wellness",
+  "Spa",
+  "Wellness"
+);
+
+const showSpor = matchesSearch(
+  "Sayfalar",
+  "Spor",
+  "Sport",
+  "Fitness"
+);
+
+const showBeachPools = matchesSearch(
+  "Sayfalar",
+  "Plaj ve Havuzlar",
+  "Beach",
+  "Pools",
+  "BeachPools"
+);
+
+const showKidsClub = matchesSearch(
+  "Sayfalar",
+  "Çocuk Kulübü",
+  "Kids Club",
+  "KidsClub"
+);
+
+const showEntertainment = matchesSearch(
+  "Sayfalar",
+  "Eğlence",
+  "Entertainment"
+);
   async function saveEntertainment() {
     if (!canEdit || !dirtySections.entertainment || savingEntertainment) return;
     setSavingEntertainment(true);
@@ -151,12 +226,21 @@ export default function AzuraContentsPage() {
     finally { setSavingBeach(false); }
   }
 
-  const showAbout = "hakkımızda hakkimizda about".includes(normalizedQuery);
+  // const showAbout = "hakkımızda hakkimizda about".includes(normalizedQuery);
 
-  const showSpa = "spa wellness sağlık sağlıklı yaşam".includes(normalizedQuery);
+  // const showSpa = "spa wellness sağlık sağlıklı yaşam".includes(normalizedQuery);
 
-  const visibleRooms = Object.values(AZURA_ROOM_DETAIL_CONFIGS).filter((room) =>
-    `odalar oda detay ${room.label} ${room.roomKey} ${room.pageKey}`.toLocaleLowerCase("tr").includes(normalizedQuery));
+const visibleRooms = Object.values(
+  AZURA_ROOM_DETAIL_CONFIGS
+).filter((room) =>
+  matchesSearch(
+    "Odalar",
+    "Oda detayı",
+    room.label,
+    room.roomKey,
+    room.pageKey
+  )
+);
 
   async function saveRoomDetail() {
     if (!canEdit || !selectedRoom || !dirtySections[selectedId] || savingRoomDetail) return;
@@ -267,66 +351,210 @@ export default function AzuraContentsPage() {
       <div className="grid items-start gap-6 xl:grid-cols-[310px_minmax(0,1fr)]">
         <ContentWorkspaceNavigation
           groups={[
-            ...(showContact ? [{
-              id: "general",
-              label: "Genel alanlar",
-              items: [{ id: "contact", label: "İletişim bilgileri", code: "ContactSection", type: "Ortak bölüm", dirty: dirtySections.contact }],
-            }] : []),
-            ...("eğlence eglence entertainment".includes(normalizedQuery) ? [{
-              id: "entertainment", label: "Eğlence",
-              items: [{ id: "entertainment", label: "Eğlence", code: "Entertainment", type: "Sayfa", main: true, dirty: dirtySections.entertainment }],
-            }] : []),
-            ...("barlar bars".includes(normalizedQuery) ? [{
-              id: "bars", label: "Barlar",
-              items: [{ id: "bars", label: "Barlar", code: "Bars", type: "Sayfa", main: true, dirty: dirtySections.bars }],
-            }] : []),
-            ...("çocuk kulübü kids club kidsclub".includes(normalizedQuery) ? [{
-              id: "kids", label: "Çocuk Kulübü",
-              items: [{ id: "kidsclub", label: "Çocuk Kulübü", code: "KidsClub", type: "Sayfa", main: true, dirty: dirtySections.kidsclub }],
-            }] : []),
-            ...("plaj havuzlar beach pools beachpools".includes(normalizedQuery) ? [{
-              id: "beach", label: "Plaj ve Havuzlar",
-              items: [{ id: "beachpools", label: "Plaj ve Havuzlar", code: "BeachPools", type: "Sayfa", main: true, dirty: dirtySections.beachpools }],
-            }] : []),
-            ...(showHomepage ? [{
-              id: "home",
-              label: "Ana sayfa",
-              items: [{ id: "homepage", label: "Ana sayfa", code: "HomePage", type: "Sayfa", main: true, dirty: homepageDirty }],
-            }] : []),
-            ...((showRooms || visibleRooms.length > 0) ? [{
-              id: "rooms",
-              label: "Odalar",
+    ...(showContact
+      ? [
+          {
+            id: "general",
+            label: "Genel Alanlar",
+            items: [
+              {
+                id: "contact",
+                label: "İletişim bilgileri",
+                code: "ContactSection",
+                type: "Ortak bölüm",
+                dirty: dirtySections.contact,
+              },
+            ],
+          },
+        ]
+      : []),
+
+    ...(showHomepage
+      ? [
+          {
+            id: "home",
+            label: "Ana Sayfa",
+            items: [
+              {
+                id: "homepage",
+                label: "Ana sayfa",
+                code: "HomePage",
+                type: "Sayfa",
+                main: true,
+                dirty: homepageDirty,
+              },
+            ],
+          },
+        ]
+      : []),
+
+    ...(showRooms || visibleRooms.length > 0
+      ? [
+          {
+            id: "rooms",
+            label: "Odalar",
+            items: [
+              ...(showRooms
+                ? [
+                    {
+                      id: "rooms",
+                      label: "Oda liste sayfası",
+                      code: "Rooms",
+                      type: "Sayfa",
+                      main: true,
+                      dirty: dirtySections.rooms,
+                    },
+                  ]
+                : []),
+
+              ...visibleRooms.map((room) => ({
+                id: room.roomKey,
+                label: room.label,
+                code: room.pageKey,
+                type: "Oda detayı",
+                dirty: dirtySections[room.roomKey],
+              })),
+            ],
+          },
+        ]
+      : []),
+
+    ...(showRestaurants || showBars
+      ? [
+          {
+            id: "food",
+            label: "Yemek ve İçecek",
+            items: [
+              ...(showRestaurants
+                ? [
+                    {
+                      id: "restaurants",
+                      label: "Restoranlar ve Kafeler",
+                      code: "Restaurants",
+                      type: "Sayfa",
+                      dirty: dirtySections.restaurants,
+                    },
+                  ]
+                : []),
+
+              ...(showBars
+                ? [
+                    {
+                      id: "bars",
+                      label: "Barlar",
+                      code: "Bars",
+                      type: "Sayfa",
+                      dirty: dirtySections.bars,
+                    },
+                  ]
+                : []),
+            ],
+          },
+        ]
+      : []),
+
+    ...(
+      showAbout ||
+      showSpa ||
+      showSpor ||
+      showBeachPools ||
+      showKidsClub ||
+      showEntertainment
+        ? [
+            {
+              id: "pages",
+              label: "Sayfalar",
               items: [
-                ...(showRooms ? [{ id: "rooms", label: "Oda sayfası", code: "Rooms", type: "Sayfa", main: true, dirty: dirtySections.rooms }] : []),
-                ...visibleRooms.map((room) => ({ id: room.roomKey, label: room.label, code: room.pageKey, type: "Oda detayı", dirty: dirtySections[room.roomKey] })),
+                ...(showAbout
+                  ? [
+                      {
+                        id: "about",
+                        label: "Hakkımızda",
+                        code: "About",
+                        type: "Sayfa",
+                        dirty: dirtySections.about,
+                      },
+                    ]
+                  : []),
+
+                ...(showSpa
+                  ? [
+                      {
+                        id: "spa",
+                        label: "Spa & Wellness",
+                        code: "Spa",
+                        type: "Sayfa",
+                        dirty: dirtySections.spa,
+                      },
+                    ]
+                  : []),
+
+                ...(showSpor
+                  ? [
+                      {
+                        id: "spor",
+                        label: "Spor",
+                        code: "Sport",
+                        type: "Sayfa",
+                        dirty: dirtySections.spor,
+                      },
+                    ]
+                  : []),
+
+                ...(showBeachPools
+                  ? [
+                      {
+                        id: "beachpools",
+                        label: "Plaj ve Havuzlar",
+                        code: "BeachPools",
+                        type: "Sayfa",
+                        dirty: dirtySections.beachpools,
+                      },
+                    ]
+                  : []),
+
+                ...(showKidsClub
+                  ? [
+                      {
+                        id: "kidsclub",
+                        label: "Çocuk Kulübü",
+                        code: "KidsClub",
+                        type: "Sayfa",
+                        dirty: dirtySections.kidsclub,
+                      },
+                    ]
+                  : []),
+
+                ...(showEntertainment
+                  ? [
+                      {
+                        id: "entertainment",
+                        label: "Eğlence",
+                        code: "Entertainment",
+                        type: "Sayfa",
+                        dirty: dirtySections.entertainment,
+                      },
+                    ]
+                  : []),
               ],
-            }] : []),
-            ...("spor sport fitness".includes(normalizedQuery) ? [{
-              id: "sport", label: "Spor",
-              items: [{ id: "spor", label: "Spor", code: "Sport", type: "Sayfa", main: true, dirty: dirtySections.spor }],
-            }] : []),
-            ...(showSpa ? [{
-              id: "pages", label: "Spa & Wellness",
-              items: [{ id: "spa", label: "Spa & Wellness", code: "Spa", type: "Sayfa", main: true, dirty: dirtySections.spa }],
-            }] : []),
-            ...(showAbout ? [{
-              id: "about", label: "Otel hakkında",
-              items: [{ id: "about", label: "Hakkımızda", code: "About", type: "Sayfa", main: true, dirty: dirtySections.about }],
-            }] : []),
-            ...(showRestaurants ? [{
-              id: "food",
-              label: "Yeme & içme",
-              items: [{ id: "restaurants", label: "Restoranlar ve Kafeler", code: "Restaurants", type: "Sayfa", main: true, dirty: dirtySections.restaurants }],
-            }] : []),
-          ]}
-          selectedId={selectedId}
-          onSelect={(id) => {
-            setSelectedId(id);
-            document.getElementById("azura-content-editor")?.scrollIntoView({ behavior: "smooth" });
-          }}
-          query={query}
-          onQueryChange={setQuery}
-          footer="Bölüm değiştirmek taslakları silmez. Sayfalar kendi üst düğmeleriyle; genel iletişim alanı kendi düğmesiyle kaydedilir."
+            },
+          ]
+        : []
+    ),
+  ]}
+  selectedId={selectedId}
+  onSelect={(id) => {
+    setSelectedId(id);
+
+    document
+      .getElementById("azura-content-editor")
+      ?.scrollIntoView({
+        behavior: "smooth",
+      });
+  }}
+  query={query}
+  onQueryChange={setQuery}
+  footer="Bölüm değiştirmek taslakları silmez. Sayfalar kendi üst düğmeleriyle; genel iletişim alanı kendi düğmesiyle kaydedilir."
         />
 
         <div id="azura-content-editor" className="min-w-0 space-y-5">

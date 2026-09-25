@@ -13,12 +13,12 @@ const { code } = transformSync(source, {
   module: { type: "commonjs" },
 });
 
-function renderTree(selectedId) {
+function renderTree(selectedId, query = "") {
   const compiledModule = { exports: {} };
   const stub = () => null;
   const imports = (name) => {
     if (name === "react") return {
-      useState: (initial) => [initial === "homepage" ? selectedId : initial, stub],
+      useState: (initial) => [initial === "homepage" ? selectedId : initial === "" ? query : initial, stub],
       useRef: (current) => ({ current }),
       useCallback: (fn) => fn,
       useEffect: stub,
@@ -35,6 +35,41 @@ function renderTree(selectedId) {
   new Function("require", "module", "exports", code)(imports, compiledModule, compiledModule.exports);
   return compiledModule.exports.default();
 }
+
+function navigationGroups(query = "") {
+  let groups;
+  function walk(node) {
+    if (Array.isArray(node)) { node.forEach(walk); return; }
+    if (!node?.props) return;
+    if (node.props.groups) groups = node.props.groups;
+    walk(node.props.children);
+  }
+  walk(renderTree("homepage", query));
+  return groups;
+}
+
+test("Azura navigation groups use existing visual IDs and keep all content exactly once", () => {
+  const groups = navigationGroups();
+  assert.deepEqual(groups.map((g) => g.id), ["general", "home", "rooms", "food", "pages"]);
+  assert.deepEqual(groups.map((g) => g.label), ["Genel Alanlar", "Ana Sayfa", "Odalar", "Yemek ve İçecek", "Sayfalar"]);
+  assert.deepEqual(groups.find((g) => g.id === "general").items.map((i) => i.id), ["contact"]);
+  assert.deepEqual(groups.find((g) => g.id === "rooms").items.map((i) => i.id),
+    ["rooms", ...Object.values(AZURA_ROOM_DETAIL_CONFIGS).map((r) => r.roomKey)]);
+  assert.deepEqual(groups.find((g) => g.id === "food").items.map((i) => i.id), ["restaurants", "bars"]);
+  assert.deepEqual(groups.find((g) => g.id === "pages").items.map((i) => i.id),
+    ["about", "spa", "spor", "beachpools", "kidsclub", "entertainment"]);
+  const ids = groups.flatMap((g) => g.items.map((i) => i.id));
+  assert.equal(new Set(ids).size, ids.length);
+  assert.equal(ids.length, 14);
+});
+
+test("Azura navigation supports group search, individual pages and empty results", () => {
+  assert.deepEqual(navigationGroups("Yemek ve İçecek").map((g) => g.id), ["food"]);
+  assert.equal(navigationGroups("Sayfalar")[0].items.length, 6);
+  assert.equal(navigationGroups("Odalar")[0].items.length, 4);
+  assert.deepEqual(navigationGroups("Barlar")[0].items.map((i) => i.id), ["bars"]);
+  assert.deepEqual(navigationGroups("bulunmayan-kategori"), []);
+});
 
 const sections = {
   entertainment: "Azura Eğlence sayfası",
