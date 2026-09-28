@@ -326,3 +326,35 @@ activity5 repeatTitle alanlarında tam boş string kabul edilir.
 Ortak route kontrolleri oturum, düzenleme yetkisi, aynı kaynak, hız sınırı
 ve 128 KiB içerik sınırını uygular. Görseller yalnızca kidsclub dizininde,
 JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel sınırlarıyla işlenir.
+
+# Azura Galeri
+
+`/panel/galeri` ve `/panel/azura/galeri` aynı `GalleryManager` arayüzünü
+kullanır. Otel değişiminde bileşen yeniden oluşturulur; veriler ve taslaklar
+birbirine taşınmaz. Lago'nun mevcut yerel API, kategori kilidi ve silme
+davranışı korunur. Azura kendi dokuz kategorisini (boş meeting dahil) kullanır;
+kayıt sayısı başlangıçtaki 95 ile sınırlandırılmaz.
+
+Panel endpoint'leri:
+
+- GET/PATCH `/api/admin/azura/gallery`
+- GET/POST `/api/admin/azura/gallery/images`
+
+Mevcut `AZURA_EXPERIENCE_API_URL` adresinin origin'i ve sunucuya özel
+`AZURA_SERVICE_TOKEN` kullanılır; yeni ortam değişkeni gerekmez. Servis tokenı
+tarayıcıya gönderilmez. Panel GET yanıtı `{gallery, revision, mediaOrigin}`;
+tarayıcı PATCH gövdesi `{operation, revision}` biçimindedir. Sunucu Azura'ya
+yalnızca operation nesnesini gönderir ve revision'ı tırnaklı If-Match başlığına
+dönüştürür. İşlemler add, reorder, update (dört dilde alt metin) ve remove'dur.
+
+Mevcut görsel seçilebilir veya JPEG/PNG/WebP yüklenebilir (8 MiB, 16 milyon
+piksel). Yükleme galeriye otomatik kayıt eklemez: dört dilin alt açıklaması
+doldurulduktan sonra Kategoriye ekle işlemi gerekir. Alt metinler en fazla
+300 karakterdir. Kaldırma yalnızca kategori kaydını kaldırır; fiziksel dosyayı
+silmez. Kaldırma yönetici yetkisi, diğer yazmalar içerik düzenleme yetkisi ister.
+
+Oturum, aynı kaynak, hız sınırı ve 128 KiB PATCH gövdesi kontrolleri uygulanır.
+Çakışma veya başarısız kayıtta taslak korunur; yeniden kayıt öncesi açıkça
+Güncel verileri getir işlemiyle revision yenilenir. Yazmalar sırasında yeni
+işlemler engellenir. Azura'nın atomik kayıt kuyruğu tek Node.js süreciyle
+sınırlıdır; bu bağlantı çoklu process kilidi sağlamaz.

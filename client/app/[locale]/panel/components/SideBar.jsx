@@ -26,6 +26,7 @@ const navigationItems = [
   { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
 ];
 const azuraNavigationItems = [
+  { href: "/panel/azura/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
 ];
 

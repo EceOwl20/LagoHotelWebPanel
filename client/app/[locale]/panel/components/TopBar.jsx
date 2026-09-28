@@ -18,6 +18,7 @@ import {
 import PanelSearch from "./PanelSearch";
 
 const pageLabels = [
+  { match: "/panel/azura/galeri", section: "Azura Deluxe Hotel", title: "Galeri" },
   { match: "/panel/dashboard", section: "Genel Bakış", title: "Dashboard" },
   { match: "/panel/sayfalar/yeni", section: "Sayfalar", title: "Yeni sayfa" },
   { match: "/panel/sayfalar/", section: "Sayfalar", title: "Taslağı düzenle" },
