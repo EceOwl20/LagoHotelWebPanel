@@ -1,6 +1,7 @@
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
 
 const IMAGE_PATH = Object.freeze({
+  blog: /^\/uploads\/blog\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   gallery: /^\/uploads\/gallery\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   entertainment: /^\/uploads\/pages\/entertainment\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   bars: /^\/uploads\/pages\/bars\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
@@ -22,12 +23,13 @@ const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const TIMEOUT_MS = 30000;
 
 export function getAzuraImagesConnection(env = process.env, scope = "experience") {
-  if (!["gallery", "entertainment", "bars", "kidsclub", "beachpools", "spor", "experience", "homepage", "rooms", "restaurants", "about", "spawellness", "room-detail-deluxe", "room-detail-family", "room-detail-fantasy"].includes(scope)) {
+  if (!["blog", "gallery", "entertainment", "bars", "kidsclub", "beachpools", "spor", "experience", "homepage", "rooms", "restaurants", "about", "spawellness", "room-detail-deluxe", "room-detail-family", "room-detail-fantasy"].includes(scope)) {
     throw new AzuraConnectionError("Azura görsel kapsamı geçersiz.", 400);
   }
   const { url, token } = getAzuraConnection(env);
   const imagesUrl = new URL(url);
-  imagesUrl.pathname = scope === "gallery" ? "/api/azura/gallery/images"
+  imagesUrl.pathname = scope === "blog" ? "/api/azura/blog/images"
+    : scope === "gallery" ? "/api/azura/gallery/images"
     : scope === "homepage" ? "/api/azura/homepage/images"
     : scope === "rooms" ? "/api/azura/rooms/images"
     : scope === "restaurants" ? "/api/azura/restaurants/images"

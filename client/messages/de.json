@@ -1813,6 +1813,9 @@
   "BlogNews": {
     "subtitle": "Entdecken Sie Ihren perfekten Kurzurlaub",
     "title": "Neueste Nachrichten",
+    "readMore": "Weiterlesen",
+"empty": "Es sind noch keine Blogbeiträge veröffentlicht.",
+   "all":"Alle Blogbeiträge",
     "InfoSection": {
       "subtitle": "Perfekte Gourmet-Erlebnisse",
       "title": "Lago Hotel News",

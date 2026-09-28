@@ -1805,6 +1805,9 @@
   "BlogNews": {
     "subtitle": "  Discover Your Perfect Getaway",
     "title": "Latest News",
+    "readMore": "Read more",
+  "empty": "There are no published blog posts yet.",
+    "all":"All blog posts",
     "InfoSection": {
       "subtitle": " Perfect Fine Dine Experiences",
       "title": "Lago Hotel News",

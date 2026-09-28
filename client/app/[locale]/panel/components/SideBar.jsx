@@ -14,10 +14,11 @@ import { FiImage } from "react-icons/fi";
 // import { FiSlack } from "react-icons/fi";
 // import { FiGrid } from "react-icons/fi";
 import { FiPackage, FiUsers } from "react-icons/fi";
-
+import { LuChartNoAxesCombined } from "react-icons/lu";
+import { IoBarChart } from "react-icons/io5";
 
 const navigationItems = [
-  { href: "/panel/dashboard", label: "Dashboard", icon: FiTable},
+  { href: "/panel/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined},
   { href: "/panel/sayfalar", label: "Sayfalar", icon: FiFile },
   { href: "/panel/icerikler", label: "Sayfa Icerikleri", icon: FiLayers },
   { href: "/panel/medya", label: "Medya Kutuphanesi", icon: FiImage },
@@ -26,8 +27,11 @@ const navigationItems = [
   { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
 ];
 const azuraNavigationItems = [
+  { href: "/panel/azura/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined },
   { href: "/panel/azura/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
+  { href: "/panel/azura/blog", label: "Blog", icon: FiPackage },
+
 ];
 
 export default function SideBar({ user }) {

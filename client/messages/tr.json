@@ -1804,6 +1804,9 @@
   "BlogNews": {
     "subtitle": "Mükemmel Kaçışınızı Keşfedin",
     "title": "Son Haberler",
+    "readMore": "Devamını oku",
+  "empty": "Henüz yayınlanmış blog yazısı bulunmuyor.",
+  "all":"Tüm blog yazıları",
     "InfoSection": {
       "subtitle": "Mükemmel Fine Dining Deneyimleri",
       "title": "Lago Oteli Haberleri",

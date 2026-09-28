@@ -28,7 +28,7 @@ const hotels = [
     eyebrow: "PİLOT BAĞLANTI",
     description:
       "Şimdilik anasayfadaki karşılama, keşif, tanıtım ve olanaklar bölümleri yönetilebilir.",
-    href: "/panel/azura/icerikler",
+    href: "/panel/azura/dashboard",
     initial: "A",
     accent: "bg-[#356b70]",
     icon: FiImage,

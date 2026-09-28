@@ -358,3 +358,65 @@ Oturum, aynı kaynak, hız sınırı ve 128 KiB PATCH gövdesi kontrolleri uygul
 Güncel verileri getir işlemiyle revision yenilenir. Yazmalar sırasında yeni
 işlemler engellenir. Azura'nın atomik kayıt kuyruğu tek Node.js süreciyle
 sınırlıdır; bu bağlantı çoklu process kilidi sağlamaz.
+
+# Azura Blog
+
+Lago `/panel/blog` ve Azura `/panel/azura/blog` aynı `BlogManager` formunu
+kullanır. Ayrı route sarmalayıcıları otel değişiminde formu yeniden oluşturur.
+Lago'nun API, taslak/yayın ve yerel kilit davranışları korunur. Azura ekranı
+yerel blog/galeri kilidine veya yerel medya uçlarına istek göndermez.
+
+Panel endpoint'leri:
+
+- GET/POST `/api/admin/azura/blog/posts`
+- GET/PUT/DELETE `/api/admin/azura/blog/posts/[slug]`
+- GET/POST `/api/admin/azura/blog/images`
+
+Mevcut `AZURA_EXPERIENCE_API_URL` origin'i ve `AZURA_SERVICE_TOKEN` kullanılır;
+yeni ortam değişkeni gerekmez. Token yalnızca sunucuda kalır. Azura kurulumu
+ayrı projede `seed:blog` ile hazırlanmalıdır. Azura boşsa panel boş liste açar;
+Lago kayıtları kopyalanmaz.
+
+Uzak `{record,revision}` v2 yanıtı sunucuda doğrulanıp mevcut editörün
+`{post}` görünümüne çevrilir: taslak alanları, yayın durumu,
+`hasUnpublishedChanges`, `revision`, `mediaOrigin`. Liste `{posts,mediaOrigin}`
+döndürür; yayımlanmış kopyanın tamamı tarayıcıya taşınmaz.
+
+POST `{slug,draft}` ile yalnızca taslak oluşturur. Draft tam olarak
+`coverImage,publishedAt,translations,contentBlocks` içerir. Slug en fazla
+120 karakter küçük harf/rakam/tire; oluşturulduktan sonra değişmez.
+PUT gövdeleri `{action:"save",draft}`, `{action:"publish"}` ve
+`{action:"unpublish"}`; PUT/DELETE tırnaklı If-Match ister. DELETE gövdesizdir.
+
+Formdaki Yayınla/Taslağı Yayına Aktar ve Yayından Kaldır önce taslağı kaydeder,
+sonra dönen yeni revision ile ilgili işlemi yapar. Bu **iki ayrı istektir**:
+ikinci işlem başarısızsa taslağın kaydedildiği fakat yayın işleminin
+tamamlanmadığı açıkça gösterilir. Otomatik tekrar yapılmaz. 409 veya sonucu
+belirsiz ağ/5xx hatasında form korunur, kayıt bloke edilir. “Sunucudaki kaydı
+yükle” onayla yerel taslağı bırakır ve güncel içeriği getirir; sessizce üzerine
+yazma yapılmaz. Yazma/yükleme sırasında eşzamanlı işlemler engellenir.
+
+Yazı değiştirme/yeni yazı açma ve tam sayfa kapanışında kaydedilmemiş içerik
+uyarısı vardır. Bu bir otomatik taslak yedeği değildir; menü üzerinden başka
+bir route'a geçmeden önce kayıt tamamlanmalıdır. Yayın tarihi otomatik
+zamanlanmış yayın sağlamaz. Azura tarih formu tarih/saatin gerçek anını korur.
+
+İçerik düzenleme yetkisi okuma, taslak ve yükleme için; yayınlama yetkisi
+publish/unpublish için; silme yetkisi DELETE için sunucuda denetlenir.
+Aynı kaynak, hız sınırı, JSON Content-Type, 128 KiB istek sınırı ve kesin
+alan doğrulaması uygulanır. Dört dil gereklidir; en az bir dilde başlık
+olmalıdır. Başlık/SEO başlığı 500, özet/SEO açıklaması 4000, ana/blok metni
+100000 karakter sınırındadır; toplam istek ayrıca 128 KiB ile sınırlanır.
+H2/H3 blok kimlikleri benzersizdir; satır sonları korunur.
+
+Ortak görsel seçici yalnızca Azura `/uploads/blog/` görsellerini listeler ve
+yükler. Lago galerisi veya Azura'nın diğer sayfa görselleri bu sözleşmeye
+dahil değildir. JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel sınırları kullanılır.
+Yükleme yalnızca formdaki seçimi değiştirir; yazı kaydı ve yayın ayrıdır.
+Azura yazısı silindiğinde fiziksel görseller korunur.
+
+Testler: `npm run test:admin`, `npm run test:pages`, `npm run test:integration`.
+`tests/azura-blog.integration.test.mjs` geçici Lago verileri ve bellek içi
+Azura sözleşme sunucusuyla HTTP akışını sınar; gerçek Azura verisine yazmaz.
+İzole production build sonrası `AZURA_BLOG_TEST_PRODUCTION=1 node --test
+tests/azura-blog.integration.test.mjs` production modunda çalıştırılabilir.
