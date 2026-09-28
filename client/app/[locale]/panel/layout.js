@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import Sidebar from "./components/SideBar.jsx";
 import TopBar from "./components/TopBar.jsx";
-import { PanelSessionProvider } from "./PanelSessionContext.jsx";
+import { PanelSessionProvider, PanelHotelProvider } from "./PanelSessionContext.jsx";
 
 export default function PanelLayout({ children }) {
   const params = useParams();
@@ -15,6 +15,25 @@ export default function PanelLayout({ children }) {
     authenticated: false,
     user: null,
   });
+
+  const [selectedHotel, setSelectedHotel] = useState(null);
+
+  const selectHotel = (hotel) => {
+  if (hotel !== "lago" && hotel !== "azura") {
+    return;
+  }
+
+  sessionStorage.setItem("panel:selectedHotel", hotel);
+  setSelectedHotel(hotel);
+};
+
+useEffect(() => {
+  const storedHotel = sessionStorage.getItem("panel:selectedHotel");
+
+  if (storedHotel === "lago" || storedHotel === "azura") {
+    setSelectedHotel(storedHotel);
+  }
+}, []);
 
   const isLoginPage = pathname.includes("/panel/login");
   const isHotelPicker = pathname.endsWith("/panel/oteller");
@@ -78,17 +97,29 @@ export default function PanelLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-stone-100 md:flex">
-      <PanelSessionProvider user={authState.user}>
-        {showPanelChrome && (
-          <>
-            <Sidebar user={authState.user} />
-            <TopBar user={authState.user} />
-          </>
-        )}
-        <main className={`flex-1 p-4 md:p-8 ${showPanelChrome ? "pt-20 md:ml-72 md:pt-24" : "w-full"}`}>
-          {children}
-        </main>
-      </PanelSessionProvider>
+     <PanelSessionProvider user={authState.user}>
+  <PanelHotelProvider
+    value={{
+      selectedHotel,
+      selectHotel,
+    }}
+  >
+    {showPanelChrome && (
+      <>
+        <Sidebar user={authState.user} />
+        <TopBar user={authState.user} />
+      </>
+    )}
+
+    <main
+      className={`flex-1 p-4 md:p-8 ${
+        showPanelChrome ? "pt-20 md:ml-72 md:pt-24" : "w-full"
+      }`}
+    >
+      {children}
+    </main>
+  </PanelHotelProvider>
+</PanelSessionProvider>
     </div>
   );
 }

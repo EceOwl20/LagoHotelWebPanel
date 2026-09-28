@@ -16,6 +16,7 @@ import { FiImage } from "react-icons/fi";
 import { FiPackage, FiUsers } from "react-icons/fi";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoBarChart } from "react-icons/io5";
+import { usePanelHotel } from "../PanelSessionContext";
 
 const navigationItems = [
   { href: "/panel/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined},
@@ -31,15 +32,21 @@ const azuraNavigationItems = [
   { href: "/panel/azura/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
   { href: "/panel/azura/blog", label: "Blog", icon: FiPackage },
+  { href: "/panel/kullanicilar", label: "Kullanıcılar", icon: FiUsers, adminOnly: true },
 
 ];
 
 export default function SideBar({ user }) {
   const router = useRouter();
   const params = useParams();
+  
   const pathname = usePathname();
-  const isAzura = pathname.includes("/panel/azura/");
+  const { selectedHotel } = usePanelHotel();
+
+  // const isAzura = pathname.includes("/panel/azura/");
+  const isAzura = selectedHotel === "azura";
   const hotelName = isAzura ? "Azura Deluxe Hotel" : "Lago Hotel";
+
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
 

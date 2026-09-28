@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { FiArrowRight, FiImage, FiLogOut } from "react-icons/fi";
-import { usePanelSession } from "../PanelSessionContext";
+import { usePanelSession, usePanelHotel } from "../PanelSessionContext";
 import logoLago from "../../GeneralComponents/Header/Icons/blacklogo.svg";
 import Image from "next/image";
 import logoAzure from "./icons/blacklogo.svg";
@@ -40,6 +40,8 @@ const hotels = [
 export default function HotelPickerPage() {
   const router = useRouter();
   const user = usePanelSession();
+  const { selectHotel } = usePanelHotel();
+
   const [loggingOut, setLoggingOut] = useState(false);
   const [error, setError] = useState("");
 
@@ -102,6 +104,7 @@ export default function HotelPickerPage() {
             <Link
               key={hotel.id}
               href={hotel.href}
+              onClick={() => selectHotel(hotel.id)}
               className="group flex min-h-64 flex-col justify-between rounded-2xl border border-stone-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#63978f] hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#63978f]"
             >
               <div>

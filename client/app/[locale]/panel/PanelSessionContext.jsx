@@ -4,6 +4,7 @@ import { createContext, useContext } from "react";
 import { hasPanelPermission } from "@/lib/admin/permissions.mjs";
 
 const PanelSessionContext = createContext(null);
+const PanelHotelContext = createContext(null);
 
 export function PanelSessionProvider({ user, children }) {
   return (
@@ -13,8 +14,22 @@ export function PanelSessionProvider({ user, children }) {
   );
 }
 
+
+export function PanelHotelProvider({ value, children }) {
+  return (
+    <PanelHotelContext.Provider value={value}>
+      {children}
+    </PanelHotelContext.Provider>
+  );
+}
+
+
 export function usePanelSession() {
   return useContext(PanelSessionContext);
+}
+
+export function usePanelHotel() {
+  return useContext(PanelHotelContext);
 }
 
 export function usePanelPermission(permission) {
