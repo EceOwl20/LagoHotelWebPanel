@@ -18,6 +18,9 @@ import {
 import PanelSearch from "./PanelSearch";
 
 const pageLabels = [
+  { match: "/panel/azura/sayfalar/yeni", section: "Azura / Sayfalar", title: "Yeni sayfa" },
+  { match: "/panel/azura/sayfalar/", section: "Azura / Sayfalar", title: "Taslağı düzenle" },
+  { match: "/panel/azura/sayfalar", section: "Azura Deluxe Hotel", title: "Dinamik sayfalar" },
   { match: "/panel/azura/galeri", section: "Azura Deluxe Hotel", title: "Galeri" },
   { match: "/panel/azura/blog", section: "Azura Deluxe Hotel", title: "Blog" },
   { match: "/panel/dashboard", section: "Genel Bakış", title: "Dashboard" },

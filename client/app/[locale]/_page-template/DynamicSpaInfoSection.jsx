@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./PageTemplateImage";
 
 function isGif(src) {
   return String(src || "").toLowerCase().split("?")[0].endsWith(".gif");

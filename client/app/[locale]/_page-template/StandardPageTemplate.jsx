@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "./PageTemplateImage";
 import { Link } from "@/i18n/navigation";
 import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 import ContactSection2 from "../GeneralComponents/Contact/ContactSection2";

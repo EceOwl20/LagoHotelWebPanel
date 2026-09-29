@@ -29,6 +29,7 @@ const navigationItems = [
 ];
 const azuraNavigationItems = [
   { href: "/panel/azura/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined },
+  { href: "/panel/azura/sayfalar", label: "Sayfalar", icon: FiFile },
   { href: "/panel/azura/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
   { href: "/panel/azura/blog", label: "Blog", icon: FiPackage },

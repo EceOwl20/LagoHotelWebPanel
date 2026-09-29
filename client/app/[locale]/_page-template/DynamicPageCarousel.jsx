@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "./PageTemplateImage";
 import useEmblaCarousel from "embla-carousel-react";
 import { getLocalizedContent } from "@/lib/pages/schema.mjs";
 

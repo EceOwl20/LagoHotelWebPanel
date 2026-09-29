@@ -22,6 +22,7 @@ export default function PageSettingsEditor({
   localeLabels,
   onActiveLocaleChange,
   onDraftChange,
+  navigationAvailable = true,
   children,
 }) {
   const activeHero = draft.hero.translations[activeLocale];
@@ -146,9 +147,12 @@ export default function PageSettingsEditor({
                 }
               />
               <div className="grid gap-4 rounded-xl border border-stone-200 bg-stone-50 p-4 sm:grid-cols-2 lg:col-span-2">
-                <label className="flex items-center gap-3 text-sm font-medium text-stone-700">
+                <label className="flex cursor-pointer items-center gap-3 text-sm font-medium text-stone-700">
+                  <span className="relative inline-flex shrink-0">
                   <input
                     type="checkbox"
+                    role="switch"
+                    aria-label="Header menüsünde göster"
                     checked={draft.navigation.visible !== false}
                     onChange={(event) =>
                       onDraftChange({
@@ -157,9 +161,18 @@ export default function PageSettingsEditor({
                         value: event.target.checked,
                       })
                     }
-                    className="h-4 w-4 rounded border-stone-300"
+                    className="peer sr-only"
                   />
-                  Yayınlandığında header menüsünde göster
+                  <span aria-hidden="true" className="h-6 w-11 rounded-full bg-stone-300 transition peer-checked:bg-[#2f423f] peer-focus-visible:ring-2 peer-focus-visible:ring-[#63978f] peer-focus-visible:ring-offset-2 peer-disabled:opacity-50" />
+                  <span aria-hidden="true" className="pointer-events-none absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
+                  </span>
+                  <span>
+                    <span className="block">Header menüsünde göster</span>
+                    <span className="mt-1 block text-xs font-normal text-stone-500">
+                      {draft.navigation.visible !== false ? "Açık — yalnızca yayımlanmış sürüm menüde gösterilir." : "Kapalı — yayımlanan sayfa yalnızca doğrudan adresinden açılır."}
+                      {!navigationAvailable ? " Azura header bağlantısı henüz etkin değil; tercihiniz kaydedilir." : ""}
+                    </span>
+                  </span>
                 </label>
                 <label className="flex items-center justify-between gap-3 text-sm font-medium text-stone-700">
                   Menü sırası

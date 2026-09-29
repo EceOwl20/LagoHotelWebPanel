@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import StandardPageTemplate from "../../../_page-template/StandardPageTemplate";
 import { comparePageDrafts } from "@/lib/pages/page-draft-comparison.mjs";
+import { pageHistoryVersions } from "@/lib/admin/azura-pages-client.mjs";
 import {
   FiAlertCircle,
   FiClock,
@@ -66,7 +67,9 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
-export default function PageHistoryPanel({ pageId, currentDraft }) {
+export default function PageHistoryPanel({ pageId, currentDraft, remote = null }) {
+  const isAzura = Boolean(remote);
+  const remoteRevision = remote?.revision;
   const [isOpen, setIsOpen] = useState(false);
   const [history, setHistory] = useState(null);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -91,7 +94,7 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
       setVersionDetail(null);
 
       try {
-        const response = await fetch(`/api/admin/pages/${pageId}/history`, {
+        const response = await fetch(`${isAzura ? "/api/admin/azura/pages" : "/api/admin/pages"}/${pageId}/history`, {
           cache: "no-store",
           signal: controller.signal,
         });
@@ -101,7 +104,7 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
           throw new Error(payload.error || "Sürüm geçmişi alınamadı.");
         }
 
-        const versions = Array.isArray(payload.versions) ? payload.versions : [];
+        const versions = isAzura ? pageHistoryVersions(payload.record) : Array.isArray(payload.versions) ? payload.versions : [];
         setHistory({ ...payload, versions });
         setSelectedVersionId((currentVersionId) =>
           versions.some((version) => version.versionId === currentVersionId)
@@ -119,7 +122,7 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
 
     loadHistory();
     return () => controller.abort();
-  }, [isOpen, pageId, reloadToken]);
+  }, [isOpen, pageId, reloadToken, isAzura, remoteRevision]);
 
   useEffect(() => {
     if (!isOpen || !pageId || !selectedVersionId) {
@@ -134,6 +137,12 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
       setDetailLoading(true);
       setDetailError("");
       setVersionDetail(null);
+
+      if (isAzura) {
+        setVersionDetail({ version: history?.versions.find(version => version.versionId === selectedVersionId) });
+        setDetailLoading(false);
+        return;
+      }
 
       try {
         const response = await fetch(
@@ -158,7 +167,7 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
 
     loadVersionDetail();
     return () => controller.abort();
-  }, [isOpen, pageId, selectedVersionId]);
+  }, [isOpen, pageId, selectedVersionId, isAzura, history]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -262,7 +271,7 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
                     <h3 className="text-sm font-semibold text-stone-900">Kayıtlı sürümler</h3>
                     <p className="mt-0.5 text-xs text-stone-500">
                       {history
-                        ? `${history.versions.length}/${history.limit} sürüm kullanılıyor`
+                        ? isAzura ? `${history.versions.length} kayıtlı sürüm` : `${history.versions.length}/${history.limit} sürüm kullanılıyor`
                         : "Sürümler yükleniyor"}
                     </p>
                   </div>
@@ -383,6 +392,10 @@ export default function PageHistoryPanel({ pageId, currentDraft }) {
                           </p>
                         </div>
                         <div className="flex flex-wrap gap-2">
+                          {isAzura ? <button type="button" disabled={remote.disabled} className="rounded-full bg-[#2f423f] px-3 py-1.5 text-xs text-white disabled:opacity-50" onClick={async () => {
+                            try { if (await remote.restore(selectedVersionId)) setIsOpen(false); }
+                            catch (error) { setDetailError(error.message); }
+                          }}>Bu sürümü taslağa getir</button> : null}
                           <button
                             type="button"
                             onClick={() => setComparisonVisible((value) => !value)}

@@ -8,6 +8,7 @@ export default function PageBuilderHeader({
   draft,
   editingPageTitle,
   hasUnsavedChanges,
+  remote = null,
 }) {
   const isEditing = Boolean(pageId);
 
@@ -45,7 +46,7 @@ export default function PageBuilderHeader({
         </div>
         <div className="flex flex-wrap gap-2">
           {isEditing ? (
-            <PageHistoryPanel pageId={pageId} currentDraft={draft} />
+            <PageHistoryPanel pageId={pageId} currentDraft={draft} remote={remote} />
           ) : null}
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
             <FiLayers className="h-4 w-4 text-[#a9c9c4]" />

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { PageMediaContext } from "./PageMediaContext";
 import { FiImage, FiUploadCloud } from "react-icons/fi";
 import useGalleryCategoryEditLock from "../../components/useGalleryCategoryEditLock";
 
@@ -71,6 +72,21 @@ export default function PageImagePicker({
   disabled = false,
   uploadAccept = IMAGE_UPLOAD_ACCEPT,
 }) {
+  const remoteMedia = useContext(PageMediaContext);
+  if (remoteMedia) {
+    librarySource = "media";
+    externalAssets = remoteMedia.images;
+    externalLoading = remoteMedia.loading;
+    externalError = remoteMedia.error;
+    externalPreviewUrl = value && remoteMedia.origin ? `${remoteMedia.origin}${value}` : "";
+    externalUpload = async (file) => {
+      const path = await remoteMedia.upload(file);
+      onChange(path);
+      return path;
+    };
+    disabled = disabled || remoteMedia.disabled;
+    uploadAccept = "image/jpeg,image/png,image/webp";
+  }
   const [isOpen, setIsOpen] = useState(false);
   const [library, setLibrary] = useState(null);
   const [activeFolder, setActiveFolder] = useState("all");

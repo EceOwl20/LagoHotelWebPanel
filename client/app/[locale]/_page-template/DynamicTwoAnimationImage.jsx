@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "./PageTemplateImage";
 import { Link } from "@/i18n/navigation";
 
 export default function DynamicTwoAnimationImage({
