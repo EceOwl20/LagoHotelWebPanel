@@ -10,11 +10,37 @@ import {
   normalizePanelUsername,
   normalizePanelUserInput,
   PANEL_USERNAME_PATTERN,
+  PANEL_SITES
 } from "./user-policy.mjs";
 
 const usersFilePath = process.env.PANEL_USERS_FILE_PATH
   ? path.resolve(process.env.PANEL_USERS_FILE_PATH)
   : path.join(contentRoot, "admin", "users.json");
+
+
+function normalizeStoredSites(sites, role) {
+  if (role === "admin") {
+    return [...PANEL_SITES];
+  }
+
+  const normalizedSites = Array.isArray(sites)
+    ? [
+        ...new Set(
+          sites.filter((site) =>
+            PANEL_SITES.includes(site)
+          )
+        ),
+      ]
+    : [];
+
+  // Eski editor kayıtları Lago kullanıcısı kabul edilir.
+  if (normalizedSites.length === 0) {
+    return ["lago"];
+  }
+
+  // Editor yalnızca tek bir otele bağlı olabilir.
+  return [normalizedSites[0]];
+}
 
 export class PanelUserError extends Error {
   constructor(message, status = 400) {
@@ -40,6 +66,7 @@ function normalizeStoredUser(user) {
     displayName: String(user.displayName || user.username).slice(0, 100),
     passwordHash: user.passwordHash,
     role: user.role,
+    sites: normalizeStoredSites(user.sites, user.role),
     active: user.active !== false,
     sessionVersion: Number.isInteger(user.sessionVersion) ? user.sessionVersion : 1,
     createdAt: user.createdAt || null,
@@ -109,6 +136,7 @@ async function createPanelUserUnlocked(input, reservedUsernames = []) {
     displayName: normalized.displayName,
     passwordHash: hashAdminPassword(normalized.password),
     role: normalized.role,
+    sites: normalized.sites,
     active: true,
     sessionVersion: 1,
     createdAt: timestamp,
@@ -140,6 +168,7 @@ async function updatePanelUserUnlocked(id, input, currentUserId, reservedUsernam
       username: input?.username ?? current.username,
       displayName: input?.displayName ?? current.displayName,
       role: input?.role ?? current.role,
+      sites: input?.sites ?? current.sites,
       password: input?.password || "",
     },
     { passwordRequired: false }
@@ -168,13 +197,21 @@ async function updatePanelUserUnlocked(id, input, currentUserId, reservedUsernam
     throw new PanelUserError("Son aktif yönetici hesabı pasifleştirilemez.");
   }
 
+
+  const sitesChanged =
+  JSON.stringify(normalized.sites) !==
+  JSON.stringify(current.sites);
+
+
   const securityChanged =
-    normalized.role !== current.role || active !== current.active || Boolean(normalized.password);
-  const updated = {
+    normalized.role !== current.role ||  sitesChanged || active !== current.active || Boolean(normalized.password);
+    
+    const updated = {
     ...current,
     username: normalized.username,
     displayName: normalized.displayName,
     role: normalized.role,
+    sites: normalized.sites,
     active,
     passwordHash: normalized.password
       ? hashAdminPassword(normalized.password)

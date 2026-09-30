@@ -14,7 +14,7 @@ import {
   FiUserX,
 } from "react-icons/fi";
 
-const emptyForm = { username: "", displayName: "", password: "", role: "editor" };
+const emptyForm = { username: "", displayName: "", password: "", role: "editor", sites: ["lago"], };
 
 const statTones = {
   stone: "bg-stone-100 text-stone-700",
@@ -31,6 +31,51 @@ function getInitials(name, username) {
     .map((part) => part[0])
     .join("")
     .toLocaleUpperCase("tr-TR");
+}
+
+function getUserAccessValue(user) {
+  if (user.role === "admin") {
+    return "admin";
+  }
+
+  if (user.sites?.includes("azura")) {
+    return "editor:azura";
+  }
+
+  return "editor:lago";
+}
+
+function getSiteLabel(user) {
+  if (user.role === "admin") {
+    return "Tüm oteller";
+  }
+
+  if (user.sites?.includes("azura")) {
+    return "Azura Deluxe";
+  }
+
+  return "Lago Hotel";
+}
+
+function getAccessChanges(value) {
+  if (value === "admin") {
+    return {
+      role: "admin",
+      sites: ["lago", "azura"],
+    };
+  }
+
+  if (value === "editor:azura") {
+    return {
+      role: "editor",
+      sites: ["azura"],
+    };
+  }
+
+  return {
+    role: "editor",
+    sites: ["lago"],
+  };
 }
 
 function StatCard({ icon: Icon, value, label, tone }) {
@@ -73,19 +118,43 @@ function UserCard({
               ) : null}
             </div>
             <p className="mt-1 truncate text-sm text-stone-500">@{user.username}</p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+  <span className="rounded-full bg-stone-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-stone-600">
+    {user.role === "admin" ? "Yönetici" : "Editör"}
+  </span>
+
+  <span className="rounded-full bg-[#edf5f3] px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-[#507f78]">
+    {getSiteLabel(user)}
+  </span>
+</div>
           </div>
+          
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <select
-            aria-label={`${user.username} rolü`}
-            value={user.role}
-            onChange={(event) => onUpdate(user, { role: event.target.value })}
-            className="rounded-lg border border-stone-300 bg-stone-50 px-3 py-2 text-xs text-stone-700 outline-none transition focus:border-[#63978f] focus:bg-white"
-          >
-            <option value="editor">Editör</option>
-            <option value="admin">Yönetici</option>
-          </select>
+         <select
+  aria-label={`${user.username} yetkisi`}
+  value={getUserAccessValue(user)}
+  onChange={(event) =>
+    onUpdate(
+      user,
+      getAccessChanges(event.target.value)
+    )
+  }
+  className="rounded-lg border border-stone-300 bg-stone-50 px-3 py-2 text-xs text-stone-700 outline-none transition focus:border-[#63978f] focus:bg-white"
+>
+  <option value="editor:lago">
+    Editör · Lago Hotel
+  </option>
+
+  <option value="editor:azura">
+    Editör · Azura Deluxe
+  </option>
+
+  <option value="admin">
+    Yönetici · Tüm oteller
+  </option>
+</select>
           <button
             type="button"
             onClick={() => onUpdate(user, { active: !user.active })}
@@ -352,17 +421,78 @@ export default function UsersPage() {
           <UserInput label="Ad soyad" value={form.displayName} onChange={(displayName) => setForm({ ...form, displayName })} />
           <UserInput label="Kullanıcı adı" value={form.username} onChange={(username) => setForm({ ...form, username })} autoComplete="username" />
           <UserInput label="Parola" type="password" value={form.password} onChange={(password) => setForm({ ...form, password })} autoComplete="new-password" hint="En az 10 karakter" />
-          <label className="flex flex-col gap-2 text-sm font-medium text-stone-700">
-            Rol
-            <select value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })} className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]">
-              <option value="editor">Editör</option>
-              <option value="admin">Yönetici</option>
-            </select>
-          </label>
-          <button type="submit" disabled={saving} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#3c5551] disabled:opacity-60">
-            <FiUserPlus className="h-4 w-4" />
-            {saving ? "Oluşturuluyor..." : "Kullanıcı oluştur"}
-          </button>
+         <label className="flex flex-col gap-2 text-sm font-medium text-stone-700">
+  Rol
+
+  <select
+    value={form.role}
+    onChange={(event) => {
+      const role = event.target.value;
+
+      setForm({
+        ...form,
+        role,
+        sites:
+          role === "admin"
+            ? ["lago", "azura"]
+            : ["lago"],
+      });
+    }}
+    className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
+  >
+    <option value="editor">Editör</option>
+    <option value="admin">Yönetici</option>
+  </select>
+</label>
+
+{form.role === "editor" ? (
+  <label className="flex flex-col gap-2 text-sm font-medium text-stone-700">
+    Otel erişimi
+
+    <select
+      value={form.sites[0] || "lago"}
+      onChange={(event) =>
+        setForm({
+          ...form,
+          sites: [event.target.value],
+        })
+      }
+      className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
+    >
+      <option value="lago">
+        Lago Hotel
+      </option>
+
+      <option value="azura">
+        Azura Deluxe Hotel
+      </option>
+    </select>
+
+    <span className="text-xs font-normal text-stone-500">
+      Editör yalnızca seçilen otelin paneline erişebilir.
+    </span>
+  </label>
+) : (
+  <div className="rounded-xl border border-[#63978f]/20 bg-[#edf5f3]/60 px-4 py-3">
+    <p className="text-sm font-medium text-[#2f423f]">
+      Tüm otellere erişim
+    </p>
+
+    <p className="mt-1 text-xs leading-5 text-stone-500">
+      Yönetici hesapları Lago Hotel ve Azura Deluxe Hotel
+      panellerine erişebilir.
+    </p>
+  </div>
+)}
+
+<button
+  type="submit"
+  disabled={saving}
+  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#2f423f] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#3c5551] disabled:opacity-60"
+>
+  <FiUserPlus className="h-4 w-4" />
+  {saving ? "Oluşturuluyor..." : "Kullanıcı oluştur"}
+</button>
           </div>
         </form>
       </section>

@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
+import {
+  assertPanelPermission,
+  assertPanelSiteAccess,
+} from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { requestAzuraPages } from "./azura-pages.mjs";
@@ -28,9 +31,17 @@ async function readBody(request, empty) {
 export function azuraPagesHandler(method, scope = "collection") {
   return async (request, context) => {
     const session = await getAdminSession();
-    if (!session) return json({ error: "Yetkisiz işlem." }, 401);
-    try {
-      assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
+   if (!session) {
+  return json({ error: "Yetkisiz işlem." }, 401);
+}
+
+try {
+  assertPanelSiteAccess(session, "azura");
+
+  assertPanelPermission(
+    session,
+    PANEL_PERMISSIONS.EDIT_CONTENT
+  );
       const params = scope === "collection" ? {} : await context.params;
       let body, revision;
       if (method !== "GET") {

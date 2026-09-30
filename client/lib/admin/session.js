@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { ADMIN_SESSION_COOKIE_NAME } from "./constants";
 import { findPanelUserById } from "./users";
 import { resolveSessionSecret } from "./session-secret.mjs";
+import { PANEL_SITES } from "./user-policy.mjs";
 
 const SESSION_TTL_SECONDS = 60 * 60 * 12;
 
@@ -163,9 +164,13 @@ export async function getAdminSession() {
 
   if (session.userId === "environment-admin") {
     const config = getAdminSecurityConfig();
-    return session.username === config.username && session.role === "admin"
-      ? session
-      : null;
+    return session.username === config.username &&
+    session.role === "admin"
+    ? {
+        ...session,
+        sites: [...PANEL_SITES],
+      }
+    : null;
   }
 
   const user = await findPanelUserById(session.userId);
@@ -180,10 +185,11 @@ export async function getAdminSession() {
     return null;
   }
 
-  return {
-    ...session,
-    displayName: user.displayName,
-  };
+return {
+  ...session,
+  displayName: user.displayName,
+  sites: user.sites,
+};
 }
 
 export function applyAdminSessionCookie(response, user) {

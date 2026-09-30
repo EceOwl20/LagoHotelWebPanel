@@ -6,6 +6,13 @@ export function normalizePanelUsername(value) {
   return String(value || "").trim().toLocaleLowerCase("tr");
 }
 
+export const PANEL_SITES = Object.freeze([
+  "lago",
+  "azura",
+]);
+
+
+
 export function normalizePanelUserInput(input, { passwordRequired = false } = {}) {
   const username = normalizePanelUsername(input?.username);
   const displayName = String(input?.displayName || "").trim();
@@ -29,5 +36,43 @@ export function normalizePanelUserInput(input, { passwordRequired = false } = {}
     errors.push("Parola 10-256 karakter arasında olmalıdır.");
   }
 
-  return { value: { username, displayName, role, password }, errors };
+   const requestedSites = Array.isArray(input?.sites)
+    ? [
+        ...new Set(
+          input.sites
+            .map((site) =>
+              String(site || "").trim().toLowerCase()
+            )
+            .filter(Boolean)
+        ),
+      ]
+    : [];
+
+  const invalidSites = requestedSites.filter(
+    (site) => !PANEL_SITES.includes(site)
+  );
+
+  let sites = [];
+
+  if (role === "admin") {
+    // Admin her zaman tüm otellere erişebilir.
+    sites = [...PANEL_SITES];
+  } else if (role === "editor") {
+    if (invalidSites.length > 0) {
+      errors.push("Geçersiz otel seçimi.");
+    }
+
+    sites = requestedSites.filter((site) =>
+      PANEL_SITES.includes(site)
+    );
+
+    if (sites.length !== 1) {
+      errors.push(
+        "Editör için tam olarak bir otel seçilmelidir."
+      );
+    }
+  }
+
+
+  return { value: { username, displayName, role, sites, password }, errors };
 }

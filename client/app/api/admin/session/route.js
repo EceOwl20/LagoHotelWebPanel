@@ -15,6 +15,7 @@ export async function GET() {
       username: session.username,
       displayName: session.displayName,
       role: session.role,
+      sites: session.sites,
     },
   });
 }

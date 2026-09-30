@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
+import {
+  assertPanelPermission,
+  assertPanelSiteAccess,
+} from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { requestAzuraBlog } from "./azura-blog.mjs";
@@ -29,27 +32,97 @@ async function readBody(request, method) {
 export function azuraBlogHandler(method, detail = false) {
   return async (request, context) => {
     const session = await getAdminSession();
-    if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+
+    if (!session) {
+      return json({ error: "Yetkisiz işlem." }, 401);
+    }
+
     try {
-      assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
-      const slug = detail ? (await context.params).slug : undefined;
-      if (detail && !validAzuraBlogSlug(slug)) fail("Geçersiz blog adresi.");
+      assertPanelSiteAccess(session, "azura");
+
+      assertPanelPermission(
+        session,
+        PANEL_PERMISSIONS.EDIT_CONTENT
+      );
+
+      const slug = detail
+        ? (await context.params).slug
+        : undefined;
+
+      if (detail && !validAzuraBlogSlug(slug)) {
+        fail("Geçersiz blog adresi.");
+      }
+
       let body, revision;
+
       if (method !== "GET") {
         assertSameOrigin(request);
-        if (method === "DELETE") assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);
-        if (!consumeRateLimit({ key: `admin-write:azura-blog:${getClientIp(request)}`, limit: 60, windowMs: 60000 }).ok) fail("Çok hızlı istek gönderildi.", 429);
+
+        if (method === "DELETE") {
+          assertPanelPermission(
+            session,
+            PANEL_PERMISSIONS.DELETE_CONTENT
+          );
+        }
+
+        if (
+          !consumeRateLimit({
+            key: `admin-write:azura-blog:${getClientIp(request)}`,
+            limit: 60,
+            windowMs: 60000,
+          }).ok
+        ) {
+          fail("Çok hızlı istek gönderildi.", 429);
+        }
+
         if (["PUT", "DELETE"].includes(method)) {
           const header = request.headers.get("if-match");
-          if (!header) fail("If-Match zorunludur.", 428);
-          if (!/^"[a-f0-9]{64}"$/.test(header)) fail("If-Match geçersiz.");
+
+          if (!header) {
+            fail("If-Match zorunludur.", 428);
+          }
+
+          if (!/^"[a-f0-9]{64}"$/.test(header)) {
+            fail("If-Match geçersiz.");
+          }
+
           revision = header.slice(1, -1);
         }
+
         body = await readBody(request, method);
-        if (!validAzuraBlogBody(method, body)) fail("Blog verisi veya işlem geçersiz.");
-        if (method === "PUT" && body.action !== "save") assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
+
+        if (!validAzuraBlogBody(method, body)) {
+          fail("Blog verisi veya işlem geçersiz.");
+        }
+
+        if (
+          method === "PUT" &&
+          body.action !== "save"
+        ) {
+          assertPanelPermission(
+            session,
+            PANEL_PERMISSIONS.PUBLISH_CONTENT
+          );
+        }
       }
-      return json(await requestAzuraBlog(method, body, { slug, revision }), method === "POST" ? 201 : 200);
-    } catch (error) { return json({ error: error.message || "Blog bağlantısı başarısız." }, error.status || 502); }
+
+      return json(
+        await requestAzuraBlog(
+          method,
+          body,
+          { slug, revision }
+        ),
+        method === "POST" ? 201 : 200
+      );
+    } catch (error) {
+      return json(
+        {
+          error:
+            error.message ||
+            "Blog bağlantısı başarısız.",
+        },
+        error.status || 502
+      );
+    }
   };
 }

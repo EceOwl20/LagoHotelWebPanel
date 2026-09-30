@@ -7,10 +7,41 @@
       "displayName": "owl owl",
       "passwordHash": "scrypt:976c86438e2f39ff3f7d12f65a23b40c:e6ee2b61c333471b57f7d130bd9cb70031c7b81cae312f11675615d4ae7ba64c8db6a0716d35ee6ee22adb136013a942eab9fff738caffdea2f3d4d12e60dc9e",
       "role": "editor",
+      "sites": [
+        "lago"
+      ],
       "active": true,
       "sessionVersion": 3,
       "createdAt": "2026-09-07T13:52:42.191Z",
       "updatedAt": "2026-09-07T14:57:41.882Z"
+    },
+    {
+      "id": "a89608d3-f090-43a4-a711-b45e15f3ab6e",
+      "username": "nemesis",
+      "displayName": "nemesis neme",
+      "passwordHash": "scrypt:49a054a1de5ca87b69e31e271fe23755:865cf6bebba255d80a3714266b3d13743964c74a37f837044108b7c5eb7bfd73b689a98f8a5e06d833ca7dbae62fd1bee556982b7ea6fe92aa2cec3047dab3de",
+      "role": "editor",
+      "sites": [
+        "lago"
+      ],
+      "active": true,
+      "sessionVersion": 1,
+      "createdAt": "2026-09-30T12:21:24.125Z",
+      "updatedAt": "2026-09-30T12:21:24.125Z"
+    },
+    {
+      "id": "7e52ed05-793d-45fe-855c-4fc7a0d5d12a",
+      "username": "chacha",
+      "displayName": "chacha",
+      "passwordHash": "scrypt:984d5e351e369b0b60c81ea94e6fad1d:8d707c57bf7d947428bef6a5bd841dfecda31507e62f3d6be9bd4d0b7e78f2fc9fbeb1cb45276440fb2259a49ecfb6ab385682ebcebf91534a36f511108e93a2",
+      "role": "editor",
+      "sites": [
+        "azura"
+      ],
+      "active": true,
+      "sessionVersion": 1,
+      "createdAt": "2026-09-30T13:54:04.286Z",
+      "updatedAt": "2026-09-30T13:54:04.286Z"
     }
   ]
 }

@@ -42,6 +42,15 @@ export default function HotelPickerPage() {
   const user = usePanelSession();
   const { selectHotel } = usePanelHotel();
 
+  const userSites = Array.isArray(user?.sites)
+  ? user.sites
+  : [];
+
+const visibleHotels = hotels.filter((hotel) =>
+  userSites.includes(hotel.id)
+);
+
+
   const [loggingOut, setLoggingOut] = useState(false);
   const [error, setError] = useState("");
 
@@ -98,7 +107,7 @@ export default function HotelPickerPage() {
       )}
 
       <div className="grid gap-5 md:grid-cols-2">
-        {hotels.map((hotel) => {
+        {visibleHotels.map((hotel) => {
           const Icon = hotel.icon;
           return (
             <Link
@@ -135,9 +144,8 @@ export default function HotelPickerPage() {
         })}
       </div>
       <p className="mt-6 text-xs leading-5 text-stone-500">
-        Azura için diğer sayfalar henüz bu panele bağlanmadı. Otel seçimi bir
-        erişim yetkisi değil, hangi otelin ekranlarında olduğunuzu gösteren
-        gezinme adımıdır.
+         Bu ekranda yalnızca erişim yetkiniz bulunan oteller gösterilir.
+  Otel değiştirerek ilgili otelin yönetim alanına geçebilirsiniz.
       </p>
     </div>
   );
