@@ -4,6 +4,7 @@ const IMAGE_PATH = Object.freeze({
   "dynamic-pages": /^\/uploads\/dynamic-pages\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   blog: /^\/uploads\/blog\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   gallery: /^\/uploads\/gallery\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
+  certificates: /^\/uploads\/pages\/certificates\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   entertainment: /^\/uploads\/pages\/entertainment\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   bars: /^\/uploads\/pages\/bars\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
   kidsclub: /^\/uploads\/pages\/kidsclub\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}\.(?:jpg|jpeg|png|webp)$/i,
@@ -24,7 +25,7 @@ const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const TIMEOUT_MS = 30000;
 
 export function getAzuraImagesConnection(env = process.env, scope = "experience") {
-  if (!["dynamic-pages", "blog", "gallery", "entertainment", "bars", "kidsclub", "beachpools", "spor", "experience", "homepage", "rooms", "restaurants", "about", "spawellness", "room-detail-deluxe", "room-detail-family", "room-detail-fantasy"].includes(scope)) {
+  if (!["dynamic-pages", "blog", "gallery", "certificates", "entertainment", "bars", "kidsclub", "beachpools", "spor", "experience", "homepage", "rooms", "restaurants", "about", "spawellness", "room-detail-deluxe", "room-detail-family", "room-detail-fantasy"].includes(scope)) {
     throw new AzuraConnectionError("Azura görsel kapsamı geçersiz.", 400);
   }
   const { url, token } = getAzuraConnection(env);
@@ -36,6 +37,7 @@ export function getAzuraImagesConnection(env = process.env, scope = "experience"
     : scope === "rooms" ? "/api/azura/rooms/images"
     : scope === "restaurants" ? "/api/azura/restaurants/images"
     : scope === "about" ? "/api/azura/about/images"
+    : scope === "certificates" ? "/api/azura/certificates/images"
     : scope === "entertainment" ? "/api/azura/entertainment/images"
     : scope === "bars" ? "/api/azura/bars/images"
     : scope === "kidsclub" ? "/api/azura/kidsclub/images"

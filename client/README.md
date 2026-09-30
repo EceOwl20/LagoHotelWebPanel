@@ -257,6 +257,27 @@ kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
 Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
 özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.
 
+# Azura Sertifikalar
+
+Azura → Sayfa İçerikleri → Sayfalar → Sertifikalar, mevcut
+CertificateMediaEditor arayüzünü kullanır. Dört dilin metinleri ve sekiz
+medya alanı üst bardaki tek kaydet düğmesiyle birlikte kaydedilir.
+Banner alt açıklaması içermez; öne çıkan görsel ve altı galeri kaydı
+dört dilde alt açıklaması içerir. Galeri kimlikleri ve sırası sabittir;
+Azura için ekleme/silme/sıralama gösterilmez. Lago'nun mevcut kontrolleri korunur.
+
+GET/PUT `/api/admin/azura/certificates/page-content` ve GET/POST
+`/api/admin/azura/certificates/images`, mevcut servis bağlantısını kullanır;
+yeni ortam değişkeni gerekmez. Token yalnız sunucuda kullanılır.
+Panel PUT gövdesindeki revision, Azura'ya tırnaklı If-Match olarak iletilir.
+409 durumunda formdaki değişiklikler korunur. Başarılı kayıt tekrar okunarak
+doğrulanır. Yükleme tek başına yayınlamaz; görsel seçimi ve sayfa kaydı gerekir.
+
+Galeri görselleri `src`, tekil görseller `image` kullanır; seçimde gerçek
+width/height güncellenirken kimlik, sıra ve diğer diller korunur.
+Boş metin yalnız hero.eyebrow ve feature.text için kabul edilir.
+Ortak oturum/yetki, aynı kaynak, hız ve boyut kontrolleri kullanılır.
+
 # Azura Entertainment
 
 Azura Eğlence sayfası mevcut EntertainmentMediaEditor formunu otel

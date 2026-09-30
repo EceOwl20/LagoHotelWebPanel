@@ -15,14 +15,17 @@ const collections = [
   },
 ];
 
-export default function CertificateMediaEditor() {
+export default function CertificateMediaEditor({ activeLocale, hotel = "lago", ...editorProps }) {
   return (
     <SitePageMediaEditor
       pageKey="certificates"
       pageTitle="Certificates"
       uploadFolder="pages/certificates"
-      singleImages={singleImages}
-      collections={collections}
+      singleImages={hotel === "azura" ? singleImages.map((field) => field.path[0] === "hero" ? { ...field, localizedAlt: false } : field) : singleImages}
+      collections={hotel === "azura" ? collections.map((field) => ({ ...field, fixed: true })) : collections}
+      activeLocale={activeLocale}
+      localizedAlt={hotel === "azura"}
+      {...editorProps}
     />
   );
 }

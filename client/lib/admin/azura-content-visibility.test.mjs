@@ -57,21 +57,23 @@ test("Azura navigation groups use existing visual IDs and keep all content exact
     ["rooms", ...Object.values(AZURA_ROOM_DETAIL_CONFIGS).map((r) => r.roomKey)]);
   assert.deepEqual(groups.find((g) => g.id === "food").items.map((i) => i.id), ["restaurants", "bars"]);
   assert.deepEqual(groups.find((g) => g.id === "pages").items.map((i) => i.id),
-    ["about", "spa", "spor", "beachpools", "kidsclub", "entertainment"]);
+    ["about", "spa", "spor", "beachpools", "kidsclub", "certificates", "entertainment"]);
   const ids = groups.flatMap((g) => g.items.map((i) => i.id));
   assert.equal(new Set(ids).size, ids.length);
-  assert.equal(ids.length, 14);
+  assert.equal(ids.length, 15);
 });
 
 test("Azura navigation supports group search, individual pages and empty results", () => {
   assert.deepEqual(navigationGroups("Yemek ve İçecek").map((g) => g.id), ["food"]);
-  assert.equal(navigationGroups("Sayfalar")[0].items.length, 6);
+  assert.equal(navigationGroups("Sayfalar")[0].items.length, 7);
+  assert.deepEqual(navigationGroups("Sertifikalar")[0].items.map((i) => i.id), ["certificates"]);
   assert.equal(navigationGroups("Odalar")[0].items.length, 4);
   assert.deepEqual(navigationGroups("Barlar")[0].items.map((i) => i.id), ["bars"]);
   assert.deepEqual(navigationGroups("bulunmayan-kategori"), []);
 });
 
 const sections = {
+  certificates: "Azura Sertifikalar sayfası",
   entertainment: "Azura Eğlence sayfası",
   bars: "Azura Barlar sayfası",
   kidsclub: "Azura Çocuk Kulübü sayfası",
