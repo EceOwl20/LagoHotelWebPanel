@@ -20,20 +20,27 @@ import {
   FiImage,
 } from "react-icons/fi";
 
+import { AZURA_ROOM_DETAIL_CONFIGS } from "@/lib/admin/room-detail-model.mjs";
+
 const donutColors = {
   published: "#292524",
   changed: "#63978f",
   draft: "#d6d3d1",
 };
 
+const AZURA_CONTENT_COUNT =
+  11 + Object.keys(AZURA_ROOM_DETAIL_CONFIGS).length;
+
 const EMPTY_SUMMARY = {
-  namespaceCount: 0,
+  namespaceCount: AZURA_CONTENT_COUNT,
   categoryCount: 0,
   imageCount: 0,
   postCount: 0,
   pages: [],
+   posts: [],
   latestPostTitle: null,
 };
+
 
 export default function AzuraDashboardPage() {
   const [summary, setSummary] = useState(null);
@@ -42,23 +49,53 @@ export default function AzuraDashboardPage() {
   useEffect(() => {
     let cancelled = false;
 
-   async function loadSummary() {
+async function loadSummary() {
   try {
-    const galleryResponse = await fetch("/api/admin/azura/gallery", {
-      cache: "no-store",
-    });
+    const [galleryResponse, postsResponse, pagesResponse] =
+      await Promise.all([
+        fetch("/api/admin/azura/gallery", {
+          cache: "no-store",
+        }),
+        fetch("/api/admin/azura/blog/posts", {
+          cache: "no-store",
+        }),
+        fetch("/api/admin/azura/pages", {
+          cache: "no-store",
+        }),
+      ]);
 
-    const galleryPayload = await galleryResponse.json();
+    const [galleryPayload, postsPayload, pagesPayload] =
+      await Promise.all([
+        galleryResponse.json(),
+        postsResponse.json(),
+        pagesResponse.json(),
+      ]);
 
-    if (!galleryResponse.ok) {
+    const responses = [
+      [galleryResponse, galleryPayload],
+      [postsResponse, postsPayload],
+      [pagesResponse, pagesPayload],
+    ];
+
+    const failedRequest = responses.find(
+      ([response]) => !response.ok
+    );
+
+    if (failedRequest) {
       throw new Error(
-        galleryPayload.error ||
-          "Galeri bilgileri alınamadı."
+        failedRequest[1].error ||
+          "Dashboard bilgileri alınamadı."
       );
     }
 
     const categories =
       galleryPayload.gallery?.categories || [];
+
+    const posts =
+      postsPayload.posts || [];
+
+    const pages =
+      pagesPayload.pages || [];
 
     const imageCount = categories.reduce(
       (total, category) =>
@@ -68,16 +105,23 @@ export default function AzuraDashboardPage() {
 
     if (!cancelled) {
       setSummary({
-        namespaceCount: 0,
+        // Azura'da namespace yapısını henüz bağlamadık.
+       namespaceCount: AZURA_CONTENT_COUNT,
 
-        // Galeriden gerçek geliyor
         categoryCount: categories.length,
         imageCount,
 
-        // Henüz olmayanlar
-        postCount: 0,
-        pages: [],
-        latestPostTitle: null,
+        postCount: posts.length,
+
+        pages,
+        posts,
+
+        latestPostTitle:
+          posts[0]?.translations?.tr?.title ||
+          posts[0]?.translations?.en?.title ||
+          posts[0]?.translations?.de?.title ||
+          posts[0]?.translations?.ru?.title ||
+          "Henüz blog yazısı yok",
       });
     }
   } catch (cause) {
@@ -190,6 +234,7 @@ export default function AzuraDashboardPage() {
 
             <PublicationDonut
               pages={dashboardSummary.pages}
+              posts={dashboardSummary.posts}
             />
           </section>
 
@@ -346,18 +391,21 @@ function ContentBarChart({ data }) {
   );
 }
 
-function PublicationDonut({ pages }) {
-  const publishedCount =
-    getPublishedPageCount(pages);
+function PublicationDonut({ pages, posts }) {
+  const items = [...pages, ...posts];
 
-  const changedCount = pages.filter(
-    (page) =>
-      page.status === "published" &&
-      page.hasUnpublishedChanges
+  const publishedCount = items.filter(
+    (item) => item.status === "published"
   ).length;
 
-  const draftCount = pages.filter(
-    (page) => page.status !== "published"
+  const changedCount = items.filter(
+    (item) =>
+      item.status === "published" &&
+      item.hasUnpublishedChanges
+  ).length;
+
+  const draftCount = items.filter(
+    (item) => item.status !== "published"
   ).length;
 
   const currentPublishedCount = Math.max(
@@ -365,10 +413,8 @@ function PublicationDonut({ pages }) {
     publishedCount - changedCount
   );
 
-  const publicationRate = pages.length
-    ? Math.round(
-        (publishedCount / pages.length) * 100
-      )
+  const publicationRate = items.length
+    ? Math.round((publishedCount / items.length) * 100)
     : 0;
 
   const statuses = [
@@ -389,13 +435,11 @@ function PublicationDonut({ pages }) {
     },
   ];
 
-  const chartData = pages.length
-    ? statuses.filter(
-        (status) => status.value > 0
-      )
+  const chartData = items.length
+    ? statuses.filter((status) => status.value > 0)
     : [
         {
-          name: "Henüz sayfa yok",
+          name: "Henüz içerik yok",
           value: 1,
           color: "#e7e5e4",
         },
@@ -408,17 +452,14 @@ function PublicationDonut({ pages }) {
       </p>
 
       <h2 className="mt-2 text-xl font-semibold text-stone-900">
-        Dinamik Sayfalar
+        Sayfalar ve Blog
       </h2>
 
       <div
         className="relative mx-auto mt-3 h-52 max-w-[240px]"
-        aria-label="Sayfa yayın durumu"
+        aria-label="Sayfa ve blog yayın durumu"
       >
-        <ResponsiveContainer
-          width="100%"
-          height="100%"
-        >
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={chartData}
@@ -442,7 +483,7 @@ function PublicationDonut({ pages }) {
 
             <Tooltip
               formatter={(value, name) => [
-                `${value} sayfa`,
+                `${value} içerik`,
                 name,
               ]}
             />
@@ -470,8 +511,7 @@ function PublicationDonut({ pages }) {
               <span
                 className="h-2.5 w-2.5 rounded-full"
                 style={{
-                  backgroundColor:
-                    status.color,
+                  backgroundColor: status.color,
                 }}
               />
 

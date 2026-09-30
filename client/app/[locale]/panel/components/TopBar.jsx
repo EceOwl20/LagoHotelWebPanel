@@ -17,6 +17,8 @@ import {
 } from "react-icons/fi";
 import PanelSearch from "./PanelSearch";
 
+import { usePanelHotel } from "../PanelSessionContext";
+
 const pageLabels = [
   { match: "/panel/azura/sayfalar/yeni", section: "Azura / Sayfalar", title: "Yeni sayfa" },
   { match: "/panel/azura/sayfalar/", section: "Azura / Sayfalar", title: "Taslağı düzenle" },
@@ -46,8 +48,10 @@ const quickActions = [
 function getPageLabel(pathname) {
   return (
     pageLabels.find((item) =>
-      item.match.endsWith("/") ? pathname.startsWith(item.match) : pathname === item.match
-    ) || { section: "Lago Panel", title: "Yönetim Paneli" }
+      item.match.endsWith("/")
+        ? pathname.startsWith(item.match)
+        : pathname === item.match
+    ) || { section: "Yönetim", title: "Yönetim Paneli" }
   );
 }
 
@@ -64,7 +68,8 @@ function getInitials(user) {
 
 export default function TopBar({ user }) {
   const pathname = usePathname();
-  const isAzura = pathname.startsWith("/panel/azura/");
+ const { selectedHotel } = usePanelHotel();
+const isAzura = selectedHotel === "azura";
   const router = useRouter();
   const headerRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(null);
@@ -74,24 +79,104 @@ export default function TopBar({ user }) {
     draftCount: 0,
     drafts: [],
   });
+
+  const [blogDraftSummary, setBlogDraftSummary] = useState({
+  draftCount: 0,
+  drafts: [],
+});
+
   const [notificationsLoading, setNotificationsLoading] = useState(true);
   const [notificationsError, setNotificationsError] = useState("");
   const pageLabel = getPageLabel(pathname);
-  const draftCount = draftSummary.draftCount;
-  const draftPages = draftSummary.drafts;
 
-  const loadDraftSummary = useCallback(async ({ silent = false } = {}) => {
-    if (!silent) setNotificationsLoading(true);
+  const pageDraftCount = draftSummary.draftCount;
+const draftPages = draftSummary.drafts;
+
+const blogDraftCount = blogDraftSummary.draftCount;
+const draftBlogPosts = blogDraftSummary.drafts;
+
+const draftCount = pageDraftCount + (isAzura ? blogDraftCount : 0);
+
+const azuraNotificationItems = [
+  ...draftPages.map((page) => ({
+    ...page,
+    notificationType: "page",
+  })),
+  ...draftBlogPosts.map((post) => ({
+    ...post,
+    notificationType: "blog",
+  })),
+].sort((a, b) =>
+  (b.updatedAt || "").localeCompare(a.updatedAt || "")
+);
+
+ const loadDraftSummary = useCallback(
+  async ({ silent = false } = {}) => {
+    if (!silent) {
+      setNotificationsLoading(true);
+    }
+
     setNotificationsError("");
 
     try {
+      if (isAzura) {
+        const [pagesResponse, blogResponse] = await Promise.all([
+          fetch("/api/admin/azura/pages/summary", {
+            cache: "no-store",
+          }),
+          fetch("/api/admin/azura/blog/summary", {
+            cache: "no-store",
+          }),
+        ]);
+
+        const [pagesPayload, blogPayload] = await Promise.all([
+          pagesResponse.json(),
+          blogResponse.json(),
+        ]);
+
+        if (!pagesResponse.ok) {
+          throw new Error(
+            pagesPayload.error ||
+              "Azura sayfa bildirimleri alınamadı."
+          );
+        }
+
+        if (!blogResponse.ok) {
+          throw new Error(
+            blogPayload.error ||
+              "Azura blog bildirimleri alınamadı."
+          );
+        }
+
+        setDraftSummary({
+          draftCount:
+            Number(pagesPayload.summary?.draftCount) || 0,
+          drafts: Array.isArray(pagesPayload.summary?.drafts)
+            ? pagesPayload.summary.drafts
+            : [],
+        });
+
+        setBlogDraftSummary({
+          draftCount:
+            Number(blogPayload.summary?.draftCount) || 0,
+          drafts: Array.isArray(blogPayload.summary?.drafts)
+            ? blogPayload.summary.drafts
+            : [],
+        });
+
+        return;
+      }
+
       const response = await fetch("/api/admin/pages/summary", {
         cache: "no-store",
       });
+
       const payload = await response.json();
 
       if (!response.ok) {
-        throw new Error(payload.error || "Taslak bildirimleri alınamadı.");
+        throw new Error(
+          payload.error || "Taslak bildirimleri alınamadı."
+        );
       }
 
       setDraftSummary({
@@ -100,12 +185,19 @@ export default function TopBar({ user }) {
           ? payload.summary.drafts
           : [],
       });
+
+      setBlogDraftSummary({
+        draftCount: 0,
+        drafts: [],
+      });
     } catch (error) {
       setNotificationsError(error.message);
     } finally {
       setNotificationsLoading(false);
     }
-  }, []);
+  },
+  [isAzura]
+);
 
   useEffect(() => {
     const closeOnOutsideClick = (event) => {
@@ -136,20 +228,37 @@ export default function TopBar({ user }) {
     };
   }, [isAzura]);
 
-  useEffect(() => {
-    if (isAzura) return undefined;
-    loadDraftSummary();
+useEffect(() => {
+  loadDraftSummary();
 
-    const refreshOnFocus = () => loadDraftSummary({ silent: true });
-    const refreshOnPageChange = () => loadDraftSummary({ silent: true });
-    window.addEventListener("focus", refreshOnFocus);
-    window.addEventListener("admin-pages-updated", refreshOnPageChange);
+  const refreshOnFocus = () =>
+    loadDraftSummary({ silent: true });
 
-    return () => {
-      window.removeEventListener("focus", refreshOnFocus);
-      window.removeEventListener("admin-pages-updated", refreshOnPageChange);
-    };
-  }, [isAzura, loadDraftSummary]);
+  const refreshOnContentChange = () =>
+    loadDraftSummary({ silent: true });
+
+  window.addEventListener("focus", refreshOnFocus);
+  window.addEventListener(
+    "admin-pages-updated",
+    refreshOnContentChange
+  );
+  window.addEventListener(
+    "admin-blog-updated",
+    refreshOnContentChange
+  );
+
+  return () => {
+    window.removeEventListener("focus", refreshOnFocus);
+    window.removeEventListener(
+      "admin-pages-updated",
+      refreshOnContentChange
+    );
+    window.removeEventListener(
+      "admin-blog-updated",
+      refreshOnContentChange
+    );
+  };
+}, [loadDraftSummary]);
 
   useEffect(() => { setOpenMenu(null); }, [pathname]);
 
@@ -197,7 +306,7 @@ export default function TopBar({ user }) {
             Otel değiştir
           </Link>
         ) : (
-        <>
+        
         <button
           type="button"
           aria-label="Ara"
@@ -207,10 +316,18 @@ export default function TopBar({ user }) {
         >
           <FiSearch className="h-[18px] w-[18px]" />
         </button>
+        )}
+        
         <div className="relative">
           <button
             type="button"
-            aria-label={draftCount ? `${draftCount} sayfa taslağı yayınlanmayı bekliyor` : "Bildirimler"}
+           aria-label={
+  draftCount
+    ? isAzura
+      ? `${draftCount} içerik yayınlanmayı bekliyor`
+      : `${draftCount} sayfa taslağı yayınlanmayı bekliyor`
+    : "Bildirimler"
+}
             aria-expanded={openMenu === "notifications"}
             aria-haspopup="menu"
             onClick={() => {
@@ -234,7 +351,11 @@ export default function TopBar({ user }) {
                 <div>
                   <p className="text-sm font-semibold text-stone-900">Bildirimler</p>
                   <p className="mt-0.5 text-[11px] text-stone-500">
-                    {draftCount > 0 ? `${draftCount} sayfa yayınlanmayı bekliyor` : "Bekleyen taslak bulunmuyor"}
+                    {draftCount > 0
+  ? isAzura
+    ? `${draftCount} içerik yayınlanmayı bekliyor`
+    : `${draftCount} sayfa yayınlanmayı bekliyor`
+  : "Bekleyen taslak bulunmuyor"}
                   </p>
                 </div>
                 {draftCount > 0 ? (
@@ -256,30 +377,63 @@ export default function TopBar({ user }) {
                   </div>
                 ) : draftCount > 0 ? (
                   <div className="max-h-72 overflow-y-auto">
-                    {draftPages.map((page) => (
-                      <Link
-                        key={page.id}
-                        href={`/panel/sayfalar/${page.id}`}
-                        role="menuitem"
-                        onClick={() => setOpenMenu(null)}
-                        className="flex items-start gap-3 rounded-xl px-3 py-3 transition hover:bg-[#edf5f3]"
-                      >
-                        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
-                          <FiFileText className="h-4 w-4" />
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block truncate text-sm font-semibold text-stone-800">{page.title || "Başlıksız sayfa"}</span>
-                          <span className="mt-1 block text-[11px] text-stone-500">Yayınlanmayı bekleyen sayfa taslağı</span>
-                        </span>
-                      </Link>
-                    ))}
+                   {(isAzura ? azuraNotificationItems : draftPages).map((item) => {
+  const isBlog = isAzura && item.notificationType === "blog";
+
+  const href = isBlog
+    ? "/panel/azura/blog"
+    : isAzura
+      ? `/panel/azura/sayfalar/${item.id}`
+      : `/panel/sayfalar/${item.id}`;
+
+  return (
+    <Link
+      key={
+        isBlog
+          ? `blog-${item.slug}`
+          : `page-${item.id}`
+      }
+      href={href}
+      role="menuitem"
+      onClick={() => setOpenMenu(null)}
+      className="flex items-start gap-3 rounded-xl px-3 py-3 transition hover:bg-[#edf5f3]"
+    >
+      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700">
+        {isBlog ? (
+          <FiPackage className="h-4 w-4" />
+        ) : (
+          <FiFileText className="h-4 w-4" />
+        )}
+      </span>
+
+      <span className="min-w-0">
+        <span className="block truncate text-sm font-semibold text-stone-800">
+          {item.title ||
+            (isBlog
+              ? "Başlıksız blog yazısı"
+              : "Başlıksız sayfa")}
+        </span>
+
+        <span className="mt-1 block text-[11px] text-stone-500">
+          {item.hasUnpublishedChanges
+            ? "Yayınlanmamış değişiklikler var"
+            : isBlog
+              ? "Yayınlanmayı bekleyen blog taslağı"
+              : "Yayınlanmayı bekleyen sayfa taslağı"}
+        </span>
+      </span>
+    </Link>
+  );
+})}
                   </div>
                 ) : (
                   <div className="px-3 py-5 text-center">
                     <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <FiBell className="h-4 w-4" />
                     </span>
-                    <p className="mt-2 text-xs text-stone-500">Tüm sayfalar güncel.</p>
+                   <p className="mt-2 text-xs text-stone-500">
+  {isAzura ? "Tüm içerikler güncel." : "Tüm sayfalar güncel."}
+</p>
                   </div>
                 )}
               </div>
@@ -297,7 +451,7 @@ export default function TopBar({ user }) {
             </div>
           ) : null}
         </div>
-
+{!isAzura ? (
         <div className="relative">
           <button
             type="button" aria-expanded={openMenu === "quick"} aria-haspopup="menu"
@@ -324,8 +478,7 @@ export default function TopBar({ user }) {
           ) : null}
         </div>
 
-        </>
-        )}
+      ) : null}
 
         <div className="mx-1 hidden h-7 w-px bg-stone-200 sm:block" />
 
