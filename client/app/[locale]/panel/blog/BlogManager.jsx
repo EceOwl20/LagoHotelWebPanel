@@ -80,8 +80,9 @@ function getPostTitle(post) {
   );
 }
 
-export default function BlogManager({ hotel = "lago" }) {
+export default function BlogManager({ hotel = "lago", azuraContractVersion = 2 }) {
   const isAzura = hotel === "azura";
+  const localizedSlugs = isAzura && azuraContractVersion === 3;
   const canPublish = usePanelPermission(PANEL_PERMISSIONS.PUBLISH_CONTENT);
   const canDelete = usePanelPermission(PANEL_PERMISSIONS.DELETE_CONTENT);
   const canOverrideEditLock = usePanelPermission(
@@ -95,7 +96,7 @@ export default function BlogManager({ hotel = "lago" }) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const remote = useAzuraBlog({ enabled: isAzura, draft, selectedSlug, setPosts, setSelectedSlug,
+  const remote = useAzuraBlog({ enabled: isAzura, version: azuraContractVersion, draft, selectedSlug, setPosts, setSelectedSlug,
     setDraft, setLoading, setSaving, setError, setMessage, setActiveLocale, createEmptyPost });
   const editLock = useBlogEditLock(isAzura ? null : selectedSlug);
   const isEditBlocked = isAzura ? loading || remote.busy || remote.conflict : Boolean(selectedSlug) && !editLock.editable;
@@ -535,11 +536,11 @@ export default function BlogManager({ hotel = "lago" }) {
             </div>
             <div className="grid gap-5 p-5 lg:grid-cols-2 sm:p-6">
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-stone-700">Slug</span>
+              <span className="text-sm font-medium text-stone-700">{localizedSlugs ? "Teknik kayıt anahtarı (değişmez)" : "Slug"}</span>
               <input
                 type="text"
                 value={draft.slug}
-                disabled={Boolean(selectedSlug)}
+                disabled={localizedSlugs || Boolean(selectedSlug)}
                 onChange={(event) =>
                   setDraft((currentDraft) => ({
                     ...currentDraft,
@@ -549,7 +550,7 @@ export default function BlogManager({ hotel = "lago" }) {
                 className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10 disabled:cursor-not-allowed disabled:bg-stone-100 disabled:text-stone-500"
                 placeholder="yeni-blog-yazisi"
               />
-              {selectedSlug ? (
+              {localizedSlugs ? <span className="text-xs text-stone-500">Ziyaretçi adreslerini aşağıdaki dil sekmelerinden düzenleyin. Bu anahtar dosya kimliğidir.</span> : selectedSlug ? (
                 <span className="text-xs text-stone-500">
                   Mevcut yazının adresi değiştirilemez. Farklı bir adres için yeni yazı oluşturun.
                 </span>
@@ -639,6 +640,19 @@ export default function BlogManager({ hotel = "lago" }) {
             disabled={isEditBlocked}
             className="grid min-w-0 gap-5 p-5 disabled:opacity-70 sm:p-6"
           >
+            {localizedSlugs ? <label className="flex flex-col gap-2">
+              <span className="text-sm font-medium text-stone-700">{localeLabels[activeLocale]} adresi (slug)</span>
+              <input type="text" aria-label={`${localeLabels[activeLocale]} adresi (slug)`}
+                value={draft.slugs?.[activeLocale] || ""} maxLength={120}
+                onChange={(event) => setDraft((current) => ({
+                  ...current, slugs: { ...current.slugs, [activeLocale]: event.target.value },
+                }))}
+                placeholder="ornek-blog-yazisi"
+                className="rounded-xl border border-stone-200 px-4 py-3 text-sm outline-none transition focus:border-[#63978f] focus:ring-4 focus:ring-[#63978f]/10" />
+              <span className="text-xs text-stone-500">Dört dil için de küçük harf, rakam ve tire kullanın. Taslak adres değişikliği yalnız yayınlandığında canlıya yansır.</span>
+              <span className="text-xs text-stone-500">Taslak adres: /{activeLocale}/news/{draft.slugs?.[activeLocale] || "…"}</span>
+              {draft.publishedSlugs?.[activeLocale] ? <span className="text-xs text-emerald-700">Yayındaki adres: /{activeLocale}/news/{draft.publishedSlugs[activeLocale]}</span> : null}
+            </label> : null}
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-stone-700">Başlık</span>
               <input

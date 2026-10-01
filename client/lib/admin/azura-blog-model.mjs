@@ -1,4 +1,4 @@
-// Mirrors Azura's v2 contract; intentionally independent of Lago's disk storage.
+// Mirrors Azura's v2/v3 contracts; intentionally independent of Lago's disk storage.
 export const BLOG_LOCALES = ["tr", "en", "de", "ru"];
 const keys = (v, names) => Boolean(v && typeof v === "object" && !Array.isArray(v) &&
   Object.keys(v).length === names.length && names.every((n) => Object.hasOwn(v, n)));
@@ -9,10 +9,12 @@ const text = (v, max) => typeof v === "string" && v.length <= max && !/[\u0000-\
 const date = (v) => typeof v === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(v) &&
   Number.isFinite(Date.parse(v)) && new Date(v).toISOString() === v;
 
-export function validAzuraBlogDraft(v) {
-  if (!keys(v, ["coverImage", "publishedAt", "translations", "contentBlocks"]) ||
+export function validAzuraBlogDraft(v, version = 2) {
+  if (![2, 3].includes(version)) return false;
+  if (!keys(v, ["coverImage", "publishedAt", "translations", "contentBlocks", ...(version === 3 ? ["slugs"] : [])]) ||
       !validAzuraBlogImage(v.coverImage) || !date(v.publishedAt) || !keys(v.translations, BLOG_LOCALES) ||
       !Array.isArray(v.contentBlocks)) return false;
+  if (version === 3 && (!keys(v.slugs, BLOG_LOCALES) || !BLOG_LOCALES.every((l) => validAzuraBlogSlug(v.slugs[l])))) return false;
   if (!BLOG_LOCALES.every((l) => {
     const t = v.translations[l];
     return keys(t, ["title", "excerpt", "content", "seoTitle", "seoDescription"]) &&
@@ -31,23 +33,28 @@ export function validAzuraBlogDraft(v) {
   });
 }
 
-function validSnapshot(v, slug, status) {
-  if (!keys(v, ["slug", "status", "updatedAt", "coverImage", "publishedAt", "translations", "contentBlocks"]) ||
+function validSnapshot(v, slug, status, version) {
+  if (!keys(v, ["slug", "status", "updatedAt", "coverImage", "publishedAt", "translations", "contentBlocks", ...(version === 3 ? ["slugs"] : [])]) ||
       v.slug !== slug || v.status !== status || !date(v.updatedAt)) return false;
   const { slug: _slug, status: _status, updatedAt: _updatedAt, ...draft } = v;
-  return validAzuraBlogDraft(draft);
+  return validAzuraBlogDraft(draft, version);
 }
 
-export function validAzuraBlogRecord(r) {
-  return keys(r, ["storageVersion", "slug", "createdAt", "updatedAt", "publicationUpdatedAt", "draft", "published"]) &&
-    r.storageVersion === 2 && validAzuraBlogSlug(r.slug) && date(r.createdAt) && date(r.updatedAt) &&
-    validSnapshot(r.draft, r.slug, "draft") && (r.published === null ? r.publicationUpdatedAt === null :
-      date(r.publicationUpdatedAt) && validSnapshot(r.published, r.slug, "published"));
+export function validAzuraBlogRecord(r, version = 2) {
+  if (![2, 3].includes(version)) return false;
+  if (version === 3 && (!keys(r?.aliases, BLOG_LOCALES) || !BLOG_LOCALES.every((l) =>
+    Array.isArray(r.aliases[l]) && new Set(r.aliases[l]).size === r.aliases[l].length &&
+    r.aliases[l].every((alias) => validAzuraBlogSlug(alias) && alias !== r.published?.slugs?.[l])))) return false;
+  return keys(r, ["storageVersion", "slug", "createdAt", "updatedAt", "publicationUpdatedAt", "draft", "published", ...(version === 3 ? ["aliases"] : [])]) &&
+    r.storageVersion === version && validAzuraBlogSlug(r.slug) && date(r.createdAt) && date(r.updatedAt) &&
+    validSnapshot(r.draft, r.slug, "draft", version) && (r.published === null ? r.publicationUpdatedAt === null :
+      date(r.publicationUpdatedAt) && validSnapshot(r.published, r.slug, "published", version));
 }
 
-export function validAzuraBlogBody(method, body) {
-  if (method === "POST") return keys(body, ["slug", "draft"]) && validAzuraBlogSlug(body.slug) && validAzuraBlogDraft(body.draft);
-  if (method === "PUT") return body?.action === "save" ? keys(body, ["action", "draft"]) && validAzuraBlogDraft(body.draft) :
+export function validAzuraBlogBody(method, body, version = 2) {
+  if (![2, 3].includes(version)) return false;
+  if (method === "POST") return keys(body, ["slug", "draft"]) && validAzuraBlogSlug(body.slug) && validAzuraBlogDraft(body.draft, version);
+  if (method === "PUT") return body?.action === "save" ? keys(body, ["action", "draft"]) && validAzuraBlogDraft(body.draft, version) :
     keys(body, ["action"]) && ["publish", "unpublish"].includes(body.action);
   return body === undefined;
 }

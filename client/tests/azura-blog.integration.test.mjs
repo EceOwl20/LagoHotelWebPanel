@@ -13,7 +13,9 @@ const clientRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const listen = server => new Promise(resolve => server.listen(0, "127.0.0.1", () => resolve(server.address().port)));
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-test("Lago HTTP blog proxy isolates Azura CRUD, draft/publication, revisions and uploads", { timeout: 120000 }, async () => {
+for (const contractVersion of [2, 3]) test(`Lago HTTP blog V${contractVersion} proxy isolates Azura CRUD, draft/publication, revisions and uploads`, { timeout: 120000 }, async () => {
+  const slugs = {tr: "tatil", en: "holiday", de: "urlaub", ru: "otdyh"};
+  const draftInput = () => ({...input(), ...(contractVersion === 3 ? {slugs: {...slugs}} : {})});
   const token = "integration-only-azura-service-token";
   let current = null, serial = 0, asset = null, app, output = "";
   const currentRevision = () => createHash("sha256").update(JSON.stringify(current)).digest("hex");
@@ -30,11 +32,14 @@ test("Lago HTTP blog proxy isolates Azura CRUD, draft/publication, revisions and
       asset = { image: "/uploads/blog/upload.jpg", mimeType: "image/jpeg", size: 3, width: 800, height: 600 };
       return send(asset, 201);
     }
+    if (contractVersion === 3 && req.headers["x-azura-blog-contract-version"] !== "3") return send({error:"Wrong contract",code:"BLOG_CONTRACT_VERSION_MISMATCH"},409);
     if (req.url === "/api/azura/blog/posts" && req.method === "GET") return send({ posts: current ? [result()] : [] });
     if (req.method === "POST") {
       const body = JSON.parse(Buffer.concat(chunks).toString());
       if (current) return send({ error: "Duplicate" }, 409);
-      current = record(body.slug); current.draft = { ...current.draft, ...body.draft };
+      current = record(body.slug);
+      if (contractVersion === 3) { current.storageVersion = 3; current.aliases = {tr:[],en:[],de:[],ru:[]}; }
+      current.draft = { ...current.draft, ...body.draft };
       return send(result(), 201);
     }
     if (!current) return send({ error: "Missing" }, 404);
@@ -58,7 +63,7 @@ test("Lago HTTP blog proxy isolates Azura CRUD, draft/publication, revisions and
       cwd: clientRoot, env: { ...process.env, ADMIN_USERNAME: "blog-test-admin", ADMIN_PASSWORD: "BlogTestPassword!2026",
         ADMIN_PASSWORD_HASH: "", ADMIN_SESSION_SECRET: "blog-test-session-secret-not-for-production",
         PANEL_USERS_FILE_PATH: path.join(temporaryRoot, "users.json"), PANEL_DATA_ROOT: temporaryRoot,
-        PANEL_UPLOADS_ROOT: path.join(temporaryRoot, "uploads"), AZURA_SERVICE_TOKEN: token,
+        PANEL_UPLOADS_ROOT: path.join(temporaryRoot, "uploads"), AZURA_BLOG_CONTRACT_VERSION: String(contractVersion), AZURA_SERVICE_TOKEN: token,
         AZURA_EXPERIENCE_API_URL: `http://127.0.0.1:${upstreamPort}/api/azura/homepage/experience` },
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -73,14 +78,19 @@ test("Lago HTTP blog proxy isolates Azura CRUD, draft/publication, revisions and
     const base = "/api/admin/azura/blog/posts";
     let cookie = "";
     const request = (url, method = "GET", body, revision) => fetch(`${origin}${url}`, {
-      method, headers: { origin, ...(cookie ? { cookie } : {}), ...(body ? { "content-type": "application/json" } : {}),
+      method, headers: { origin, ...(contractVersion === 3 ? {"X-Azura-Blog-Contract-Version":"3"} : {}), ...(cookie ? { cookie } : {}), ...(body ? { "content-type": "application/json" } : {}),
         ...(revision ? { "if-match": `"${revision}"` } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}),
     });
     assert.equal((await request(base)).status, 401);
     const login = await request("/api/admin/login", "POST", { username: "blog-test-admin", password: "BlogTestPassword!2026" });
     assert.equal(login.status, 200); cookie = login.headers.get("set-cookie").split(";")[0];
     assert.deepEqual((await (await request(base)).json()).posts, []);
-    const created = await request(base, "POST", { slug: "azura-post", draft: input() });
+    if (contractVersion === 3) {
+      const stale = await fetch(`${origin}${base}`, {headers:{cookie}});
+      assert.equal(stale.status,409);
+      assert.equal((await stale.json()).code,"BLOG_CONTRACT_VERSION_MISMATCH");
+    }
+    const created = await request(base, "POST", { slug: "azura-post", draft: draftInput() });
     assert.equal(created.status, 201);
     const originalRevision = (await created.json()).post.revision;
     assert.equal(current.published, null);
@@ -88,11 +98,15 @@ test("Lago HTTP blog proxy isolates Azura CRUD, draft/publication, revisions and
     assert.equal((await request(url, "PUT", { action: "publish" })).status, 428);
     const published = await request(url, "PUT", { action: "publish" }, originalRevision);
     assert.equal(published.status, 200); let rev = (await published.json()).post.revision;
-    const edited = input(); edited.translations.tr.title = "Draft changed";
+    const edited = draftInput(); edited.translations.tr.title = "Draft changed";
     const saved = await request(url, "PUT", { action: "save", draft: edited }, rev);
     assert.equal(saved.status, 200); const savedView = (await saved.json()).post; rev = savedView.revision;
     assert.equal(savedView.hasUnpublishedChanges, true);
     assert.equal(current.published.translations.tr.title, "tr title");
+    if (contractVersion === 3) {
+      assert.deepEqual(savedView.slugs, slugs);
+      assert.deepEqual(savedView.publishedSlugs, slugs);
+    }
     assert.equal((await request(url, "PUT", { action: "publish" }, originalRevision)).status, 409);
     const live = await request(url, "PUT", { action: "publish" }, rev); rev = (await live.json()).post.revision;
     assert.equal(current.published.translations.tr.title, "Draft changed");

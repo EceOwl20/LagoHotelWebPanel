@@ -1,3 +1,4 @@
+import { getAzuraBlogVersion } from "./azura-blog-version.mjs";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
 import {
@@ -53,6 +54,14 @@ export function azuraBlogHandler(method, detail = false) {
         fail("Geçersiz blog adresi.");
       }
 
+      const version = getAzuraBlogVersion();
+      const requestedVersion = request.headers.get("x-azura-blog-contract-version");
+      if ((version === 3 && requestedVersion !== "3") ||
+          (version === 2 && requestedVersion !== null && requestedVersion !== "2")) {
+        throw Object.assign(new Error("Blog sürümü değişti. Sayfayı yenileyin ve sunucu ayarlarını kontrol edin."), {
+          status: 409, code: "BLOG_CONTRACT_VERSION_MISMATCH",
+        });
+      }
       let body, revision;
 
       if (method !== "GET") {
@@ -91,7 +100,7 @@ export function azuraBlogHandler(method, detail = false) {
 
         body = await readBody(request, method);
 
-        if (!validAzuraBlogBody(method, body)) {
+        if (!validAzuraBlogBody(method, body, version)) {
           fail("Blog verisi veya işlem geçersiz.");
         }
 
@@ -117,6 +126,7 @@ export function azuraBlogHandler(method, detail = false) {
     } catch (error) {
       return json(
         {
+          ...(error.code ? { code: error.code } : {}),
           error:
             error.message ||
             "Blog bağlantısı başarısız.",

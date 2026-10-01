@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AZURA_BLOG_ENDPOINT, blogDateInput, blogRequest, saveAzuraBlog } from "@/lib/admin/azura-blog-client.mjs";
+import { blogContractHeaders, newAzuraBlogDraft, AZURA_BLOG_ENDPOINT, blogDateInput, blogRequest, saveAzuraBlog } from "@/lib/admin/azura-blog-client.mjs";
 import { validAzuraBlogSlug } from "@/lib/admin/azura-blog-model.mjs";
 
-export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, setSelectedSlug,
+export default function useAzuraBlog({ enabled, version = 2, draft, selectedSlug, setPosts, setSelectedSlug,
   setDraft, setLoading, setSaving, setError, setMessage, setActiveLocale, createEmptyPost }) {
   const [conflict, setConflict] = useState(false);
   const [assets, setAssets] = useState([]);
@@ -39,19 +39,19 @@ export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, s
     if (!enabled) return undefined;
     alive.current = true;
     const controller = new AbortController();
-    blogRequest(AZURA_BLOG_ENDPOINT, { signal: controller.signal }).then((payload) => {
+    blogRequest(AZURA_BLOG_ENDPOINT, { signal: controller.signal, headers: blogContractHeaders(version) }).then((payload) => {
       if (!alive.current || controller.signal.aborted) return;
       setPosts(payload.posts); setMediaOrigin(payload.mediaOrigin);
       if (payload.posts[0]) adopt(payload.posts[0]);
       else {
-        const empty = createEmptyPost(); empty.publishedAt = blogDateInput(new Date().toISOString());
+        const empty = newAzuraBlogDraft(createEmptyPost, version);
         baseline.current = JSON.stringify(empty); setDraft(empty);
       }
-    }).catch((error) => { if (alive.current && !controller.signal.aborted) setError(error.message); })
+    }).catch((error) => { if (alive.current && !controller.signal.aborted) { setError(error.message); setConflict(true); } })
       .finally(() => { if (alive.current && !controller.signal.aborted) setLoading(false); });
     loadAssets();
     return () => { alive.current = false; controller.abort(); };
-  }, [enabled, adopt, createEmptyPost, loadAssets, setDraft, setError, setLoading, setPosts]);
+  }, [enabled, version, adopt, createEmptyPost, loadAssets, setDraft, setError, setLoading, setPosts]);
 
   useEffect(() => {
     if (!dirty && !busy) return undefined;
@@ -77,7 +77,7 @@ export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, s
     if (conflict || !start()) return;
     setSaving(true); setError(""); setMessage("");
     try {
-      await saveAzuraBlog({ slug: selectedSlug, draft, revision: revision.current, publicationStatus,
+      await saveAzuraBlog({ version, slug: selectedSlug, draft, revision: revision.current, publicationStatus,
         onSaved: (post) => { if (alive.current) adopt(post); } });
       if (alive.current) setMessage(publicationStatus === "published" ? "Blog yazısının güncel taslağı yayınlandı." :
         publicationStatus === "draft" ? "Blog yazısı yayından kaldırıldı; taslak korunuyor." : "Blog taslağı kaydedildi. Canlı içerik değiştirilmedi.");
@@ -89,7 +89,7 @@ export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, s
     if (!selectedSlug || conflict || busyRef.current || !window.confirm("Blog yazısı kalıcı olarak silinecek. Fiziksel görseller korunacak. Devam edilsin mi?") || !start()) return;
     setError(""); setMessage("");
     try {
-      await blogRequest(`${AZURA_BLOG_ENDPOINT}/${selectedSlug}`, { method: "DELETE", headers: { "If-Match": `"${revision.current}"` } });
+      await blogRequest(`${AZURA_BLOG_ENDPOINT}/${selectedSlug}`, { method: "DELETE", headers: { ...blogContractHeaders(version), "If-Match": `"${revision.current}"` } });
       if (!alive.current) return;
       setPosts((current) => current.filter((p) => p.slug !== selectedSlug));
       reset(); setMessage("Blog yazısı silindi. Fiziksel görseller korundu.");
@@ -98,7 +98,7 @@ export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, s
   };
 
   const reset = () => {
-    const empty = createEmptyPost(); empty.publishedAt = blogDateInput(new Date().toISOString());
+    const empty = newAzuraBlogDraft(createEmptyPost, version);
     baseline.current = JSON.stringify(empty); revision.current = null;
     setSelectedSlug(null); setDraft(empty); setActiveLocale("tr"); setConflict(false);
   };
@@ -113,7 +113,7 @@ export default function useAzuraBlog({ enabled, draft, selectedSlug, setPosts, s
   const reload = async () => {
     if (busyRef.current || !window.confirm("Sunucudaki güncel içerik forma alınacak. Formdaki yerel değişiklikler bırakılacak. Devam edilsin mi?") || !start()) return;
     try {
-      const payload = await blogRequest(AZURA_BLOG_ENDPOINT);
+      const payload = await blogRequest(AZURA_BLOG_ENDPOINT, { headers: blogContractHeaders(version) });
       if (!alive.current) return;
       setPosts(payload.posts); setMediaOrigin(payload.mediaOrigin);
       const slug = selectedSlug || (validAzuraBlogSlug(draft.slug) ? draft.slug : null);

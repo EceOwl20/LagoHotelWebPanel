@@ -257,6 +257,46 @@ kayıtta korunur; görsel seçimi yol ve gerçek ölçüleri günceller.
 Video bölümünün yalnızca metinleri yönetilir. Video dosyası/yolu, oynatma
 özellikleri ve mobil carousel kodu Lago'dan değiştirilmez.
 
+# Azura blog V3: dil bazlı adresler
+
+Lago'nun yerel blog depolaması ve V2 davranışı değişmez. Azura adaptörü,
+sunucuya özel `AZURA_BLOG_CONTRACT_VERSION` ayarını kullanır: eksik/`2`
+V2, `3` V3 seçer; başka değerler açık yapılandırma hatasıdır.
+Bu ayar NEXT_PUBLIC değildir; istemci veya istek başlığı modu seçemez.
+İstemciye yalnız seçilen sürüm numarası aktarılır, servis tokenı aktarılmaz.
+
+V3 formunda teknik `slug` kayıt anahtarı değişmez; yeni yazılar için UUID
+üretilir. İçerik ve SEO dil sekmesindeki slug alanı yalnız
+`draft.slugs[activeLocale]` değerini değiştirir. Dört adres zorunludur:
+en fazla 120 karakter, küçük ASCII harf/rakam ve aralarda tire.
+Otomatik çeviri veya adres normalleştirmesi yapılmaz. Aynı adres dört dilde
+kullanılabilir. Mevcut yazının teknik anahtarı yeniden üretilmez.
+
+Kayıt tüm dil adreslerini taşır; yayın ayrı işlemdir. Form taslak adresi
+ile mevcut yayımlanmış adresi ayrı gösterir. Eski adreslerin alias/308
+yönetimi Azura sunucusuna aittir; panel alias veya yayın snapshot'ı göndermez.
+Servis istekleri V3'te `X-Azura-Blog-Contract-Version: 3` ve yazmalarda
+mevcut If-Match başlığını kullanır. Eski açık sekme sürüm uyuşmazlığında
+409 alır; form korunur, otomatik tekrar yapılmaz.
+
+`BLOG_MIGRATION_REQUIRED` (503) ve `BLOG_CONTRACT_VERSION_MISMATCH`
+(409) hataları kodlarıyla korunur ve kurulum açıklaması gösterilir.
+Yeni V3 kaydı V2 yanıtı gibi kabul edilmez; eksik slugs otomatik tamamlanmaz.
+Blog görsel API'si ve mevcut medya kuralları değişmez.
+
+**Etkinleştirme:** Önce Azura'nın yedekli/dry-run veri geçişi tamamlanmalı.
+Bakım sırasında iki sunucuda da `AZURA_BLOG_CONTRACT_VERSION=3` ayarlanıp
+uygulamalar yeniden başlatılmalı; panel sekmesi yenilenerek yeni revision
+alınmalıdır. Yalnız ayarı değiştirmek mevcut V2 dosyalarını dönüştürmez.
+Bu geliştirmede ortam dosyaları veya gerçek kayıtlar değiştirilmedi.
+V3 yazmalarından sonra yalnız bayrağı 2 yapmak güvenli geri dönüş değildir;
+Azura'nın belgelenmiş veri/yazılım geri dönüş planı uygulanmalıdır.
+
+Doğrulama: `node --test lib/admin/azura-blog*.test.mjs`.
+İzole build kopyasında `AZURA_BLOG_TEST_PRODUCTION=1 node --test
+tests/azura-blog.integration.test.mjs`, gerçek Azura verisi yerine sözleşme
+sunucusuyla V2/V3 HTTP akışını test eder.
+
 # Azura Sertifikalar
 
 Azura → Sayfa İçerikleri → Sayfalar → Sertifikalar, mevcut

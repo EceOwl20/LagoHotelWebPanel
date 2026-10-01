@@ -14,7 +14,7 @@ const compile = file => transformSync(readFileSync(new URL(`../../app/[locale]/p
   module: { type: "commonjs" },
 }).code;
 const managerCode = compile("BlogManager.jsx"), hookCode = compile("useAzuraBlog.js");
-function harness(hotel = "azura", role = "admin") {
+function harness(hotel = "azura", role = "admin", version = 2) {
   const states = [], refs = [], effects = [], calls = [], locks = [], confirmations = [];
   let si = 0, ri = 0, first = true, handler, allowConfirm = true;
   const stub = () => null;
@@ -52,7 +52,7 @@ function harness(hotel = "azura", role = "admin") {
   const run = code => { const m = { exports: {} }; new Function("require", "module", "exports", "fetch", "window", code)(imports, m, m.exports, fetchMock, win); return m.exports.default; };
   remoteHook = run(hookCode);
   const Manager = run(managerCode);
-  const render = () => { si = 0; ri = 0; const tree = Manager({ hotel }); first = false; return tree; };
+  const render = () => { si = 0; ri = 0; const tree = Manager({ hotel, azuraContractVersion: version }); first = false; return tree; };
   return { calls, locks, confirmations, render, setHandler: fn => { handler = fn; }, confirm: allow => { allowConfirm = allow; },
     async mount() { render(); effects.forEach(fn => fn()); await new Promise(r => setTimeout(r, 0)); return render(); } };
 }
@@ -122,4 +122,42 @@ test("Azura blocks overlapping saves and article switches while a write is pendi
   assert.equal(h.calls.filter(c => c.method === "PUT").length, 1);
   release(Response.json({ post: view("azura-post", false, nextRevision) })); await saving;
   assert.equal(button(h.render(), "Taslağı Kaydet").props.disabled, false);
+});
+
+test("V3 shared form edits only the active locale and preserves the key and published URL", async () => {
+  const h = harness("azura", "admin", 3);
+  const post = {...view(), slugs:{tr:"tatil",en:"holiday",de:"urlaub",ru:"otdyh"},
+    publishedSlugs:{tr:"eski-tatil",en:"holiday",de:"urlaub",ru:"otdyh"}};
+  h.setHandler(async (_url, init) => !init.method ? Response.json({posts:[post],mediaOrigin:"https://azura.test"}) : null);
+  let tree = await h.mount();
+  assert.equal(h.calls.find(c => c.url.endsWith("/posts")).headers["X-Azura-Blog-Contract-Version"], "3");
+  const key = nodes(tree, n => n.type === "input" && n.props.value === "azura-post")[0];
+  assert.equal(key.props.disabled, true);
+  nodes(tree,n=>n.props["aria-label"]==="Türkçe adresi (slug)")[0].props.onChange({target:{value:"yeni-tatil"}});
+  tree = h.render();
+  assert.ok(label(tree).includes("/tr/news/eski-tatil"));
+  button(tree,"en").props.onClick();
+  tree = h.render();
+  assert.equal(nodes(tree,n=>n.props["aria-label"]==="English adresi (slug)")[0].props.value,"holiday");
+  h.setHandler(async (_url, init) => init.method === "PUT" ? Response.json({error:"Conflict"},{status:409}) : null);
+  await button(tree,"Taslağı Kaydet").props.onClick();
+  const put = h.calls.find(c=>c.method==="PUT");
+  assert.equal(put.url,"/api/admin/azura/blog/posts/azura-post");
+  assert.deepEqual(JSON.parse(put.body).draft.slugs,{...post.slugs,tr:"yeni-tatil"});
+  tree = h.render();
+  assert.equal(button(tree,"Taslağı Kaydet").props.disabled,true);
+  button(tree,"tr").props.onClick();
+  assert.equal(nodes(h.render(),n=>n.props["aria-label"]==="Türkçe adresi (slug)")[0].props.value,"yeni-tatil");
+});
+
+test("V3 initial migration error disables writes and empty list initializes four slug fields", async () => {
+  const h = harness("azura","admin",3);
+  h.setHandler(async url=>url.endsWith("/posts") ? Response.json({error:"Migration required",code:"BLOG_MIGRATION_REQUIRED"},{status:503}) : null);
+  let tree=await h.mount();
+  assert.equal(button(tree,"Taslağı Kaydet").props.disabled,true);
+  h.setHandler(async url=>url.endsWith("/posts") ? Response.json({posts:[],mediaOrigin:"https://azura.test"}) : null);
+  await button(tree,"Sunucudaki kaydı yükle").props.onClick();
+  tree=h.render();
+  assert.equal(nodes(tree,n=>n.props["aria-label"]==="Türkçe adresi (slug)")[0].props.value,"");
+  assert.ok(nodes(tree,n=>n.type==="input" && /^[a-f0-9-]{36}$/.test(n.props.value)).length);
 });

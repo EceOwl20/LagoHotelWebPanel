@@ -10,13 +10,14 @@ const { transformSync } = require("next/dist/build/swc");
 const { code } = transformSync(readFileSync(new URL("./azura-blog-route.js", import.meta.url), "utf8"), {
   filename: "route.js", jsc: { parser: { syntax: "ecmascript" } }, module: { type: "commonjs" },
 });
-function harness(role = "admin") {
+function harness(role = "admin", version = 2) {
   const calls = []; let limited = false;
   const deny = (status) => { throw Object.assign(new Error("Denied"), { status }); };
   const imports = {
     "next/server": { NextResponse: { json: (body, options) => Response.json(body, options) } },
     "@/lib/admin/session": { getAdminSession: async () => role ? { role } : null },
-    "@/lib/admin/authorization": { assertPanelPermission: (s, p) => { if (!hasPanelPermission(s.role, p)) deny(403); } },
+    "@/lib/admin/authorization": { assertPanelSiteAccess: () => {}, assertPanelPermission: (s, p) => { if (!hasPanelPermission(s.role, p)) deny(403); } },
+    "./azura-blog-version.mjs": { getAzuraBlogVersion: () => version },
     "@/lib/admin/permissions.mjs": { PANEL_PERMISSIONS },
     "@/lib/admin/security": { assertSameOrigin: r => { if (r.headers.get("origin") !== "http://localhost") deny(403); },
       consumeRateLimit: () => ({ ok: !limited }), getClientIp: () => "test" },
@@ -66,4 +67,19 @@ test("Blog routes reject bad origin, slug, revision, body and attempts to smuggl
   assert.equal((await h.run("PUT", "x".repeat(128 * 1024 + 1))).status, 413);
   assert.equal(h.calls.length, 0);
   h.limit(); assert.equal((await h.run("PUT", save)).status, 429);
+});
+
+test("V3 route requires a matching browser contract, including stale publish/delete requests", async () => {
+  const h = harness("admin", 3);
+  for (const method of ["GET", "PUT", "DELETE"]) {
+    const result = await h.run(method, method === "PUT" ? {action: "publish"} : undefined);
+    assert.equal(result.status, 409);
+    assert.equal((await result.json()).code, "BLOG_CONTRACT_VERSION_MISMATCH");
+  }
+  assert.equal(h.calls.length, 0);
+  const draft = {...input(), slugs: {tr: "tatil", en: "holiday", de: "urlaub", ru: "otdyh"}};
+  const headers = {"X-Azura-Blog-Contract-Version": "3"};
+  assert.equal((await h.run("PUT", {action: "save", draft}, headers)).status, 200);
+  assert.equal((await h.run("PUT", {action: "save", draft: input()}, headers)).status, 400);
+  assert.equal((await harness().run("GET", undefined, headers)).status, 409);
 });
