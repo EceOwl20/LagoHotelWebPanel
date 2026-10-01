@@ -470,9 +470,10 @@ olmalıdır. Başlık/SEO başlığı 500, özet/SEO açıklaması 4000, ana/blo
 100000 karakter sınırındadır; toplam istek ayrıca 128 KiB ile sınırlanır.
 H2/H3 blok kimlikleri benzersizdir; satır sonları korunur.
 
-Ortak görsel seçici yalnızca Azura `/uploads/blog/` görsellerini listeler ve
-yükler. Lago galerisi veya Azura'nın diğer sayfa görselleri bu sözleşmeye
-dahil değildir. JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel sınırları kullanılır.
+Ortak görsel seçici Azura medya kütüphanesini listeler. Başka sayfadan seçilen
+görsel `/uploads/blog/` kapsamına yeniden kullanım API'siyle kopyalanır;
+yeni yüklemeler de blog kapsamında kalır. Lago görselleri bu listeye dahil
+değildir. JPEG/PNG/WebP, 8 MiB ve 16 milyon piksel sınırları kullanılır.
 Yükleme yalnızca formdaki seçimi değiştirir; yazı kaydı ve yayın ayrıdır.
 Azura yazısı silindiğinde fiziksel görseller korunur.
 
@@ -481,3 +482,23 @@ Testler: `npm run test:admin`, `npm run test:pages`, `npm run test:integration`.
 Azura sözleşme sunucusuyla HTTP akışını sınar; gerçek Azura verisine yazmaz.
 İzole production build sonrası `AZURA_BLOG_TEST_PRODUCTION=1 node --test
 tests/azura-blog.integration.test.mjs` production modunda çalıştırılabilir.
+
+## Azura ortak medya kütüphanesi
+
+Panelde `/panel/azura/medya` arama ve sayfalama sunar. Sunucu proxy'leri
+`/api/admin/azura/media-library` ve `/api/admin/azura/media-library/reuse`
+mevcut Azura bağlantı ayarlarını kullanır; servis tokenı tarayıcıya gönderilmez.
+Reuse isteği oturum, Azura erişimi, içerik düzenleme yetkisi, aynı origin ve
+rate limit kontrolünden geçer. JSON gövdesi en fazla 4 KiB'dir.
+
+Sayfa İçerikleri görsel seçicileri, blog, dinamik sayfalar ve galeri Azura'nın
+ortak kütüphanesini kullanır. Sayfa seçicisinde kütüphane yalnız açıldığında
+yüklenir. Başka klasörden seçim, ilgili hedef kapsama güvenli bir kopya alır;
+yeni yol ve gerçek ölçüler forma aktarılır. Alt açıklamalar, sabit kimlikler ve
+sıra korunur. Kopyalama içerik kaydetmez/yayınlamaz; mevcut kaydetme işlemi
+ayrıdır. Galeride kategoriye ekleme işlemi önce kopyalar, sonra kayıt ekler.
+`room-options` kaynak olabilir ancak hedef değildir. Lago akışı değişmez.
+
+Kontroller: `node --test lib/admin/azura-media-library*.test.mjs`;
+blog, galeri, dinamik sayfa UI ve mevcut sayfa editörü regresyon testleri.
+Testler sahte HTTP yanıtlarıyla çalışır; kullanıcı içeriklerine yazmaz.

@@ -143,7 +143,7 @@ export default function SitePageMediaEditor({
       disabled, externalAssets: availableAssets, externalLoading, externalError,
       externalPreviewUrl: availableAssets.find((item) => item.image === currentPath)?.previewUrl,
       uploadAccept: "image/jpeg,image/png,image/webp",
-      onChange: (nextPath) => select(nextPath),
+      onChange: (nextPath, asset) => select(nextPath, asset),
       externalUpload: externalUpload ? async (file) => {
         const asset = await externalUpload(file);
         return asset && select(asset.image, asset) ? asset.image : null;

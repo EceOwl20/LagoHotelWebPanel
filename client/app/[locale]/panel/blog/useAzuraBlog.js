@@ -3,6 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { blogContractHeaders, newAzuraBlogDraft, AZURA_BLOG_ENDPOINT, blogDateInput, blogRequest, saveAzuraBlog } from "@/lib/admin/azura-blog-client.mjs";
 import { validAzuraBlogSlug } from "@/lib/admin/azura-blog-model.mjs";
+const AZURA_MEDIA_LIBRARY_API =
+  "/api/admin/azura/media-library";
+
+const BLOG_MEDIA_SCOPE = "blog";
+
+const MEDIA_LIBRARY_PAGE_SIZE = 100;
 
 export default function useAzuraBlog({ enabled, version = 2, draft, selectedSlug, setPosts, setSelectedSlug,
   setDraft, setLoading, setSaving, setError, setMessage, setActiveLocale, createEmptyPost }) {
@@ -26,14 +32,100 @@ export default function useAzuraBlog({ enabled, version = 2, draft, selectedSlug
     setPosts((current) => [post, ...current.filter((p) => p.slug !== post.slug)]);
   }, [setSelectedSlug, setDraft, setPosts]);
 
-  const loadAssets = useCallback(async () => {
-    setAssetsLoading(true); setAssetsError("");
-    try {
-      const payload = await blogRequest("/api/admin/azura/blog/images");
-      if (alive.current) setAssets(payload.images);
-    } catch (error) { if (alive.current) setAssetsError(error.message); }
-    finally { if (alive.current) setAssetsLoading(false); }
-  }, []);
+const loadAssets = useCallback(async () => {
+  setAssetsLoading(true);
+  setAssetsError("");
+
+  try {
+    const collected = [];
+
+    let offset = 0;
+    let nextOffset = 0;
+    let libraryOrigin = "";
+
+    while (nextOffset !== null) {
+      const params = new URLSearchParams({
+        limit: String(MEDIA_LIBRARY_PAGE_SIZE),
+        offset: String(offset),
+      });
+
+      const payload = await blogRequest(
+        `${AZURA_MEDIA_LIBRARY_API}?${params.toString()}`
+      );
+
+      if (!Array.isArray(payload.images)) {
+        throw new Error(
+          "Medya kütüphanesi geçersiz."
+        );
+      }
+
+      if (
+        !libraryOrigin &&
+        payload.mediaOrigin
+      ) {
+        libraryOrigin =
+          payload.mediaOrigin;
+      }
+
+      collected.push(
+        ...payload.images
+      );
+
+      nextOffset =
+        payload.nextOffset ?? null;
+
+      if (nextOffset !== null) {
+        offset = nextOffset;
+      }
+    }
+
+    if (!alive.current) {
+      return;
+    }
+
+    const normalizedAssets =
+      collected.map((asset) => ({
+        ...asset,
+
+        name:
+          asset.name ||
+          asset.image
+            ?.split("/")
+            .pop() ||
+          "Azura görseli",
+
+        folder:
+          asset.folder ||
+          asset.scope ||
+          "Azura",
+
+        previewUrl:
+          libraryOrigin &&
+          asset.image
+            ? `${libraryOrigin}${asset.image}`
+            : "",
+      }));
+
+    setAssets(normalizedAssets);
+
+    if (libraryOrigin) {
+      setMediaOrigin(
+        libraryOrigin
+      );
+    }
+  } catch (error) {
+    if (alive.current) {
+      setAssetsError(
+        error.message ||
+          "Medya kütüphanesi yüklenemedi."
+      );
+    }
+  } finally {
+    if (alive.current) {
+      setAssetsLoading(false);
+    }
+  }
+}, []);
 
   useEffect(() => {
     if (!enabled) return undefined;
@@ -136,11 +228,147 @@ export default function useAzuraBlog({ enabled, version = 2, draft, selectedSlug
     } finally { finish(); }
   };
 
-  const imageProps = (value, onChange) => ({
-    librarySource: "media", externalAssets: assets, externalLoading: assetsLoading, externalError: assetsError,
-    externalUpload: (file) => upload(file, onChange), externalPreviewUrl: value && mediaOrigin ? `${mediaOrigin}${value}` : "",
-    disabled: busy || conflict, uploadAccept: "image/jpeg,image/png,image/webp",
-    hint: "Azura blog görsellerinden seçin veya yeni görsel yükleyin. Görselin yayını için yazıyı kaydedip yayınlayın.",
-  });
+const imageProps = (
+  value,
+  onChange
+) => ({
+  librarySource: "media",
+
+  externalAssets: assets,
+
+  externalLoading:
+    assetsLoading,
+
+  externalError:
+    assetsError,
+
+  externalUpload: (file) =>
+    upload(file, onChange),
+
+  externalSelect: (image) =>
+    reuse(image, onChange),
+
+  externalPreviewUrl:
+    value && mediaOrigin
+      ? `${mediaOrigin}${value}`
+      : "",
+
+  disabled:
+    busy || conflict,
+
+  uploadAccept:
+    "image/jpeg,image/png,image/webp",
+
+  hint:
+    "Azura medya kütüphanesindeki mevcut bir görseli seçebilir veya bilgisayarınızdan yeni görsel yükleyebilirsiniz. Görselin yayını için yazıyı kaydedip yayınlayın.",
+});
+
+  const reuse = async (
+  imagePath,
+  onChange
+) => {
+  if (
+    conflict ||
+    !start()
+  ) {
+    return null;
+  }
+
+  setAssetsError("");
+
+  try {
+    if (
+      typeof imagePath !==
+        "string" ||
+      !imagePath.startsWith(
+        "/uploads/"
+      )
+    ) {
+      throw new Error(
+        "Geçersiz medya görseli."
+      );
+    }
+
+    const asset =
+      await blogRequest(
+        `${AZURA_MEDIA_LIBRARY_API}/reuse`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            image: imagePath,
+            targetScope:
+              BLOG_MEDIA_SCOPE,
+          }),
+        }
+      );
+
+    if (
+      !asset.image?.startsWith(
+        "/uploads/blog/"
+      )
+    ) {
+      throw new Error(
+        "Medya yeniden kullanım yanıtı geçersiz."
+      );
+    }
+
+    if (!alive.current) {
+      return null;
+    }
+
+    const normalizedAsset = {
+      ...asset,
+
+      name:
+        asset.image
+          .split("/")
+          .pop() ||
+        "Blog görseli",
+
+      scope:
+        BLOG_MEDIA_SCOPE,
+
+      folder:
+        BLOG_MEDIA_SCOPE,
+
+      previewUrl:
+        mediaOrigin
+          ? `${mediaOrigin}${asset.image}`
+          : "",
+    };
+
+    setAssets((current) => [
+      normalizedAsset,
+
+      ...current.filter(
+        (item) =>
+          item.image !==
+          asset.image
+      ),
+    ]);
+
+    onChange(asset.image);
+
+    return asset.image;
+  } catch (error) {
+    if (alive.current) {
+      setAssetsError(
+        error.message ||
+          "Görsel yeniden kullanılamadı."
+      );
+    }
+
+    throw error;
+  } finally {
+    finish();
+  }
+};
+
   return { save, remove, createNew, select, reload, loadAssets, conflict, busy, dirty, imageProps };
 }

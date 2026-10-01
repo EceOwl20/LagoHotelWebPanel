@@ -186,6 +186,7 @@ const AzuraBackgroundEditor = forwardRef(function AzuraBackgroundEditor({ active
       {success ? <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{success}</p> : null}
       {section ? <>
         <PageImagePicker
+          uploadFolder="pages/homepage"
           label="Arka plan görseli"
           value={section.image}
           externalAssets={images}

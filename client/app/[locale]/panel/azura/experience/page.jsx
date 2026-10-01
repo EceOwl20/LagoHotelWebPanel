@@ -342,6 +342,7 @@ const AzuraExperiencePage = forwardRef(function AzuraExperiencePage({ embedded =
                     <p className="mt-1 text-xs text-stone-500">{key === "background" ? "Animasyonun arkasındaki görsel" : "Animasyonun önündeki görsel"}</p>
                   </div>
                   <PageImagePicker
+                    uploadFolder="pages/homepage"
                     label={label}
                     value={experience[key].image}
                     externalAssets={availableImages}

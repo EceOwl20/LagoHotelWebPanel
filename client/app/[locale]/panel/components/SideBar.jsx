@@ -17,6 +17,7 @@ import { FiPackage, FiUsers } from "react-icons/fi";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoBarChart } from "react-icons/io5";
 import { usePanelHotel } from "../PanelSessionContext";
+import { MdOutlinePermMedia } from "react-icons/md";
 
 const navigationItems = [
   { href: "/panel/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined},
@@ -30,6 +31,7 @@ const navigationItems = [
 const azuraNavigationItems = [
   { href: "/panel/azura/dashboard", label: "Dashboard", icon: LuChartNoAxesCombined },
   { href: "/panel/azura/sayfalar", label: "Sayfalar", icon: FiFile },
+  { href: "/panel/azura/medya", label: "Medya Kütüphanesi", icon: MdOutlinePermMedia },
   { href: "/panel/azura/galeri", label: "Galeri", icon: FiFilm },
   { href: "/panel/azura/icerikler", label: "Sayfa İçerikleri", icon: FiFile },
   { href: "/panel/azura/blog", label: "Blog", icon: FiPackage },

@@ -27,6 +27,7 @@ function harness(enabled = true) {
   const fetchMock = async (url, options = {}) => {
     calls.push({ url, ...options });
     const override = await handler?.(url, options); if (override) return override;
+    if (url.includes("/media-library?")) return Response.json({ images: [], nextOffset: null });
     return Response.json(url.endsWith("/images") ? { images: [] } : result(options.method ? nextRevision : revision));
   };
   const imports = name => name === "react" ? hooks : { ...client,
@@ -41,7 +42,7 @@ function harness(enabled = true) {
 }
 test("Azura page hook uses remote media only; disabled Lago hook makes no requests", async () => {
   const h = harness(); await h.mount();
-  assert.deepEqual(h.calls.map(call => call.url), ["/api/admin/azura/pages/images"]);
+  assert.deepEqual(h.calls.map(call => call.url), ["/api/admin/azura/media-library?limit=100&offset=0"]);
   const lago = harness(false); await lago.mount(); assert.equal(lago.calls.length, 0);
 });
 test("409 leaves typed draft untouched and blocks further writes until explicit reload", async () => {

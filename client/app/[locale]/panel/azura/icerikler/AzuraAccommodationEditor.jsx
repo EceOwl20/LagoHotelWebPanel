@@ -215,6 +215,7 @@ const AzuraAccommodationEditor = forwardRef(function AzuraAccommodationEditor({ 
               <legend className="px-1 text-sm font-semibold text-stone-900">{index + 1}. {label}</legend>
               <p className="text-xs text-stone-500">Sabit bağlantı: {link}</p>
               <PageImagePicker
+                uploadFolder="pages/homepage"
                 label={`${label} görseli`}
                 value={card.image}
                 externalAssets={images}

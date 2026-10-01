@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 import { AZURA_GALLERY_CATEGORIES, GALLERY_LOCALES } from "./azura-gallery-model.mjs";
 import * as model from "./azura-gallery-model.mjs";
 import * as revisions from "./azura-revision.mjs";
+import * as mediaLibrary from "./azura-media-library-client.mjs";
 import { PANEL_PERMISSIONS, hasPanelPermission } from "./permissions.mjs";
 const require = createRequire(import.meta.url);
 const { transformSync } = require("next/dist/build/swc");
@@ -35,6 +36,8 @@ function harness(hotel, role = "admin") {
   const fetchMock = async (url, init = {}) => {
     calls.push({ url, ...init });
     if (handler) { const answer = await handler(url, init); if (answer) return answer; }
+    if (url.includes("/media-library?")) return Response.json({ images: [], nextOffset: null });
+    if (url.endsWith("/media-library/reuse")) return Response.json({ image: "/uploads/gallery/shared.jpg", width: 800, height: 600 });
     return { ok: true, json: async () => url.endsWith("/images") ? { images: [] } :
       hotel === "azura" ? { gallery: structuredClone(gallery), revision, mediaOrigin: "http://azura.test" } :
         { gallery: { categories: [{ id: "general", images: [record("lago-image", 0)] }] } } };
@@ -42,6 +45,10 @@ function harness(hotel, role = "admin") {
   const imports = (name) => {
     if (name === "react") return hooks;
     if (name === "react/jsx-runtime") return require(name);
+    if (name.includes("azura-media-library-client")) return {
+      loadAzuraLibrary: options => mediaLibrary.loadAzuraLibrary({ ...options, fetchImpl: fetchMock }),
+      reuseAzuraImage: (image, scope) => mediaLibrary.reuseAzuraImage(image, scope, { fetchImpl: fetchMock }),
+    };
     if (name.includes("azura-gallery-model")) return model;
     if (name.includes("azura-revision")) return revisions;
     if (name.includes("GalleryAltFields")) return { __esModule: true, default: stub, emptyGalleryTranslations: empty };
@@ -86,7 +93,7 @@ const button = (tree, text) => nodes(tree, (n) => n.type === "button" && label(n
 
 test("The same gallery manager isolates hotel fetches, locks, previews and categories", async () => {
   const azura = harness("azura"), tree = await azura.mount();
-  assert.ok(azura.calls.every((c) => c.url.startsWith("/api/admin/azura/gallery")));
+  assert.ok(azura.calls.every((c) => c.url.startsWith("/api/admin/azura/gallery") || c.url.startsWith("/api/admin/azura/media-library?")));
   assert.ok(azura.locks.every((id) => id === ""));
   assert.ok(nodes(tree, (n) => n.props.src === "http://azura.test/uploads/gallery/shared.jpg").length);
   assert.ok(label(tree).includes("Toplantı"));

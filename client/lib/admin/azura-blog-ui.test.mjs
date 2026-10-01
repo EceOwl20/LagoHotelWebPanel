@@ -27,6 +27,7 @@ function harness(hotel = "azura", role = "admin", version = 2) {
   const fetchMock = async (url, init = {}) => {
     calls.push({ url, ...init });
     const override = await handler?.(url, init); if (override) return override;
+    if (url.includes("/media-library?")) return Response.json({ images: [], nextOffset: null, mediaOrigin: "https://azura.test" });
     return Response.json(url.endsWith("/images") ? { images: [] } : init.method === "DELETE" ? { deleted: true, slug: "azura-post" } :
       init.method ? { post: view("azura-post", false, nextRevision) } : { posts: [view()], mediaOrigin: "https://azura.test" });
   };
@@ -67,7 +68,7 @@ const button = (tree, title) => nodes(tree, n => n.type === "button" && label(n)
 
 test("Shared blog UI fetches only the selected hotel's data and uses Azura-only media without local locks", async () => {
   const azura = harness(); const tree = await azura.mount();
-  assert.ok(azura.calls.every(c => c.url.startsWith("/api/admin/azura/blog/")));
+  assert.ok(azura.calls.every(c => c.url.startsWith("/api/admin/azura/blog/") || c.url.startsWith("/api/admin/azura/media-library?")));
   assert.ok(azura.locks.every(slug => slug === null));
   const picker = nodes(tree, n => n.props.label === "Kapak görseli")[0];
   assert.equal(picker.props.librarySource, "media");

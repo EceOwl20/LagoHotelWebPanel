@@ -209,6 +209,7 @@ const AzuraCarouselEditor = forwardRef(function AzuraCarouselEditor({ activeLoca
                   <legend className="px-1 text-sm font-semibold text-stone-900">{AZURA_CAROUSEL_KEYS.indexOf(slide.key) + 1}. {label}</legend>
                   <p className="text-xs text-stone-500">Sabit bağlantı: {link}</p>
                   <PageImagePicker
+                    uploadFolder="pages/homepage"
                     label={`${label} görseli`}
                     value={slide.image}
                     externalAssets={images}

@@ -49,6 +49,13 @@ test("Certificates shared editor preserves Lago controls and fixed Azura src/met
   pickers[0].onChange(asset.image);
   assert.equal(media.hero.image, asset.image);
   assert.equal(Object.hasOwn(media.hero, "translations"), false);
+  const reused = { image: "/uploads/pages/certificates/reused.jpg", width: 1500, height: 900 };
+  pickers[2].onChange(reused.image, reused);
+  assert.equal(media.gallery.images[0].src, reused.image);
+  assert.equal(media.gallery.images[0].width, 1500);
+  assert.equal(media.gallery.images[0].height, 900);
+  assert.equal(media.gallery.images[0].id, "certificate-0");
+  assert.deepEqual(media.gallery.images[0].translations, image().translations);
   pickers.length = 0;
   const lago = JSON.parse(readFileSync(new URL("../../content/site-pages/certificates.json", import.meta.url)));
   const lagoHtml = renderToStaticMarkup(React.createElement(Certificates, { activeLocale: "tr", value: lago, onChange: () => {} }));

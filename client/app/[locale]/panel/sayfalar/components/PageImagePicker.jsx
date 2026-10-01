@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { loadAzuraLibrary, mediaTargetScope, reuseAzuraImage } from "@/lib/admin/azura-media-library-client.mjs";
 import { PageMediaContext } from "./PageMediaContext";
 import { FiImage, FiUploadCloud } from "react-icons/fi";
 import useGalleryCategoryEditLock from "../../components/useGalleryCategoryEditLock";
@@ -66,6 +67,7 @@ export default function PageImagePicker({
   compact = false,
   externalAssets,
   externalUpload,
+  externalSelect,
   externalPreviewUrl,
   externalLoading = false,
   externalError = "",
@@ -84,10 +86,47 @@ export default function PageImagePicker({
       onChange(path);
       return path;
     };
+
+    if (typeof remoteMedia.reuse === "function") {
+  externalSelect = async (src) => {
+    const path = await remoteMedia.reuse(src);
+
+    if (path) {
+      onChange(path);
+    }
+
+    return path;
+  };
+}
     disabled = disabled || remoteMedia.disabled;
     uploadAccept = "image/jpeg,image/png,image/webp";
   }
   const [isOpen, setIsOpen] = useState(false);
+  const [sharedAssets, setSharedAssets] = useState(null);
+  const [sharedLoading, setSharedLoading] = useState(false);
+  const [sharedError, setSharedError] = useState("");
+  const [selectedPreview, setSelectedPreview] = useState(null);
+  const selecting = useRef(false);
+  const [selectionPending, setSelectionPending] = useState(false);
+  const targetScope = Array.isArray(externalAssets) && !externalSelect && !remoteMedia ? mediaTargetScope(uploadFolder) : null;
+  useEffect(() => {
+    if (!isOpen || !targetScope) return;
+    const controller = new AbortController();
+    setSharedLoading(true); setSharedError(""); setSharedAssets(null);
+    loadAzuraLibrary({ signal: controller.signal }).then(data => {
+      if (!controller.signal.aborted) setSharedAssets(data.images);
+    }).catch(cause => {
+      if (!controller.signal.aborted) setSharedError(cause.message);
+    }).finally(() => { if (!controller.signal.aborted) setSharedLoading(false); });
+    return () => controller.abort();
+  }, [isOpen, targetScope]);
+  if (targetScope) {
+    externalAssets = sharedAssets || externalAssets;
+    externalLoading = externalLoading || sharedLoading;
+    externalError = sharedError || externalError;
+    if (selectedPreview && selectedPreview.image === value) externalPreviewUrl = selectedPreview.previewUrl;
+  }
+  disabled = disabled || selectionPending;
   const [library, setLibrary] = useState(null);
   const [activeFolder, setActiveFolder] = useState("all");
   const [query, setQuery] = useState("");
@@ -103,17 +142,51 @@ export default function PageImagePicker({
   const galleryUploadReadOnly =
     librarySource === "gallery" && !galleryEditLock.editable;
   const isExternal = Array.isArray(externalAssets);
-  const externalLibrary = useMemo(() => isExternal ? {
-    assets: externalAssets.map((asset) => ({
-      id: asset.image,
-      url: asset.image,
-      previewUrl: asset.previewUrl,
-      name: asset.image.split("/").pop(),
-      folder: "Azura",
-      extension: asset.image.split(".").pop()?.toLowerCase() || "",
-    })),
-    folders: ["Azura"],
-  } : null, [externalAssets, isExternal]);
+const externalLibrary = useMemo(() => {
+  if (!isExternal) {
+    return null;
+  }
+
+  const assets = externalAssets.map((asset) => ({
+    id: asset.image,
+    url: asset.image,
+    previewUrl: asset.previewUrl,
+
+    name:
+      asset.name ||
+      asset.image.split("/").pop() ||
+      "Azura görseli",
+
+    folder:
+      asset.folder ||
+      asset.scope ||
+      "Azura",
+
+    extension:
+      asset.image
+        .split(".")
+        .pop()
+        ?.toLowerCase() || "",
+  }));
+
+  return {
+    assets,
+
+    folders: [
+      ...new Set(
+        assets.map(
+          (asset) => asset.folder
+        )
+      ),
+    ].sort((left, right) =>
+      left.localeCompare(
+        right,
+        "tr"
+      )
+    ),
+  };
+}, [externalAssets, isExternal]);
+
   const activeLibrary = isExternal ? externalLibrary : library;
 
   useEffect(() => {
@@ -178,12 +251,48 @@ export default function PageImagePicker({
     });
   }, [activeFolder, activeLibrary, query]);
 
-  const selectImage = (src) => {
-    if (disabled) return;
-    onChange(src);
-    setError("");
+ const selectImage = async (src) => {
+  if (disabled || selecting.current) {
+    return;
+  }
+
+  setError("");
+  selecting.current = true;
+  setSelectionPending(true);
+
+  try {
+    if (targetScope) {
+      const source = externalAssets.find(asset => asset.image === src);
+      const asset = await reuseAzuraImage(src, targetScope);
+      const origin = source?.previewUrl?.endsWith(src) ? source.previewUrl.slice(0, -src.length) : "";
+      setSelectedPreview({ ...asset, previewUrl: `${origin}${asset.image}` });
+      if (onChange(asset.image, asset) === false) return;
+    } else if (
+      isExternal &&
+      typeof externalSelect ===
+        "function"
+    ) {
+      const selectedPath =
+        await externalSelect(src);
+
+      if (!selectedPath) {
+        return;
+      }
+    } else {
+      onChange(src);
+    }
+
     setIsOpen(false);
-  };
+  } catch (selectError) {
+    setError(
+      selectError.message ||
+        "Görsel seçilemedi."
+    );
+  } finally {
+    selecting.current = false;
+    setSelectionPending(false);
+  }
+};
 
   const handleUpload = async (event) => {
     const file = event.target.files?.[0];

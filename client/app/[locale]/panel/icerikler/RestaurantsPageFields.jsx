@@ -53,7 +53,7 @@ export default function RestaurantsPageFields({
           return <div key={path.join(".")} className="space-y-3 rounded-2xl border border-stone-200 bg-stone-50 p-4">
             <PageImagePicker
               label={label} value={record.image} uploadFolder="pages/restaurants"
-              onChange={(nextPath) => selectImage(path, nextPath)}
+              onChange={(nextPath, asset) => selectImage(path, nextPath, asset)}
               externalAssets={externalAssets}
               externalPreviewUrl={externalAssets?.find((asset) => asset.image === record.image)?.previewUrl}
               externalUpload={externalUpload ? async (file) => {

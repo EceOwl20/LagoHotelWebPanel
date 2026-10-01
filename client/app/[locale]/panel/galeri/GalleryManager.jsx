@@ -1,6 +1,7 @@
 "use client";
 
 import GalleryAltFields, { emptyGalleryTranslations } from "./GalleryAltFields";
+import { loadAzuraLibrary, reuseAzuraImage } from "@/lib/admin/azura-media-library-client.mjs";
 import { isAzuraGallery, isGalleryTranslations } from "@/lib/admin/azura-gallery-model.mjs";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
 import Image from "next/image";
@@ -146,9 +147,7 @@ export default function GalleryManager({ hotel = "lago" }) {
 
   const loadAssets = useCallback(async (signal) => {
     try {
-      const response = await fetch("/api/admin/azura/gallery/images", { cache: "no-store", signal });
-      const payload = await response.json();
-      if (!response.ok || !Array.isArray(payload.images)) throw new Error(payload.error || "Görsel listesi alınamadı.");
+      const payload = await loadAzuraLibrary({ signal });
       if (!signal?.aborted) { setAssets(payload.images); setAssetError(""); }
     } catch (e) { if (!signal?.aborted) setAssetError(e.message); }
   }, []);
@@ -174,6 +173,10 @@ export default function GalleryManager({ hotel = "lago" }) {
     setError("");
     setMessage("");
     try {
+      if (operation.action === "add") {
+        const asset = await reuseAzuraImage(operation.src, "gallery");
+        operation = { ...operation, src: asset.image };
+      }
       const response = await fetch("/api/admin/azura/gallery", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ operation, revision: revisionRef.current }),
