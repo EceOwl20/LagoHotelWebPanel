@@ -8,7 +8,23 @@ Panel girişinden sonra `/[locale]/panel/oteller` ekranında Lago veya Azura se�
 Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura
 `/[locale]/panel/azura/icerikler` altında anasayfa, oda, restoran ve ortak iletişim içeriklerini kullanır. Azura ekranında Lago içerik
 menüleri ve Lago taslak bildirimleri gösterilmez. Bu seçim erişim yetkisi
-değildir; kullanıcı rolleri ve API izin kontrolleri mevcut şekilde uygulanır.
+değildir; sunucu oturumundaki `sites` yetkileri ve kullanıcı rolü birlikte kontrol edilir.
+
+#### Otel bazlı API yetkisi
+
+- Lago içerik API'leri yalnız `sites` içinde `lago`, Azura proxy API'leri yalnız
+  `azura` bulunan oturumları kabul eder. Eksik/boş otel yetkisi kapalı kabul edilir.
+- Oturumsuz istek `401`, diğer otele erişim `403` döndürür. Kontrol; veri okuma,
+  kayıt, yükleme, medya yeniden kullanımı, kilit, geçmiş ve çöp kutusu işlemlerinden
+  önce yapılır. Azura servis tokenıyla dış istek de bu kontrolden sonra gönderilir.
+- URL, form veya header ile otel seçmek yetki kazandırmaz. Editör yalnız atandığı
+  otele erişir; admin kullanıcıları mevcut kullanıcı politikasıyla iki otele atanır.
+  Yayınlama, silme ve kullanıcı yönetimi için mevcut rol izinleri ayrıca uygulanır.
+- Giriş/çıkış, oturum ve kullanıcı yönetimi ortak kalır. Ziyaretçilere açık görsel
+  sunumu bu panel yetkilendirmesinin kapsamı dışındadır.
+- `node --test lib/admin/site-authorization.test.mjs`, tüm otel kapsamlı yönetim
+  route'larının dışa aktardığı HTTP yöntemlerini gerçek yetkilendirme koduyla sınar;
+  reddedilen isteğin veri/proxy/lock katmanına ulaşmadığını da kontrol eder.
 
 Azura "Sayfa İçerikleri" ekranı karşılama, beş kartlı keşif kaydırıcısı, animasyonlu tanıtım ve altı maddeli
 olanaklar bölümlerini tek anasayfa altında toplar. Bölümler ayrı revision'larla

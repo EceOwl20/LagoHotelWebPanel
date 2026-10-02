@@ -1,4 +1,5 @@
 "use client";
+import { requestPanelLeave } from "@/lib/admin/panel-navigation-guard.mjs";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
@@ -264,6 +265,7 @@ useEffect(() => {
 
   const handleLogout = async () => {
     if (loggingOut) return;
+    if (!requestPanelLeave()) return;
 
     setLoggingOut(true);
     setLogoutError("");

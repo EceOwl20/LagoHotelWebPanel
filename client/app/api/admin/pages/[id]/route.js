@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { PAGE_LOCALES } from "@/lib/pages/schema.mjs";
@@ -40,10 +41,8 @@ function revalidatePublishedPagePaths(previousSlugs, nextSlugs) {
 
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     const { id } = await params;
@@ -64,10 +63,8 @@ export async function GET(_request, { params }) {
 
 export async function PUT(request, { params }) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertSameOrigin(request);
@@ -151,10 +148,8 @@ export async function PUT(request, { params }) {
 
 export async function PATCH(request, { params }) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.PUBLISH_CONTENT);
@@ -199,10 +194,8 @@ export async function PATCH(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);

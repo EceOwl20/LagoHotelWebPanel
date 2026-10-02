@@ -14,8 +14,11 @@ function harness(role = "admin") {
   const deny = status => { throw Object.assign(new Error("Denied"), { status }); };
   const imports = {
     "next/server": { NextResponse: { json: (body, options) => Response.json(body, options) } },
-    "@/lib/admin/session": { getAdminSession: async () => role ? { role } : null },
-    "@/lib/admin/authorization": { assertPanelPermission: (s, p) => { if (!hasPanelPermission(s.role, p)) deny(403); } },
+    "@/lib/admin/session": { getAdminSession: async () => role ? { role, sites: ["azura"] } : null },
+    "@/lib/admin/authorization": {
+      assertPanelSiteAccess: (s, site) => { if (!s?.sites?.includes(site)) deny(403); },
+      assertPanelPermission: (s, p) => { if (!hasPanelPermission(s.role, p)) deny(403); }
+    },
     "@/lib/admin/permissions.mjs": { PANEL_PERMISSIONS },
     "@/lib/admin/security": { assertSameOrigin: r => { if (r.headers.get("origin") !== "http://localhost") deny(403); },
       consumeRateLimit: () => ({ ok: !limited }), getClientIp: () => "test" },

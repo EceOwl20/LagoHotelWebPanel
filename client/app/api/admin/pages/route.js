@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { createPageDraft, listPageDrafts } from "@/lib/admin/pages";
 import { getAdminSession } from "@/lib/admin/session";
@@ -9,10 +10,8 @@ import {
 
 export async function GET() {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   const pages = await listPageDrafts();
   return NextResponse.json({ pages });
@@ -20,10 +19,8 @@ export async function GET() {
 
 export async function POST(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertSameOrigin(request);

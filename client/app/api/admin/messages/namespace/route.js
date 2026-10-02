@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import {
@@ -18,10 +19,8 @@ import {
 
 export async function GET(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   const namespace = request.nextUrl.searchParams.get("namespace");
 
@@ -35,10 +34,8 @@ export async function GET(request) {
 
 export async function PUT(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);

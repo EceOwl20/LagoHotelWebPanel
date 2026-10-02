@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
+import {
+  assertPanelPermission,
+  assertPanelSiteAccess,
+} from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
@@ -43,10 +46,12 @@ async function readLimitedJson(request) {
 
 export function createAzuraPageContentHandlers(pageKey) {
   if (!["spawellness", "spor", "beachpools", "kidsclub", "bars", "entertainment", "certificates"].includes(pageKey)) throw new Error("Unsupported page");
+
   async function GET() {
     const session = await getAdminSession();
     if (!session) return json({ error: "Yetkisiz işlem." }, 401);
     try {
+      assertPanelSiteAccess(session, "azura");
       assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
       return json(await requestAzuraPageContent("GET", undefined, undefined, { pageKey }));
     } catch (error) { return failure(error); }
@@ -56,6 +61,7 @@ export function createAzuraPageContentHandlers(pageKey) {
     const session = await getAdminSession();
     if (!session) return json({ error: "Yetkisiz işlem." }, 401);
     try {
+      assertPanelSiteAccess(session, "azura");
       assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
       assertSameOrigin(request);
     } catch (error) { return failure(error); }

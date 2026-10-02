@@ -12,7 +12,7 @@ test("kullanıcı adını boşluk ve büyük harflerden arındırır", () => {
 test("geçerli admin ve editor kullanıcılarını kabul eder", () => {
   for (const role of ["admin", "editor"]) {
     const result = normalizePanelUserInput(
-      { username: `user-${role}`, displayName: "Panel User", password: "guclu-parola", role },
+      { username: `user-${role}`, displayName: "Panel User", password: "guclu-parola", role, sites: ["lago"] },
       { passwordRequired: true }
     );
     assert.deepEqual(result.errors, []);
@@ -33,6 +33,7 @@ test("güncellemede boş parola mevcut parolayı değiştirmeden kabul edilir", 
     displayName: "Editor One",
     password: "",
     role: "editor",
+    sites: ["lago"],
   });
   assert.deepEqual(result.errors, []);
 });

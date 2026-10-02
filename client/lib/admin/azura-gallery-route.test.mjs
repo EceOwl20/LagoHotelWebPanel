@@ -16,8 +16,10 @@ function setup(role = "admin") {
   const deny = (message, status) => { throw Object.assign(new Error(message), { status }); };
   const imports = {
     "next/server": { NextResponse: { json: (body, options) => Response.json(body, options) } },
-    "@/lib/admin/session": { getAdminSession: async () => role ? { role } : null },
-    "@/lib/admin/authorization": { assertPanelPermission: (session, permission) => {
+    "@/lib/admin/session": { getAdminSession: async () => role ? { role, sites: ["azura"] } : null },
+    "@/lib/admin/authorization": { assertPanelSiteAccess: (session, site) => {
+      if (!session?.sites?.includes(site)) deny("Forbidden", 403);
+    }, assertPanelPermission: (session, permission) => {
       if (!hasPanelPermission(session.role, permission)) deny("Forbidden", 403);
     } },
     "@/lib/admin/permissions.mjs": { PANEL_PERMISSIONS },

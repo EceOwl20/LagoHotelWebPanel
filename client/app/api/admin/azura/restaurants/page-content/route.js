@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
@@ -45,7 +46,8 @@ async function readLimitedJson(request) {
 
 export async function GET() {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     return json(await requestAzuraRestaurantsPage("GET"));
@@ -54,7 +56,8 @@ export async function GET() {
 
 export async function PUT(request) {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);

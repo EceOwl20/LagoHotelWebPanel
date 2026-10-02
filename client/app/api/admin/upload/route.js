@@ -1,3 +1,8 @@
+import {
+  assertPanelPermission,
+  panelSiteAccessResponse,
+} from "@/lib/admin/authorization";
+import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import path from "path";
@@ -23,14 +28,21 @@ const MAX_UPLOAD_SIZE_BYTES = 10 * 1024 * 1024;
 export async function POST(request) {
   const session = await getAdminSession();
 
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
+    assertPanelPermission(
+      session,
+      PANEL_PERMISSIONS.EDIT_CONTENT
+    );
+
     assertSameOrigin(request);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: error.status || 403 });
+    return NextResponse.json(
+      { error: error.message },
+      { status: error.status || 403 }
+    );
   }
 
   const rateLimit = consumeRateLimit({

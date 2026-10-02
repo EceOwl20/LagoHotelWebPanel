@@ -1,6 +1,6 @@
+import { panelSiteAccessResponse, assertPanelPermission } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { requestAzuraImages } from "@/lib/admin/azura-experience-images.mjs";
@@ -39,7 +39,8 @@ async function readLimitedMultipart(request) {
 
 export async function getAzuraImages(scope) {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     return json({ images: await requestAzuraImages("GET", undefined, { scope }) });
@@ -50,7 +51,8 @@ export async function getAzuraImages(scope) {
 
 export async function postAzuraImage(request, scope) {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);

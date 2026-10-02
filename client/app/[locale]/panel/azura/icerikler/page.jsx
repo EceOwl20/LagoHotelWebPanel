@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { FiSave } from "react-icons/fi";
+import usePanelNavigationGuard from "../../components/usePanelNavigationGuard";
 import AzuraWelcomePage from "../welcome/page";
 import AzuraExperiencePage from "../experience/page";
 import AzuraHomepageSectionEditor from "./AzuraHomepageSectionEditor";
@@ -343,12 +344,10 @@ const visibleRooms = Object.values(
     }
   }
 
-  useEffect(() => {
-    if (!dirtyCount) return undefined;
-    const warnBeforeLeave = (event) => { event.preventDefault(); };
-    window.addEventListener("beforeunload", warnBeforeLeave);
-    return () => window.removeEventListener("beforeunload", warnBeforeLeave);
-  }, [dirtyCount]);
+  usePanelNavigationGuard(dirtyCount > 0,
+    savingHomepage || savingRooms || savingRestaurants || savingAbout || savingSpa ||
+    savingRoomDetail || savingSpor || savingBeach || savingKids || savingBars ||
+    savingEntertainment || savingCertificates);
 
   return (
     <div className="mx-auto max-w-[1600px] space-y-6 pb-10">

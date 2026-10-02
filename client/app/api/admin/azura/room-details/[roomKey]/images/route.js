@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
 import { getAzuraImages, postAzuraImage } from "@/lib/admin/azura-image-route";
@@ -7,7 +8,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 async function handle(request, params, method) {
-  if (!await getAdminSession()) return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
+  const session = await getAdminSession();
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   const { roomKey } = await params;
   const config = azuraRoomDetailConfig(roomKey);
   if (!config) return NextResponse.json({ error: "Etkin olmayan oda kimliği." }, { status: 404 });

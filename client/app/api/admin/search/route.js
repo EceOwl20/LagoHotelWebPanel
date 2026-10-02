@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { listBlogPosts } from "@/lib/admin/blog";
 import { readMediaLibrary } from "@/lib/admin/media-library";
@@ -118,10 +119,8 @@ function createSearchDocuments({ pages, posts, assets, users, canManageUsers }) 
 
 export async function GET(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   const query = request.nextUrl.searchParams.get("q")?.trim().slice(0, MAX_QUERY_LENGTH) || "";
   if (query.length < 2) return NextResponse.json({ results: [] });

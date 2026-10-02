@@ -40,3 +40,21 @@ export function assertPanelSiteAccess(session, site) {
     );
   }
 }
+
+// Route-entry guard: return before reading data, parsing uploads, taking locks
+// or forwarding requests with the Azura service token.
+export function panelSiteAccessResponse(session, site) {
+  if (!session) {
+    return Response.json({ error: "Yetkisiz işlem." }, {
+      status: 401, headers: { "Cache-Control": "no-store" },
+    });
+  }
+  try {
+    assertPanelSiteAccess(session, site);
+    return null;
+  } catch (error) {
+    return Response.json({ error: error.message }, {
+      status: 403, headers: { "Cache-Control": "no-store" },
+    });
+  }
+}

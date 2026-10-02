@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { requestPanelLeave } from "@/lib/admin/panel-navigation-guard.mjs";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import logo from "../../GeneralComponents/Header/Icons/Asset2.svg"
@@ -57,6 +58,8 @@ export default function SideBar({ user }) {
     if (loggingOut) {
       return;
     }
+
+    if (!requestPanelLeave()) return;
 
     setLoggingOut(true);
     setLogoutError("");

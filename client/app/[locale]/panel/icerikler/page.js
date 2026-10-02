@@ -9,6 +9,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import ObjectEditor from "../components/ObjectEditor";
+import usePanelNavigationGuard from "../components/usePanelNavigationGuard";
 import { CMS_LOCALES } from "@/lib/admin/constants";
 import dynamic from "next/dynamic";
 import { RESTAURANT_DETAIL_CONFIGS } from "@/lib/admin/restaurant-detail-config.mjs";
@@ -536,20 +537,7 @@ useEffect(() => {
   };
 }, [selectedNamespace]);
 
-  useEffect(() => {
-  const handleBeforeUnload = (event) => {
-    if (!hasUnsavedChanges) return;
-
-    event.preventDefault();
-    event.returnValue = "";
-  };
-
-  window.addEventListener("beforeunload", handleBeforeUnload);
-
-  return () => {
-    window.removeEventListener("beforeunload", handleBeforeUnload);
-  };
-}, [hasUnsavedChanges]);
+  usePanelNavigationGuard(hasUnsavedChanges, saving);
 
   const activeValue = bundle?.[activeLocale] ?? {};
   

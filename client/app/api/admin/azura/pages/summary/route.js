@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 // app/api/admin/azura/pages/summary/route.js
 
 import { NextResponse } from "next/server";
@@ -11,6 +12,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const session = await getAdminSession();
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
 
   if (!session) {
     return NextResponse.json(

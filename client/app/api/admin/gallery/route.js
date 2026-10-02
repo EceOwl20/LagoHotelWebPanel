@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse, assertPanelPermission } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import {
@@ -8,7 +9,6 @@ import {
 } from "@/lib/admin/gallery";
 import { CMS_LOCALES, GALLERY_CATEGORY_ORDER } from "@/lib/admin/constants";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertGalleryCategoryEditLock } from "@/lib/admin/edit-locks";
 import {
@@ -20,20 +20,30 @@ import {
 export async function GET() {
   const session = await getAdminSession();
 
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
-  const gallery = await readGallery();
-  return NextResponse.json({ gallery });
+  try {
+    assertPanelPermission(
+      session,
+      PANEL_PERMISSIONS.EDIT_CONTENT
+    );
+
+    const gallery = await readGallery();
+
+    return NextResponse.json({ gallery });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message || "Galeri alınamadı." },
+      { status: error.status || 500 }
+    );
+  }
 }
 
 export async function POST(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
@@ -82,10 +92,8 @@ export async function POST(request) {
 
 export async function PUT(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
@@ -139,10 +147,8 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.DELETE_CONTENT);

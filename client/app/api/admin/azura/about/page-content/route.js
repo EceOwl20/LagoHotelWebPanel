@@ -1,6 +1,6 @@
+import { panelSiteAccessResponse, assertPanelPermission } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
@@ -45,7 +45,8 @@ async function readLimitedJson(request) {
 
 export async function GET() {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     return json(await requestAzuraAboutPage("GET"));
@@ -54,7 +55,8 @@ export async function GET() {
 
 export async function PUT(request) {
   const session = await getAdminSession();
-  if (!session) return json({ error: "Yetkisiz işlem." }, 401);
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);

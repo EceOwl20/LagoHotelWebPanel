@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { assertPanelPermission } from "@/lib/admin/authorization";
 import { listPageHistory } from "@/lib/admin/pages";
@@ -6,10 +7,8 @@ import { getAdminSession } from "@/lib/admin/session";
 
 export async function GET(_request, { params }) {
   const session = await getAdminSession();
-
-  if (!session) {
-    return NextResponse.json({ error: "Yetkisiz işlem." }, { status: 401 });
-  }
+  const siteDenied = panelSiteAccessResponse(session, "lago");
+  if (siteDenied) return siteDenied;
 
   try {
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);

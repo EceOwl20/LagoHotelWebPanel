@@ -1,3 +1,4 @@
+import { panelSiteAccessResponse } from "@/lib/admin/authorization";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
 import { assertPanelPermission } from "@/lib/admin/authorization";
@@ -9,6 +10,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   const session = await getAdminSession();
+  const siteDenied = panelSiteAccessResponse(session, "azura");
+  if (siteDenied) return siteDenied;
 
   if (!session) {
     return NextResponse.json(

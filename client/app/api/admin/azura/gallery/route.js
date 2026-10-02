@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/session";
-import { assertPanelPermission } from "@/lib/admin/authorization";
+import {
+  assertPanelPermission,
+  assertPanelSiteAccess,
+} from "@/lib/admin/authorization";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { assertSameOrigin, consumeRateLimit, getClientIp } from "@/lib/admin/security";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
@@ -11,18 +14,31 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const json = (body, status = 200) => NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
 const failure = (e) => json({ error: e.message || "Galeri bağlantısı başarısız." }, e.status || 502);
+
+
 export async function GET() {
   const session = await getAdminSession();
   if (!session) return json({ error: "Yetkisiz işlem." }, 401);
-  try {
-    assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
-    return json(await requestAzuraGallery("GET"));
-  } catch (e) { return failure(e); }
+try {
+  assertPanelSiteAccess(session, "azura");
+
+  assertPanelPermission(
+    session,
+    PANEL_PERMISSIONS.EDIT_CONTENT
+  );
+
+  return json(
+    await requestAzuraGallery("GET")
+  );
+} catch (e) { return failure(e); }
 }
+
+
 export async function PATCH(request) {
   const session = await getAdminSession();
   if (!session) return json({ error: "Yetkisiz işlem." }, 401);
   try {
+     assertPanelSiteAccess(session, "azura");
     assertPanelPermission(session, PANEL_PERMISSIONS.EDIT_CONTENT);
     assertSameOrigin(request);
     if (!consumeRateLimit({ key: `admin-write:azura-gallery:${getClientIp(request)}`, limit: 60, windowMs: 60000 }).ok) {
