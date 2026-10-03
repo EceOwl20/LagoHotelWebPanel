@@ -78,7 +78,7 @@ const visibleHotels = hotels.filter((hotel) =>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#507f78]">
             Ortak yönetim paneli
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-stone-900 sm:text-4xl">
+          <h1 className="mt-3 text-2xl font-semibold text-stone-900 sm:text-4xl">
             Hangi oteli yöneteceksiniz?
           </h1>
           <p className="mt-3 text-sm leading-6 text-stone-600">

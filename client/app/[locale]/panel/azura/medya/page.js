@@ -277,7 +277,7 @@ export default function AzuraMediaLibraryPage() {
               Medya Kütüphanesi
             </div>
 
-            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+            <h1 className="mt-4 text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
               Azura görselleri
             </h1>
 
@@ -310,7 +310,7 @@ export default function AzuraMediaLibraryPage() {
                 Toplam görsel
               </p>
 
-              <p className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">
+              <p className="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
                 {total}
               </p>
             </div>
@@ -328,7 +328,7 @@ export default function AzuraMediaLibraryPage() {
                 Yüklenen kayıt
               </p>
 
-              <p className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">
+              <p className="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
                 {images.length}
               </p>
             </div>

@@ -91,7 +91,7 @@ export default function LoginForm() {
           <p className="text-xs uppercase tracking-[0.3em] text-stone-500">
             Lago & Azura
           </p>
-          <h1 className="text-3xl font-semibold text-stone-900">Panel Girişi</h1>
+          <h1 className="text-2xl font-semibold text-stone-900">Panel Girişi</h1>
           <p className="text-sm text-stone-500">
             İçerik yönetimi için giriş yapın; ardından yöneteceğiniz oteli seçin.
           </p>

@@ -103,13 +103,14 @@ function UserCard({
 }) {
   return (
     <article className="overflow-hidden rounded-2xl border border-stone-200 bg-white transition hover:border-[#63978f]/60 hover:shadow-sm">
-      <div className="flex flex-col gap-4 p-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 px-4 py-2 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex min-w-0 items-center gap-3">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#2f423f] text-sm font-semibold text-white">
             {getInitials(user.displayName, user.username)}
           </span>
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center justify-start gap-2">
+              <div className="flex flex-wrap items-center gap-2">
               <h3 className="truncate font-semibold text-stone-900">{user.displayName}</h3>
               {isCurrentUser ? (
                 <span className="rounded-full bg-[#edf5f3] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#507f78]">
@@ -118,7 +119,8 @@ function UserCard({
               ) : null}
             </div>
             <p className="mt-1 truncate text-sm text-stone-500">@{user.username}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+            </div>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
   <span className="rounded-full bg-stone-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-stone-600">
     {user.role === "admin" ? "Yönetici" : "Editör"}
   </span>
@@ -309,13 +311,13 @@ export default function UsersPage() {
         <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a9c9c4]">
               Yetkilendirme / Kullanıcılar
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
               Panel kullanıcıları
             </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
+            <p className="mt-3 max-w-3xl text-sm leading-5 text-stone-200 md:text-[14px]">
               Ekip hesaplarını, erişim rollerini ve oturum güvenliğini tek alandan yönetin.
             </p>
           </div>
@@ -377,7 +379,7 @@ export default function UsersPage() {
               ))}
             </div>
           ) : users.length === 0 ? (
-            <div className="flex flex-col items-center rounded-2xl border border-dashed border-[#63978f]/50 bg-[#edf5f3]/40 px-6 py-10 text-center">
+            <div className="flex flex-col items-center rounded-2xl border border-dashed border-[#63978f]/50 bg-[#edf5f3]/40 px-6 py-8 text-center">
               <FiUsers className="h-8 w-8 text-[#507f78]" />
               <h3 className="mt-4 font-semibold text-stone-900">Henüz kayıtlı kullanıcı yok</h3>
               <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
@@ -438,7 +440,7 @@ export default function UsersPage() {
             : ["lago"],
       });
     }}
-    className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
+    className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
   >
     <option value="editor">Editör</option>
     <option value="admin">Yönetici</option>
@@ -502,7 +504,7 @@ export default function UsersPage() {
 
 function UserInput({ label, hint, type = "text", value, onChange, autoComplete }) {
   return (
-    <label className="flex flex-col gap-2 text-sm font-medium text-stone-700">
+    <label className="flex flex-col gap-1 text-sm font-medium text-stone-700">
       {label}
       <input
         type={type}
@@ -510,7 +512,7 @@ function UserInput({ label, hint, type = "text", value, onChange, autoComplete }
         onChange={(event) => onChange(event.target.value)}
         autoComplete={autoComplete}
         required
-        className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-3 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
+        className="rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 font-normal outline-none transition focus:border-[#63978f] focus:bg-white focus:ring-4 focus:ring-[#edf5f3]"
       />
       {hint ? <span className="text-xs font-normal text-stone-500">{hint}</span> : null}
     </label>

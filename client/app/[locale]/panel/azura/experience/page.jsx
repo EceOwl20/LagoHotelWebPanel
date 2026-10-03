@@ -286,7 +286,7 @@ const AzuraExperiencePage = forwardRef(function AzuraExperiencePage({ embedded =
     <div className="mx-auto max-w-6xl space-y-6 pb-10">
       {!embedded && <header className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-6">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#507f78]">Azura Deluxe Hotel / Anasayfa</p>
-        <h1 className="mt-2 text-2xl font-semibold text-stone-900 sm:text-3xl">Animasyonlu tanıtım alanı</h1>
+        <h1 className="mt-2 text-2xl font-semibold text-stone-900 sm:text-2xl">Animasyonlu tanıtım alanı</h1>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-500">
           İki görsel ve tanıtım metinleri yalnızca Azura anasayfasını günceller. Lago içerikleri değişmez.
         </p>

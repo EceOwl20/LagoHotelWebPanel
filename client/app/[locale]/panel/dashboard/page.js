@@ -116,7 +116,7 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <div className="space-y-2">
         <p className="text-sm uppercase tracking-[0.3em] text-stone-500">Dashboard</p>
-        <h1 className="text-3xl font-semibold text-stone-900">İçerik Genel Bakışı</h1>
+        <h1 className="text-2xl font-semibold text-stone-900">İçerik Genel Bakışı</h1>
         <p className="max-w-2xl text-sm leading-6 text-stone-600">
           Sayfa, içerik, galeri ve blog verilerinin güncel durumunu tek ekrandan
           takip edebilirsiniz.
@@ -295,7 +295,7 @@ function PublicationDonut({ pages }) {
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-semibold text-stone-900">%{publicationRate}</span>
+          <span className="text-2xl font-semibold text-stone-900">%{publicationRate}</span>
           <span className="mt-1 text-xs text-stone-400">yayında</span>
         </div>
       </div>

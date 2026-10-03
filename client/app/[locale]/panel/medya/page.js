@@ -109,7 +109,7 @@ return (
             Medya Kütüphanesi
           </div>
 
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
             Sayfa görselleri
           </h1>
 
@@ -141,7 +141,7 @@ return (
               Toplam görsel
             </p>
 
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">
+            <p className="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
               {library?.total ?? 0}
             </p>
           </div>
@@ -161,7 +161,7 @@ return (
               Medya klasörü
             </p>
 
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">
+            <p className="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
               {library?.folders?.length ?? 0}
             </p>
           </div>
@@ -181,7 +181,7 @@ return (
               Toplam dosya boyutu
             </p>
 
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-stone-900">
+            <p className="mt-3 text-2xl font-semibold tracking-tight text-stone-900">
               {formatBytes(library?.totalSize ?? 0)}
             </p>
           </div>

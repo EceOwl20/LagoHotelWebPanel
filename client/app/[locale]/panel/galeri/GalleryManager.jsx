@@ -547,7 +547,7 @@ export default function GalleryManager({ hotel = "lago" }) {
             {isAzura ? "Azura / Galeri Yönetimi" : "Galeri Yönetimi"}
           </div>
 
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
             Galeri sekmeleri
           </h1>
 

@@ -91,7 +91,7 @@ export default function SideBar({ user }) {
         <div className="space-y-2">
          <div className="flex flex-col gap-2">
            {isAzura ? (
-             <span className="flex h-[46px] w-[62px] items-center justify-center rounded-xl bg-[#356b70] text-2xl font-semibold text-white" aria-hidden="true">A</span>
+             <span className="flex h-[36px] w-[42px] items-center justify-center rounded-xl bg-[#356b70] text-xl font-semibold text-white" aria-hidden="true">A</span>
            ) : (
              <Image
                src={logo}
@@ -103,13 +103,13 @@ export default function SideBar({ user }) {
             {hotelName}
           </div>
          </div>
-          <div className="text-2xl font-semibold">Icerik Yonetimi</div>
+          <div className="text-xl font-semibold">İcerik Yönetimi</div>
           <div className="text-sm text-stone-400">
             Giriş yapan: {user?.displayName || user?.username || "admin"}
           </div>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-3">
   {(isAzura ? azuraNavigationItems : navigationItems)
     .filter((item) => !item.adminOnly || user?.role === "admin").map((item) => {
     const Icon = item.icon;
@@ -120,10 +120,10 @@ export default function SideBar({ user }) {
         key={item.href}
         href={item.href}
         aria-current={selected ? "page" : undefined}
-        className={`group flex items-center gap-3 rounded-xl border px-4 py-3 text-sm transition ${selected ? "border-[#63978f] bg-[#2f423f] text-white" : "border-stone-800 hover:border-stone-600 hover:bg-stone-900"}`}
+        className={`group flex items-center gap-3 rounded-xl border px-2 py-2.5 text-[13px] transition ${selected ? "border-[#63978f] bg-[#2f423f] text-white" : "border-stone-800 hover:border-stone-600 hover:bg-stone-900"}`}
       >
         <Icon
-          className="h-5 w-5 shrink-0 text-stone-400 transition group-hover:text-stone-100"
+          className="h-4 w-4 shrink-0 text-stone-400 transition group-hover:text-stone-100"
           aria-hidden="true"
         />
 
@@ -137,7 +137,7 @@ export default function SideBar({ user }) {
       <div className="space-y-3">
         <Link
           href="/panel/oteller"
-          className="flex items-center gap-2 rounded-xl border border-stone-700 px-3 py-2.5 text-sm text-stone-200 transition hover:border-stone-500 hover:bg-stone-900"
+          className="flex items-center max-w-[160px] gap-2 rounded-xl border border-stone-700 px-3 py-2.5 text-[13px] text-stone-200 transition hover:border-stone-500 hover:bg-stone-900"
         >
           <FiRefreshCw className="h-4 w-4" /> Otel değiştir
         </Link>
@@ -150,7 +150,7 @@ export default function SideBar({ user }) {
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex items-center justify-center gap-3 w-[70%] rounded-xl border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-sm font-medium text-rose-100 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex items-center justify-center gap-3 max-w-[160px] rounded-xl border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-[13px] font-medium text-rose-100 transition hover:bg-rose-500/20 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loggingOut ? "Çıkış yapılıyor..." : "Çıkış Yap"} <FiLogOut />
         </button>

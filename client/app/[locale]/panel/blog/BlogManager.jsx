@@ -365,13 +365,13 @@ export default function BlogManager({ hotel = "lago", azuraContractVersion = 2 }
         <div className="absolute -bottom-28 left-1/3 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
         <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#a9c9c4]">
               İçerik yönetimi / Blog
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
+            <h1 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
               Blog içerik yönetimi
             </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">
+            <p className="mt-3 max-w-3xl text-sm leading-5 text-stone-200 md:text-[14px]">
               Blog yazılarını dört dilde hazırlayın, yayın durumlarını yönetin ve
               kapak görsellerini tek bir çalışma alanından düzenleyin.
             </p>

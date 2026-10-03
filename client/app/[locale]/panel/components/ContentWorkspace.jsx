@@ -39,8 +39,8 @@ export function ContentWorkspaceHeader({ eyebrow = "İçerik yönetimi / Sayfa i
       <div className="relative flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#a9c9c4]">{eyebrow}</p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-stone-200 md:text-[15px]">{description}</p>
+          <h1 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">{title}</h1>
+          <p className="mt-3 max-w-3xl text-sm leading-5 text-stone-200 md:text-[14px]">{description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-stone-100 backdrop-blur-sm">
