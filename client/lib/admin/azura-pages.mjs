@@ -1,4 +1,5 @@
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
+import { shareAzuraList } from "./azura-list-flight.mjs";
 import { validatePageDocument } from "../pages/schema.mjs";
 import { createAdminPageView } from "../pages/page-versions.mjs";
 
@@ -49,6 +50,14 @@ function toView(payload, origin, id) {
 }
 
 export async function requestAzuraPages(method, body, options = {}) {
+  validateAzuraPageRequest(method, body, options);
+  if (method === "GET" && options.id) return requestAzuraPagesDirect(method, body, options);
+  const { env = process.env, fetchImpl = fetch } = options;
+  return shareAzuraList({ connection: getAzuraConnection(env), resource: "pages",
+    fetchImpl, write: method !== "GET" }, () => requestAzuraPagesDirect(method, body, options));
+}
+
+async function requestAzuraPagesDirect(method, body, options = {}) {
   validateAzuraPageRequest(method, body, options);
   const { id, versionId, history, revision, env = process.env, fetchImpl = fetch } = options;
   const connection = getAzuraConnection(env);

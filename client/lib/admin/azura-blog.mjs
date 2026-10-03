@@ -1,4 +1,5 @@
 import { getAzuraBlogVersion } from "./azura-blog-version.mjs";
+import { shareAzuraList } from "./azura-list-flight.mjs";
 import { AzuraConnectionError, getAzuraConnection } from "./azura-experience.mjs";
 import { isValidAzuraRevision } from "./azura-revision.mjs";
 import { validAzuraBlogBody, validAzuraBlogRecord, validAzuraBlogSlug } from "./azura-blog-model.mjs";
@@ -12,7 +13,23 @@ function toView(payload, origin, slug, version) {
   return { ...createAdminBlogView(payload.record), revision: payload.revision, mediaOrigin: origin, ...(version === 3 ? { publishedSlugs: payload.record.published?.slugs || null } : {}) };
 }
 
-export async function requestAzuraBlog(method, body, { slug, revision, env = process.env, fetchImpl = fetch } = {}) {
+export async function requestAzuraBlog(method, body, options = {}) {
+  const { slug, env = process.env, fetchImpl = fetch } = options;
+  const version = getAzuraBlogVersion(env);
+  if ((slug !== undefined && !validAzuraBlogSlug(slug)) ||
+      !(slug ? ["GET", "PUT", "DELETE"] : ["GET", "POST"]).includes(method) || !validAzuraBlogBody(method, body, version)) {
+    throw new AzuraConnectionError("Blog isteği geçersiz.", 400);
+  }
+  if (["PUT", "DELETE"].includes(method) && !isValidAzuraRevision(options.revision)) {
+    throw new AzuraConnectionError("Blog sürümü geçersiz.", 400);
+  }
+  if (method === "GET" && slug) return requestAzuraBlogDirect(method, body, options);
+  return shareAzuraList({ connection: getAzuraConnection(env), resource: "blog",
+    version: getAzuraBlogVersion(env), fetchImpl, write: method !== "GET" },
+  () => requestAzuraBlogDirect(method, body, options));
+}
+
+async function requestAzuraBlogDirect(method, body, { slug, revision, env = process.env, fetchImpl = fetch } = {}) {
   const version = getAzuraBlogVersion(env);
   if ((slug !== undefined && !validAzuraBlogSlug(slug)) ||
       !(slug ? ["GET", "PUT", "DELETE"] : ["GET", "POST"]).includes(method) || !validAzuraBlogBody(method, body, version)) {

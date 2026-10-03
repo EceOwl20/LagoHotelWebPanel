@@ -4,6 +4,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### İki otelli içerik paneli
 
+Azura dashboard ve bildirimlerinin aynı anda istediği blog/sayfa koleksiyonları,
+Lago sunucusunda aynı süreç içindeki devam eden istek üzerinden paylaşılır.
+Paylaşım bağlantı adresi, servis kimliği, kaynak ve blog sözleşme sürümüyle ayrılır;
+her HTTP isteği paylaşım katmanına ulaşmadan kendi oturum/otel/rol kontrolünden geçer.
+Tamamlanmış sonuçlar cache'lenmez. Yazma girişinde ve bitişinde ilgili liste
+paylaşımı kaldırılır; sonraki yenileme yeni veri ister. Hatalar saklanmaz.
+Bu optimizasyon tarayıcıdaki iki farklı endpoint isteğini kaldırmaz; Azura'ya
+giden eşzamanlı tekrarları azaltır. Farklı Node.js süreçleri arasında paylaşım yoktur.
+`azura-list-flight.test.mjs` eşzamanlılık, hata, yazma ve bağlantı yalıtımını sınar.
+
 Panel girişinden sonra `/[locale]/panel/oteller` ekranında Lago veya Azura seçilir.
 Otel bağlamı adreste görünür: Lago mevcut panel yollarını, Azura
 `/[locale]/panel/azura/icerikler` altında anasayfa, oda, restoran ve ortak iletişim içeriklerini kullanır. Azura ekranında Lago içerik
