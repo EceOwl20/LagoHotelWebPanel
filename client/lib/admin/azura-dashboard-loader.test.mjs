@@ -8,7 +8,8 @@ function setup() {
   const tasks = loadDashboardSections({ version: 3, signal: controller.signal,
     onResult: (key, result) => { results[key] = result; },
     fetchImpl: (url, config) => new Promise(resolve => {
-      const key = url.split("/").at(-1);
+      const section = new URL(url, "http://localhost").searchParams.get("section");
+      const key = section === "blog" ? "posts" : section;
       pending[key] = resolve; options[key] = config;
     }),
   });
@@ -17,37 +18,37 @@ function setup() {
 test("slow gallery does not block blog or pages; V3 header and signal are preserved", async () => {
   const h = setup();
   assert.equal(Object.keys(h.pending).length, 3);
-  h.pending.posts(Response.json({ posts: [{ slug: "sample" }] }));
+  h.pending.posts(Response.json({ summary: { total: 1 } }));
   await h.tasks[1];
-  assert.equal(h.results.posts.data.length, 1);
+  assert.equal(h.results.posts.data.total, 1);
   assert.equal(h.results.gallery, undefined);
-  h.pending.pages(Response.json({ pages: [] }));
+  h.pending.pages(Response.json({ summary: { total: 0 } }));
   await h.tasks[2];
-  assert.deepEqual(h.results.pages.data, []);
+  assert.deepEqual(h.results.pages.data, { total: 0 });
   assert.equal(h.results.gallery, undefined);
   assert.equal(new Headers(h.options.posts.headers).get("x-azura-blog-contract-version"), "3");
   assert.equal(h.options.posts.signal, h.controller.signal);
   h.pending.gallery(Response.json({ error: "Galeri zaman aşımı" }, { status: 504 }));
   await h.tasks[0];
   assert.equal(h.results.gallery.error, "Galeri zaman aşımı");
-  assert.equal(h.results.posts.data.length, 1);
+  assert.equal(h.results.posts.data.total, 1);
 });
 test("malformed response fails only its section, valid empty gallery succeeds", async () => {
   const h = setup();
-  h.pending.gallery(Response.json({ gallery: { categories: [] } }));
-  h.pending.posts(Response.json({ posts: null }));
+  h.pending.gallery(Response.json({ summary: { categoryCount: 0, imageCount: 0 } }));
+  h.pending.posts(Response.json({ summary: null }));
   h.pending.pages(new Response("not json"));
   await Promise.all(h.tasks);
-  assert.deepEqual(h.results.gallery, { data: [], error: "" });
+  assert.deepEqual(h.results.gallery, { data: { categoryCount: 0, imageCount: 0 }, error: "" });
   assert.ok(h.results.posts.error);
   assert.ok(h.results.pages.error);
 });
 test("aborted view cannot receive late results", async () => {
   const h = setup();
   h.controller.abort();
-  h.pending.gallery(Response.json({ gallery: { categories: [] } }));
-  h.pending.posts(Response.json({ posts: [] }));
-  h.pending.pages(Response.json({ pages: [] }));
+  h.pending.gallery(Response.json({ summary: { categoryCount: 0, imageCount: 0 } }));
+  h.pending.posts(Response.json({ summary: { total: 0 } }));
+  h.pending.pages(Response.json({ summary: { total: 0 } }));
   await Promise.all(h.tasks);
   assert.deepEqual(h.results, {});
 });

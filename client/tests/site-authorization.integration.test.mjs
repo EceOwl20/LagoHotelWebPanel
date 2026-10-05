@@ -23,6 +23,18 @@ test("HTTP sessions enforce hotel isolation before reads, writes, uploads and pr
     upstreamCalls++;
     assert.equal(request.headers.authorization, "Bearer test-site-token");
     response.writeHead(200, { "content-type": "application/json" });
+    const url = new URL(request.url, "http://localhost");
+    if (url.pathname === "/api/azura/dashboard/summary") {
+      const section = url.searchParams.get("sections");
+      assert.equal(url.searchParams.get("limit"), "5");
+      if (section === "blog") assert.equal(request.headers["x-azura-blog-contract-version"], "3");
+      const data = section === "gallery" ? { categoryCount: 9, imageCount: 95 } : {
+        total: 0, currentPublishedCount: 0, changedCount: 0, draftCount: 0,
+        notifications: { total: 0, items: [] }, ...(section === "blog" ? { latestPost: null } : {}),
+      };
+      response.end(JSON.stringify({ [section]: { status: "ok", data } }));
+      return;
+    }
     response.end(JSON.stringify({ images: [] }));
   });
   t.after(() => new Promise(resolve => { upstream.closeAllConnections(); upstream.close(resolve); }));
@@ -43,6 +55,7 @@ test("HTTP sessions enforce hotel isolation before reads, writes, uploads and pr
       PANEL_USERS_FILE_PATH: path.join(data, "users.json"),
       AZURA_EXPERIENCE_API_URL: `http://127.0.0.1:${upstreamPort}/api/azura/homepage/experience`,
       AZURA_SERVICE_TOKEN: "test-site-token",
+      AZURA_BLOG_CONTRACT_VERSION: "3",
     },
   });
   child.stdout.on("data", chunk => { output = (output + chunk).slice(-12000); });
@@ -95,6 +108,7 @@ test("HTTP sessions enforce hotel isolation before reads, writes, uploads and pr
     ["/api/admin/azura/media-library/reuse", "POST", "azura"],
     ["/api/admin/azura/blog/posts/test", "DELETE", "azura"],
     ["/api/admin/azura/pages/test/history", "GET", "azura"],
+    ["/api/admin/azura/dashboard/summary?section=gallery", "GET", "azura"],
   ]) {
     assert.equal((await call(url, cookies[site === "lago" ? "azura" : "lago"], method)).status, 403, `${method} ${url}`);
     assert.equal((await call(url, null, method)).status, 401, `${method} ${url}`);
@@ -107,4 +121,17 @@ test("HTTP sessions enforce hotel isolation before reads, writes, uploads and pr
     assert.equal((await call("/api/admin/azura/homepage/images", cookie)).status, 200);
   }
   assert.equal(upstreamCalls, 2);
+  for (const section of ["gallery", "blog", "pages"]) {
+    const response = await call(`/api/admin/azura/dashboard/summary?section=${section}`, cookies.azura);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    const { summary } = await response.json();
+    assert.equal(section === "gallery" ? summary.imageCount : summary.total, section === "gallery" ? 95 : 0);
+  }
+  for (const section of ["blog", "pages"]) {
+    const response = await call(`/api/admin/azura/${section}/summary`, cookies.azura);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { summary: { draftCount: 0, drafts: [] } });
+  }
+  assert.equal((await call("/api/admin/azura/dashboard/summary?section=unknown", admin)).status, 400);
 });

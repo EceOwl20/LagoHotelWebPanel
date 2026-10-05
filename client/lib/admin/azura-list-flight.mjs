@@ -4,15 +4,19 @@ import { createHash } from "node:crypto";
 const symbol = Symbol.for("lago.azura-list-flight.v1");
 const state = globalThis[symbol] ||= new WeakMap();
 
-export function shareAzuraList({ connection, resource, version = 2, fetchImpl, write = false }, run) {
+export function shareAzuraList({ connection, resource, version = 2, fetchImpl, write = false, variant = "list" }, run) {
   let flights = state.get(fetchImpl);
   if (!flights) { flights = new Map(); state.set(fetchImpl, flights); }
-  const key = createHash("sha256").update(JSON.stringify([
+  const group = createHash("sha256").update(JSON.stringify([
     connection.url, connection.token, resource, version,
   ])).digest("hex");
+  const key = `${group}:${variant}`;
+  const invalidate = () => {
+    for (const candidate of flights.keys()) if (candidate.startsWith(`${group}:`)) flights.delete(candidate);
+  };
   if (write) {
-    flights.delete(key);
-    return Promise.resolve().then(run).finally(() => flights.delete(key));
+    invalidate();
+    return Promise.resolve().then(run).finally(invalidate);
   }
   let flight = flights.get(key);
   if (!flight) {

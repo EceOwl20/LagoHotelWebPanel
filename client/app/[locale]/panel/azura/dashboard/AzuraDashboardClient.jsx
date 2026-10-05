@@ -50,17 +50,15 @@ export default function AzuraDashboardClient({ azuraBlogVersion }) {
   }, [azuraBlogVersion]);
 
   const { gallery, posts, pages } = sections;
-  const imageCount = gallery.data?.reduce((total, category) => total + (category.images?.length || 0), 0);
+  const imageCount = gallery.data?.imageCount;
   const chartData = [
-    ...(pages.data ? [{ name: "Sayfalar", value: pages.data.length }] : []),
+    ...(pages.data ? [{ name: "Sayfalar", value: pages.data.total }] : []),
     { name: "İçerikler", value: AZURA_CONTENT_COUNT },
     ...(gallery.data ? [{ name: "Görseller", value: imageCount }] : []),
-    ...(posts.data ? [{ name: "Blog", value: posts.data.length }] : []),
+    ...(posts.data ? [{ name: "Blog", value: posts.data.total }] : []),
   ];
   const allReady = Object.values(sections).every(section => section.data !== null);
-  const latest = posts.data?.[0];
-  const latestTitle = latest?.translations?.tr?.title || latest?.translations?.en?.title ||
-    latest?.translations?.de?.title || latest?.translations?.ru?.title || "Henüz blog yazısı yok";
+  const latestTitle = posts.data?.latestPost?.title || "Henüz blog yazısı yok";
 
   return (
     <div className="space-y-8">
@@ -72,13 +70,13 @@ export default function AzuraDashboardClient({ azuraBlogVersion }) {
         </p>
       </div>
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard title="Dinamik Sayfa" value={pages.data?.length ?? "—"}
-          detail={pages.data ? getPublishedPageCount(pages.data) + " yayında" : ""}
+        <StatCard title="Dinamik Sayfa" value={pages.data?.total ?? "—"}
+          detail={pages.data ? (pages.data.currentPublishedCount + pages.data.changedCount) + " yayında" : ""}
           state={pages} icon={FiFileText} featured />
         <StatCard title="İçerik Grubu" value={AZURA_CONTENT_COUNT} detail="4 dilde yönetiliyor" icon={FiGrid} />
         <StatCard title="Galeri Görseli" value={imageCount ?? "—"}
-          detail={gallery.data ? gallery.data.length + " kategoride" : ""} state={gallery} icon={FiImage} />
-        <StatCard title="Blog Yazısı" value={posts.data?.length ?? "—"}
+          detail={gallery.data ? gallery.data.categoryCount + " kategoride" : ""} state={gallery} icon={FiImage} />
+        <StatCard title="Blog Yazısı" value={posts.data?.total ?? "—"}
           detail="Toplam kayıt" state={posts} icon={FiBookOpen} />
       </section>
       <section className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(280px,0.8fr)]">
@@ -254,29 +252,13 @@ function ContentBarChart({ data, partial }) {
 }
 
 function PublicationDonut({ pages, posts }) {
-  const items = [...pages, ...posts];
-
-  const publishedCount = items.filter(
-    (item) => item.status === "published"
-  ).length;
-
-  const changedCount = items.filter(
-    (item) =>
-      item.status === "published" &&
-      item.hasUnpublishedChanges
-  ).length;
-
-  const draftCount = items.filter(
-    (item) => item.status !== "published"
-  ).length;
-
-  const currentPublishedCount = Math.max(
-    0,
-    publishedCount - changedCount
-  );
-
-  const publicationRate = items.length
-    ? Math.round((publishedCount / items.length) * 100)
+  const total = pages.total + posts.total;
+  const changedCount = pages.changedCount + posts.changedCount;
+  const draftCount = pages.draftCount + posts.draftCount;
+  const currentPublishedCount = pages.currentPublishedCount + posts.currentPublishedCount;
+  const publishedCount = currentPublishedCount + changedCount;
+  const publicationRate = total
+    ? Math.round((publishedCount / total) * 100)
     : 0;
 
   const statuses = [
@@ -297,7 +279,7 @@ function PublicationDonut({ pages, posts }) {
     },
   ];
 
-  const chartData = items.length
+  const chartData = total
     ? statuses.filter((status) => status.value > 0)
     : [
         {
@@ -388,10 +370,4 @@ function PublicationDonut({ pages, posts }) {
       </div>
     </article>
   );
-}
-
-function getPublishedPageCount(pages) {
-  return pages.filter(
-    (page) => page.status === "published"
-  ).length;
 }

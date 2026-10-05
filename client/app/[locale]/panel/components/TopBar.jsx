@@ -379,6 +379,12 @@ useEffect(() => {
                   </div>
                 ) : draftCount > 0 ? (
                   <div className="max-h-72 overflow-y-auto">
+                   {isAzura && draftCount > azuraNotificationItems.length && (
+                     <p className="px-3 py-2 text-xs text-stone-500">
+                       {draftCount} bildirimin {azuraNotificationItems.length} tanesi gösteriliyor.
+                       Tümü için Blog veya Sayfalar bölümünü açın.
+                     </p>
+                   )}
                    {(isAzura ? azuraNotificationItems : draftPages).map((item) => {
   const isBlog = isAzura && item.notificationType === "blog";
 

@@ -4,6 +4,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### İki otelli içerik paneli
 
+#### Azura hafif dashboard özeti
+
+Dashboard, `/api/admin/azura/dashboard/summary?section=gallery|blog|pages`
+üzerinden üç bağımsız istek yapar. Lago sunucusu Azura'nın
+`/api/azura/dashboard/summary?sections=<bölüm>&limit=5` endpoint'ini çağırır.
+Mevcut servis URL/token ayarları kullanılır; blog sürümü sunucu ayarından alınır.
+Galeri listesi veya blog/sayfaların tam içerikleri dashboard için indirilmez.
+Bildirim endpoint'leri aynı özet istemcisini kullanır; `notifications.total`
+rozet sayısı, `notifications.items` ise her tür için en fazla beş önizlemedir.
+Kaynak hataları sıfır kayda çevrilmez. Dashboard bölümleri bağımsızdır.
+
+Özet ve tam liste istekleri birbirinden ayrı paylaşılır; aynı kaynağa yazma
+girişinde/bitişinde her iki paylaşım da temizlenir. Tamamlanmış veri cache'i yoktur.
+Yayın sırası: önce Azura özet API'sini yayınlayın ve doğrulayın, sonra Lago'yu
+güncelleyin. Eski Azura sürümünde sessiz tam-liste fallback'i yapılmaz. Seed,
+migration veya içerik aktarımı gerekmez. Yeni route da oturum/otel/rol korumalıdır.
+
 Azura dashboard ve bildirimlerinin aynı anda istediği blog/sayfa koleksiyonları,
 Lago sunucusunda aynı süreç içindeki devam eden istek üzerinden paylaşılır.
 Paylaşım bağlantı adresi, servis kimliği, kaynak ve blog sözleşme sürümüyle ayrılır;
