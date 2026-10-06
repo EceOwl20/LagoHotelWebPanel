@@ -3,8 +3,11 @@
 import { useEffect, useRef } from "react";
 import { installPanelNavigationGuard } from "@/lib/admin/panel-navigation-guard.mjs";
 
-export default function usePanelNavigationGuard(dirty, busy = false) {
+export default function usePanelNavigationGuard(dirty, busy = false, enabled = true) {
   const state = useRef({ dirty, busy });
   state.current = { dirty, busy };
-  useEffect(() => installPanelNavigationGuard(window, document, () => state.current), []);
+  useEffect(() => {
+    if (!enabled) return undefined;
+    return installPanelNavigationGuard(window, document, () => state.current);
+  }, [enabled]);
 }

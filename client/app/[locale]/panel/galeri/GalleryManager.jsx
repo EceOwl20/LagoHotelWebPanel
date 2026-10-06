@@ -5,6 +5,7 @@ import { loadAzuraLibrary, reuseAzuraImage } from "@/lib/admin/azura-media-libra
 import { isAzuraGallery, isGalleryTranslations } from "@/lib/admin/azura-gallery-model.mjs";
 import { isValidAzuraRevision } from "@/lib/admin/azura-revision.mjs";
 import Image from "next/image";
+import PanelMediaPreview from "../components/PanelMediaPreview";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PANEL_PERMISSIONS } from "@/lib/admin/permissions.mjs";
 import { usePanelPermission } from "../PanelSessionContext";
@@ -68,11 +69,9 @@ function SmoothGalleryImage({ src, children }) {
         }`}
       />
 
-      <Image
+      <PanelMediaPreview
         src={src}
         alt=""
-        fill
-        unoptimized
         sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
         onLoad={() => setIsLoaded(true)}
         className={`object-cover transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none ${
@@ -810,11 +809,9 @@ export default function GalleryManager({ hotel = "lago" }) {
   className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#63978f]/40 hover:shadow-lg"
 >
                    <div className="relative aspect-[3/2] overflow-hidden bg-stone-100">
-  <Image
+  <PanelMediaPreview
     src={preview(image.src)}
     alt=""
-    fill
-    unoptimized
     sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
     className="object-cover transition-transform duration-500 group-hover:scale-105"
   />

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import PanelMediaPreview from "../../components/PanelMediaPreview";
 import { IMAGE_UPLOAD_ACCEPT } from "@/lib/admin/image-upload-policy.mjs";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { loadAzuraLibrary, mediaTargetScope, reuseAzuraImage } from "@/lib/admin/azura-media-library-client.mjs";
@@ -597,7 +598,7 @@ const externalLibrary = useMemo(() => {
                       }`}
                     >
                       <div className="relative aspect-[4/3] bg-stone-100">
-                        {isExternal ? <div role="img" aria-label={asset.name} className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url("${asset.previewUrl}")` }} /> : <Image src={asset.url} alt="" fill unoptimized sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover transition group-hover:scale-[1.02]" />}
+                        <PanelMediaPreview src={isExternal ? asset.previewUrl : asset.url} alt={asset.name || ""} sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover transition group-hover:scale-[1.02]" />
                       </div>
                       <div className="space-y-1 px-3 py-2">
                         <div className="truncate text-xs font-medium text-stone-700">

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import PanelMediaPreview from "../components/PanelMediaPreview";
 import { useEffect, useMemo, useState } from "react";
 import { FiCopy, FiFolder, FiHardDrive, FiImage, FiSearch, FiCheck } from "react-icons/fi";
 
@@ -314,11 +314,9 @@ return (
                       className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#63978f]/40 hover:shadow-lg"
                     >
                       <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
-                        <Image
+                        <PanelMediaPreview
                           src={asset.url}
                           alt=""
-                          fill
-                          unoptimized
                           sizes="(min-width: 1536px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover transition duration-500 group-hover:scale-105"
                         />

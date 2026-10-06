@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { blogContractHeaders, newAzuraBlogDraft, AZURA_BLOG_ENDPOINT, blogDateInput, blogRequest, saveAzuraBlog } from "@/lib/admin/azura-blog-client.mjs";
 import { validAzuraBlogSlug } from "@/lib/admin/azura-blog-model.mjs";
+import usePanelNavigationGuard from "../components/usePanelNavigationGuard";
 const AZURA_MEDIA_LIBRARY_API =
   "/api/admin/azura/media-library";
 
@@ -23,6 +24,7 @@ export default function useAzuraBlog({ enabled, version = 2, draft, selectedSlug
   const revision = useRef(null);
   const alive = useRef(true);
   const dirty = enabled && baseline.current !== null && JSON.stringify(draft) !== baseline.current;
+  usePanelNavigationGuard(dirty, enabled && busy, enabled);
 
   const adopt = useCallback((post) => {
     const editable = { ...post, publishedAt: blogDateInput(post.publishedAt) };
@@ -144,13 +146,6 @@ const loadAssets = useCallback(async () => {
     loadAssets();
     return () => { alive.current = false; controller.abort(); };
   }, [enabled, version, adopt, createEmptyPost, loadAssets, setDraft, setError, setLoading, setPosts]);
-
-  useEffect(() => {
-    if (!dirty && !busy) return undefined;
-    const warn = (event) => { event.preventDefault(); event.returnValue = ""; };
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [dirty, busy]);
 
   const start = () => {
     if (busyRef.current) return false;

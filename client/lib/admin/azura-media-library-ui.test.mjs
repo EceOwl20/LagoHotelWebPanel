@@ -36,7 +36,7 @@ function harness(file, props = {}, fetchImpl = async () => Response.json({ image
   new Function("require", "module", "exports", "fetch", "window", code)(imports, m, m.exports, fetchImpl,
     { setTimeout: fn => setTimeout(fn, 0), clearTimeout });
   const render = () => { si = 0; ri = 0; ei = 0; const tree = m.exports.default(props); pending.splice(0).forEach(fn => fn()); return tree; };
-  return { render, async settle() { render(); await tick(); render(); await tick(); return render(); } };
+  return { render, unmount() { effects.forEach(effect => effect.cleanup?.()); }, async settle() { render(); await tick(); render(); await tick(); return render(); } };
 }
 function nodes(tree, match) {
   const result = [];
@@ -82,19 +82,44 @@ test("failed reuse leaves the picker open and form unchanged; Lago uses its own 
 
 test("late load-more response cannot contaminate a new search", async () => {
   let release;
+  let moreSignal;
   const image = name => ({ image: `/uploads/blog/${name}.jpg`, name, size: 10, width: 1, height: 1 });
-  const h = harness("azura/medya/page.js", {}, async url => {
+  const h = harness("azura/medya/page.js", {}, async (url, init) => {
     const query = new URL(url, "http://local").searchParams;
-    if (query.get("offset") === "60") return new Promise(resolve => { release = resolve; });
+    if (query.get("offset") === "60") { moreSignal = init.signal; return new Promise(resolve => { release = resolve; }); }
     return Response.json({ images: [image(query.get("q") || "old")], total: 61, nextOffset: query.get("q") ? null : 60, mediaOrigin: "https://azura.test" });
   });
   const initial = await h.settle();
   const more = button(initial, "Daha fazla").props.onClick();
   nodes(h.render(), n => n.type === "input" && n.props.type === "search")[0].props.onChange({ target: { value: "new" } });
+  h.render();
+  assert.equal(moreSignal.aborted, true);
   await h.settle();
   release(Response.json({ images: [image("stale")], total: 61, nextOffset: null }));
   await more;
   const result = text(h.render());
   assert.match(result, /new/);
   assert.doesNotMatch(result, /stale/);
+  h.unmount();
+});
+
+test("typing aborts initial search before debounce and unmount aborts replacement", async () => {
+  const calls = [];
+  const h = harness("azura/medya/page.js", {}, (url, init) => new Promise((resolve, reject) => {
+    calls.push({ url, signal: init.signal, resolve });
+    init.signal.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
+  }));
+  let tree = h.render();
+  assert.equal(calls.length, 1);
+  nodes(tree, n => n.type === "input" && n.props.type === "search")[0].props.onChange({ target: { value: "spa" } });
+  h.render();
+  assert.equal(calls[0].signal.aborted, true);
+  assert.equal(calls.length, 1);
+  tree = await h.settle();
+  assert.equal(calls.length, 2);
+  assert.match(calls[1].url, /q=spa/);
+  assert.doesNotMatch(text(tree), /Aborted/);
+  h.unmount();
+  assert.equal(calls[1].signal.aborted, true);
+  await tick();
 });

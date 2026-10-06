@@ -1,4 +1,5 @@
 "use client";
+import { createNotificationLoader } from "@/lib/admin/panel-notification-loader.mjs";
 import { requestPanelLeave } from "@/lib/admin/panel-navigation-guard.mjs";
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -111,94 +112,26 @@ const azuraNotificationItems = [
   (b.updatedAt || "").localeCompare(a.updatedAt || "")
 );
 
- const loadDraftSummary = useCallback(
-  async ({ silent = false } = {}) => {
-    if (!silent) {
-      setNotificationsLoading(true);
-    }
-
-    setNotificationsError("");
-
-    try {
-      if (isAzura) {
-        const [pagesResponse, blogResponse] = await Promise.all([
-          fetch("/api/admin/azura/pages/summary", {
-            cache: "no-store",
-          }),
-          fetch("/api/admin/azura/blog/summary", {
-            cache: "no-store",
-          }),
-        ]);
-
-        const [pagesPayload, blogPayload] = await Promise.all([
-          pagesResponse.json(),
-          blogResponse.json(),
-        ]);
-
-        if (!pagesResponse.ok) {
-          throw new Error(
-            pagesPayload.error ||
-              "Azura sayfa bildirimleri alınamadı."
-          );
-        }
-
-        if (!blogResponse.ok) {
-          throw new Error(
-            blogPayload.error ||
-              "Azura blog bildirimleri alınamadı."
-          );
-        }
-
-        setDraftSummary({
-          draftCount:
-            Number(pagesPayload.summary?.draftCount) || 0,
-          drafts: Array.isArray(pagesPayload.summary?.drafts)
-            ? pagesPayload.summary.drafts
-            : [],
-        });
-
-        setBlogDraftSummary({
-          draftCount:
-            Number(blogPayload.summary?.draftCount) || 0,
-          drafts: Array.isArray(blogPayload.summary?.drafts)
-            ? blogPayload.summary.drafts
-            : [],
-        });
-
-        return;
-      }
-
-      const response = await fetch("/api/admin/pages/summary", {
-        cache: "no-store",
-      });
-
-      const payload = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          payload.error || "Taslak bildirimleri alınamadı."
-        );
-      }
-
-      setDraftSummary({
-        draftCount: Number(payload.summary?.draftCount) || 0,
-        drafts: Array.isArray(payload.summary?.drafts)
-          ? payload.summary.drafts
-          : [],
-      });
-
-      setBlogDraftSummary({
-        draftCount: 0,
-        drafts: [],
-      });
-    } catch (error) {
-      setNotificationsError(error.message);
-    } finally {
-      setNotificationsLoading(false);
-    }
-  },
-  [isAzura]
-);
+ const notificationLoader = useRef(null);
+ if (!notificationLoader.current) notificationLoader.current = createNotificationLoader();
+ const loadDraftSummary = useCallback(() => {
+   const pending = { pages: true, blog: isAzura };
+   const errors = {};
+   setDraftSummary({ draftCount: 0, drafts: [] });
+   setBlogDraftSummary({ draftCount: 0, drafts: [] });
+   setNotificationsLoading(true);
+   setNotificationsError("");
+   return notificationLoader.current.load(isAzura, (section, result) => {
+     pending[section] = false;
+     if (result.status === "ok") {
+       (section === "pages" ? setDraftSummary : setBlogDraftSummary)(result.summary);
+     } else {
+       errors[section] = `${section === "pages" ? "Sayfalar" : "Blog"}: ${result.error}`;
+     }
+     setNotificationsError(Object.values(errors).join(" "));
+     setNotificationsLoading(Object.values(pending).some(Boolean));
+   });
+ }, [isAzura]);
 
   useEffect(() => {
     const closeOnOutsideClick = (event) => {
@@ -249,6 +182,7 @@ useEffect(() => {
   );
 
   return () => {
+    notificationLoader.current.cancel();
     window.removeEventListener("focus", refreshOnFocus);
     window.removeEventListener(
       "admin-pages-updated",
@@ -353,7 +287,7 @@ useEffect(() => {
                 <div>
                   <p className="text-sm font-semibold text-stone-900">Bildirimler</p>
                   <p className="mt-0.5 text-[11px] text-stone-500">
-                    {draftCount > 0
+                    {notificationsLoading || notificationsError ? "Bildirimler henüz tam olarak doğrulanmadı" : draftCount > 0
   ? isAzura
     ? `${draftCount} içerik yayınlanmayı bekliyor`
     : `${draftCount} sayfa yayınlanmayı bekliyor`
@@ -370,14 +304,16 @@ useEffect(() => {
               <div className="border-t border-stone-100 pt-2">
                 {notificationsLoading ? (
                   <p className="px-3 py-4 text-center text-xs text-stone-500">Taslaklar kontrol ediliyor...</p>
-                ) : notificationsError ? (
+                ) : null}
+                {notificationsError ? (
                   <div className="px-3 py-3">
                     <p className="text-xs leading-5 text-rose-600">{notificationsError}</p>
                     <button type="button" onClick={() => loadDraftSummary()} className="mt-2 text-xs font-semibold text-[#507f78] hover:text-[#2f423f]">
                       Tekrar dene
                     </button>
                   </div>
-                ) : draftCount > 0 ? (
+                ) : null}
+                {draftCount > 0 ? (
                   <div className="max-h-72 overflow-y-auto">
                    {isAzura && draftCount > azuraNotificationItems.length && (
                      <p className="px-3 py-2 text-xs text-stone-500">
@@ -434,7 +370,7 @@ useEffect(() => {
   );
 })}
                   </div>
-                ) : (
+                ) : !notificationsLoading && !notificationsError ? (
                   <div className="px-3 py-5 text-center">
                     <span className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                       <FiBell className="h-4 w-4" />
@@ -443,7 +379,7 @@ useEffect(() => {
   {isAzura ? "Tüm içerikler güncel." : "Tüm sayfalar güncel."}
 </p>
                   </div>
-                )}
+                ) : null}
               </div>
 
               {draftCount > 0 ? (

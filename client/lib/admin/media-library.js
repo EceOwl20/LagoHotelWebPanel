@@ -1,10 +1,13 @@
 import "server-only";
 
 import { createHash } from "crypto";
-import { readdir, stat } from "fs/promises";
+import { readdir, lstat } from "fs/promises";
 import path from "path";
 import { uploadsRoot } from "./storage";
 import { createAsyncCache } from "./async-cache.mjs";
+import { createMediaScanLimit } from "./media-scan-limit.mjs";
+
+const limitScanIO = createMediaScanLimit(4);
 
 const MEDIA_LIBRARY_CACHE_TTL_MS = 30_000;
 
@@ -21,7 +24,9 @@ function createAssetId(url) {
 }
 
 async function scanDirectory(directoryPath, relativeDirectory = "") {
-  const entries = await readdir(directoryPath, { withFileTypes: true });
+  const directoryStat = await limitScanIO(() => lstat(directoryPath));
+  if (directoryStat.isSymbolicLink() || !directoryStat.isDirectory()) return [];
+  const entries = await limitScanIO(() => readdir(directoryPath, { withFileTypes: true }));
 
   const results = await Promise.all(
     entries.map(async (entry) => {
@@ -44,7 +49,8 @@ async function scanDirectory(directoryPath, relativeDirectory = "") {
         return [];
       }
 
-      const fileStat = await stat(absolutePath);
+      const fileStat = await limitScanIO(() => lstat(absolutePath));
+      if (fileStat.isSymbolicLink() || !fileStat.isFile()) return [];
       const normalizedRelativePath = relativePath.split(path.sep).join("/");
       const folderPath = path.posix.dirname(normalizedRelativePath);
       const url = `/uploads/${normalizedRelativePath}`;
@@ -69,8 +75,19 @@ async function scanDirectory(directoryPath, relativeDirectory = "") {
 }
 
 async function scanMediaLibrary() {
-  const pagesUploadsRoot = path.join(uploadsRoot, "pages");
-  const assets = await scanDirectory(pagesUploadsRoot, "pages");
+  // Lago dynamic pages already upload under pages; blog has its own root.
+  // Do not scan the entire uploads root (gallery, trash and unrelated files).
+  const groups = await Promise.all(["pages", "blog"].map(async (scope) => {
+    const directory = path.join(uploadsRoot, scope);
+    try {
+      await limitScanIO(() => lstat(directory));
+    } catch (error) {
+      if (error.code === "ENOENT") return [];
+      throw error;
+    }
+    return scanDirectory(directory, scope);
+  }));
+  const assets = groups.flat();
 
   assets.sort((left, right) => {
     const dateDifference = Date.parse(right.modifiedAt) - Date.parse(left.modifiedAt);

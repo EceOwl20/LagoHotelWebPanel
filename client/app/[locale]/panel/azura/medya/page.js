@@ -1,4 +1,5 @@
 "use client";
+import PanelMediaPreview from "../../components/PanelMediaPreview";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -51,6 +52,7 @@ export default function AzuraMediaLibraryPage() {
   const [query, setQuery] = useState("");
   const generation = useRef(0);
   const moreRequest = useRef(null);
+  const moreController = useRef(null);
   const [debouncedQuery, setDebouncedQuery] =
     useState("");
 
@@ -82,8 +84,14 @@ export default function AzuraMediaLibraryPage() {
    */
   useEffect(() => {
     let cancelled = false;
+    const controller = new AbortController();
     const version = ++generation.current;
+    moreController.current?.abort();
+    moreController.current = null;
+    moreRequest.current = null;
     setLoadingMore(false);
+    setLoading(true);
+    setError("");
 
     const loadLibrary = async () => {
       setLoading(true);
@@ -103,6 +111,7 @@ export default function AzuraMediaLibraryPage() {
           `/api/admin/azura/media-library?${params.toString()}`,
           {
             cache: "no-store",
+            signal: controller.signal,
           }
         );
 
@@ -145,13 +154,16 @@ export default function AzuraMediaLibraryPage() {
       }
     };
 
-    loadLibrary();
+    // Cancel immediately on typing; only start the replacement after debounce.
+    if (query.trim() === debouncedQuery) loadLibrary();
 
     return () => {
       cancelled = true;
+      controller.abort();
+      moreController.current?.abort();
       if (generation.current === version) generation.current += 1;
     };
-  }, [debouncedQuery]);
+  }, [debouncedQuery, query]);
 
   const loadMore = async () => {
     if (
@@ -163,6 +175,8 @@ export default function AzuraMediaLibraryPage() {
 
     setLoadingMore(true);
     const version = generation.current;
+    const controller = new AbortController();
+    moreController.current = controller;
     moreRequest.current = version;
     setError("");
 
@@ -180,6 +194,7 @@ export default function AzuraMediaLibraryPage() {
         `/api/admin/azura/media-library?${params.toString()}`,
         {
           cache: "no-store",
+          signal: controller.signal,
         }
       );
 
@@ -434,19 +449,10 @@ export default function AzuraMediaLibraryPage() {
                       className="group overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#63978f]/40 hover:shadow-lg"
                     >
                       <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
-                        <div
-                          role="img"
-                          aria-label={
-                            asset.name
-                          }
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition duration-500 group-hover:scale-105"
-                          style={
-                            previewUrl
-                              ? {
-                                  backgroundImage: `url("${previewUrl}")`,
-                                }
-                              : undefined
-                          }
+                        <PanelMediaPreview
+                          src={previewUrl}
+                          alt={asset.name}
+                          className="object-cover transition duration-500 group-hover:scale-105"
                         />
 
                         <div className="absolute inset-x-0 top-0 flex items-start justify-between gap-2 p-3">
