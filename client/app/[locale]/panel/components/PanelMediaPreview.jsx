@@ -4,15 +4,18 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { observeMediaPreview } from "@/lib/admin/observe-media-preview.mjs";
 
-function Preview({ src, alt = "", className = "object-cover", onLoad, sizes = "320px" }) {
+function Preview({ src, alt = "", className = "object-cover", onLoad, sizes = "320px", eager = false }) {
   const container = useRef(null);
   const [visible, setVisible] = useState(false);
   const [failed, setFailed] = useState(false);
-  useEffect(() => observeMediaPreview(container.current, () => setVisible(true)), []);
+  useEffect(() => {
+    if (eager) return undefined;
+    return observeMediaPreview(container.current, () => setVisible(true));
+  }, [eager]);
   return (
     <div ref={container} className="absolute inset-0">
-      {visible && src && !failed ? (
-        <Image src={src} alt={alt} fill unoptimized loading="lazy" decoding="async"
+      {(eager || visible) && src && !failed ? (
+        <Image src={src} alt={alt} fill unoptimized loading={eager ? "eager" : "lazy"} decoding="async"
           sizes={sizes} className={className} onLoad={onLoad} onError={() => setFailed(true)} />
       ) : null}
       {failed || !src ? (

@@ -42,6 +42,15 @@ function createPreviewUrl(origin, image) {
 }
 
 export default function AzuraMediaLibraryPage() {
+  const [previewColumns, setPreviewColumns] = useState(1);
+  useEffect(() => {
+    // Match the grid's sm / lg / 2xl breakpoints without eager-loading extra rows.
+    const queries = [640, 1024, 1536].map(width => window.matchMedia(`(min-width: ${width}px)`));
+    const update = () => setPreviewColumns(1 + queries.filter(query => query.matches).length);
+    update();
+    queries.forEach(query => query.addEventListener("change", update));
+    return () => queries.forEach(query => query.removeEventListener("change", update));
+  }, []);
   const [images, setImages] = useState([]);
   const [total, setTotal] = useState(0);
   const [nextOffset, setNextOffset] =
@@ -432,7 +441,7 @@ export default function AzuraMediaLibraryPage() {
           ) : images.length > 0 ? (
             <>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                {images.map((asset) => {
+                {images.map((asset, index) => {
                   const previewUrl =
                     createPreviewUrl(
                       mediaOrigin,
@@ -450,6 +459,7 @@ export default function AzuraMediaLibraryPage() {
                     >
                       <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
                         <PanelMediaPreview
+                          eager={index < previewColumns}
                           src={previewUrl}
                           alt={asset.name}
                           className="object-cover transition duration-500 group-hover:scale-105"

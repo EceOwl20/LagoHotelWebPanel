@@ -34,7 +34,8 @@ function harness(file, props = {}, fetchImpl = async () => Response.json({ image
   };
   const m = { exports: {} };
   new Function("require", "module", "exports", "fetch", "window", code)(imports, m, m.exports, fetchImpl,
-    { setTimeout: fn => setTimeout(fn, 0), clearTimeout });
+    { setTimeout: fn => setTimeout(fn, 0), clearTimeout,
+      matchMedia: () => ({ matches: false, addEventListener() {}, removeEventListener() {} }) });
   const render = () => { si = 0; ri = 0; ei = 0; const tree = m.exports.default(props); pending.splice(0).forEach(fn => fn()); return tree; };
   return { render, unmount() { effects.forEach(effect => effect.cleanup?.()); }, async settle() { render(); await tick(); render(); await tick(); return render(); } };
 }
